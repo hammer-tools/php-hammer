@@ -1,43 +1,52 @@
+fun properties(key: String) = project.findProperty(key).toString()
+
 plugins {
-  id("java")
-  id("org.jetbrains.intellij") version "1.6.0"
+    id("java")
+    id("org.jetbrains.intellij") version "1.6.0"
 }
 
-group = "net.rentalhost"
-version = "1.0-SNAPSHOT"
+group = properties("pluginGroup")
+version = properties("pluginVersion")
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-  version.set("2021.3")
-  type.set("IC") // Target IDE Platform
+    pluginName.set(properties("pluginName"))
+    version.set(properties("platformVersion"))
+    type.set(properties("platformType"))
 
-  plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(properties("platformPlugins").split(','))
 }
 
 tasks {
-  // Set the JVM compatibility versions
-  withType<JavaCompile> {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
-  }
+    withType<JavaCompile> {
+        sourceCompatibility = properties("javaVersion")
+        targetCompatibility = properties("javaVersion")
+    }
 
-  patchPluginXml {
-    sinceBuild.set("213")
-    untilBuild.set("223.*")
-  }
+    wrapper {
+        gradleVersion = properties("gradleVersion")
+    }
 
-  signPlugin {
-    certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-    privateKey.set(System.getenv("PRIVATE_KEY"))
-    password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
-  }
+    patchPluginXml {
+        version.set(properties("pluginVersion"))
+        sinceBuild.set(properties("pluginSinceBuild"))
+    }
 
-  publishPlugin {
-    token.set(System.getenv("PUBLISH_TOKEN"))
-  }
+    signPlugin {
+        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
+        privateKey.set(System.getenv("PRIVATE_KEY"))
+        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+    }
+
+    publishPlugin {
+        token.set(System.getenv("PUBLISH_TOKEN"))
+    }
+
+    runIde {
+        jbrVersion.set("11_0_15b2043.56")
+        ideDir.set(file("${System.getProperty("user.home")}\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PhpStorm\\ch-0\\${properties("platformPhpBuild")}"))
+    }
 }
