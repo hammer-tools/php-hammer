@@ -45,7 +45,17 @@ tasks {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
 
+    prepareSandbox {
+        doLast {
+            copy {
+                from(file("$projectDir/sandbox/disabled_plugins.txt"))
+                into(file("$buildDir/idea-sandbox/config"))
+            }
+        }
+    }
+
     runIde {
+        jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
         jbrVersion.set("11_0_15b2043.56")
         ideDir.set(file("${System.getProperty("user.home")}\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PhpStorm\\ch-0\\${properties("platformPhpBuild")}"))
     }
