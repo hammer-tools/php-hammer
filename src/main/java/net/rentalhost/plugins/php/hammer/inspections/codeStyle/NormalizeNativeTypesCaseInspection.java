@@ -51,7 +51,7 @@ public class NormalizeNativeTypesCaseInspection
                     ProblemsHolderService.registerProblem(
                         problemsHolder,
                         element,
-                        String.format("Type format must be \"%s\".", elementTypeTextLowercase),
+                        String.format("Type must be lowercase (\"%s\").", elementTypeTextLowercase),
                         new LocalQuickFixService.SimpleTypeReplaceQuickFix(
                             elementTypeReplacementSuggestion,
                             String.format("Replace it with \"%s\"", elementTypeTextLowercase),

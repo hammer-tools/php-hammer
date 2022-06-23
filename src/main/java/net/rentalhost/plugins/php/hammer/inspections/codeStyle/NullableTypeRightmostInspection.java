@@ -38,7 +38,7 @@ public class NullableTypeRightmostInspection
                             ProblemsHolderService.registerProblem(
                                 problemsHolder,
                                 element,
-                                String.format("Nullable type must be on rightmost side as \"%s\".", elementTypeReplacementSuggestion),
+                                String.format("Nullable type must be on rightmost side (\"%s\").", elementTypeReplacementSuggestion),
                                 new LocalQuickFixService.SimpleTypeReplaceQuickFix(
                                     elementTypeReplacementSuggestion,
                                     "Move \"null\" type to rightmost side"

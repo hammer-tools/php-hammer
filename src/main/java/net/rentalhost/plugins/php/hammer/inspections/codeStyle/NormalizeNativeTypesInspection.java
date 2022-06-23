@@ -68,7 +68,7 @@ public class NormalizeNativeTypesInspection
                     ProblemsHolderService.registerProblem(
                         problemsHolder,
                         element,
-                        String.format("Type format must be \"%s\".", elementTypeExpected),
+                        String.format("Type must be normalized (\"%s\").", elementTypeExpected),
                         new LocalQuickFixService.SimpleTypeReplaceQuickFix(
                             elementTypeReplacementSuggestion,
                             String.format("Replace it with \"%s\"", elementTypeExpected),
