@@ -10,8 +10,6 @@ import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
 
-import java.util.regex.Pattern;
-
 import javax.swing.*;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,13 +18,12 @@ import org.jetbrains.annotations.Nullable;
 import net.rentalhost.plugins.php.hammer.services.LocalQuickFixService;
 import net.rentalhost.plugins.php.hammer.services.OptionsPanelService;
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService;
+import net.rentalhost.plugins.php.hammer.services.StringService;
 
 public class NullableTypesFormatInspection
     extends PhpInspection {
     public boolean FORMAT_SHORT = false;
     public boolean FORMAT_LONG  = true;
-
-    Pattern expressionNull = Pattern.compile("(^null\\||\\|null$)");
 
     @Override
     public @NotNull PsiElementVisitor buildVisitor(
@@ -52,8 +49,12 @@ public class NullableTypesFormatInspection
                                 String.format("%s|null", elementTypeText.substring(1));
                         }
                         else if (!elementTypeIsShort && FORMAT_SHORT) {
-                            elementTypeReplacementSuggestion =
-                                String.format("?%s", expressionNull.matcher(elementTypeText).replaceAll(""));
+                            final var elementTypeSingular = StringService.listNonNullableTypes(elementTypeText).findFirst();
+
+                            if (elementTypeSingular.isPresent()) {
+                                elementTypeReplacementSuggestion =
+                                    String.format("?%s", elementTypeSingular.get());
+                            }
                         }
 
                         if (elementTypeReplacementSuggestion != null) {
