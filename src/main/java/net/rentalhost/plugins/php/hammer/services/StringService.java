@@ -7,9 +7,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StringService {
+    public static Stream<String> listTypes(final String types) {
+        return Arrays.stream(StringUtils.split(types, "|"));
+    }
+
     public static Stream<String> listNonNullableTypes(final String types) {
-        return Arrays.stream(StringUtils.split(types, "|"))
-                     .filter(s -> !s.equals("null") && !s.equals("\\null"));
+        return listTypes(types).filter(s -> !s.equals("null") && !s.equals("\\null"));
     }
 
     public static String joinTypesStream(final Stream<String> types) {

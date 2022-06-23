@@ -29,5 +29,14 @@
                          level="WEAK WARNING"
                          shortName="NullableTypeRightmostInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypeRightmostInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Normalize native types"
+                         level="WEAK WARNING"
+                         shortName="NormalizeNativeTypesInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NormalizeNativeTypesInspection" />
     </extensions>
 </idea-plugin>
