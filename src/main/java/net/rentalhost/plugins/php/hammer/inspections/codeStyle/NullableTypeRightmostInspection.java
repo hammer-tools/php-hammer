@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle;
 
+import com.google.common.collect.Iterables;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
@@ -10,17 +11,14 @@ import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
 
-import java.util.regex.Pattern;
-
 import org.jetbrains.annotations.NotNull;
 
 import net.rentalhost.plugins.php.hammer.services.LocalQuickFixService;
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService;
+import net.rentalhost.plugins.php.hammer.services.StringService;
 
 public class NullableTypeRightmostInspection
     extends PhpInspection {
-    Pattern expressionNull = Pattern.compile("(?<=\\||^)\\\\?null\\|");
-
     @Override
     public @NotNull PsiElementVisitor buildVisitor(
         @NotNull final ProblemsHolder problemsHolder,
@@ -36,19 +34,16 @@ public class NullableTypeRightmostInspection
                     if (!elementTypeText.startsWith("?")) {
                         final var elementTypes = elementType.getTypes();
 
-                        if (elementTypes.contains("\\null")) {
-                            final var elementTypeTextMatcher = expressionNull.matcher(elementTypeText);
+                        if (elementTypes.contains("\\null") &&
+                            !Iterables.getLast(elementTypes).equals("\\null")) {
+                            final var elementTypeReplacementSuggestion = StringService.joinTypesStream(StringService.listNonNullableTypes(elementTypeText)) + "|null";
 
-                            if (elementTypeTextMatcher.find()) {
-                                final var elementTypeReplacementSuggestion = elementTypeTextMatcher.replaceFirst("") + "|null";
-
-                                ProblemsHolderService.registerProblem(
-                                    problemsHolder,
-                                    element,
-                                    String.format("Nullable type must be on rightmost side as \"%s\".", elementTypeReplacementSuggestion),
-                                    new NullableTypeRightmostFix(elementTypeReplacementSuggestion)
-                                );
-                            }
+                            ProblemsHolderService.registerProblem(
+                                problemsHolder,
+                                element,
+                                String.format("Nullable type must be on rightmost side as \"%s\".", elementTypeReplacementSuggestion),
+                                new NullableTypeRightmostFix(elementTypeReplacementSuggestion)
+                            );
                         }
                     }
                 }
