@@ -20,5 +20,14 @@
                          level="WEAK WARNING"
                          shortName="NullableTypesFormatInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypesFormatInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Nullable type on the rightmost side"
+                         level="WEAK WARNING"
+                         shortName="NullableTypeRightmostInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypeRightmostInspection" />
     </extensions>
 </idea-plugin>
