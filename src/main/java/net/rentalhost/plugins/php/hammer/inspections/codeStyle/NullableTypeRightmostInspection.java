@@ -69,7 +69,7 @@ public class NullableTypeRightmostInspection
             @NotNull final Project project,
             @NotNull final ProblemDescriptor descriptor
         ) {
-            LocalQuickFixService.replaceType(project, descriptor, this.elementReplacementText);
+            LocalQuickFixService.replaceType(project, (PhpTypeDeclaration) descriptor.getPsiElement(), this.elementReplacementText);
         }
     }
 }
