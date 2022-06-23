@@ -27,7 +27,7 @@ public class TypeService {
     }
 
     public static Stream<String> listNonNullableTypes(final String types) {
-        return listTypes(types).filter(s -> !s.equals("null") && !s.equals("\\null"));
+        return listTypes(types).filter(s -> !s.equals(PhpType._NULL.substring(1)) && !s.equals(PhpType._NULL));
     }
 
     public static String joinTypesStream(final Stream<String> types) {

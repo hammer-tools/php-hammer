@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
+import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,8 +31,8 @@ public class NullableTypeRightmostInspection
                     if (!elementTypeText.startsWith("?")) {
                         final var elementTypes = elementType.getTypes();
 
-                        if (elementTypes.contains("\\null") &&
-                            !Iterables.getLast(elementTypes).equals("\\null")) {
+                        if (elementTypes.contains(PhpType._NULL) &&
+                            !Iterables.getLast(elementTypes).equals(PhpType._NULL)) {
                             final var elementTypeReplacementSuggestion = TypeService.joinTypesStream(TypeService.listNonNullableTypes(elementTypeText)) + "|null";
 
                             ProblemsHolderService.registerProblem(

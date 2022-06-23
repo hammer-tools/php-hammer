@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
+import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 
 import javax.swing.*;
 
@@ -34,7 +35,7 @@ public class NullableTypesFormatInspection
                     final var elementTypes = elementType.getTypes();
 
                     if (elementTypes.size() == 2 &&
-                        elementTypes.contains("\\null")) {
+                        elementTypes.contains(PhpType._NULL)) {
                         final var elementTypeText    = element.getText();
                         final var elementTypeIsShort = elementTypeText.startsWith("?");
 
