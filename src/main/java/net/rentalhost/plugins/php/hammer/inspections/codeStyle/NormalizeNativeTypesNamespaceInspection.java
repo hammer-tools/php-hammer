@@ -48,7 +48,11 @@ public class NormalizeNativeTypesNamespaceInspection
                         problemsHolder,
                         element,
                         String.format("Type format must be \"%s\".", elementTypeExpectedFinal),
-                        new LocalQuickFixService.SimpleTypeReplaceWithParentQuickFix(elementTypeReplacementSuggestion, elementTypeExpectedFinal)
+                        new LocalQuickFixService.SimpleTypeReplaceQuickFix(
+                            elementTypeReplacementSuggestion,
+                            String.format("Replace it with \"%s\"", elementTypeExpectedFinal),
+                            true
+                        )
                     );
                 }
             }

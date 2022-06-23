@@ -1,11 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle;
 
 import com.google.common.collect.Iterables;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.codeInspection.util.IntentionFamilyName;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.lang.inspections.PhpInspection;
@@ -42,34 +38,15 @@ public class NullableTypeRightmostInspection
                                 problemsHolder,
                                 element,
                                 String.format("Nullable type must be on rightmost side as \"%s\".", elementTypeReplacementSuggestion),
-                                new NullableTypeRightmostFix(elementTypeReplacementSuggestion)
+                                new LocalQuickFixService.SimpleTypeReplaceQuickFix(
+                                    elementTypeReplacementSuggestion,
+                                    "Move \"null\" type to rightmost side"
+                                )
                             );
                         }
                     }
                 }
             }
         };
-    }
-
-    private static final class NullableTypeRightmostFix
-        implements LocalQuickFix {
-        private final String elementReplacementText;
-
-        public NullableTypeRightmostFix(final String elementReplacementText) {
-            this.elementReplacementText = elementReplacementText;
-        }
-
-        @Override
-        public @IntentionFamilyName @NotNull String getFamilyName() {
-            return "Move \"null\" type to rightmost side";
-        }
-
-        @Override
-        public void applyFix(
-            @NotNull final Project project,
-            @NotNull final ProblemDescriptor descriptor
-        ) {
-            LocalQuickFixService.replaceType(project, (PhpTypeDeclaration) descriptor.getPsiElement(), this.elementReplacementText);
-        }
     }
 }

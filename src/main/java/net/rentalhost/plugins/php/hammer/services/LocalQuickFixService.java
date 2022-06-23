@@ -25,22 +25,32 @@ public class LocalQuickFixService {
         element.replace(elementReplacement);
     }
 
-    public static final class SimpleTypeReplaceWithParentQuickFix
+    public static final class SimpleTypeReplaceQuickFix
         implements LocalQuickFix {
-        private final String entireTypesReplacement;
-        private final String typeReplacementDescription;
+        private final String  entireTypesReplacement;
+        private final String  quickFixTitle;
+        private final boolean considerParent;
 
-        public SimpleTypeReplaceWithParentQuickFix(
+        public SimpleTypeReplaceQuickFix(
             final String entireTypesReplacement,
-            final String typeReplacementDescription
+            final String quickFixTitle
+        ) {
+            this(entireTypesReplacement, quickFixTitle, false);
+        }
+
+        public SimpleTypeReplaceQuickFix(
+            final String entireTypesReplacement,
+            final String quickFixTitle,
+            final boolean considerParent
         ) {
             this.entireTypesReplacement = entireTypesReplacement;
-            this.typeReplacementDescription = typeReplacementDescription;
+            this.quickFixTitle = quickFixTitle;
+            this.considerParent = considerParent;
         }
 
         @Override
         public @IntentionFamilyName @NotNull String getFamilyName() {
-            return String.format("Replace it with \"%s\"", this.typeReplacementDescription);
+            return quickFixTitle;
         }
 
         @Override
@@ -48,7 +58,11 @@ public class LocalQuickFixService {
             @NotNull final Project project,
             @NotNull final ProblemDescriptor descriptor
         ) {
-            LocalQuickFixService.replaceType(project, (PhpTypeDeclaration) descriptor.getPsiElement().getParent(), this.entireTypesReplacement);
+            final var descriptionElement = considerParent
+                                           ? (PhpTypeDeclaration) descriptor.getPsiElement().getParent()
+                                           : (PhpTypeDeclaration) descriptor.getPsiElement();
+
+            LocalQuickFixService.replaceType(project, descriptionElement, entireTypesReplacement);
         }
     }
 }

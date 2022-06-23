@@ -52,7 +52,10 @@ public class NormalizeNativeTypesCaseInspection
                         problemsHolder,
                         element,
                         String.format("Type format must be \"%s\".", elementTypeTextLowercase),
-                        new LocalQuickFixService.SimpleTypeReplaceWithParentQuickFix(elementTypeReplacementSuggestion, elementTypeTextLowercase)
+                        new LocalQuickFixService.SimpleTypeReplaceQuickFix(
+                            elementTypeReplacementSuggestion,
+                            String.format("Replace it with \"%s\"", elementTypeTextLowercase),
+                            true)
                     );
                 }
             }

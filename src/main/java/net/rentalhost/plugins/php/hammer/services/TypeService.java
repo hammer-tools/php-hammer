@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TypeService {
-    public static Set<String> nativeTypes = Set.of(
+    public static final Set<String> nativeTypes = Set.of(
         PhpType._MIXED,
         PhpType._VOID, PhpType._NEVER, PhpType._NULL,
         PhpType._ARRAY, PhpType._ITERABLE,

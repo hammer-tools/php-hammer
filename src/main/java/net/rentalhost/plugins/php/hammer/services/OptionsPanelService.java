@@ -43,8 +43,8 @@ public final class OptionsPanelService {
     }
 
     public class RadioComponent {
-        List<RadioOption> radioOptions = new ArrayList<>();
-        private final ButtonGroup buttonGroup = new ButtonGroup();
+        private final List<RadioOption> radioOptions = new ArrayList<>();
+        private final ButtonGroup       buttonGroup  = new ButtonGroup();
 
         @Nullable
         private RadioOption selectedOption;

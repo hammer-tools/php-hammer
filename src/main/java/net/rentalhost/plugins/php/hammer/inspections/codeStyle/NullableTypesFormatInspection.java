@@ -1,10 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle;
 
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.codeInspection.util.IntentionFamilyName;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.lang.inspections.PhpInspection;
@@ -62,7 +58,10 @@ public class NullableTypesFormatInspection
                                 problemsHolder,
                                 element,
                                 String.format("Nullable type must be written as \"%s\".", elementTypeReplacementSuggestion),
-                                new NullableTypeFormatFix(elementTypeReplacementSuggestion, FORMAT_LONG)
+                                new LocalQuickFixService.SimpleTypeReplaceQuickFix(
+                                    elementTypeReplacementSuggestion,
+                                    FORMAT_LONG ? "Replace with the long format" : "Replace with the short format"
+                                )
                             );
                         }
                     }
@@ -77,35 +76,5 @@ public class NullableTypesFormatInspection
             radioComponent.addOption("Use short format (\"?int\")", FORMAT_SHORT, isSelected -> FORMAT_SHORT = isSelected);
             radioComponent.addOption("Use long format (\"int|null\")", FORMAT_LONG, isSelected -> FORMAT_LONG = isSelected);
         }));
-    }
-
-    private static final class NullableTypeFormatFix
-        implements LocalQuickFix {
-        private final String elementReplacementText;
-
-        private final boolean toLongFormat;
-
-        public NullableTypeFormatFix(
-            final String elementReplacementText,
-            final boolean toLongFormat
-        ) {
-            this.elementReplacementText = elementReplacementText;
-            this.toLongFormat = toLongFormat;
-        }
-
-        @Override
-        public @IntentionFamilyName @NotNull String getFamilyName() {
-            return toLongFormat
-                   ? "Replace with the long format"
-                   : "Replace with the short format";
-        }
-
-        @Override
-        public void applyFix(
-            @NotNull final Project project,
-            @NotNull final ProblemDescriptor descriptor
-        ) {
-            LocalQuickFixService.replaceType(project, (PhpTypeDeclaration) descriptor.getPsiElement(), this.elementReplacementText);
-        }
     }
 }

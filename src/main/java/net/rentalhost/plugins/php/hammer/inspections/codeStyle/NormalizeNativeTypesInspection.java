@@ -69,7 +69,11 @@ public class NormalizeNativeTypesInspection
                         problemsHolder,
                         element,
                         String.format("Type format must be \"%s\".", elementTypeExpected),
-                        new LocalQuickFixService.SimpleTypeReplaceWithParentQuickFix(elementTypeReplacementSuggestion, elementTypeExpected)
+                        new LocalQuickFixService.SimpleTypeReplaceQuickFix(
+                            elementTypeReplacementSuggestion,
+                            String.format("Replace it with \"%s\"", elementTypeExpected),
+                            true
+                        )
                     );
                 }
             }
