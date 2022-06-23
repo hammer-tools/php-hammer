@@ -38,7 +38,7 @@ public class NormalizeNativeTypesNamespaceInspection
                         return;
                     }
 
-                    final var elementTypeExpectedFinal = elementTypeText.substring(1);
+                    final var elementTypeExpectedFinal = elementTypeText.substring(1).toLowerCase();
                     final var elementTypeReplacementSuggestion = TypeService.joinTypesStream(
                         TypeService.listTypes(elementParent.getText())
                                    .map(s -> s.trim().equals(elementTypeText) ? elementTypeExpectedFinal : s)
