@@ -13,7 +13,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <localInspection language="PHP"
-                         groupPath="PHP,PHP Hammer"
+                         groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
                          displayName="Nullable types format"
@@ -22,7 +22,7 @@
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypesFormatInspection" />
 
         <localInspection language="PHP"
-                         groupPath="PHP,PHP Hammer"
+                         groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
                          displayName="Nullable type on the rightmost side"
@@ -31,7 +31,7 @@
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypeRightmostInspection" />
 
         <localInspection language="PHP"
-                         groupPath="PHP,PHP Hammer"
+                         groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
                          displayName="Normalize native types"
@@ -40,7 +40,7 @@
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NormalizeNativeTypesInspection" />
 
         <localInspection language="PHP"
-                         groupPath="PHP,PHP Hammer"
+                         groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
                          displayName="Normalize native types namespace"
@@ -49,7 +49,7 @@
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NormalizeNativeTypesNamespaceInspection" />
 
         <localInspection language="PHP"
-                         groupPath="PHP,PHP Hammer"
+                         groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
                          displayName="Normalize native types case"
