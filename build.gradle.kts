@@ -26,6 +26,18 @@ tasks {
         targetCompatibility = properties("javaVersion")
     }
 
+    test {
+        jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
+
+        isScanForTestClasses = false
+        include("**/*TestCase.class")
+    }
+
+    jar {
+        dependsOn("instrumentCode")
+        dependsOn("instrumentTestCode")
+    }
+
     wrapper {
         gradleVersion = properties("gradleVersion")
     }
