@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StringService {
+public class TypeService {
     public static Stream<String> listTypes(final String types) {
         return Arrays.stream(StringUtils.split(types, "|"));
     }

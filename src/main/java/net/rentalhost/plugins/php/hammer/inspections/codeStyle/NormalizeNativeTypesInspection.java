@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.rentalhost.plugins.php.hammer.services.LocalQuickFixService;
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService;
-import net.rentalhost.plugins.php.hammer.services.StringService;
+import net.rentalhost.plugins.php.hammer.services.TypeService;
 
 public class NormalizeNativeTypesInspection
     extends LocalInspectionTool {
@@ -64,9 +64,9 @@ public class NormalizeNativeTypesInspection
                     }
 
                     final var elementTypeExpectedFinal = elementTypeExpected;
-                    final var elementTypeReplacementSuggestion = StringService.joinTypesStream(
-                        StringService.listTypes(elementParent.getText())
-                                     .map(s -> s.trim().equals(elementTypeText) ? elementTypeExpectedFinal : s)
+                    final var elementTypeReplacementSuggestion = TypeService.joinTypesStream(
+                        TypeService.listTypes(elementParent.getText())
+                                   .map(s -> s.trim().equals(elementTypeText) ? elementTypeExpectedFinal : s)
                     );
 
                     ProblemsHolderService.registerProblem(

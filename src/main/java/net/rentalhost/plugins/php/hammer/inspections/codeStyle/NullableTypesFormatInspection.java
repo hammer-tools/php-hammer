@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import net.rentalhost.plugins.php.hammer.services.LocalQuickFixService;
 import net.rentalhost.plugins.php.hammer.services.OptionsPanelService;
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService;
-import net.rentalhost.plugins.php.hammer.services.StringService;
+import net.rentalhost.plugins.php.hammer.services.TypeService;
 
 public class NullableTypesFormatInspection
     extends PhpInspection {
@@ -49,7 +49,7 @@ public class NullableTypesFormatInspection
                                 String.format("%s|null", elementTypeText.substring(1));
                         }
                         else if (!elementTypeIsShort && FORMAT_SHORT) {
-                            final var elementTypeSingular = StringService.listNonNullableTypes(elementTypeText).findFirst();
+                            final var elementTypeSingular = TypeService.listNonNullableTypes(elementTypeText).findFirst();
 
                             if (elementTypeSingular.isPresent()) {
                                 elementTypeReplacementSuggestion =

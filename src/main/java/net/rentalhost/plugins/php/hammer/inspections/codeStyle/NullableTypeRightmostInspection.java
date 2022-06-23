@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.rentalhost.plugins.php.hammer.services.LocalQuickFixService;
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService;
-import net.rentalhost.plugins.php.hammer.services.StringService;
+import net.rentalhost.plugins.php.hammer.services.TypeService;
 
 public class NullableTypeRightmostInspection
     extends PhpInspection {
@@ -36,7 +36,7 @@ public class NullableTypeRightmostInspection
 
                         if (elementTypes.contains("\\null") &&
                             !Iterables.getLast(elementTypes).equals("\\null")) {
-                            final var elementTypeReplacementSuggestion = StringService.joinTypesStream(StringService.listNonNullableTypes(elementTypeText)) + "|null";
+                            final var elementTypeReplacementSuggestion = TypeService.joinTypesStream(TypeService.listNonNullableTypes(elementTypeText)) + "|null";
 
                             ProblemsHolderService.registerProblem(
                                 problemsHolder,
