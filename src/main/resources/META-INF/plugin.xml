@@ -43,15 +43,6 @@
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
-                         displayName="Normalize native types namespace"
-                         level="WEAK WARNING"
-                         shortName="NormalizeNativeTypesNamespaceInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NormalizeNativeTypesNamespaceInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
-                         enabledByDefault="true"
                          displayName="Normalize native types case"
                          level="WEAK WARNING"
                          shortName="NormalizeNativeTypesCaseInspection"
