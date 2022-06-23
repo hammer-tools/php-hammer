@@ -1,11 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle;
 
 import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.codeInspection.util.IntentionFamilyName;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.lang.psi.elements.ClassReference;
@@ -73,37 +69,10 @@ public class NormalizeNativeTypesInspection
                         problemsHolder,
                         element,
                         String.format("Type format must be \"%s\".", elementTypeExpected),
-                        new NormalizeNativeTypesFix(elementTypeReplacementSuggestion, elementTypeExpected)
+                        new LocalQuickFixService.SimpleTypeReplaceWithParentQuickFix(elementTypeReplacementSuggestion, elementTypeExpected)
                     );
                 }
             }
         };
-    }
-
-    private static final class NormalizeNativeTypesFix
-        implements LocalQuickFix {
-        private final String elementReplacementText;
-        private final String elementTypeExpected;
-
-        public NormalizeNativeTypesFix(
-            final String elementReplacementText,
-            final String elementTypeExpected
-        ) {
-            this.elementReplacementText = elementReplacementText;
-            this.elementTypeExpected = elementTypeExpected;
-        }
-
-        @Override
-        public @IntentionFamilyName @NotNull String getFamilyName() {
-            return String.format("Replace with \"%s\"", this.elementTypeExpected);
-        }
-
-        @Override
-        public void applyFix(
-            @NotNull final Project project,
-            @NotNull final ProblemDescriptor descriptor
-        ) {
-            LocalQuickFixService.replaceType(project, (PhpTypeDeclaration) descriptor.getPsiElement().getParent(), this.elementReplacementText);
-        }
     }
 }
