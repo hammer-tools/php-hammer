@@ -8,8 +8,8 @@ import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.jetbrains.php.lang.psi.elements.ClassReference;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
-import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +27,7 @@ public class NormalizeNativeTypesInspection
         return new PsiElementVisitor() {
             @Override
             public void visitElement(@NotNull final PsiElement element) {
-                if (element instanceof ClassReferenceImpl) {
+                if (element instanceof ClassReference) {
                     final var elementTypeText = element.getText();
 
                     if (elementTypeText == null) {
