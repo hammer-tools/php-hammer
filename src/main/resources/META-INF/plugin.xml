@@ -10,4 +10,15 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.php</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection language="PHP"
+                         groupPath="PHP,PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Nullable types format"
+                         level="WEAK WARNING"
+                         shortName="NullableTypesFormatInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypesFormatInspection" />
+    </extensions>
 </idea-plugin>
