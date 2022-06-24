@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TestCase
+public abstract class TestCase
     extends BasePlatformTestCase {
     private static final int classBaseLength = "net.rentalhost.plugins.php.hammer".length();
 

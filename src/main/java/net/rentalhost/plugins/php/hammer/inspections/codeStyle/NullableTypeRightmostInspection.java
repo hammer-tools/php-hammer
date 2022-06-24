@@ -8,6 +8,8 @@ import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 
 import net.rentalhost.plugins.services.LocalQuickFixService;
@@ -25,11 +27,12 @@ public class NullableTypeRightmostInspection
             @Override
             public void visitElement(@NotNull final PsiElement element) {
                 if (element instanceof PhpTypeDeclaration) {
-                    final var elementType     = ((PhpTypeDeclaration) element).getType();
                     final var elementTypeText = element.getText();
 
                     if (!elementTypeText.startsWith("?")) {
-                        final var elementTypes = elementType.getTypes();
+                        final var elementTypes = TypeService.listTypes(elementTypeText)
+                                                            .map(s -> s.equals("null") ? PhpType._NULL : s)
+                                                            .collect(Collectors.toList());
 
                         if (elementTypes.contains(PhpType._NULL) &&
                             !Iterables.getLast(elementTypes).equals(PhpType._NULL)) {
