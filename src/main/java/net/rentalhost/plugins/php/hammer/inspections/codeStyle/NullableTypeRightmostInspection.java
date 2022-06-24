@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.jetbrains.php.config.PhpLanguageLevel;
 import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
@@ -11,6 +12,7 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.rentalhost.plugins.services.LocalQuickFixService;
 import net.rentalhost.plugins.services.ProblemsHolderService;
@@ -52,5 +54,10 @@ public class NullableTypeRightmostInspection
                 }
             }
         };
+    }
+
+    @Override
+    protected @Nullable PhpLanguageLevel getMinimumSupportedLanguageLevel() {
+        return PhpLanguageLevel.PHP800;
     }
 }

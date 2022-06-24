@@ -3,6 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.jetbrains.php.config.PhpLanguageLevel;
 import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
@@ -69,6 +70,11 @@ public class NullableTypesFormatInspection
                 }
             }
         };
+    }
+
+    @Override
+    protected @Nullable PhpLanguageLevel getMinimumSupportedLanguageLevel() {
+        return PhpLanguageLevel.PHP800;
     }
 
     @Override
