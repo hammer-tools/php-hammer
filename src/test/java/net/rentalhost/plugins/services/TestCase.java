@@ -1,6 +1,8 @@
 package net.rentalhost.plugins.services;
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import com.jetbrains.php.config.PhpLanguageLevel;
+import com.jetbrains.php.config.PhpProjectConfigurationFacade;
 import com.jetbrains.php.lang.inspections.PhpInspection;
 
 import java.io.File;
@@ -26,8 +28,8 @@ public abstract class TestCase
         testInspection(inspectionClass, null);
     }
 
-    protected <T extends PhpInspection> void testInspection(
-        @NotNull final Class<T> inspectionClass,
+    protected void testInspection(
+        @NotNull final Class<? extends PhpInspection> inspectionClass,
         @Nullable final String phpSourceSubName
     ) {
         final String phpSource = inspectionClass.getName().substring(classBaseLength + 1).replace(".", "/");
@@ -35,13 +37,18 @@ public abstract class TestCase
                                       ? phpSource
                                       : phpSource + "-" + phpSourceSubName;
 
+        final PhpInspection phpInspection;
+
         try {
-            myFixture.enableInspections(inspectionClass.getDeclaredConstructor().newInstance());
+            phpInspection = inspectionClass.getDeclaredConstructor().newInstance();
         }
         catch (final InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
 
+        PhpProjectConfigurationFacade.getInstance(getProject()).setLanguageLevel(PhpLanguageLevel.PHP800);
+
+        myFixture.enableInspections(phpInspection);
         myFixture.configureByFile(phpSourceNamed + ".php");
         myFixture.testHighlighting(true, false, true);
 
