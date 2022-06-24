@@ -5,8 +5,15 @@ import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory;
+import com.jetbrains.php.lang.psi.elements.PhpClass;
+import com.jetbrains.php.lang.psi.elements.PhpFieldType;
+import com.jetbrains.php.lang.psi.elements.PhpParameterType;
+import com.jetbrains.php.lang.psi.elements.PhpReturnType;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,11 +23,37 @@ public class LocalQuickFixService {
         @NotNull final PhpTypeDeclaration element,
         @NotNull final String typeReplacement
     ) {
-        final var elementReplacement = PhpPsiElementFactory
-            .createPhpPsiFromText(project, FunctionImpl.class, String.format("function dummy(): %s {}", typeReplacement))
-            .getReturnType();
+        PhpTypeDeclaration elementReplacement = null;
 
-        assert (elementReplacement != null);
+        if (element instanceof PhpReturnType) {
+            elementReplacement = PhpPsiElementFactory
+                .createPhpPsiFromText(project, FunctionImpl.class, String.format("function dummy(): %s {}", typeReplacement))
+                .getReturnType();
+        }
+        else if (element instanceof PhpParameterType) {
+            elementReplacement = Objects.requireNonNull(
+                PhpPsiElementFactory
+                    .createPhpPsiFromText(project, FunctionImpl.class, String.format("function dummy(%s $dummy) {}", typeReplacement))
+                    .getParameter(0)
+            ).getTypeDeclaration();
+        }
+        else if (element instanceof PhpFieldType) {
+            final var field = Arrays.stream(PhpPsiElementFactory
+                                                .createPhpPsiFromText(project, PhpClass.class, String.format("class Dummy { public %s $dummy; }", typeReplacement))
+                                                .getOwnFields())
+                                    .findFirst();
+
+            if (field.isEmpty()) {
+                return;
+            }
+
+            elementReplacement = field.get()
+                                      .getTypeDeclaration();
+        }
+
+        if (elementReplacement == null) {
+            return;
+        }
 
         element.replace(elementReplacement);
     }
