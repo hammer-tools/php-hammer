@@ -45,11 +45,11 @@ public abstract class TestCase
         myFixture.configureByFile(phpSourceNamed + ".php");
         myFixture.testHighlighting(true, false, true);
 
-        final File phpSourceFixedFile = new File(phpSourceNamed + ".fixed.php");
+        final File phpSourceFixedFile = new File(String.format("src/test/resources/%s.fixed.php", phpSourceNamed));
 
         if (phpSourceFixedFile.exists()) {
             myFixture.getAllQuickFixes().forEach(fix -> myFixture.launchAction(fix));
-            myFixture.checkResultByFile("inspections/codeStyle/NullableTypesFormatInspection.fixed.php");
+            myFixture.checkResultByFile(phpSourceNamed + ".fixed.php");
         }
     }
 }
