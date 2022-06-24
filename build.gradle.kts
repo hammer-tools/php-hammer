@@ -30,7 +30,9 @@ tasks {
         jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
 
         isScanForTestClasses = false
+
         include("**/*TestCase.class")
+        exclude("net/rentalhost/plugins/services/TestCase.class")
     }
 
     jar {

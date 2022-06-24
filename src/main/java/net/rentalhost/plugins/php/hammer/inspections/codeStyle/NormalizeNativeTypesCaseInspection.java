@@ -9,9 +9,9 @@ import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.rentalhost.plugins.php.hammer.services.LocalQuickFixService;
-import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService;
-import net.rentalhost.plugins.php.hammer.services.TypeService;
+import net.rentalhost.plugins.services.LocalQuickFixService;
+import net.rentalhost.plugins.services.ProblemsHolderService;
+import net.rentalhost.plugins.services.TypeService;
 
 public class NormalizeNativeTypesCaseInspection
     extends LocalInspectionTool {

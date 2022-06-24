@@ -1,4 +1,4 @@
-package net.rentalhost.plugins.php.hammer.services;
+package net.rentalhost.plugins.services;
 
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 import org.apache.commons.lang.StringUtils;

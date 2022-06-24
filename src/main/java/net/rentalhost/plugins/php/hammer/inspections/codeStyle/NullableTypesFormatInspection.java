@@ -12,10 +12,10 @@ import javax.swing.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.rentalhost.plugins.php.hammer.services.LocalQuickFixService;
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService;
-import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService;
-import net.rentalhost.plugins.php.hammer.services.TypeService;
+import net.rentalhost.plugins.services.LocalQuickFixService;
+import net.rentalhost.plugins.services.OptionsPanelService;
+import net.rentalhost.plugins.services.ProblemsHolderService;
+import net.rentalhost.plugins.services.TypeService;
 
 public class NullableTypesFormatInspection
     extends PhpInspection {

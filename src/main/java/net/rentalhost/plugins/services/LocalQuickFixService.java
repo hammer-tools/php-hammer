@@ -1,4 +1,4 @@
-package net.rentalhost.plugins.php.hammer.services;
+package net.rentalhost.plugins.services;
 
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
