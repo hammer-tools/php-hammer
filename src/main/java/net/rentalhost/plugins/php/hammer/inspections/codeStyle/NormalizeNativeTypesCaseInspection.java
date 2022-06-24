@@ -1,9 +1,9 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle;
 
-import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.ClassReference;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
 
@@ -14,7 +14,7 @@ import net.rentalhost.plugins.services.ProblemsHolderService;
 import net.rentalhost.plugins.services.TypeService;
 
 public class NormalizeNativeTypesCaseInspection
-    extends LocalInspectionTool {
+    extends PhpInspection {
     @Override
     public @NotNull PsiElementVisitor buildVisitor(
         @NotNull final ProblemsHolder problemsHolder,

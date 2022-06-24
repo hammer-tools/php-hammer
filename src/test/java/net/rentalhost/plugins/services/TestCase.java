@@ -20,8 +20,8 @@ public abstract class TestCase
         myFixture.setTestDataPath((new File("src/test/resources")).getAbsolutePath());
     }
 
-    protected <T extends PhpInspection> void testInspection(
-        @NotNull final Class<T> inspectionClass
+    protected void testInspection(
+        @NotNull final Class<? extends PhpInspection> inspectionClass
     ) {
         testInspection(inspectionClass, null);
     }
