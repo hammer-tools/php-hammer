@@ -12,6 +12,7 @@
     <depends>com.jetbrains.php</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Code Style -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"

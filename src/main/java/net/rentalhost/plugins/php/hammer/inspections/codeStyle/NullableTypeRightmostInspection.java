@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.config.PhpLanguageLevel;
 import com.jetbrains.php.lang.inspections.PhpInspection;
-import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
+import com.jetbrains.php.lang.psi.elements.impl.PhpTypeDeclarationImpl;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 
 import java.util.stream.Collectors;
@@ -28,17 +28,17 @@ public class NullableTypeRightmostInspection
         return new PsiElementVisitor() {
             @Override
             public void visitElement(@NotNull final PsiElement element) {
-                if (element instanceof PhpTypeDeclaration) {
+                if (element instanceof PhpTypeDeclarationImpl) {
                     final var elementTypeText = element.getText();
 
                     if (!elementTypeText.startsWith("?")) {
-                        final var elementTypes = TypeService.listTypes(elementTypeText)
+                        final var elementTypes = TypeService.splitTypes(elementTypeText)
                                                             .map(s -> s.equals("null") ? PhpType._NULL : s)
                                                             .collect(Collectors.toList());
 
                         if (elementTypes.contains(PhpType._NULL) &&
                             !Iterables.getLast(elementTypes).equals(PhpType._NULL)) {
-                            final var elementTypeReplacementSuggestion = TypeService.joinTypesStream(TypeService.listNonNullableTypes(elementTypeText)) + "|null";
+                            final var elementTypeReplacementSuggestion = TypeService.joinTypesStream(TypeService.exceptNull(elementTypeText)) + "|null";
 
                             ProblemsHolderService.registerProblem(
                                 problemsHolder,

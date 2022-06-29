@@ -1,36 +1,35 @@
 package net.rentalhost.plugins.services;
 
-import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class TypeService {
-    public static final Set<String> nativeTypes = Set.of(
-        PhpType._MIXED,
-        PhpType._VOID, PhpType._NEVER, PhpType._NULL,
-        PhpType._ARRAY, PhpType._ITERABLE,
-        PhpType._OBJECT,
-        PhpType._INT, PhpType._INTEGER,
-        PhpType._BOOL, PhpType._BOOLEAN, PhpType._TRUE, PhpType._FALSE,
-        PhpType._STRING,
-        PhpType._FLOAT, PhpType._DOUBLE,
-        PhpType._CALLBACK, PhpType._CALLABLE,
-        PhpType._RESOURCE
-    );
+import org.jetbrains.annotations.NotNull;
 
-    public static Stream<String> listTypes(final String types) {
+public class TypeService {
+    private static final List<String> nullType = prependGlobalNamespace(List.of("null"));
+
+    @NotNull
+    public static Stream<String> splitTypes(final String types) {
         return Arrays.stream(StringUtils.split(types, "|"));
     }
 
-    public static Stream<String> listNonNullableTypes(final String types) {
-        return listTypes(types).filter(s -> !s.equals(PhpType._NULL.substring(1)) && !s.equals(PhpType._NULL));
+    public static Stream<String> exceptNull(final String types) {
+        return splitTypes(types).filter(s -> !nullType.contains(s));
     }
 
-    public static String joinTypesStream(final Stream<String> types) {
+    public static String joinTypesStream(@NotNull final Stream<String> types) {
         return types.collect(Collectors.joining("|"));
+    }
+
+    private static @NotNull List<String> prependGlobalNamespace(@NotNull final List<String> types) {
+        types.addAll(types.stream()
+                          .map(s -> "\\" + s)
+                          .collect(Collectors.toList()));
+
+        return types;
     }
 }

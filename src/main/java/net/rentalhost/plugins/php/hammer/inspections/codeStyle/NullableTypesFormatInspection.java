@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.jetbrains.php.config.PhpLanguageLevel;
 import com.jetbrains.php.lang.inspections.PhpInspection;
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration;
+import com.jetbrains.php.lang.psi.elements.impl.PhpTypeDeclarationImpl;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ public class NullableTypesFormatInspection
         return new PsiElementVisitor() {
             @Override
             public void visitElement(@NotNull final PsiElement element) {
-                if (element instanceof PhpTypeDeclaration) {
+                if (element instanceof PhpTypeDeclarationImpl) {
                     final var elementType  = ((PhpTypeDeclaration) element).getType();
                     final var elementTypes = elementType.getTypes();
 
@@ -47,7 +48,7 @@ public class NullableTypesFormatInspection
                                 String.format("%s|null", elementTypeText.substring(1));
                         }
                         else if (!elementTypeIsShort && FORMAT_SHORT) {
-                            final var elementTypeSingular = TypeService.listNonNullableTypes(elementTypeText).findFirst();
+                            final var elementTypeSingular = TypeService.exceptNull(elementTypeText).findFirst();
 
                             if (elementTypeSingular.isPresent()) {
                                 elementTypeReplacementSuggestion =
