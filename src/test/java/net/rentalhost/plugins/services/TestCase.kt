@@ -9,7 +9,7 @@ import java.io.File
 import java.lang.reflect.InvocationTargetException
 import java.util.function.Consumer
 
-abstract class TestCase : BasePlatformTestCase() {
+abstract class TestCase: BasePlatformTestCase() {
     @Throws(Exception::class)
     override fun setUp() {
         super.setUp()

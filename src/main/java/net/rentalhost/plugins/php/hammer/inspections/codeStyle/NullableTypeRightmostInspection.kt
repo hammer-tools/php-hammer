@@ -13,12 +13,12 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 import java.util.stream.Collectors
 
-class NullableTypeRightmostInspection : PhpInspection() {
+class NullableTypeRightmostInspection: PhpInspection() {
     override fun buildVisitor(
         problemsHolder: ProblemsHolder,
         isOnTheFly: Boolean
     ): PsiElementVisitor {
-        return object : PsiElementVisitor() {
+        return object: PsiElementVisitor() {
             override fun visitElement(element: PsiElement) {
                 if (element is PhpTypeDeclarationImpl) {
                     val elementTypeText = element.getText()

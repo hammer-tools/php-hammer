@@ -56,7 +56,7 @@ object LocalQuickFixService {
         private val entireTypesReplacement: String,
         private val quickFixTitle: String,
         private val considerParent: Boolean = false
-    ) : LocalQuickFix {
+    ): LocalQuickFix {
         override fun getFamilyName(): String {
             return quickFixTitle
         }

@@ -10,12 +10,12 @@ import net.rentalhost.plugins.services.ArrayService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 
-class ArrayPackableInspection : PhpInspection() {
+class ArrayPackableInspection: PhpInspection() {
     override fun buildVisitor(
         problemsHolder: ProblemsHolder,
         isOnTheFly: Boolean
     ): PsiElementVisitor {
-        return object : PsiElementVisitor() {
+        return object: PsiElementVisitor() {
             override fun visitElement(element: PsiElement) {
                 if (element is ArrayCreationExpressionImpl) {
                     val elementChildren = ArrayService.unpackArray(element)

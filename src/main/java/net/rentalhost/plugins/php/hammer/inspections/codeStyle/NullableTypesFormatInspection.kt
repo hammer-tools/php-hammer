@@ -15,7 +15,7 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 import javax.swing.JComponent
 
-class NullableTypesFormatInspection : PhpInspection() {
+class NullableTypesFormatInspection: PhpInspection() {
     var FORMAT_SHORT = false
     var FORMAT_LONG = true
 
@@ -23,7 +23,7 @@ class NullableTypesFormatInspection : PhpInspection() {
         problemsHolder: ProblemsHolder,
         isOnTheFly: Boolean
     ): PsiElementVisitor {
-        return object : PsiElementVisitor() {
+        return object: PsiElementVisitor() {
             override fun visitElement(element: PsiElement) {
                 if (element is PhpTypeDeclarationImpl) {
                     val elementType = (element as PhpTypeDeclaration).type
