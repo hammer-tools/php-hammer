@@ -22,6 +22,7 @@ object TypeService {
         return types.collect(Collectors.joining("|"))
     }
 
+    @Suppress("BooleanMethodIsAlwaysInverted")
     fun isVariadic(
         element: PsiElement,
         elementMain: Class<out PsiElement>? = null

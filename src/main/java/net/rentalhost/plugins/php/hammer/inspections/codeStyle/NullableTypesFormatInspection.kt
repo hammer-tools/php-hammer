@@ -16,8 +16,8 @@ import net.rentalhost.plugins.services.TypeService
 import javax.swing.JComponent
 
 class NullableTypesFormatInspection: PhpInspection() {
-    var FORMAT_SHORT = false
-    var FORMAT_LONG = true
+    var optionFormatShort: Boolean = false
+    var optionFormatLong: Boolean = true
 
     override fun buildVisitor(
         problemsHolder: ProblemsHolder,
@@ -35,10 +35,10 @@ class NullableTypesFormatInspection: PhpInspection() {
                         val elementTypeIsShort = elementTypeText.startsWith("?")
                         var elementTypeReplacementSuggestion: String? = null
 
-                        if (elementTypeIsShort && FORMAT_LONG) {
+                        if (elementTypeIsShort && optionFormatLong) {
                             elementTypeReplacementSuggestion = "${elementTypeText.substring(1)}|null"
                         }
-                        else if (!elementTypeIsShort && FORMAT_SHORT) {
+                        else if (!elementTypeIsShort && optionFormatShort) {
                             val elementTypeSingular = TypeService.exceptNull(elementTypeText).findFirst()
 
                             if (elementTypeSingular.isPresent) {
@@ -55,7 +55,7 @@ class NullableTypesFormatInspection: PhpInspection() {
                             "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
                             SimpleTypeReplaceQuickFix(
                                 elementTypeReplacementSuggestion,
-                                if (FORMAT_LONG) "Replace with the long format" else "Replace with the short format"
+                                if (optionFormatLong) "Replace with the long format" else "Replace with the short format"
                             )
                         )
                     }
@@ -71,8 +71,8 @@ class NullableTypesFormatInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: RadioComponent ->
-                radioComponent.addOption("Use short format (\"?int\")", FORMAT_SHORT) { isSelected: Boolean -> FORMAT_SHORT = isSelected }
-                radioComponent.addOption("Use long format (\"int|null\")", FORMAT_LONG) { isSelected: Boolean -> FORMAT_LONG = isSelected }
+                radioComponent.addOption("Use short format (\"?int\")", optionFormatShort) { isSelected: Boolean -> optionFormatShort = isSelected }
+                radioComponent.addOption("Use long format (\"int|null\")", optionFormatLong) { isSelected: Boolean -> optionFormatLong = isSelected }
             }
         }
     }
