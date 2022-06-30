@@ -68,11 +68,16 @@ class NullableTypeFormatInspection: PhpInspection() {
         return PhpLanguageLevel.PHP800
     }
 
+    fun useFormatLong(mode: Boolean) {
+        optionFormatShort = !mode
+        optionFormatLong = mode
+    }
+
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: RadioComponent ->
-                radioComponent.addOption("Use short format (\"?int\")", optionFormatShort) { isSelected: Boolean -> optionFormatShort = isSelected }
-                radioComponent.addOption("Use long format (\"int|null\")", optionFormatLong) { isSelected: Boolean -> optionFormatLong = isSelected }
+                radioComponent.addOption("Use short format (\"?int\")", optionFormatShort) { isSelected: Boolean -> useFormatLong(!isSelected) }
+                radioComponent.addOption("Use long format (\"int|null\")", optionFormatLong) { isSelected: Boolean -> useFormatLong(isSelected) }
             }
         }
     }

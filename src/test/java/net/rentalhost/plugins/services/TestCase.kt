@@ -17,14 +17,15 @@ abstract class TestCase: BasePlatformTestCase() {
         myFixture.testDataPath = File("src/test/resources").absolutePath
     }
 
-    protected fun testInspection(
-        inspectionClass: Class<out PhpInspection?>,
-        phpSourceSubName: String? = null
+    protected fun <T: PhpInspection?> testInspection(
+        inspectionClass: Class<T>,
+        phpSourceSubName: String? = null,
+        inspectionSetup: Consumer<T>? = null
     ) {
         val phpSource = inspectionClass.name.substring(classBaseLength + 1).replace(".", "/")
         val phpSourceNamed = if (phpSourceSubName == null) phpSource else "$phpSource-$phpSourceSubName"
 
-        val phpInspection: PhpInspection? = try {
+        val phpInspection: T = try {
             inspectionClass.getDeclaredConstructor().newInstance()
         }
         catch (e: InstantiationException) {
@@ -39,6 +40,8 @@ abstract class TestCase: BasePlatformTestCase() {
         catch (e: NoSuchMethodException) {
             throw RuntimeException(e)
         }
+
+        inspectionSetup?.accept(phpInspection)
 
         PhpProjectConfigurationFacade.getInstance(project).languageLevel = PhpLanguageLevel.PHP800
 
