@@ -67,6 +67,7 @@ tasks {
     runIde {
         jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
         jbrVersion.set("11_0_15b2043.56")
+        autoReloadPlugins.set(true)
         ideDir.set(file("${System.getProperty("user.home")}\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PhpStorm\\ch-0\\${properties("platformPhpBuild")}"))
     }
 }
