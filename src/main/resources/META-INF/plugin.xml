@@ -17,10 +17,10 @@
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
-                         displayName="Nullable types format"
+                         displayName="Nullable type format"
                          level="WEAK WARNING"
-                         shortName="NullableTypesFormatInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypesFormatInspection" />
+                         shortName="NullableTypeFormatInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypeFormatInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"

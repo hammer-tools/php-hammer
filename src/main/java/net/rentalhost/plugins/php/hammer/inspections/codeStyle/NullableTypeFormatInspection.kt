@@ -15,7 +15,7 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 import javax.swing.JComponent
 
-class NullableTypesFormatInspection: PhpInspection() {
+class NullableTypeFormatInspection: PhpInspection() {
     var optionFormatShort: Boolean = false
     var optionFormatLong: Boolean = true
 
