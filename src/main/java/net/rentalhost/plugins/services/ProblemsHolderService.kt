@@ -9,7 +9,7 @@ object ProblemsHolderService {
         problemsHolder: ProblemsHolder,
         element: PsiElement,
         descriptionTemplate: String,
-        localQuickFix: LocalQuickFix?
+        localQuickFix: LocalQuickFix? = null
     ) {
         problemsHolder.registerProblem(
             element,
