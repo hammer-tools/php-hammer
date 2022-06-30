@@ -39,5 +39,15 @@
                          level="WEAK WARNING"
                          shortName="ArrayPackableInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ArrayPackableInspection" />
+
+        <!-- Flow Optimization -->
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Flow Optimization"
+                         enabledByDefault="true"
+                         displayName="Redundant return point"
+                         level="WEAK WARNING"
+                         shortName="RedundantReturnPointInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.flowOptimization.RedundantReturnPointInspection" />
     </extensions>
 </idea-plugin>
