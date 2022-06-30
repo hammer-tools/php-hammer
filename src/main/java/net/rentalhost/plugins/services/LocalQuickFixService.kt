@@ -72,4 +72,16 @@ object LocalQuickFixService {
             )
         }
     }
+
+    class SimpleDeleteQuickFix constructor(
+        private val quickFixTitle: String
+    ): LocalQuickFix {
+        override fun getFamilyName(): String {
+            return quickFixTitle
+        }
+
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            descriptor.psiElement.delete()
+        }
+    }
 }

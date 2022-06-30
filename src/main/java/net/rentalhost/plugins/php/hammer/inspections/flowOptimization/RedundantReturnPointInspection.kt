@@ -8,6 +8,7 @@ import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.impl.ControlStatementImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpReturnImpl
 import net.rentalhost.plugins.services.ElementService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class RedundantReturnPointInspection: PhpInspection() {
@@ -31,7 +32,8 @@ class RedundantReturnPointInspection: PhpInspection() {
                                 ProblemsHolderService.registerProblem(
                                     problemsHolder,
                                     element,
-                                    "Redundant return point."
+                                    "Redundant return point.",
+                                    LocalQuickFixService.SimpleDeleteQuickFix("Drop this return point")
                                 )
                             }
                         }

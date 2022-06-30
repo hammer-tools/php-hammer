@@ -49,8 +49,12 @@ abstract class TestCase: BasePlatformTestCase() {
         val phpSourceFixedFile = File("src/test/resources/$phpSourceNamed.fixed.php")
 
         if (phpSourceFixedFile.exists()) {
-            myFixture.getAllQuickFixes().forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix!!) })
-            myFixture.checkResultByFile("$phpSourceNamed.fixed.php")
+            val inspectionQuickFixes = myFixture.getAllQuickFixes()
+
+            if (inspectionQuickFixes.isNotEmpty()) {
+                inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix!!) })
+                myFixture.checkResultByFile("$phpSourceNamed.fixed.php")
+            }
         }
     }
 
