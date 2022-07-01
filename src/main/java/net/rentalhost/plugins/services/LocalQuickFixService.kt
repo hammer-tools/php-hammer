@@ -1,9 +1,11 @@
 package net.rentalhost.plugins.services
 
+import com.intellij.codeInsight.intention.FileModifier
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.psi.SmartPsiElementPointer
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
 import com.jetbrains.php.lang.psi.elements.impl.*
@@ -82,6 +84,15 @@ object LocalQuickFixService {
     ): SimpleQuickFix(quickFixTitle) {
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
             descriptor.psiElement.delete()
+        }
+    }
+
+    class SimpleLeafReplaceQuickFix(
+        quickFixTitle: String,
+        @FileModifier.SafeFieldForPreview private val leafReplacement: SmartPsiElementPointer<PsiElement>
+    ): SimpleQuickFix(quickFixTitle) {
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            descriptor.psiElement.replace(leafReplacement.element!!)
         }
     }
 }

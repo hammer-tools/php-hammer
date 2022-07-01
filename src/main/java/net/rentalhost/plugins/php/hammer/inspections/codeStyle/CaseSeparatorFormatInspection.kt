@@ -3,11 +3,15 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.elementType
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.GroupStatementSimpleImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpCaseImpl
+import net.rentalhost.plugins.services.LeafService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
@@ -30,20 +34,24 @@ class CaseSeparatorFormatInspection: PhpInspection() {
 
                     if (elementSeparator is LeafPsiElement) {
                         val elementSeparatorColon = elementSeparator.text == ":"
-                        var elementSeparatorReplacement: String? = null
+                        var elementSeparatorReplacement: PsiElement? = null
 
                         if (elementSeparatorColon && optionFormatSemicolon) {
-                            elementSeparatorReplacement = ";"
+                            elementSeparatorReplacement = LeafService.createSemicolon(problemsHolder.project)
                         }
                         else if (!elementSeparatorColon && optionFormatColon) {
-                            elementSeparatorReplacement = ":"
+                            elementSeparatorReplacement = LeafService.createColon(problemsHolder.project)
                         }
 
                         if (elementSeparatorReplacement != null) {
                             ProblemsHolderService.registerProblem(
                                 problemsHolder,
                                 elementSeparator,
-                                "Wrong switch() \"${element.firstChild.text}\" separator."
+                                "Wrong switch() \"${element.firstChild.text}\" separator.",
+                                LocalQuickFixService.SimpleLeafReplaceQuickFix(
+                                    "Replace with ${elementSeparatorReplacement.elementType.toString()} separator",
+                                    SmartPointerManager.createPointer(elementSeparatorReplacement)
+                                )
                             )
                         }
                     }
