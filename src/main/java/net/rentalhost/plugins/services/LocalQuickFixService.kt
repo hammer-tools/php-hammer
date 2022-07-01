@@ -1,15 +1,14 @@
 package net.rentalhost.plugins.services
 
-import com.intellij.codeInsight.intention.FileModifier
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.SmartPsiElementPointer
-import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
-import com.jetbrains.php.lang.psi.elements.impl.*
-import java.util.*
+import com.jetbrains.php.lang.psi.elements.impl.PhpFieldTypeImpl
+import com.jetbrains.php.lang.psi.elements.impl.PhpParameterTypeImpl
+import com.jetbrains.php.lang.psi.elements.impl.PhpReturnTypeImpl
 
 object LocalQuickFixService {
     fun replaceType(
@@ -20,31 +19,9 @@ object LocalQuickFixService {
         var elementReplacement: PhpTypeDeclaration? = null
 
         when (element) {
-            is PhpReturnTypeImpl -> {
-                elementReplacement = PhpPsiElementFactory
-                    .createPhpPsiFromText(project, FunctionImpl::class.java, "function dummy(): $typeReplacement {}")
-                    .returnType
-            }
-
-            is PhpParameterTypeImpl -> {
-                elementReplacement = PhpPsiElementFactory
-                    .createPhpPsiFromText(project, FunctionImpl::class.java, "function dummy($typeReplacement \$dummy) {}")
-                    .getParameter(0)
-                    ?.typeDeclaration
-            }
-
-            is PhpFieldTypeImpl -> {
-                val field = Arrays.stream(
-                    PhpPsiElementFactory
-                        .createPhpPsiFromText(project, PhpClassImpl::class.java, "class Dummy { public $typeReplacement \$dummy; }")
-                        .ownFields
-                ).findFirst()
-
-                if (field.isEmpty)
-                    return
-
-                elementReplacement = field.get().typeDeclaration
-            }
+            is PhpReturnTypeImpl -> elementReplacement = FactoryService.createReturnType(project, typeReplacement)
+            is PhpParameterTypeImpl -> elementReplacement = FactoryService.createParameterType(project, typeReplacement)
+            is PhpFieldTypeImpl -> elementReplacement = FactoryService.createFieldType(project, typeReplacement)
         }
 
         if (elementReplacement == null) {
@@ -89,7 +66,7 @@ object LocalQuickFixService {
 
     class SimpleLeafReplaceQuickFix(
         quickFixTitle: String,
-        @FileModifier.SafeFieldForPreview private val leafReplacement: SmartPsiElementPointer<PsiElement>
+        private val leafReplacement: SmartPsiElementPointer<PsiElement>
     ): SimpleQuickFix(quickFixTitle) {
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
             descriptor.psiElement.replace(leafReplacement.element!!)
