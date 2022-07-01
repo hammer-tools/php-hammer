@@ -36,6 +36,14 @@ tasks {
         exclude("net/rentalhost/plugins/services/TestCase.class")
     }
 
+    inspectClassesForKotlinIC {
+        dependsOn("instrumentTestCode")
+    }
+
+    jar {
+        dependsOn("instrumentTestCode")
+    }
+
     wrapper {
         gradleVersion = properties("gradleVersion")
     }
