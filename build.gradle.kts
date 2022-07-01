@@ -28,6 +28,8 @@ tasks {
     }
 
     test {
+        delete(file("$buildDir/classes"))
+
         jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
 
         isScanForTestClasses = false
