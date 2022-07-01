@@ -34,6 +34,8 @@ tasks {
 
         include("**/*TestCase.class")
         exclude("net/rentalhost/plugins/services/TestCase.class")
+
+        systemProperty("idea.split.test.logs", "true")
     }
 
     inspectClassesForKotlinIC {
