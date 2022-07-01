@@ -5,6 +5,7 @@ import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.PhpFieldType
 import com.jetbrains.php.lang.psi.elements.PhpParameterType
 import com.jetbrains.php.lang.psi.elements.PhpReturnType
+import com.jetbrains.php.lang.psi.elements.PhpUseList
 
 object FactoryService {
     fun createReturnType(project: Project, returnType: String): PhpReturnType =
@@ -15,4 +16,7 @@ object FactoryService {
 
     fun createFieldType(project: Project, fieldType: String): PhpFieldType =
         PhpPsiElementFactory.createPhpPsiFromText(project, PhpFieldType::class.java, "class A{public $fieldType \$a}")
+
+    fun createFunctionUse(project: Project, useVariables: String) =
+        PhpPsiElementFactory.createPhpPsiFromText(project, PhpUseList::class.java, "function () use($useVariables) {}")
 }
