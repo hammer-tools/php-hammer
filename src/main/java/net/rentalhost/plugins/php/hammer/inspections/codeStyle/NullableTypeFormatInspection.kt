@@ -54,8 +54,8 @@ class NullableTypeFormatInspection: PhpInspection() {
                             element,
                             "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
                             SimpleTypeReplaceQuickFix(
-                                elementTypeReplacementSuggestion,
-                                if (optionFormatLong) "Replace with the long format" else "Replace with the short format"
+                                if (optionFormatLong) "Replace with the long format" else "Replace with the short format",
+                                elementTypeReplacementSuggestion
                             )
                         )
                     }

@@ -52,15 +52,19 @@ object LocalQuickFixService {
         element.replace(elementReplacement)
     }
 
-    class SimpleTypeReplaceQuickFix constructor(
-        private val entireTypesReplacement: String,
-        private val quickFixTitle: String,
-        private val considerParent: Boolean = false
+    abstract class SimpleQuickFix constructor(
+        private val quickFixTitle: String
     ): LocalQuickFix {
         override fun getFamilyName(): String {
             return quickFixTitle
         }
+    }
 
+    class SimpleTypeReplaceQuickFix(
+        quickFixTitle: String,
+        private val entireTypesReplacement: String,
+        private val considerParent: Boolean = false
+    ): SimpleQuickFix(quickFixTitle) {
         override fun applyFix(
             project: Project,
             descriptor: ProblemDescriptor
@@ -74,12 +78,8 @@ object LocalQuickFixService {
     }
 
     class SimpleDeleteQuickFix constructor(
-        private val quickFixTitle: String
-    ): LocalQuickFix {
-        override fun getFamilyName(): String {
-            return quickFixTitle
-        }
-
+        quickFixTitle: String
+    ): SimpleQuickFix(quickFixTitle) {
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
             descriptor.psiElement.delete()
         }
