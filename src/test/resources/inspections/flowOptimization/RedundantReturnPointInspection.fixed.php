@@ -4,6 +4,7 @@ function case1()
 {
     if (case1()) {
         case1();
+
     }
 
     return true;
@@ -15,6 +16,7 @@ function case2()
 
     if ($something) {
         $something = false;
+
     }
 
     return $something;

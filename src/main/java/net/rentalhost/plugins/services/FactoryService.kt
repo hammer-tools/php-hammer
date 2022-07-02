@@ -17,6 +17,6 @@ object FactoryService {
     fun createFieldType(project: Project, fieldType: String): PhpFieldType =
         PhpPsiElementFactory.createPhpPsiFromText(project, PhpFieldType::class.java, "class A{public $fieldType \$a}")
 
-    fun createFunctionUse(project: Project, useVariables: String) =
+    fun createFunctionUse(project: Project, useVariables: String): PhpUseList =
         PhpPsiElementFactory.createPhpPsiFromText(project, PhpUseList::class.java, "function () use($useVariables) {}")
 }

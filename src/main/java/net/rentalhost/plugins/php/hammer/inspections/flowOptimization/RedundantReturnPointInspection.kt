@@ -25,8 +25,8 @@ class RedundantReturnPointInspection: PhpInspection() {
                         val elementNext = elementConditionalStarter.nextPsiSibling
 
                         if (elementNext is PhpReturnImpl) {
-                            val elementNextReturn = ElementService.normalizeReturn(problemsHolder.project, elementNext.argument?.text ?: "null")
                             val elementReturn = ElementService.normalizeReturn(problemsHolder.project, element.argument?.text ?: "null")
+                            val elementNextReturn = ElementService.normalizeReturn(problemsHolder.project, elementNext.argument?.text ?: "null")
 
                             if (elementReturn == elementNextReturn) {
                                 ProblemsHolderService.registerProblem(

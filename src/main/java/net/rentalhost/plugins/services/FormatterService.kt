@@ -18,5 +18,7 @@ object FormatterService {
         projectCodeStyleSettingsManager.setTemporarySettings(projectCodeStyle)
 
         CodeStyleManager.getInstance(element.project).reformat(element)
+
+        projectCodeStyleSettingsManager.dropTemporarySettings()
     }
 }
