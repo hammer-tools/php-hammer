@@ -7,6 +7,10 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 ## [Unreleased]
 
+### Added
+
+- **ParameterDefaultsNullInspection**: implemented ("parameter defaults to null");
+
 ### Fixed
 
 - **SortUseVariablesInspection:** fix `use()` sort with not used variables, keeping original order as exception;

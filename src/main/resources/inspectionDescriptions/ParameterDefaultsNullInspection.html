@@ -1,0 +1,30 @@
+<html lang="en">
+    <body>
+        This inspection enforces that function parameters that set a default value never set a value other than <code>null</code>.
+        The default value must be defined by the function routine itself, whenever the argument is <code>null</code>.<br /><br />
+
+        In this way the user will not need to rewrite the function's default value when he needs to modify the next parameter.
+        In addition, in an eventual modification of the function, it will not need to be updated by the user.<br /><br />
+
+        <strong>Example:</strong>
+
+        <pre><code>function clue($items, $between = ", ", $last = " and ") {
+    return /** ... */;
+}
+
+// Note that it is necessary to rewrite the function's 2nd default argument.
+echo clue([ "a", "b", "c" ], ", ", " or ");</code></pre>
+
+        <strong>Becomes:</strong>
+
+        <pre><code>function clue($items, $between = null, $last = null) {
+    $between ??= ", ";
+    $last    ??= " and ";
+
+    return /** ... */;
+}
+
+// Now just use `null` and the function will decide the correct value.
+echo clue([ "a", "b", "c" ], null, " or ")</code></pre>
+    </body>
+</html>

@@ -58,6 +58,15 @@
                          shortName="SortUseVariablesInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.SortUseVariablesInspection" />
 
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Parameter defaults to null"
+                         level="WEAK WARNING"
+                         shortName="ParameterDefaultsNullInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ParameterDefaultsNullInspection" />
+
         <!-- Flow Optimization -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
