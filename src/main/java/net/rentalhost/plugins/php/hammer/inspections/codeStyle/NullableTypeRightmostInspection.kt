@@ -11,7 +11,7 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import net.rentalhost.plugins.services.LocalQuickFixService.SimpleTypeReplaceQuickFix
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
-import java.util.stream.Collectors
+import kotlin.streams.toList
 
 class NullableTypeRightmostInspection: PhpInspection() {
     override fun buildVisitor(
@@ -28,7 +28,7 @@ class NullableTypeRightmostInspection: PhpInspection() {
 
                     val elementTypes = TypeService.splitTypes(elementTypeText)
                         .map { s: String? -> if (s == "null") PhpType._NULL else s }
-                        .collect(Collectors.toList())
+                        .toList()
 
                     if (elementTypes.contains(PhpType._NULL) &&
                         Iterables.getLast(elementTypes) != PhpType._NULL) {

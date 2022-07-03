@@ -58,9 +58,7 @@ class ArrayPackableInspection: PhpInspection() {
     }
 
     class DropArrayKeysQuickFix: LocalQuickFix {
-        override fun getFamilyName(): String {
-            return "Drop the array keys"
-        }
+        override fun getFamilyName(): String = "Drop the array keys"
 
         private fun dropArrayKeys(project: Project, array: PsiElement) {
             for (arrayElement in array.children) {

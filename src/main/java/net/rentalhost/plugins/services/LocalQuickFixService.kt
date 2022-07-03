@@ -34,9 +34,7 @@ object LocalQuickFixService {
     abstract class SimpleQuickFix constructor(
         private val quickFixTitle: String
     ): LocalQuickFix {
-        override fun getFamilyName(): String {
-            return quickFixTitle
-        }
+        override fun getFamilyName(): String = quickFixTitle
     }
 
     class SimpleTypeReplaceQuickFix(
