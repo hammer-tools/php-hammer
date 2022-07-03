@@ -40,10 +40,13 @@ class SortUseVariablesInspection: PhpInspection() {
                             .distinct()
 
                         if (useVariablesNames.toString() != functionVariablesOrdered.toString()) {
+                            val useVariablesFirst = useVariables.first()
+                            val useVariablesStartsAt = VariableService.getLeafReference(useVariablesFirst) ?: useVariablesFirst
+
                             ProblemsHolderService.registerProblem(
                                 problemsHolder,
                                 element,
-                                useVariables.first(),
+                                useVariablesStartsAt,
                                 useVariables.last(),
                                 "Unorganized use() variables.",
                                 SortByUsageQuickFix(useVariables, functionVariablesOrdered)
@@ -78,7 +81,7 @@ class SortUseVariablesInspection: PhpInspection() {
                         val useVariable = useVariablesByName[it]
                         val useVariableName = "$${useVariable!!.name}"
 
-                        if (VariableService.isReference(useVariable)) "&$useVariableName"
+                        if (VariableService.isLeafReference(useVariable)) "&$useVariableName"
                         else useVariableName
                     }
                 )

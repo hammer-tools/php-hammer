@@ -12,3 +12,7 @@ $dummy = function () use (<weak_warning descr="[PHP Hammer] Unorganized use() va
 $dummy = function () use (<weak_warning descr="[PHP Hammer] Unorganized use() variables.">$b, &$a</weak_warning>) {
     $a = $b;
 };
+
+$dummy = function () use (<weak_warning descr="[PHP Hammer] Unorganized use() variables.">&$b, $a</weak_warning>) {
+    $a = $b;
+};

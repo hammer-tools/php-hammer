@@ -12,3 +12,7 @@ $dummy = function () use ($a, $b) {
 $dummy = function () use (&$a, $b) {
     $a = $b;
 };
+
+$dummy = function () use ($a, &$b) {
+    $a = $b;
+};
