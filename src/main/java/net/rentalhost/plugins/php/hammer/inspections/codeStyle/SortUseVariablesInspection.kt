@@ -18,45 +18,40 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.VariableService
 
 class SortUseVariablesInspection: PhpInspection() {
-    override fun buildVisitor(
-        problemsHolder: ProblemsHolder,
-        isOnTheFly: Boolean
-    ): PsiElementVisitor {
-        return object: PsiElementVisitor() {
-            override fun visitElement(element: PsiElement) {
-                if (element is PhpUseListImpl) {
-                    val elementContext = element.context
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
+        override fun visitElement(element: PsiElement) {
+            if (element is PhpUseListImpl) {
+                val elementContext = element.context
 
-                    if (elementContext is FunctionImpl) {
-                        val useVariables = PsiTreeUtil.findChildrenOfType(element, VariableImpl::class.java)
+                if (elementContext is FunctionImpl) {
+                    val useVariables = PsiTreeUtil.findChildrenOfType(element, VariableImpl::class.java)
 
-                        if (useVariables.size < 2)
-                            return
+                    if (useVariables.size < 2)
+                        return
 
-                        val functionVariablesSorted = elementContext.controlFlow.instructions
-                            .filterIsInstance<PhpAccessVariableInstructionImpl>()
-                            .sortedBy { it.anchor.startOffset }
-                            .distinctBy { it.variableName }
+                    val functionVariablesSorted = elementContext.controlFlow.instructions
+                        .filterIsInstance<PhpAccessVariableInstructionImpl>()
+                        .sortedBy { it.anchor.startOffset }
+                        .distinctBy { it.variableName }
 
-                        val useVariablesNames = useVariables.map { it.name }
+                    val useVariablesNames = useVariables.map { it.name }
 
-                        val useVariablesSorted = useVariables
-                            .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
-                        val useVariablesSortedNames = useVariablesSorted.map { it.name }
+                    val useVariablesSorted = useVariables
+                        .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
+                    val useVariablesSortedNames = useVariablesSorted.map { it.name }
 
-                        if (useVariablesNames.toString() != useVariablesSortedNames.toString()) {
-                            val useVariablesFirst = useVariables.first()
-                            val useVariablesStartsAt = VariableService.getLeafReference(useVariablesFirst) ?: useVariablesFirst
+                    if (useVariablesNames.toString() != useVariablesSortedNames.toString()) {
+                        val useVariablesFirst = useVariables.first()
+                        val useVariablesStartsAt = VariableService.getLeafReference(useVariablesFirst) ?: useVariablesFirst
 
-                            ProblemsHolderService.registerProblem(
-                                problemsHolder,
-                                element,
-                                useVariablesStartsAt,
-                                useVariables.last(),
-                                "Unorganized use() variables.",
-                                SortByUsageQuickFix(useVariablesSorted)
-                            )
-                        }
+                        ProblemsHolderService.registerProblem(
+                            problemsHolder,
+                            element,
+                            useVariablesStartsAt,
+                            useVariables.last(),
+                            "Unorganized use() variables.",
+                            SortByUsageQuickFix(useVariablesSorted)
+                        )
                     }
                 }
             }

@@ -14,36 +14,31 @@ import net.rentalhost.plugins.services.TypeService
 import kotlin.streams.toList
 
 class NullableTypeRightmostInspection: PhpInspection() {
-    override fun buildVisitor(
-        problemsHolder: ProblemsHolder,
-        isOnTheFly: Boolean
-    ): PsiElementVisitor {
-        return object: PsiElementVisitor() {
-            override fun visitElement(element: PsiElement) {
-                if (element is PhpTypeDeclarationImpl) {
-                    val elementTypeText = element.getText()
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
+        override fun visitElement(element: PsiElement) {
+            if (element is PhpTypeDeclarationImpl) {
+                val elementTypeText = element.getText()
 
-                    if (elementTypeText.startsWith("?"))
-                        return
+                if (elementTypeText.startsWith("?"))
+                    return
 
-                    val elementTypes = TypeService.splitTypes(elementTypeText)
-                        .map { s: String? -> if (s == "null") PhpType._NULL else s }
-                        .toList()
+                val elementTypes = TypeService.splitTypes(elementTypeText)
+                    .map { s: String? -> if (s == "null") PhpType._NULL else s }
+                    .toList()
 
-                    if (elementTypes.contains(PhpType._NULL) &&
-                        Iterables.getLast(elementTypes) != PhpType._NULL) {
-                        val elementTypeReplacementSuggestion = TypeService.joinTypesStream(TypeService.exceptNull(elementTypeText)) + "|null"
+                if (elementTypes.contains(PhpType._NULL) &&
+                    Iterables.getLast(elementTypes) != PhpType._NULL) {
+                    val elementTypeReplacementSuggestion = TypeService.joinTypesStream(TypeService.exceptNull(elementTypeText)) + "|null"
 
-                        ProblemsHolderService.registerProblem(
-                            problemsHolder,
-                            element,
-                            "Nullable type must be on rightmost side (\"$elementTypeReplacementSuggestion\").",
-                            SimpleTypeReplaceQuickFix(
-                                "Move \"null\" type to rightmost side",
-                                elementTypeReplacementSuggestion
-                            )
+                    ProblemsHolderService.registerProblem(
+                        problemsHolder,
+                        element,
+                        "Nullable type must be on rightmost side (\"$elementTypeReplacementSuggestion\").",
+                        SimpleTypeReplaceQuickFix(
+                            "Move \"null\" type to rightmost side",
+                            elementTypeReplacementSuggestion
                         )
-                    }
+                    )
                 }
             }
         }

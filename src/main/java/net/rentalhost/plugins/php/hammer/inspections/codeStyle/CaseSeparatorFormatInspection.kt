@@ -20,40 +20,35 @@ class CaseSeparatorFormatInspection: PhpInspection() {
     var optionFormatColon: Boolean = true
     var optionFormatSemicolon: Boolean = false
 
-    override fun buildVisitor(
-        problemsHolder: ProblemsHolder,
-        isOnTheFly: Boolean
-    ): PsiElementVisitor {
-        return object: PsiElementVisitor() {
-            override fun visitElement(element: PsiElement) {
-                if (element is PhpCaseImpl) {
-                    val elementSeparator = PsiTreeUtil.skipWhitespacesAndCommentsForward(
-                        if (element.condition is GroupStatementSimpleImpl) element.firstChild
-                        else element.condition
-                    )
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
+        override fun visitElement(element: PsiElement) {
+            if (element is PhpCaseImpl) {
+                val elementSeparator = PsiTreeUtil.skipWhitespacesAndCommentsForward(
+                    if (element.condition is GroupStatementSimpleImpl) element.firstChild
+                    else element.condition
+                )
 
-                    if (elementSeparator is LeafPsiElement) {
-                        val elementSeparatorColon = elementSeparator.text == ":"
-                        var elementSeparatorReplacement: PsiElement? = null
+                if (elementSeparator is LeafPsiElement) {
+                    val elementSeparatorColon = elementSeparator.text == ":"
+                    var elementSeparatorReplacement: PsiElement? = null
 
-                        if (elementSeparatorColon && optionFormatSemicolon) {
-                            elementSeparatorReplacement = LeafService.createSemicolon(problemsHolder.project)
-                        }
-                        else if (!elementSeparatorColon && optionFormatColon) {
-                            elementSeparatorReplacement = LeafService.createColon(problemsHolder.project)
-                        }
+                    if (elementSeparatorColon && optionFormatSemicolon) {
+                        elementSeparatorReplacement = LeafService.createSemicolon(problemsHolder.project)
+                    }
+                    else if (!elementSeparatorColon && optionFormatColon) {
+                        elementSeparatorReplacement = LeafService.createColon(problemsHolder.project)
+                    }
 
-                        if (elementSeparatorReplacement != null) {
-                            ProblemsHolderService.registerProblem(
-                                problemsHolder,
-                                elementSeparator,
-                                "Wrong switch() \"${element.firstChild.text}\" separator.",
-                                LocalQuickFixService.SimpleLeafReplaceQuickFix(
-                                    "Replace with ${elementSeparatorReplacement.elementType.toString()} separator",
-                                    SmartPointerManager.createPointer(elementSeparatorReplacement)
-                                )
+                    if (elementSeparatorReplacement != null) {
+                        ProblemsHolderService.registerProblem(
+                            problemsHolder,
+                            elementSeparator,
+                            "Wrong switch() \"${element.firstChild.text}\" separator.",
+                            LocalQuickFixService.SimpleLeafReplaceQuickFix(
+                                "Replace with ${elementSeparatorReplacement.elementType.toString()} separator",
+                                SmartPointerManager.createPointer(elementSeparatorReplacement)
                             )
-                        }
+                        )
                     }
                 }
             }

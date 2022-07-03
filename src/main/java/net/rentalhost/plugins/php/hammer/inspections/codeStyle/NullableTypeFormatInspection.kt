@@ -19,46 +19,41 @@ class NullableTypeFormatInspection: PhpInspection() {
     var optionFormatShort: Boolean = false
     var optionFormatLong: Boolean = true
 
-    override fun buildVisitor(
-        problemsHolder: ProblemsHolder,
-        isOnTheFly: Boolean
-    ): PsiElementVisitor {
-        return object: PsiElementVisitor() {
-            override fun visitElement(element: PsiElement) {
-                if (element is PhpTypeDeclarationImpl) {
-                    val elementType = (element as PhpTypeDeclaration).type
-                    val elementTypes = elementType.types
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
+        override fun visitElement(element: PsiElement) {
+            if (element is PhpTypeDeclarationImpl) {
+                val elementType = (element as PhpTypeDeclaration).type
+                val elementTypes = elementType.types
 
-                    if (elementTypes.size == 2 &&
-                        elementTypes.contains(PhpType._NULL)) {
-                        val elementTypeText = element.getText()
-                        val elementTypeIsShort = elementTypeText.startsWith("?")
-                        var elementTypeReplacementSuggestion: String? = null
+                if (elementTypes.size == 2 &&
+                    elementTypes.contains(PhpType._NULL)) {
+                    val elementTypeText = element.getText()
+                    val elementTypeIsShort = elementTypeText.startsWith("?")
+                    var elementTypeReplacementSuggestion: String? = null
 
-                        if (elementTypeIsShort && optionFormatLong) {
-                            elementTypeReplacementSuggestion = "${elementTypeText.substring(1)}|null"
-                        }
-                        else if (!elementTypeIsShort && optionFormatShort) {
-                            val elementTypeSingular = TypeService.exceptNull(elementTypeText).findFirst()
-
-                            if (elementTypeSingular.isPresent) {
-                                elementTypeReplacementSuggestion = "?${elementTypeSingular.get()}"
-                            }
-                        }
-
-                        if (elementTypeReplacementSuggestion == null)
-                            return
-
-                        ProblemsHolderService.registerProblem(
-                            problemsHolder,
-                            element,
-                            "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
-                            SimpleTypeReplaceQuickFix(
-                                if (optionFormatLong) "Replace with the long format" else "Replace with the short format",
-                                elementTypeReplacementSuggestion
-                            )
-                        )
+                    if (elementTypeIsShort && optionFormatLong) {
+                        elementTypeReplacementSuggestion = "${elementTypeText.substring(1)}|null"
                     }
+                    else if (!elementTypeIsShort && optionFormatShort) {
+                        val elementTypeSingular = TypeService.exceptNull(elementTypeText).findFirst()
+
+                        if (elementTypeSingular.isPresent) {
+                            elementTypeReplacementSuggestion = "?${elementTypeSingular.get()}"
+                        }
+                    }
+
+                    if (elementTypeReplacementSuggestion == null)
+                        return
+
+                    ProblemsHolderService.registerProblem(
+                        problemsHolder,
+                        element,
+                        "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
+                        SimpleTypeReplaceQuickFix(
+                            if (optionFormatLong) "Replace with the long format" else "Replace with the short format",
+                            elementTypeReplacementSuggestion
+                        )
+                    )
                 }
             }
         }
