@@ -1,9 +1,9 @@
 package net.rentalhost.plugins.services
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager
+import com.intellij.psi.impl.source.codeStyle.CodeFormatterFacade
 import com.jetbrains.php.lang.formatter.ui.predefinedStyle.PSR12CodeStyle
 
 object FormatterService {
@@ -13,11 +13,12 @@ object FormatterService {
         PSR12CodeStyle().apply(projectCodeStyle)
     }
 
+    @Synchronized
     fun applyDefaults(element: PsiElement) {
         val projectCodeStyleSettingsManager = CodeStyleSettingsManager.getInstance(element.project)
         projectCodeStyleSettingsManager.setTemporarySettings(projectCodeStyle)
 
-        CodeStyleManager.getInstance(element.project).reformat(element)
+        CodeFormatterFacade(projectCodeStyle, element.language).processElement(element.node)
 
         projectCodeStyleSettingsManager.dropTemporarySettings()
     }

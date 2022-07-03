@@ -10,6 +10,7 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 ### Fixed
 
 - **SortUseVariablesInspection:** fix `use()` sort with not used variables, keeping original order as exception;
+- **FormatterService:** run `@Synchronized` to avoid project style issues to be ignored during reformat;
 
 ## [0.1.0 EAP #1] - 2022-07-02
 
