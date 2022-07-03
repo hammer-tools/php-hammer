@@ -29,17 +29,22 @@ class SortUseVariablesInspection: PhpInspection() {
 
                     if (elementContext is FunctionImpl) {
                         val useVariables = PsiTreeUtil.findChildrenOfType(element, VariableImpl::class.java)
-                        val useVariablesNames = useVariables.toList()
-                            .map { it.name }
 
-                        val functionVariablesOrdered = elementContext.controlFlow.instructions.toList()
+                        if (useVariables.size < 2)
+                            return
+
+                        val functionVariablesSorted = elementContext.controlFlow.instructions
                             .filterIsInstance<PhpAccessVariableInstructionImpl>()
-                            .filter { useVariablesNames.contains(it.variableName) }
                             .sortedBy { it.anchor.startOffset }
-                            .map { it.variableName }
-                            .distinct()
+                            .distinctBy { it.variableName }
 
-                        if (useVariablesNames.toString() != functionVariablesOrdered.toString()) {
+                        val useVariablesNames = useVariables.map { it.name }
+
+                        val useVariablesSorted = useVariables
+                            .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
+                        val useVariablesSortedNames = useVariablesSorted.map { it.name }
+
+                        if (useVariablesNames.toString() != useVariablesSortedNames.toString()) {
                             val useVariablesFirst = useVariables.first()
                             val useVariablesStartsAt = VariableService.getLeafReference(useVariablesFirst) ?: useVariablesFirst
 
@@ -49,7 +54,7 @@ class SortUseVariablesInspection: PhpInspection() {
                                 useVariablesStartsAt,
                                 useVariables.last(),
                                 "Unorganized use() variables.",
-                                SortByUsageQuickFix(useVariables, functionVariablesOrdered)
+                                SortByUsageQuickFix(useVariablesSorted)
                             )
                         }
                     }
@@ -59,29 +64,18 @@ class SortUseVariablesInspection: PhpInspection() {
     }
 
     class SortByUsageQuickFix(
-        private val useVariables: Collection<VariableImpl>,
-        private val functionVariablesSorted: List<CharSequence>
+        private val useVariablesSorted: Collection<VariableImpl>,
     ): LocalQuickFix {
-        override fun getFamilyName(): String {
-            return "Sort by usage"
-        }
+        override fun getFamilyName(): String = "Sort by usage"
 
-        override fun applyFix(
-            project: Project,
-            descriptor: ProblemDescriptor
-        ) {
-            val useVariablesByName = useVariables
-                .groupBy { it.name }
-                .mapValues { it.value.first() }
-
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
             descriptor.psiElement.replace(
                 FactoryService.createFunctionUse(
                     project,
-                    functionVariablesSorted.joinToString(", ") {
-                        val useVariable = useVariablesByName[it]
-                        val useVariableName = "$${useVariable!!.name}"
+                    useVariablesSorted.joinToString(", ") {
+                        val useVariableName = "$${it.name}"
 
-                        if (VariableService.isLeafReference(useVariable)) "&$useVariableName"
+                        if (VariableService.isLeafReference(it)) "&$useVariableName"
                         else useVariableName
                     }
                 )

@@ -16,3 +16,16 @@ $dummy = function () use (<weak_warning descr="[PHP Hammer] Unorganized use() va
 $dummy = function () use (<weak_warning descr="[PHP Hammer] Unorganized use() variables.">&$b, $a</weak_warning>) {
     $a = $b;
 };
+
+$dummy = function () use (<weak_warning descr="[PHP Hammer] Unorganized use() variables.">$a, $b, $c</weak_warning>) {
+    return $b;
+};
+
+$dummy = function () use (<weak_warning descr="[PHP Hammer] Unorganized use() variables.">$a, $b, $c, $d, $e, $f, $g, $h, $i</weak_warning>) {
+    return $a + $c + $e + $f + $i;
+};
+
+// Not applicable:
+
+$dummy = function () use ($a) {
+};

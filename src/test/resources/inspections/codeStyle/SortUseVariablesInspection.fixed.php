@@ -16,3 +16,16 @@ $dummy = function () use (&$a, $b) {
 $dummy = function () use ($a, &$b) {
     $a = $b;
 };
+
+$dummy = function () use ($b, $a, $c) {
+    return $b;
+};
+
+$dummy = function () use ($a, $c, $e, $f, $i, $b, $d, $g, $h) {
+    return $a + $c + $e + $f + $i;
+};
+
+// Not applicable:
+
+$dummy = function () use ($a) {
+};
