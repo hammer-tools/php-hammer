@@ -14,6 +14,7 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.elements.impl.ParameterListImpl
+import net.rentalhost.plugins.extensions.isAbstractMethod
 import net.rentalhost.plugins.services.*
 
 class ParameterDefaultsNullInspection: PhpInspection() {
@@ -59,17 +60,15 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         private val function: SmartPsiElementPointer<FunctionImpl>,
         private val parameter: SmartPsiElementPointer<ParameterImpl>
     ): LocalQuickFix {
-        override fun getFamilyName(): String = "Replace with \"null\""
+        override fun getFamilyName(): String =
+            if (function.element!!.isAbstractMethod()) "Replace with \"null\""
+            else "Smart replace with \"null\""
 
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
             val parameterDefaultValue = replaceDefaultValueWithNull(project)
 
             enforcesNullableType(project)
 
-            with(function.element!!) {
-                if (this is MethodImpl && this.isAbstract)
-                    return
-            }
 
             createAssignment(project, parameterDefaultValue)
         }
@@ -84,14 +83,16 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         private fun enforcesNullableType(project: Project) {
             val parameterTypeDeclaration = parameter.element!!.typeDeclaration ?: return
 
-            with(TypeService) {
-                if (isNullable(splitTypes(parameterTypeDeclaration.text))) return
-            }
+            if (TypeService.isNullable(TypeService.splitTypes(parameterTypeDeclaration.text)))
+                return
 
             TypeService.replaceWith(project, parameterTypeDeclaration, parameterTypeDeclaration.text + "|null")
         }
 
         private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
+            if (function.element!!.isAbstractMethod())
+                return
+
             with(ElementService.functionBody(function.element!!)) {
                 val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameter.element!!.name) {
                     when {
