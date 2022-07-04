@@ -24,14 +24,6 @@ abstract class DummyA
     }
 }
 
-// Not applicable for quick-fix only:
-
-$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">&$a = 123</weak_warning>) {
-};
-
-$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">int &$a = 123</weak_warning>) {
-};
-
 abstract class DummyB
 {
     abstract function dummyA($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>);
@@ -41,6 +33,19 @@ interface IDummyA
 {
     function dummyA($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>);
 }
+
+interface IDummyC
+{
+    function dummyA(<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">int $b = 123</weak_warning>);
+}
+
+// Not applicable for quick-fix only:
+
+$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">&$a = 123</weak_warning>) {
+};
+
+$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">int &$a = 123</weak_warning>) {
+};
 
 // Dummy:
 

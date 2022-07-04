@@ -42,10 +42,6 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                                     if (parameter.isPassByRef)
                                         return@run null
 
-                                    if (context is MethodImpl &&
-                                        context.isAbstract)
-                                        return@run null
-
                                     ReplaceWithNullQuickFix(
                                         SmartPointerManager.createPointer(context),
                                         SmartPointerManager.createPointer(parameter)
@@ -69,6 +65,11 @@ class ParameterDefaultsNullInspection: PhpInspection() {
             val parameterDefaultValue = replaceDefaultValueWithNull(project)
 
             enforcesNullableType(project)
+
+            with(function.element!!) {
+                if (this is MethodImpl && this.isAbstract)
+                    return
+            }
 
             createAssignment(project, parameterDefaultValue)
         }

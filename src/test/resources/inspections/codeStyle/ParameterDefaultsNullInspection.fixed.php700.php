@@ -30,6 +30,21 @@ abstract class DummyA
     }
 }
 
+abstract class DummyB
+{
+    abstract function dummyA($a, $b = null);
+}
+
+interface IDummyA
+{
+    function dummyA($a, $b = null);
+}
+
+interface IDummyC
+{
+    function dummyA(int|null $b = null);
+}
+
 // Not applicable for quick-fix only:
 
 $dummy = function (&$a = 123) {
@@ -37,16 +52,6 @@ $dummy = function (&$a = 123) {
 
 $dummy = function (int &$a = 123) {
 };
-
-abstract class DummyB
-{
-    abstract function dummyA($a, $b = 123);
-}
-
-interface IDummyA
-{
-    function dummyA($a, $b = 123);
-}
 
 // Dummy:
 
