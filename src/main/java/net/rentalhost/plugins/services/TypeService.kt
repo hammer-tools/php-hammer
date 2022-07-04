@@ -11,28 +11,20 @@ import kotlin.streams.toList
 object TypeService {
     private val nullType = prependGlobalNamespace(mutableListOf("null"))
 
-    fun splitTypes(types: String?): Stream<String?> {
-        return Arrays.stream(StringUtils.split(types, "|"))
-    }
+    fun splitTypes(types: String?): Stream<String?> =
+        Arrays.stream(StringUtils.split(types, "|"))
 
-    fun exceptNull(types: String?): Stream<String?> {
-        return splitTypes(types).filter { s: String? -> !nullType.contains(s) }
-    }
+    fun exceptNull(types: String?): Stream<String?> =
+        splitTypes(types).filter { s: String? -> !nullType.contains(s) }
 
-    fun joinTypesStream(types: Stream<String?>): String {
-        return types.collect(Collectors.joining("|"))
-    }
+    fun joinTypesStream(types: Stream<String?>): String =
+        types.collect(Collectors.joining("|"))
 
-    @Suppress("BooleanMethodIsAlwaysInverted")
-    fun isVariadic(
-        element: PsiElement,
-        elementMain: Class<out PsiElement>? = null
-    ): Boolean {
-        return element is PhpPsiElementImpl<*> &&
-               element.firstChild.text == "..." &&
-               (elementMain == null ||
-                elementMain.isInstance(element.firstPsiChild))
-    }
+    fun isVariadic(element: PsiElement, elementMain: Class<out PsiElement>? = null): Boolean =
+        element is PhpPsiElementImpl<*> &&
+        element.firstChild.text == "..." &&
+        (elementMain == null ||
+         elementMain.isInstance(element.firstPsiChild))
 
     private fun prependGlobalNamespace(types: MutableList<String?>): List<String?> {
         types.addAll(
