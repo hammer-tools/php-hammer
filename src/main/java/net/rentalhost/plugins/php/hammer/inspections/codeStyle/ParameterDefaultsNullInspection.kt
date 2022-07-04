@@ -25,6 +25,9 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 if (context !is FunctionImpl)
                     return
 
+                if (context is MethodImpl && !ClassService.isMethodDefinedByOwnClass(context))
+                    return
+
                 for (parameter in element.parameters) {
                     if (parameter is ParameterImpl &&
                         parameter.defaultValue != null) {
@@ -63,19 +66,28 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         override fun getFamilyName(): String = "Replace with \"null\""
 
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-            val parameterDefaultValue = parameter.element!!.defaultValue!!
+            val parameterDefaultValue = replaceDefaultValueWithNull(project)
 
+            createAssignment(project, parameterDefaultValue)
+        }
+
+        private fun replaceDefaultValueWithNull(project: Project): PsiElement {
+            val parameterDefaultValue = parameter.element!!.defaultValue!!
             parameterDefaultValue.replace(FactoryService.createConstantReference(project, "null"))
 
-            val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameter.element!!.name) {
-                when {
-                    LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "\$$this ??= ${parameterDefaultValue.text};"
-                    LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_OPERATOR) -> "\$$this = \$$this ?? ${parameterDefaultValue.text};"
-                    else -> "\$$this = \$$this === null ? ${parameterDefaultValue.text} : \$$this;"
-                }
-            })
+            return parameterDefaultValue
+        }
 
+        private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
             with(ElementService.functionBody(function.element!!)) {
+                val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameter.element!!.name) {
+                    when {
+                        LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "\$$this ??= ${parameterDefaultValue.text};"
+                        LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_OPERATOR) -> "\$$this = \$$this ?? ${parameterDefaultValue.text};"
+                        else -> "\$$this = \$$this === null ? ${parameterDefaultValue.text} : \$$this;"
+                    }
+                })
+
                 ElementService.addBeforeOrThen(variableAssignment, this!!.firstPsiChild, lazy {
                     replace(FactoryService.createFunctionBody(project, variableAssignment.text))
                 })
