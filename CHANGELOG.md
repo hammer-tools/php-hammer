@@ -10,6 +10,7 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 ### Added
 
 - **ParameterDefaultsNullInspection**: implemented ("parameter defaults to null");
+- **UnusedUseVariableInspection**: implemented ("unused use() variable");
 
 ### Fixed
 

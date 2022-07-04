@@ -76,5 +76,15 @@
                          level="WEAK WARNING"
                          shortName="RedundantReturnPointInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.flowOptimization.RedundantReturnPointInspection" />
+
+        <!-- Dead Code -->
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Dead Code"
+                         enabledByDefault="true"
+                         displayName="Unused use() variable"
+                         level="WARNING"
+                         shortName="UnusedUseVariableInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.deadCode.UnusedUseVariableInspection" />
     </extensions>
 </idea-plugin>

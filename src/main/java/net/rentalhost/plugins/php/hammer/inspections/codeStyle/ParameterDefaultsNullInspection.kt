@@ -71,7 +71,6 @@ class ParameterDefaultsNullInspection: PhpInspection() {
 
             enforcesNullableType(project)
 
-
             createAssignment(project, parameterDefaultValue)
         }
 
