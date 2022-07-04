@@ -1,12 +1,12 @@
 package net.rentalhost.plugins.services
 
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
+import com.jetbrains.php.lang.psi.PhpPsiUtil
+import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
-import com.jetbrains.php.lang.psi.elements.impl.ControlStatementImpl
-import com.jetbrains.php.lang.psi.elements.impl.ElseIfImpl
-import com.jetbrains.php.lang.psi.elements.impl.ElseImpl
-import com.jetbrains.php.lang.psi.elements.impl.IfImpl
+import com.jetbrains.php.lang.psi.elements.impl.*
 
 object ElementService {
     fun normalizeReturn(project: Project, text: String): String {
@@ -36,4 +36,14 @@ object ElementService {
 
         return if (element is ControlStatementImpl) element else null
     }
+
+    fun functionBody(element: FunctionImpl): GroupStatementImpl? =
+        PhpPsiUtil.getChildByCondition(element, GroupStatement.INSTANCEOF)
+
+    private fun addBefore(addIt: PsiElement, beforeIt: PsiElement): PsiElement =
+        beforeIt.parent.addBefore(addIt, beforeIt)
+
+    fun addBeforeOrThen(addIt: PsiElement, beforeIt: PsiElement?, orThen: Lazy<PsiElement>): PsiElement =
+        if (beforeIt == null) orThen.value
+        else addBefore(addIt, beforeIt)
 }
