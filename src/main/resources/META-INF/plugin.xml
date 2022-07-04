@@ -83,8 +83,17 @@
                          groupName="Dead Code"
                          enabledByDefault="true"
                          displayName="Unused use() variable"
-                         level="WARNING"
+                         level="WEAK WARNING"
                          shortName="UnusedUseVariableInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.deadCode.UnusedUseVariableInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Dead Code"
+                         enabledByDefault="true"
+                         displayName="Unused use() reference for variable"
+                         level="WEAK WARNING"
+                         shortName="UnusedUseVariableReferenceInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.deadCode.UnusedUseVariableReferenceInspection" />
     </extensions>
 </idea-plugin>

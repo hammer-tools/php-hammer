@@ -1,12 +1,12 @@
 <?php
 
-$dummy = function() use (<warning descr="[PHP Hammer] Unused variable declared in use().">$a</warning>, $b, <warning descr="[PHP Hammer] Unused variable declared in use().">$c</warning>) {
+$dummy = function() use (<weak_warning descr="[PHP Hammer] Unused variable declared in use().">$a</weak_warning>, $b, <weak_warning descr="[PHP Hammer] Unused variable declared in use().">$c</weak_warning>) {
     return $b;
 };
 
-$dummy = function() use (<warning descr="[PHP Hammer] Unused variable declared in use().">&$a</warning>, &$b, <warning descr="[PHP Hammer] Unused variable declared in use().">&$c</warning>) {
+$dummy = function() use (<weak_warning descr="[PHP Hammer] Unused variable declared in use().">&$a</weak_warning>, &$b, <weak_warning descr="[PHP Hammer] Unused variable declared in use().">&$c</weak_warning>) {
     return $b;
 };
 
-$dummy = function() use (<warning descr="[PHP Hammer] Unused variable declared in use().">$any</warning>) {
+$dummy = function() use (<weak_warning descr="[PHP Hammer] Unused variable declared in use().">$any</weak_warning>) {
 };

@@ -2,6 +2,7 @@ package net.rentalhost.plugins.php.hammer.inspections.deadCode
 
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
+import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
@@ -37,9 +38,8 @@ class UnusedUseVariableInspection: PhpInspection() {
                             element,
                             useVariable.declarationTextRange(element),
                             "Unused variable declared in use().",
-                            DeleteUnusedVariableDeclarationQuickFix(
-                                SmartPointerManager.createPointer(useVariable)
-                            )
+                            DeleteUnusedVariableDeclarationQuickFix(SmartPointerManager.createPointer(useVariable)),
+                            ProblemHighlightType.LIKE_UNUSED_SYMBOL
                         )
                     }
                 }
