@@ -8,6 +8,7 @@ import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.impl.ControlStatementImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpReturnImpl
 import net.rentalhost.plugins.services.ElementService
+import net.rentalhost.plugins.services.FormatterService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
@@ -21,8 +22,8 @@ class RedundantReturnPointInspection: PhpInspection() {
                     val elementNext = elementConditionalStarter.nextPsiSibling
 
                     if (elementNext is PhpReturnImpl) {
-                        val elementReturn = ElementService.normalizeReturn(problemsHolder.project, element.argument?.text ?: "null")
-                        val elementNextReturn = ElementService.normalizeReturn(problemsHolder.project, elementNext.argument?.text ?: "null")
+                        val elementReturn = FormatterService.normalize(problemsHolder.project, element.text)
+                        val elementNextReturn = FormatterService.normalize(problemsHolder.project, elementNext.text)
 
                         if (elementReturn == elementNextReturn) {
                             ProblemsHolderService.registerProblem(

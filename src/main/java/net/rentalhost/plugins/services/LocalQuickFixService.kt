@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.SmartPsiElementPointer
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
+import net.rentalhost.plugins.extensions.psi.replaceWith
 
 object LocalQuickFixService {
     abstract class SimpleQuickFix constructor(
@@ -19,11 +20,15 @@ object LocalQuickFixService {
         private val entireTypesReplacement: String,
         private val considerParent: Boolean = false
     ): SimpleQuickFix(quickFixTitle) {
-        override fun applyFix(project: Project, descriptor: ProblemDescriptor): Unit = TypeService.replaceWith(
-            project,
-            (if (considerParent) descriptor.psiElement.parent else descriptor.psiElement) as PhpTypeDeclaration,
-            entireTypesReplacement
-        )
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            val phpTypeDeclaration =
+                if (considerParent) descriptor.psiElement.parent
+                else descriptor.psiElement
+
+            if (phpTypeDeclaration is PhpTypeDeclaration) {
+                phpTypeDeclaration.replaceWith(project, entireTypesReplacement)
+            }
+        }
     }
 
     class SimpleDeleteQuickFix constructor(

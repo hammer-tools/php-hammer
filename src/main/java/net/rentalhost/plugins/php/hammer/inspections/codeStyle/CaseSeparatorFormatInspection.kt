@@ -10,10 +10,7 @@ import com.intellij.psi.util.elementType
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.GroupStatementSimpleImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpCaseImpl
-import net.rentalhost.plugins.services.LeafService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.services.*
 import javax.swing.JComponent
 
 class CaseSeparatorFormatInspection: PhpInspection() {
@@ -33,10 +30,10 @@ class CaseSeparatorFormatInspection: PhpInspection() {
                     var elementSeparatorReplacement: PsiElement? = null
 
                     if (elementSeparatorColon && optionFormatSemicolon) {
-                        elementSeparatorReplacement = LeafService.createSemicolon(problemsHolder.project)
+                        elementSeparatorReplacement = FactoryService.createSemicolon(problemsHolder.project)
                     }
                     else if (!elementSeparatorColon && optionFormatColon) {
-                        elementSeparatorReplacement = LeafService.createColon(problemsHolder.project)
+                        elementSeparatorReplacement = FactoryService.createColon(problemsHolder.project)
                     }
 
                     if (elementSeparatorReplacement != null) {

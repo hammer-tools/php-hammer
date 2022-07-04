@@ -10,7 +10,8 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpPsiElementImpl
-import net.rentalhost.plugins.services.ArrayService
+import net.rentalhost.plugins.extensions.psi.unpackValues
+import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 
@@ -18,7 +19,7 @@ class ArrayPackableInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is ArrayCreationExpressionImpl) {
-                val elementChildren = ArrayService.unpackArray(element)
+                val elementChildren = element.unpackValues()
 
                 if (elementChildren.isEmpty())
                     return
@@ -58,7 +59,7 @@ class ArrayPackableInspection: PhpInspection() {
         private fun dropArrayKeys(project: Project, array: PsiElement) {
             for (arrayElement in array.children) {
                 if (arrayElement is ArrayHashElementImpl) {
-                    val arrayElementNew = ArrayService.createArrayValue(project, arrayElement)
+                    val arrayElementNew = FactoryService.createArrayValue(project, arrayElement.value!!.text)
 
                     if (arrayElementNew != null) {
                         arrayElement.replace(arrayElementNew)

@@ -6,53 +6,48 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.startOffset
-import com.jetbrains.php.codeInsight.controlFlow.instructions.impl.PhpAccessVariableInstructionImpl
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpUseListImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
+import net.rentalhost.plugins.extensions.psi.accessVariables
+import net.rentalhost.plugins.extensions.psi.declarationTextRange
+import net.rentalhost.plugins.extensions.psi.getVariables
+import net.rentalhost.plugins.extensions.psi.isRef
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.VariableService
 
 class SortUseVariablesInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is PhpUseListImpl) {
-                val elementContext = element.context
+                val useVariables = element.getVariables()
 
-                if (elementContext is FunctionImpl) {
-                    val useVariables = PsiTreeUtil.findChildrenOfType(element, VariableImpl::class.java)
+                if (useVariables == null ||
+                    useVariables.size < 2)
+                    return
 
-                    if (useVariables.size < 2)
-                        return
+                val useContext = element.context as FunctionImpl
 
-                    val functionVariablesSorted = elementContext.controlFlow.instructions
-                        .filterIsInstance<PhpAccessVariableInstructionImpl>()
-                        .sortedBy { it.anchor.startOffset }
-                        .distinctBy { it.variableName }
+                val functionVariablesSorted = useContext.accessVariables()
+                    .sortedBy { it.anchor.startOffset }
+                    .distinctBy { it.variableName }
 
-                    val useVariablesNames = useVariables.map { it.name }
+                val useVariablesNames = useVariables.map { it.name }
 
-                    val useVariablesSorted = useVariables
-                        .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
-                    val useVariablesSortedNames = useVariablesSorted.map { it.name }
+                val useVariablesSorted = useVariables
+                    .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
+                val useVariablesSortedNames = useVariablesSorted.map { it.name }
 
-                    if (useVariablesNames.toString() != useVariablesSortedNames.toString()) {
-                        val useVariablesFirst = useVariables.first()
-                        val useVariablesStartsAt = VariableService.getLeafReference(useVariablesFirst) ?: useVariablesFirst
-
-                        ProblemsHolderService.registerProblem(
-                            problemsHolder,
-                            element,
-                            useVariablesStartsAt,
-                            useVariables.last(),
-                            "Unorganized use() variables.",
-                            SortByUsageQuickFix(useVariablesSorted)
-                        )
-                    }
+                if (useVariablesNames.toString() != useVariablesSortedNames.toString()) {
+                    ProblemsHolderService.registerProblem(
+                        problemsHolder,
+                        element,
+                        useVariables.declarationTextRange(element),
+                        "Unorganized use() variables.",
+                        SortByUsageQuickFix(useVariablesSorted)
+                    )
                 }
             }
         }
@@ -70,7 +65,7 @@ class SortUseVariablesInspection: PhpInspection() {
                     useVariablesSorted.joinToString(", ") {
                         val useVariableName = "$${it.name}"
 
-                        if (VariableService.isLeafReference(it)) "&$useVariableName"
+                        if (it.isRef()) "&$useVariableName"
                         else useVariableName
                     }
                 )

@@ -14,8 +14,10 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.elements.impl.ParameterListImpl
-import net.rentalhost.plugins.extensions.isAbstractMethod
-import net.rentalhost.plugins.services.*
+import net.rentalhost.plugins.extensions.psi.*
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LanguageService
+import net.rentalhost.plugins.services.ProblemsHolderService
 
 class ParameterDefaultsNullInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
@@ -26,7 +28,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 if (context !is FunctionImpl)
                     return
 
-                if (context is MethodImpl && !ClassService.isMethodDefinedByOwnClass(context))
+                if (context is MethodImpl && !context.isDefinedByOwnClass())
                     return
 
                 for (parameter in element.parameters) {
@@ -83,27 +85,27 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         private fun enforcesNullableType(project: Project) {
             val parameterTypeDeclaration = parameter.element!!.typeDeclaration ?: return
 
-            if (TypeService.isNullable(TypeService.splitTypes(parameterTypeDeclaration.text)))
+            if (parameterTypeDeclaration.isNullableEx())
                 return
 
-            TypeService.replaceWith(project, parameterTypeDeclaration, parameterTypeDeclaration.text + "|null")
+            parameterTypeDeclaration.replaceWith(project, parameterTypeDeclaration.text + "|null")
         }
 
         private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
             if (function.element!!.isAbstractMethod())
                 return
 
-            with(ElementService.functionBody(function.element!!)) {
-                val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameter.element!!.name) {
-                    when {
-                        LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "\$$this ??= ${parameterDefaultValue.text};"
-                        LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_OPERATOR) -> "\$$this = \$$this ?? ${parameterDefaultValue.text};"
-                        else -> "\$$this = \$$this === null ? ${parameterDefaultValue.text} : \$$this;"
-                    }
-                })
+            val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameter.element!!.name) {
+                when {
+                    LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "\$$this ??= ${parameterDefaultValue.text};"
+                    LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_OPERATOR) -> "\$$this = \$$this ?? ${parameterDefaultValue.text};"
+                    else -> "\$$this = \$$this === null ? ${parameterDefaultValue.text} : \$$this;"
+                }
+            })
 
-                ElementService.addBeforeOrThen(variableAssignment, this!!.firstPsiChild, lazy {
-                    replace(FactoryService.createFunctionBody(project, variableAssignment.text))
+            with(function.element!!.functionBody()) {
+                this!!.firstPsiChild.insertBeforeElse(variableAssignment, lazy {
+                    { replace(FactoryService.createFunctionBody(project, variableAssignment.text)) }
                 })
             }
         }
