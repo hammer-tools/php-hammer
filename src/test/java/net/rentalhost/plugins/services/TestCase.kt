@@ -20,7 +20,8 @@ abstract class TestCase: BasePlatformTestCase() {
     protected fun <T: PhpInspection?> testInspection(
         inspectionClass: Class<T>,
         phpSourceSubName: String? = null,
-        inspectionSetup: Consumer<T>? = null
+        inspectionSetup: Consumer<T>? = null,
+        phpLanguageLevel: PhpLanguageLevel? = null
     ) {
         val phpSource = inspectionClass.name.substring(classBaseLength + 1).replace(".", "/")
         val phpSourceNamed = if (phpSourceSubName == null) phpSource else "$phpSource-$phpSourceSubName"
@@ -43,20 +44,27 @@ abstract class TestCase: BasePlatformTestCase() {
 
         inspectionSetup?.accept(phpInspection)
 
-        PhpProjectConfigurationFacade.getInstance(project).languageLevel = PhpLanguageLevel.PHP800
+        val phpLanguageLevelDeclared = phpLanguageLevel ?: PhpLanguageLevel.PHP810
+
+        PhpProjectConfigurationFacade.getInstance(project).languageLevel = phpLanguageLevelDeclared
 
         myFixture.enableInspections(phpInspection)
         myFixture.configureByFile("$phpSourceNamed.php")
         myFixture.testHighlighting(true, false, true)
 
-        val phpSourceFixedFile = File("src/test/resources/$phpSourceNamed.fixed.php")
+        val phpLanguageLevelSuffix =
+            if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP810) ""
+            else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
+
+        val phpSourceFixedFileBase = "$phpSourceNamed.fixed$phpLanguageLevelSuffix.php"
+        val phpSourceFixedFile = File("src/test/resources/$phpSourceFixedFileBase")
 
         if (phpSourceFixedFile.exists()) {
             val inspectionQuickFixes = myFixture.getAllQuickFixes()
 
             if (inspectionQuickFixes.isNotEmpty()) {
                 inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix!!) })
-                myFixture.checkResultByFile("$phpSourceNamed.fixed.php")
+                myFixture.checkResultByFile(phpSourceFixedFileBase)
             }
         }
     }

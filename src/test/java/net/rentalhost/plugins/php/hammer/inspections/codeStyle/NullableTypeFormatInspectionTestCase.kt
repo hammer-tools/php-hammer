@@ -6,12 +6,14 @@ class NullableTypeFormatInspectionTestCase: TestCase() {
     fun testOptionFormatLong(): Unit =
         testInspection(
             NullableTypeFormatInspection::class.java,
-            "optionFormatLong"
-        ) { it.useFormatLong(true) }
+            "optionFormatLong",
+            { it.useFormatLong(true) }
+        )
 
     fun testOptionFormatShort(): Unit =
         testInspection(
             NullableTypeFormatInspection::class.java,
-            "optionFormatShort"
-        ) { it.useFormatLong(false) }
+            "optionFormatShort",
+            { it.useFormatLong(false) }
+        )
 }
