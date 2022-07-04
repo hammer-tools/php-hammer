@@ -17,6 +17,18 @@ fun VariableImpl.getLeafRef(): LeafPsiElement? =
 fun VariableImpl.isRef(): Boolean =
     this.getLeafRef() != null
 
+fun VariableImpl.getLeafTrailingComma(): LeafPsiElement? =
+    with(PsiTreeUtil.skipWhitespacesAndCommentsForward(element)) {
+        if (this is LeafPsiElement && this.text == ",") this
+        else null
+    }
+
+fun VariableImpl.declarationChildRange(includeTrailingComma: Boolean = false): Pair<PsiElement, PsiElement> =
+    Pair(
+        with(getLeafRef()) { this ?: this@declarationChildRange },
+        if (includeTrailingComma) with(getLeafTrailingComma()) { this ?: this@declarationChildRange } else this
+    )
+
 fun VariableImpl.declarationTextRange(elementContext: PsiElement): TextRange =
     TextRange(
         (getLeafRef()?.startOffset ?: startOffset) - elementContext.startOffset,

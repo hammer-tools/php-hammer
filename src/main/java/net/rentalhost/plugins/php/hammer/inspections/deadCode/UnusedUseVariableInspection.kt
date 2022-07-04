@@ -1,14 +1,18 @@
 package net.rentalhost.plugins.php.hammer.inspections.deadCode
 
+import com.intellij.codeInspection.LocalQuickFix
+import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.SmartPointerManager
+import com.intellij.psi.SmartPsiElementPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpUseListImpl
-import net.rentalhost.plugins.extensions.psi.accessVariables
-import net.rentalhost.plugins.extensions.psi.declarationTextRange
-import net.rentalhost.plugins.extensions.psi.getVariables
+import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
+import net.rentalhost.plugins.extensions.psi.*
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class UnusedUseVariableInspection: PhpInspection() {
@@ -32,11 +36,27 @@ class UnusedUseVariableInspection: PhpInspection() {
                             problemsHolder,
                             element,
                             useVariable.declarationTextRange(element),
-                            "Unused variable declared in use()."
+                            "Unused variable declared in use().",
+                            DeleteUnusedVariableDeclarationQuickFix(
+                                SmartPointerManager.createPointer(useVariable)
+                            )
                         )
                     }
                 }
             }
+        }
+    }
+
+    class DeleteUnusedVariableDeclarationQuickFix(
+        private val useVariable: SmartPsiElementPointer<VariableImpl>,
+    ): LocalQuickFix {
+        override fun getFamilyName(): String =
+            "Delete unused variable"
+
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            this.useVariable.element!!.declarationChildRange(true).delete()
+
+            (descriptor.psiElement as PhpUseListImpl).deleteTrailingComma()
         }
     }
 }
