@@ -7,3 +7,6 @@ $dummy = function() use ($b) {
 $dummy = function() use (&$b) {
     return $b;
 };
+
+$dummy = function() {
+};

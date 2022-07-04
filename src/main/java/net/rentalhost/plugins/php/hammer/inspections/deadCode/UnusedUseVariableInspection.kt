@@ -54,9 +54,18 @@ class UnusedUseVariableInspection: PhpInspection() {
             "Delete unused variable"
 
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            val useElement = descriptor.psiElement as PhpUseListImpl
+            val useVariables = useElement.getVariables() ?: return
+
+            if (useVariables.size == 1) {
+                useElement.delete()
+
+                return
+            }
+
             this.useVariable.element!!.declarationChildRange(true).delete()
 
-            (descriptor.psiElement as PhpUseListImpl).deleteTrailingComma()
+            useElement.deleteTrailingComma()
         }
     }
 }
