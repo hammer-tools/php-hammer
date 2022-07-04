@@ -8,6 +8,14 @@ $dummy = function ($a = null) {
     $a ??= 123;
 };
 
+$dummy = function (bool|null $a = null) {
+    $a ??= false;
+};
+
+$dummy = function (bool|null $a = null) {
+    $a ??= false;
+};
+
 abstract class DummyA
 {
     function dummyA($a, $b = null)

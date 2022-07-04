@@ -6,31 +6,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.SmartPsiElementPointer
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
-import com.jetbrains.php.lang.psi.elements.impl.PhpFieldTypeImpl
-import com.jetbrains.php.lang.psi.elements.impl.PhpParameterTypeImpl
-import com.jetbrains.php.lang.psi.elements.impl.PhpReturnTypeImpl
 
 object LocalQuickFixService {
-    fun replaceType(
-        project: Project,
-        element: PsiElement,
-        typeReplacement: String
-    ) {
-        var elementReplacement: PhpTypeDeclaration? = null
-
-        when (element) {
-            is PhpReturnTypeImpl -> elementReplacement = FactoryService.createReturnType(project, typeReplacement)
-            is PhpParameterTypeImpl -> elementReplacement = FactoryService.createParameterType(project, typeReplacement)
-            is PhpFieldTypeImpl -> elementReplacement = FactoryService.createFieldType(project, typeReplacement)
-        }
-
-        if (elementReplacement == null) {
-            return
-        }
-
-        element.replace(elementReplacement)
-    }
-
     abstract class SimpleQuickFix constructor(
         private val quickFixTitle: String
     ): LocalQuickFix {
@@ -42,24 +19,18 @@ object LocalQuickFixService {
         private val entireTypesReplacement: String,
         private val considerParent: Boolean = false
     ): SimpleQuickFix(quickFixTitle) {
-        override fun applyFix(
-            project: Project,
-            descriptor: ProblemDescriptor
-        ) {
-            replaceType(
-                project,
-                if (considerParent) descriptor.psiElement.parent else descriptor.psiElement,
-                entireTypesReplacement
-            )
-        }
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor): Unit = TypeService.replaceWith(
+            project,
+            (if (considerParent) descriptor.psiElement.parent else descriptor.psiElement) as PhpTypeDeclaration,
+            entireTypesReplacement
+        )
     }
 
     class SimpleDeleteQuickFix constructor(
         quickFixTitle: String
     ): SimpleQuickFix(quickFixTitle) {
-        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor): Unit =
             descriptor.psiElement.delete()
-        }
     }
 
     class SimpleLeafReplaceQuickFix(

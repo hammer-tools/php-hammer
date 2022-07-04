@@ -6,6 +6,12 @@ $dummy = function ($a, <weak_warning descr="[PHP Hammer] Default value of the pa
 $dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$a = 123</weak_warning>) {
 };
 
+$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">bool $a = false</weak_warning>) {
+};
+
+$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">bool|null $a = false</weak_warning>) {
+};
+
 abstract class DummyA
 {
     function dummyA($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>)

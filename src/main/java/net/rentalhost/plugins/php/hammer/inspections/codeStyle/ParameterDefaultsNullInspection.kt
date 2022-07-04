@@ -68,6 +68,8 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
             val parameterDefaultValue = replaceDefaultValueWithNull(project)
 
+            enforcesNullableType(project)
+
             createAssignment(project, parameterDefaultValue)
         }
 
@@ -76,6 +78,16 @@ class ParameterDefaultsNullInspection: PhpInspection() {
             parameterDefaultValue.replace(FactoryService.createConstantReference(project, "null"))
 
             return parameterDefaultValue
+        }
+
+        private fun enforcesNullableType(project: Project) {
+            val parameterTypeDeclaration = parameter.element!!.typeDeclaration ?: return
+
+            with(TypeService) {
+                if (isNullable(splitTypes(parameterTypeDeclaration.text))) return
+            }
+
+            TypeService.replaceWith(project, parameterTypeDeclaration, parameterTypeDeclaration.text + "|null")
         }
 
         private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
