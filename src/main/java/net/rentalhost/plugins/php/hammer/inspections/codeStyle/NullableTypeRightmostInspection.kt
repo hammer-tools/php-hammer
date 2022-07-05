@@ -28,7 +28,7 @@ class NullableTypeRightmostInspection: PhpInspection() {
 
                 if (elementTypes.contains(PhpType._NULL) &&
                     Iterables.getLast(elementTypes) != PhpType._NULL) {
-                    val elementTypeReplacementSuggestion = TypeService.joinTypesStream(TypeService.exceptNull(elementTypeText)) + "|null"
+                    val elementTypeReplacementSuggestion = TypeService.joinTypes(TypeService.exceptNull(elementTypeText)) + "|null"
 
                     ProblemsHolderService.registerProblem(
                         problemsHolder,

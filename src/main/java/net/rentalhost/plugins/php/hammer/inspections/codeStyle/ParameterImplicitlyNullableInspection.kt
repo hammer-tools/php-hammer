@@ -6,6 +6,8 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class ParameterImplicitlyNullableInspection: PhpInspection() {
@@ -17,14 +19,19 @@ class ParameterImplicitlyNullableInspection: PhpInspection() {
 
                 val declaredType = element.declaredType
 
-                if (declaredType.isNullable ||
-                    declaredType.isEmpty)
+                if (declaredType.isEmpty ||
+                    declaredType.isNullable)
                     return
 
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     element,
-                    "Parameter type is implicitly null."
+                    "Parameter type is implicitly null.",
+                    LocalQuickFixService.SimpleInlineQuickFix("Add explicit \"null\" type") {
+                        element.typeDeclaration?.replace(
+                            FactoryService.createParameterType(problemsHolder.project, element.typeDeclaration?.text + "|null")
+                        )
+                    }
                 )
             }
         }

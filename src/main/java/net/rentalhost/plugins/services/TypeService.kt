@@ -17,7 +17,7 @@ object TypeService {
     fun exceptNull(types: String?): Stream<String?> =
         splitTypes(types).filter { s: String? -> !nullType.contains(s) }
 
-    fun joinTypesStream(types: Stream<String?>): String =
+    fun joinTypes(types: Stream<String?>): String =
         types.collect(Collectors.joining("|"))
 
     fun isVariadic(element: PsiElement, elementMain: Class<out PsiElement>? = null): Boolean =

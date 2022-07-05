@@ -38,6 +38,13 @@ object LocalQuickFixService {
             descriptor.psiElement.delete()
     }
 
+    class SimpleInlineQuickFix constructor(
+        quickFixTitle: String,
+        private val applyFix: () -> Unit
+    ): SimpleQuickFix(quickFixTitle) {
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor): Unit = applyFix.invoke()
+    }
+
     class SimpleLeafReplaceQuickFix(
         quickFixTitle: String,
         private val leafReplacement: SmartPsiElementPointer<PsiElement>

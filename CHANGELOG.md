@@ -12,6 +12,7 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 - **ParameterDefaultsNullInspection**: implemented ("parameter defaults to null");
 - **UnusedUseVariableInspection**: implemented ("unused use() variable");
 - **UnusedUseVariableReferenceInspection**: implemented ("unused use() reference for variable");
+- **ParameterImplicitlyNullableInspection**: implemented ("parameter is implicitly nullable");
 
 ### Fixed
 
