@@ -1,11 +1,23 @@
 <?php
 
-$dummy = function () use ($a, <warning descr="[PHP Hammer] Unused reference for variable declared in use().">&</warning>$b, $c) {
+$dummy = function () use ($a, <weak_warning descr="[PHP Hammer] Unused reference for variable declared in use().">&</weak_warning>$b, $c) {
     return $a + $b + $c;
 };
 
-$dummy = function () use (<warning descr="[PHP Hammer] Unused reference for variable declared in use().">&</warning>$a, &$b, <warning descr="[PHP Hammer] Unused reference for variable declared in use().">&</warning>$c) {
+$dummy = function () use (<weak_warning descr="[PHP Hammer] Unused reference for variable declared in use().">&</weak_warning>$a, &$b, <weak_warning descr="[PHP Hammer] Unused reference for variable declared in use().">&</weak_warning>$c) {
     $b = 2;
 
     return $a + $c;
+};
+
+// Not applicable:
+
+$dummy = function () use (&$a) {
+    $a[] = 123;
+};
+
+$dummy = function () use (&$a) {
+    (function () use (&$a) {
+        $a = true;
+    })();
 };

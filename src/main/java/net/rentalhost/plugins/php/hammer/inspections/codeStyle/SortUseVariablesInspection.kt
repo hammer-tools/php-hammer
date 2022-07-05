@@ -11,10 +11,7 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpUseListImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
-import net.rentalhost.plugins.extensions.psi.accessVariables
-import net.rentalhost.plugins.extensions.psi.declarationTextRange
-import net.rentalhost.plugins.extensions.psi.getVariables
-import net.rentalhost.plugins.extensions.psi.isRef
+import net.rentalhost.plugins.extensions.psi.*
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.ProblemsHolderService
 

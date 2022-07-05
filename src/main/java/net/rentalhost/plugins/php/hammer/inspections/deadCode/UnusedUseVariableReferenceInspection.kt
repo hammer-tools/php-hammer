@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpUseListImpl
-import net.rentalhost.plugins.extensions.psi.accessVariables
-import net.rentalhost.plugins.extensions.psi.getLeafRef
-import net.rentalhost.plugins.extensions.psi.getVariables
-import net.rentalhost.plugins.extensions.psi.isRef
+import net.rentalhost.plugins.extensions.psi.*
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class UnusedUseVariableReferenceInspection: PhpInspection() {
@@ -27,7 +24,10 @@ class UnusedUseVariableReferenceInspection: PhpInspection() {
                 val useContext = element.context as FunctionImpl
 
                 val functionVariables = useContext.accessVariables()
-                    .filter { it.access.isWrite }
+                    .filter {
+                        it.access.isWrite ||
+                        it.access.isReadRef
+                    }
                     .map { it.variableName }
                     .distinct()
 

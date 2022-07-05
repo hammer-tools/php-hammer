@@ -1,6 +1,8 @@
 package net.rentalhost.plugins.extensions.psi
 
-import com.jetbrains.php.codeInsight.controlFlow.instructions.impl.PhpAccessVariableInstructionImpl
+import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpAccessInstruction
+import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpAccessVariableInstruction
+import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpArrayAccessInstruction
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
@@ -14,6 +16,10 @@ fun FunctionImpl.isAbstractMethod(): Boolean =
 fun FunctionImpl.functionBody(): GroupStatementImpl? =
     PhpPsiUtil.getChildByCondition(this, GroupStatement.INSTANCEOF)
 
-fun FunctionImpl.accessVariables(): List<PhpAccessVariableInstructionImpl> =
-    this.controlFlow.instructions
-        .filterIsInstance<PhpAccessVariableInstructionImpl>()
+fun FunctionImpl.accessVariables(): List<PhpAccessInstruction> =
+    controlFlow.instructions
+        .filterIsInstance(PhpAccessInstruction::class.java)
+        .filter {
+            it is PhpAccessVariableInstruction ||
+            it is PhpArrayAccessInstruction
+        }
