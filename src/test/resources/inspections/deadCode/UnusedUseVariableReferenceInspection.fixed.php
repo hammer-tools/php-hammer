@@ -27,7 +27,7 @@ $dummy = function () use (&$a) {
 };
 
 $dummy = function () use (&$dummy) {
-    return $dummy;
+    $dummy();
 };
 
 // Not applicable, but can be resolved by UnusedUseVariableInspection.
