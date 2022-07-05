@@ -5,6 +5,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.impl.AssignmentExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpUseListImpl
 import net.rentalhost.plugins.extensions.psi.*
@@ -24,16 +25,24 @@ class UnusedUseVariableReferenceInspection: PhpInspection() {
 
                 val useContext = element.context as FunctionImpl
 
-                val functionVariables = useContext.accessVariables()
-                    .filter {
-                        it.access.isWrite ||
-                        it.access.isReadRef
+                val useContextAssignment = lazy {
+                    with(useContext.parent.parent) {
+                        if (this is AssignmentExpressionImpl) this.variable?.name
+                        else null
                     }
+                }
+
+                val functionVariablesWriting = useContext.accessVariables()
+                    .filter { it.access.isWrite || it.access.isReadRef }
                     .map { it.variableName }
                     .distinct()
 
                 for (useVariable in useVariables) {
-                    if (!functionVariables.contains(useVariable.name)) {
+                    if (!functionVariablesWriting.contains(useVariable.name)) {
+                        if (useContextAssignment.value == useVariable.name) {
+                            continue
+                        }
+
                         with(useVariable.getLeafRef() as PsiElement) {
                             ProblemsHolderService.registerProblem(
                                 problemsHolder,
