@@ -44,7 +44,5 @@ class NullableTypeRightmostInspection: PhpInspection() {
         }
     }
 
-    override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel {
-        return PhpLanguageLevel.PHP800
-    }
+    override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP800
 }

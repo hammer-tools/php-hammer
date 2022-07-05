@@ -59,9 +59,7 @@ class NullableTypeFormatInspection: PhpInspection() {
         }
     }
 
-    override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel {
-        return PhpLanguageLevel.PHP800
-    }
+    override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP800
 
     fun useFormatLong(mode: Boolean) {
         optionFormatShort = !mode

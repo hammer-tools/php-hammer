@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.services
 
+import com.intellij.codeInsight.intention.EmptyIntentionAction
 import com.intellij.codeInsight.intention.IntentionAction
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.jetbrains.php.config.PhpLanguageLevel
@@ -56,16 +57,12 @@ abstract class TestCase: BasePlatformTestCase() {
             if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP810) ""
             else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
 
-        val phpSourceFixedFileBase = "$phpSourceNamed.fixed$phpLanguageLevelSuffix.php"
-        val phpSourceFixedFile = File("src/test/resources/$phpSourceFixedFileBase")
+        val inspectionQuickFixes = myFixture.getAllQuickFixes()
+            .filter { it !is EmptyIntentionAction }
 
-        if (phpSourceFixedFile.exists()) {
-            val inspectionQuickFixes = myFixture.getAllQuickFixes()
-
-            if (inspectionQuickFixes.isNotEmpty()) {
-                inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix!!) })
-                myFixture.checkResultByFile(phpSourceFixedFileBase)
-            }
+        if (inspectionQuickFixes.isNotEmpty()) {
+            inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix!!) })
+            myFixture.checkResultByFile("$phpSourceNamed.fixed$phpLanguageLevelSuffix.php")
         }
     }
 

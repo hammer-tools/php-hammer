@@ -67,6 +67,15 @@
                          shortName="ParameterDefaultsNullInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ParameterDefaultsNullInspection" />
 
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Parameter is implicitly nullable"
+                         level="WEAK WARNING"
+                         shortName="ParameterImplicitlyNullableInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ParameterImplicitlyNullableInspection" />
+
         <!-- Flow Optimization -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
