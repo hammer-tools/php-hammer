@@ -8,6 +8,7 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpUseListImpl
 import net.rentalhost.plugins.extensions.psi.*
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class UnusedUseVariableReferenceInspection: PhpInspection() {
@@ -33,12 +34,15 @@ class UnusedUseVariableReferenceInspection: PhpInspection() {
 
                 for (useVariable in useVariables) {
                     if (!functionVariables.contains(useVariable.name)) {
-                        ProblemsHolderService.registerProblem(
-                            problemsHolder,
-                            useVariable.getLeafRef() as PsiElement,
-                            "Unused reference for variable declared in use().",
-                            problemHighlightType = ProblemHighlightType.LIKE_UNUSED_SYMBOL
-                        )
+                        with(useVariable.getLeafRef() as PsiElement) {
+                            ProblemsHolderService.registerProblem(
+                                problemsHolder,
+                                this,
+                                "Unused reference for variable declared in use().",
+                                LocalQuickFixService.SimpleDeleteQuickFix("Delete reference indicator (\"&\")"),
+                                ProblemHighlightType.LIKE_UNUSED_SYMBOL
+                            )
+                        }
                     }
                 }
             }
