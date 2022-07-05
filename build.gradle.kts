@@ -18,7 +18,11 @@ intellij {
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
 
-    plugins.set(properties("platformPlugins").split(','))
+    plugins.set(
+        properties("platformPlugins")
+            .replace("[platformPhpBuild]", properties("platformPhpBuild"))
+            .split(',')
+    )
 }
 
 tasks {
