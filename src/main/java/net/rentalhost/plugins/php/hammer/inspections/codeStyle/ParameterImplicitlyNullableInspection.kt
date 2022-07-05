@@ -20,7 +20,8 @@ class ParameterImplicitlyNullableInspection: PhpInspection() {
                 val declaredType = element.declaredType
 
                 if (declaredType.isEmpty ||
-                    declaredType.isNullable)
+                    declaredType.isNullable ||
+                    declaredType.types.contains("mixed"))
                     return
 
                 ProblemsHolderService.registerProblem(

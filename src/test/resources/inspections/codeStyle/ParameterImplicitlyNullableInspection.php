@@ -22,3 +22,6 @@ $dummy = function (int|string|null $a = null) {
 
 $dummy = function ($a = null) {
 };
+
+$dummy = function (mixed $a) {
+};
