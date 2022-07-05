@@ -86,6 +86,6 @@ tasks {
 
         jbrVersion.set("11_0_15b2043.56")
 
-        ideDir.set(file("${System.getProperty("user.home")}\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PhpStorm\\ch-0\\${properties("platformPhpBuild")}"))
+        ideDir.set(file("${System.getProperty("user.home")}\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PhpStorm\\ch-1\\${properties("platformPhpBuild")}"))
     }
 }
