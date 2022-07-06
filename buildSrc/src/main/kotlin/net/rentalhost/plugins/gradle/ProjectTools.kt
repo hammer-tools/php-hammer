@@ -21,7 +21,7 @@ class ProjectTools: Plugin<Project> {
         val pluginInspections = plugin.getElementsByTagName("localInspection")
         val pluginInspectionsMapped = mutableListOf<LocalInspectionNode>()
 
-        for (pluginInspection in 0 .. pluginInspections.length - 1) {
+        for (pluginInspection in 0 until pluginInspections.length) {
             val pluginInspectionNode = pluginInspections.item(pluginInspection)
 
             with(pluginInspectionNode.attributes) {
@@ -30,8 +30,7 @@ class ProjectTools: Plugin<Project> {
                         project,
                         getNamedItem("groupName").textContent,
                         getNamedItem("displayName").textContent,
-                        getNamedItem("shortName").textContent,
-                        getNamedItem("implementationClass").textContent
+                        getNamedItem("shortName").textContent
                     )
                 )
             }
@@ -46,9 +45,9 @@ class ProjectTools: Plugin<Project> {
             .forEach {
                 outputInspectionsContent += "# ${it.key}\n\n"
 
-                it.value.forEach {
-                    outputInspectionsContent += "## ${it.description}\n\n"
-                    outputInspectionsContent += "${it.readDescription()}\n\n"
+                it.value.forEach { localInspection ->
+                    outputInspectionsContent += "## ${localInspection.description}\n\n"
+                    outputInspectionsContent += "${localInspection.readDescription()}\n\n"
                 }
             }
 
@@ -59,8 +58,7 @@ class ProjectTools: Plugin<Project> {
         private val project: Project,
         val group: String,
         val description: String,
-        val shortName: String,
-        val implementationClass: String
+        val shortName: String
     ) {
         fun readDescription(): String =
             HTMLService.toMarkdown(File("${project.projectDir}/src/main/resources/inspectionDescriptions/$shortName.html"))
