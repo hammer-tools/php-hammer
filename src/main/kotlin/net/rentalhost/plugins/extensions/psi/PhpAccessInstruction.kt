@@ -11,3 +11,6 @@ val PhpAccessInstruction.variableName: CharSequence?
             is PhpArrayAccessInstruction -> variableName
             else -> null
         }
+
+fun List<PhpAccessInstruction>.names(): List<CharSequence> =
+    map { it.variableName!! }.distinct()

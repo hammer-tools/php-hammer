@@ -54,7 +54,6 @@ tasks {
 
     jar {
         dependsOn("instrumentTestCode")
-        dependsOn("generateDocumentation")
     }
 
     wrapper {

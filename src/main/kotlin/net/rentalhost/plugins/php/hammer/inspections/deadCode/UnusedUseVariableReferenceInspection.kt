@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.AssignmentExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
@@ -32,15 +33,22 @@ class UnusedUseVariableReferenceInspection: PhpInspection() {
                     }
                 }
 
-                val functionVariablesWriting = useContext.accessVariables()
-                    .filter { it.access.isWrite || it.access.isReadRef }
-                    .map { it.variableName }
-                    .distinct()
+                val functionVariablesWriting = useContext.accessMutableVariables().names()
 
                 for (useVariable in useVariables) {
                     if (!functionVariablesWriting.contains(useVariable.name)) {
                         if (useContextAssignment.value == useVariable.name) {
                             continue
+                        }
+
+                        val functionContext = PsiTreeUtil.getParentOfType(useContext, FunctionImpl::class.java)
+
+                        if (functionContext is FunctionImpl) {
+                            val functionContextVariablesWriting = functionContext.accessMutableVariables().names()
+
+                            if (functionContextVariablesWriting.contains(useVariable.name)) {
+                                continue
+                            }
                         }
 
                         with(useVariable.getLeafRef() as PsiElement) {

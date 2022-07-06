@@ -23,3 +23,6 @@ fun FunctionImpl.accessVariables(): List<PhpAccessInstruction> =
             it is PhpAccessVariableInstruction ||
             it is PhpArrayAccessInstruction
         }
+
+fun FunctionImpl.accessMutableVariables(): List<PhpAccessInstruction> =
+    accessVariables().filter { it.access.isWrite || it.access.isReadRef }
