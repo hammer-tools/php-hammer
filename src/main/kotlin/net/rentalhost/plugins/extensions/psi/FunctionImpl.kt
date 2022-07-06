@@ -19,10 +19,12 @@ fun FunctionImpl.functionBody(): GroupStatementImpl? =
 fun FunctionImpl.accessVariables(): List<PhpAccessInstruction> =
     controlFlow.instructions
         .filterIsInstance(PhpAccessInstruction::class.java)
-        .filter {
-            it is PhpAccessVariableInstruction ||
-            it is PhpArrayAccessInstruction
-        }
+        .filter { it is PhpAccessVariableInstruction || it is PhpArrayAccessInstruction }
+        .filter { it.variableName != null }
 
 fun FunctionImpl.accessMutableVariables(): List<PhpAccessInstruction> =
-    accessVariables().filter { it.access.isWrite || it.access.isReadRef }
+    accessVariables().filter {
+        it is PhpArrayAccessInstruction ||
+        it.access.isWrite ||
+        it.access.isReadRef
+    }

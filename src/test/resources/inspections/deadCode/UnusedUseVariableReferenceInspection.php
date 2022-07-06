@@ -10,6 +10,14 @@ $dummy = function () use (<weak_warning descr="[PHP Hammer] Unused reference for
     return $a + $c;
 };
 
+$dummy = function () use (<weak_warning descr="[PHP Hammer] Unused reference for variable declared in use().">&</weak_warning>$b) {
+    $a[][] = true;
+};
+
+$dummy = function () use (<weak_warning descr="[PHP Hammer] Unused reference for variable declared in use().">&</weak_warning>$b) {
+    $a[][][][][] = true;
+};
+
 // Not applicable:
 
 $dummy = function () use (&$a) {
@@ -28,6 +36,14 @@ $dummy = function () use (&$a) {
 
 $dummy = function () use (&$dummy) {
     $dummy();
+};
+
+$dummy = function () use (&$b) {
+    $b[][] = true;
+};
+
+$dummy = function () use (&$b) {
+    $b[][][][][] = true;
 };
 
 // Not applicable, but can be resolved by UnusedUseVariableInspection.

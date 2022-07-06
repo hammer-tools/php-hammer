@@ -10,6 +10,14 @@ $dummy = function () use ($a, &$b, $c) {
     return $a + $c;
 };
 
+$dummy = function () use ($b) {
+    $a[][] = true;
+};
+
+$dummy = function () use ($b) {
+    $a[][][][][] = true;
+};
+
 // Not applicable:
 
 $dummy = function () use (&$a) {
@@ -28,6 +36,14 @@ $dummy = function () use (&$a) {
 
 $dummy = function () use (&$dummy) {
     $dummy();
+};
+
+$dummy = function () use (&$b) {
+    $b[][] = true;
+};
+
+$dummy = function () use (&$b) {
+    $b[][][][][] = true;
 };
 
 // Not applicable, but can be resolved by UnusedUseVariableInspection.
