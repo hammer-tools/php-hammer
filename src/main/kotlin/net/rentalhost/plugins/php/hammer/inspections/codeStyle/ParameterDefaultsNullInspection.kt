@@ -17,9 +17,13 @@ import com.jetbrains.php.lang.psi.elements.impl.ParameterListImpl
 import net.rentalhost.plugins.extensions.psi.*
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LanguageService
+import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
+import javax.swing.JComponent
 
 class ParameterDefaultsNullInspection: PhpInspection() {
+    public var includeAbstractMethods: Boolean = true
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is ParameterListImpl) {
@@ -34,6 +38,11 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 for (parameter in element.parameters) {
                     if (parameter is ParameterImpl &&
                         parameter.defaultValue != null) {
+                        val isAbstractMethod = context.isAbstractMethod()
+
+                        if (isAbstractMethod && !includeAbstractMethods)
+                            return
+
                         val defaultValue = parameter.defaultValueType
 
                         if (defaultValue.toString() != "null") {
@@ -42,8 +51,8 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                                 parameter,
                                 "Default value of the parameter must be \"null\".",
                                 run {
-                                    if (parameter.isPassByRef ||
-                                        context.isAbstractMethod())
+                                    if (isAbstractMethod ||
+                                        parameter.isPassByRef)
                                         return@run null
 
                                     ReplaceWithNullQuickFix(
@@ -56,6 +65,12 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                     }
                 }
             }
+        }
+    }
+
+    override fun createOptionsPanel(): JComponent {
+        return OptionsPanelService.create { component: OptionsPanelService ->
+            component.addCheckbox("Include abstract methods", includeAbstractMethods) { includeAbstractMethods = it }
         }
     }
 

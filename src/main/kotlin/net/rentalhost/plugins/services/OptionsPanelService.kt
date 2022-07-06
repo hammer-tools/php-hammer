@@ -3,6 +3,7 @@ package net.rentalhost.plugins.services
 import net.miginfocom.swing.MigLayout
 import java.util.function.Consumer
 import javax.swing.ButtonGroup
+import javax.swing.JCheckBox
 import javax.swing.JPanel
 import javax.swing.JRadioButton
 
@@ -16,9 +17,17 @@ class OptionsPanelService private constructor() {
 
         if (radioComponent.selectedOption == null && radioComponent.radioOptions.size >= 1) {
             val firstWidget = radioComponent.radioOptions[0]
+
             firstWidget.radioButton.isSelected = true
             firstWidget.updateConsumer.accept(true)
         }
+    }
+
+    fun addCheckbox(text: String, selected: Boolean, updateConsumer: Consumer<Boolean>) {
+        optionsPanel.add(with(JCheckBox(text, selected)) {
+            addItemListener { updateConsumer.accept(isSelected) }
+            this
+        }, "wrap")
     }
 
     inner class RadioComponent {
@@ -28,29 +37,21 @@ class OptionsPanelService private constructor() {
 
         internal var selectedOption: RadioOption? = null
 
-        fun addOption(
-            label: String,
-            defaultValue: Boolean,
-            updateConsumer: Consumer<Boolean>
-        ) {
-            val newOption = RadioOption(label, defaultValue, updateConsumer)
+        fun addOption(text: String, selected: Boolean, updateConsumer: Consumer<Boolean>) {
+            val newOption = RadioOption(text, selected, updateConsumer)
 
             radioOptions.add(newOption)
 
-            if (defaultValue) {
+            if (selected) {
                 selectedOption = newOption
             }
         }
 
-        inner class RadioOption internal constructor(
-            label: String,
-            defaultValue: Boolean,
-            val updateConsumer: Consumer<Boolean>
-        ) {
+        inner class RadioOption internal constructor(text: String, selected: Boolean, val updateConsumer: Consumer<Boolean>) {
             val radioButton: JRadioButton
 
             init {
-                radioButton = JRadioButton(label, defaultValue)
+                radioButton = JRadioButton(text, selected)
                 radioButton.addItemListener {
                     val isSelected = radioButton.isSelected
 

@@ -9,4 +9,11 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
     fun testPhp700(): Unit = testInspection(ParameterDefaultsNullInspection::class.java, phpLanguageLevel = PhpLanguageLevel.PHP700)
 
     fun testElse(): Unit = testInspection(ParameterDefaultsNullInspection::class.java)
+
+    fun testIncludeAbstractMethodsDisabled(): Unit = testInspection(
+        ParameterDefaultsNullInspection::class.java,
+        "includeAbstractMethodsDisabled",
+        { it.includeAbstractMethods = false },
+        quickFixesEnabled = false
+    )
 }

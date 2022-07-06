@@ -22,7 +22,8 @@ abstract class TestCase: BasePlatformTestCase() {
         inspectionClass: Class<T>,
         phpSourceSubName: String? = null,
         inspectionSetup: Consumer<T>? = null,
-        phpLanguageLevel: PhpLanguageLevel? = null
+        phpLanguageLevel: PhpLanguageLevel? = null,
+        quickFixesEnabled: Boolean? = null
     ) {
         val phpSource = inspectionClass.name.substring(classBaseLength + 1).replace(".", "/")
         val phpSourceNamed = if (phpSourceSubName == null) phpSource else "$phpSource-$phpSourceSubName"
@@ -53,16 +54,18 @@ abstract class TestCase: BasePlatformTestCase() {
         myFixture.configureByFile("$phpSourceNamed.php")
         myFixture.testHighlighting(true, false, true)
 
-        val phpLanguageLevelSuffix =
-            if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP810) ""
-            else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
+        if (quickFixesEnabled != false) {
+            val phpLanguageLevelSuffix =
+                if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP810) ""
+                else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
 
-        val inspectionQuickFixes = myFixture.getAllQuickFixes()
-            .filter { it !is EmptyIntentionAction }
+            val inspectionQuickFixes = myFixture.getAllQuickFixes()
+                .filter { it !is EmptyIntentionAction }
 
-        if (inspectionQuickFixes.isNotEmpty()) {
-            inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix!!) })
-            myFixture.checkResultByFile("$phpSourceNamed.fixed$phpLanguageLevelSuffix.php")
+            if (inspectionQuickFixes.isNotEmpty()) {
+                inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix!!) })
+                myFixture.checkResultByFile("$phpSourceNamed.fixed$phpLanguageLevelSuffix.php")
+            }
         }
     }
 
