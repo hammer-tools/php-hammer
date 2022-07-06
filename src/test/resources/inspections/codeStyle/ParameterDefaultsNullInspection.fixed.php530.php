@@ -32,17 +32,17 @@ abstract class DummyA
 
 abstract class DummyB
 {
-    abstract function dummyA($a, $b = null);
+    abstract function dummyA($a, $b = 123);
 }
 
 interface IDummyA
 {
-    function dummyA($a, $b = null);
+    function dummyA($a, $b = 123);
 }
 
 interface IDummyC
 {
-    function dummyA(int|null $b = null);
+    function dummyA(int $b = 123);
 }
 
 // Not applicable for quick-fix only:

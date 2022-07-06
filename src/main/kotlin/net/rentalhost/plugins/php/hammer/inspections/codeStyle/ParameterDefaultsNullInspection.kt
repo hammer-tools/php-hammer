@@ -42,7 +42,8 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                                 parameter,
                                 "Default value of the parameter must be \"null\".",
                                 run {
-                                    if (parameter.isPassByRef)
+                                    if (parameter.isPassByRef ||
+                                        context.isAbstractMethod())
                                         return@run null
 
                                     ReplaceWithNullQuickFix(
@@ -62,9 +63,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         private val function: SmartPsiElementPointer<FunctionImpl>,
         private val parameter: SmartPsiElementPointer<ParameterImpl>
     ): LocalQuickFix {
-        override fun getFamilyName(): String =
-            if (function.element!!.isAbstractMethod()) "Replace with \"null\""
-            else "Smart replace with \"null\""
+        override fun getFamilyName(): String = "Smart replace with \"null\""
 
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
             val parameterDefaultValue = replaceDefaultValueWithNull(project)
@@ -91,9 +90,6 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         }
 
         private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
-            if (function.element!!.isAbstractMethod())
-                return
-
             val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameter.element!!.name) {
                 when {
                     LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "\$$this ??= ${parameterDefaultValue.text};"

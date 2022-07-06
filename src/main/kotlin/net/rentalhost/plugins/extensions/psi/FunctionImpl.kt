@@ -10,8 +10,7 @@ import com.jetbrains.php.lang.psi.elements.impl.GroupStatementImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 
 fun FunctionImpl.isAbstractMethod(): Boolean =
-    this is MethodImpl &&
-    this.isAbstract
+    this is MethodImpl && this.isAbstract
 
 fun FunctionImpl.functionBody(): GroupStatementImpl? =
     PhpPsiUtil.getChildByCondition(this, GroupStatement.INSTANCEOF)
