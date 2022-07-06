@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
+import com.jetbrains.php.lang.psi.elements.impl.PhpTypeDeclarationImpl
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
@@ -29,9 +30,18 @@ class ParameterImplicitlyNullableInspection: PhpInspection() {
                     element,
                     "Parameter type is implicitly null.",
                     LocalQuickFixService.SimpleInlineQuickFix("Add explicit \"null\" type") {
-                        element.typeDeclaration?.replace(
-                            FactoryService.createParameterType(problemsHolder.project, element.typeDeclaration?.text + "|null")
-                        )
+                        if (element.typeDeclaration != null) {
+                            element.typeDeclaration!!.replace(FactoryService.createParameterType(problemsHolder.project, element.typeDeclaration!!.text + "|null"))
+                        }
+                        else {
+                            val parameterComplex = FactoryService.createComplexParameter(problemsHolder.project, element.text)
+
+                            with(parameterComplex.typeDeclaration as PhpTypeDeclarationImpl) {
+                                replace(FactoryService.createParameterType(problemsHolder.project, "$text|null"))
+                            }
+
+                            element.replace(FactoryService.createComplexParameterDoctypeCompatible(problemsHolder.project, parameterComplex.text))
+                        }
                     }
                 )
             }

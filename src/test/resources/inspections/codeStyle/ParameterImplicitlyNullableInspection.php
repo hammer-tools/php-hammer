@@ -6,6 +6,13 @@ $dummy = function (<weak_warning descr="[PHP Hammer] Parameter type is implicitl
 $dummy = function (<weak_warning descr="[PHP Hammer] Parameter type is implicitly null.">int|string $a = null</weak_warning>) {
 };
 
+/**
+ * @method dummyA(<weak_warning descr="[PHP Hammer] Parameter type is implicitly null.">int $a = null</weak_warning>)
+ * @method dummyB(<weak_warning descr="[PHP Hammer] Parameter type is implicitly null.">int | string $a = null</weak_warning>)
+ */
+class Dummy {
+}
+
 // Not applicable:
 
 $dummy = function (int $a) {

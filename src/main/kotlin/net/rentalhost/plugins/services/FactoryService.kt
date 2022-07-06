@@ -51,12 +51,18 @@ object FactoryService {
 
     fun createSemicolon(project: Project): PsiElement =
         PhpPsiElementFactory.createFromText(project, PhpTokenTypes.opSEMICOLON, ";")
-    
+
     fun createReturnType(project: Project, returnType: String): PhpReturnType =
         PhpPsiElementFactory.createReturnType(project, returnType)
 
     fun createParameterType(project: Project, parameterType: String): PhpParameterType =
         PhpPsiElementFactory.createParameterType(project, parameterType)
+
+    fun createComplexParameter(project: Project, parameterText: String): Parameter =
+        PhpPsiElementFactory.createComplexParameter(project, parameterText)
+
+    fun createComplexParameterDoctypeCompatible(project: Project, parameterText: String): Parameter =
+        PhpPsiElementFactory.createPhpPsiFromText(project, Parameter::class.java, "/** @method a($parameterText) */")
 
     fun createFieldType(project: Project, fieldType: String): PhpFieldType =
         PhpPsiElementFactory.createPhpPsiFromText(project, PhpFieldType::class.java, "class A{public $fieldType \$a}")
