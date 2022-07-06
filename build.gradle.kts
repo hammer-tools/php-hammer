@@ -13,6 +13,10 @@ repositories {
     mavenCentral()
 }
 
+apply {
+    plugin(net.rentalhost.plugins.gradle.ProjectTools::class)
+}
+
 intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
@@ -50,6 +54,7 @@ tasks {
 
     jar {
         dependsOn("instrumentTestCode")
+        dependsOn("generateDocumentation")
     }
 
     wrapper {
