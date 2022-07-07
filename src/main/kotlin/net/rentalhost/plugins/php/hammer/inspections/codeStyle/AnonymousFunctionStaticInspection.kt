@@ -7,10 +7,9 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
-import net.rentalhost.plugins.extensions.psi.accessVariables
-import net.rentalhost.plugins.extensions.psi.isAnonymous
-import net.rentalhost.plugins.extensions.psi.isStatic
-import net.rentalhost.plugins.extensions.psi.variableName
+import net.rentalhost.plugins.extensions.psi.*
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class AnonymousFunctionStaticInspection: PhpInspection() {
@@ -32,7 +31,11 @@ class AnonymousFunctionStaticInspection: PhpInspection() {
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     element.firstChild,
-                    "Function can be static."
+                    "This anonymous function can be static.",
+                    LocalQuickFixService.SimpleInlineQuickFix(
+                        "Make this function static",
+                        applyFix = { element.insertBefore(FactoryService.createStaticKeyword(problemsHolder.project)) }
+                    )
                 )
             }
         }

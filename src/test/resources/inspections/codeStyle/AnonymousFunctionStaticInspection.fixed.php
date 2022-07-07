@@ -1,27 +1,19 @@
 <?php
 
-$dummy = function () {
+$dummy = static function () {
 };
 
 class DummyA
 {
     function dummy()
     {
-        $dummy = function () {
+        $dummy = static function () {
         };
 
         $self = $this;
 
-        $dummy = function () use ($self) {
+        $dummy = static function () use ($self) {
             return $self;
-        };
-
-        $dummy = static function () {
-            return static function () {
-                return static function () {
-                    return get_class($this);
-                };
-            };
         };
     }
 }

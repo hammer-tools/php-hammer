@@ -1,18 +1,18 @@
 <?php
 
-$dummy = <warning descr="[PHP Hammer] Function can be static.">function</warning> () {
+$dummy = <weak_warning descr="[PHP Hammer] This anonymous function can be static.">function</weak_warning> () {
 };
 
 class DummyA
 {
     function dummy()
     {
-        $dummy = <warning descr="[PHP Hammer] Function can be static.">function</warning> () {
+        $dummy = <weak_warning descr="[PHP Hammer] This anonymous function can be static.">function</weak_warning> () {
         };
 
         $self = $this;
 
-        $dummy = <warning descr="[PHP Hammer] Function can be static.">function</warning> () use ($self) {
+        $dummy = <weak_warning descr="[PHP Hammer] This anonymous function can be static.">function</weak_warning> () use ($self) {
             return $self;
         };
     }

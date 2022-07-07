@@ -52,6 +52,9 @@ object FactoryService {
     fun createSemicolon(project: Project): PsiElement =
         PhpPsiElementFactory.createFromText(project, PhpTokenTypes.opSEMICOLON, ";")
 
+    fun createStaticKeyword(project: Project): PsiElement =
+        PhpPsiElementFactory.createFromText(project, PhpTokenTypes.kwSTATIC, "static")
+
     fun createReturnType(project: Project, returnType: String): PhpReturnType =
         PhpPsiElementFactory.createReturnType(project, returnType)
 
