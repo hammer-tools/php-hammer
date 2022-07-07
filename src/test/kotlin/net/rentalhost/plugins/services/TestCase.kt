@@ -63,7 +63,7 @@ abstract class TestCase: BasePlatformTestCase() {
                 .filter { it !is EmptyIntentionAction }
 
             if (inspectionQuickFixes.isNotEmpty()) {
-                inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix!!) })
+                inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix ?: return@Consumer) })
                 myFixture.checkResultByFile("$phpSourceNamed.fixed$phpLanguageLevelSuffix.php")
             }
         }

@@ -31,7 +31,8 @@ class ParameterImplicitlyNullableInspection: PhpInspection() {
                     "Parameter type is implicitly null.",
                     LocalQuickFixService.SimpleInlineQuickFix("Add explicit \"null\" type") {
                         if (element.typeDeclaration != null) {
-                            element.typeDeclaration!!.replace(FactoryService.createParameterType(problemsHolder.project, element.typeDeclaration!!.text + "|null"))
+                            (element.typeDeclaration ?: return@SimpleInlineQuickFix)
+                                .replace(FactoryService.createParameterType(problemsHolder.project, (element.typeDeclaration ?: return@SimpleInlineQuickFix).text + "|null"))
                         }
                         else {
                             val parameterComplex = FactoryService.createComplexParameter(problemsHolder.project, element.text)

@@ -63,7 +63,7 @@ class UnusedUseVariableInspection: PhpInspection() {
                 return
             }
 
-            this.useVariable.element!!.declarationChildRange(true).delete()
+            (this.useVariable.element ?: return).declarationChildRange(true).delete()
 
             useElement.deleteTrailingComma()
         }

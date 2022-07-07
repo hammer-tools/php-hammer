@@ -19,6 +19,7 @@ object FormatterService {
         val statementElement = PhpPsiElementFactory.createStatement(project, statement.simplifyWhitespace())
         val projectCodeStyleSettingsManager = CodeStyleSettingsManager.getInstance(statementElement.project)
 
+        @Suppress("TestOnlyProblems")
         synchronized(projectCodeStyleSettingsManager) {
             projectCodeStyleSettingsManager.setTemporarySettings(projectCodeStyle)
 

@@ -50,7 +50,7 @@ object LocalQuickFixService {
         private val leafReplacement: SmartPsiElementPointer<PsiElement>
     ): SimpleQuickFix(quickFixTitle) {
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-            descriptor.psiElement.replace(leafReplacement.element!!)
+            descriptor.psiElement.replace(leafReplacement.element ?: return)
         }
     }
 }

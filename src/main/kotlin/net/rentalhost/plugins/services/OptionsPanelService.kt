@@ -57,7 +57,7 @@ class OptionsPanelService private constructor() {
 
                     if (selectedOption != null &&
                         selectedOption != this) {
-                        selectedOption!!.updateConsumer.accept(false)
+                        (selectedOption ?: return@addItemListener).updateConsumer.accept(false)
                     }
 
                     updateConsumer.accept(isSelected)

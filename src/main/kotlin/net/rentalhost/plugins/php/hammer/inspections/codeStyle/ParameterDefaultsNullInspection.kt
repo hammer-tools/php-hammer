@@ -22,7 +22,7 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
 
 class ParameterDefaultsNullInspection: PhpInspection() {
-    public var includeAbstractMethods: Boolean = true
+    var includeAbstractMethods: Boolean = true
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -96,7 +96,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         }
 
         private fun enforcesNullableType(project: Project) {
-            val parameterTypeDeclaration = parameter.element!!.typeDeclaration ?: return
+            val parameterTypeDeclaration = (parameter.element ?: return).typeDeclaration ?: return
 
             if (parameterTypeDeclaration.isNullableEx())
                 return
@@ -105,7 +105,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         }
 
         private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
-            val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameter.element!!.name) {
+            val variableAssignment = FactoryService.createAssignmentStatement(project, with((parameter.element ?: return).name) {
                 when {
                     LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "\$$this ??= ${parameterDefaultValue.text};"
                     LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_OPERATOR) -> "\$$this = \$$this ?? ${parameterDefaultValue.text};"
@@ -113,7 +113,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 }
             })
 
-            with(function.element!!.functionBody()) {
+            with((function.element ?: return).functionBody()) {
                 this!!.firstPsiChild.insertBeforeElse(variableAssignment, lazy {
                     { replace(FactoryService.createFunctionBody(project, variableAssignment.text)) }
                 })

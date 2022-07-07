@@ -30,8 +30,7 @@ class ArrayPackableInspection: PhpInspection() {
                     if (elementChild is ArrayHashElementImpl) {
                         elementContainsIndex = true
 
-                        if (elementChild.key == null ||
-                            elementChild.key!!.text != elementChildIndex.toString()) {
+                        if ((elementChild.key ?: return).text != elementChildIndex.toString()) {
                             return
                         }
                     }
@@ -59,7 +58,7 @@ class ArrayPackableInspection: PhpInspection() {
         private fun dropArrayKeys(project: Project, array: PsiElement) {
             for (arrayElement in array.children) {
                 if (arrayElement is ArrayHashElementImpl) {
-                    val arrayElementNew = FactoryService.createArrayValue(project, arrayElement.value!!.text)
+                    val arrayElementNew = FactoryService.createArrayValue(project, (arrayElement.value ?: return).text)
 
                     if (arrayElementNew != null) {
                         arrayElement.replace(arrayElementNew)
@@ -67,7 +66,7 @@ class ArrayPackableInspection: PhpInspection() {
                 }
                 else if (TypeService.isVariadic(arrayElement, ArrayCreationExpressionImpl::class.java) &&
                          arrayElement is PhpPsiElementImpl<*>) {
-                    dropArrayKeys(project, arrayElement.firstPsiChild!!)
+                    dropArrayKeys(project, arrayElement.firstPsiChild ?: return)
                 }
             }
         }
