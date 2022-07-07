@@ -2,14 +2,15 @@ package net.rentalhost.plugins.gradle.tasks
 
 import net.rentalhost.plugins.gradle.ProjectTools
 import net.rentalhost.plugins.gradle.services.HTMLService
+import net.rentalhost.plugins.gradle.services.StringService
 import net.rentalhost.plugins.gradle.services.XMLService
 import org.gradle.api.Project
 import java.io.File
 
-class GenerateDocumentationTask: ProjectTools.ProjectTask {
+internal class GenerateDocumentationTask: ProjectTools.ProjectTask() {
     override fun apply(project: Project) {
         project.task("generateDocumentation") {
-            group = "project tools"
+            group = groupName
             description = "Generate project documentation based on plugin.xml file."
 
             doLast { generateDocumentation(project) }
@@ -46,6 +47,7 @@ class GenerateDocumentationTask: ProjectTools.ProjectTask {
                 outputInspectionsContent += "# ${it.key}\n\n"
 
                 it.value.forEach { localInspection ->
+                    outputInspectionsContent += "<a id=\"${StringService.dashCase(localInspection.shortName)}\"></a>\n\n"
                     outputInspectionsContent += "## ${localInspection.description}\n\n"
                     outputInspectionsContent += "${localInspection.readDescription()}\n\n"
                 }
