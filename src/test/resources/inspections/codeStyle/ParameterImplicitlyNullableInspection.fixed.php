@@ -32,3 +32,6 @@ $dummy = function ($a = null) {
 
 $dummy = function (mixed $a) {
 };
+
+$dummy = function (mixed $a = null) {
+};

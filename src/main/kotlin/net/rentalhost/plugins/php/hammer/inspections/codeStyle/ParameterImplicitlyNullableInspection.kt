@@ -7,6 +7,7 @@ import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpTypeDeclarationImpl
+import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
@@ -22,7 +23,7 @@ class ParameterImplicitlyNullableInspection: PhpInspection() {
 
                 if (declaredType.isEmpty ||
                     declaredType.isNullable ||
-                    declaredType.types.contains("mixed"))
+                    declaredType.types.contains(PhpType._MIXED))
                     return
 
                 ProblemsHolderService.registerProblem(
