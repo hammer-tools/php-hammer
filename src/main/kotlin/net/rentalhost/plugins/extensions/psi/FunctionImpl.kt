@@ -12,6 +12,12 @@ import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 fun FunctionImpl.isAbstractMethod(): Boolean =
     this is MethodImpl && this.isAbstract
 
+fun FunctionImpl.isStatic(): Boolean =
+    firstChild.text.lowercase() == "static"
+
+fun FunctionImpl.isAnonymous(): Boolean =
+    name == ""
+
 fun FunctionImpl.functionBody(): GroupStatementImpl? =
     PhpPsiUtil.getChildByCondition(this, GroupStatement.INSTANCEOF)
 

@@ -76,6 +76,15 @@
                          shortName="ParameterImplicitlyNullableInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ParameterImplicitlyNullableInspection" />
 
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Anonymous function can be static"
+                         level="WEAK WARNING"
+                         shortName="AnonymousFunctionStaticInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.AnonymousFunctionStaticInspection" />
+
         <!-- Flow Optimization -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
