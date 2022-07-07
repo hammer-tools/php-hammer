@@ -15,8 +15,14 @@ class DummyA
         $dummy = static function () use ($self) {
             return $self;
         };
+
+        $dummy = static fn() => true;
     }
 }
+
+$dummy = static fn() => true;
+
+$dummy = static fn() => static fn() => true;
 
 // Not applicable:
 
@@ -41,5 +47,9 @@ class DummyB
                 };
             };
         };
+
+        $dummy = static fn() => true;
+
+        $dummy = fn() => fn() => $this;
     }
 }

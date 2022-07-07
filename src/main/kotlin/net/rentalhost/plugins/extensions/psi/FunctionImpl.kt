@@ -15,6 +15,9 @@ fun FunctionImpl.isAbstractMethod(): Boolean =
 fun FunctionImpl.isStatic(): Boolean =
     firstChild.text.lowercase() == "static"
 
+fun FunctionImpl.isShortFunction(): Boolean =
+    firstChild.text.lowercase() == "fn"
+
 fun FunctionImpl.isAnonymous(): Boolean =
     name == ""
 

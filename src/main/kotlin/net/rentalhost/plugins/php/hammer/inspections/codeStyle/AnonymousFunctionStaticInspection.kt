@@ -10,14 +10,22 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import net.rentalhost.plugins.extensions.psi.*
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
+import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
+import javax.swing.JComponent
 
 class AnonymousFunctionStaticInspection: PhpInspection() {
+    var includeShortFunctions: Boolean = true
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is FunctionImpl &&
                 element.isAnonymous() &&
                 !element.isStatic()) {
+                if (!includeShortFunctions &&
+                    element.isShortFunction())
+                    return
+
                 val elementScopes = mutableListOf(element)
 
                 elementScopes.addAll(PsiTreeUtil.findChildrenOfType(element, FunctionImpl::class.java))
@@ -38,6 +46,12 @@ class AnonymousFunctionStaticInspection: PhpInspection() {
                     )
                 )
             }
+        }
+    }
+
+    override fun createOptionsPanel(): JComponent {
+        return OptionsPanelService.create { component: OptionsPanelService ->
+            component.addCheckbox("Include abstract methods", includeShortFunctions) { includeShortFunctions = it }
         }
     }
 
