@@ -15,7 +15,7 @@ fun VariableImpl.getLeafRef(): LeafPsiElement? =
     }
 
 fun VariableImpl.isRef(): Boolean =
-    this.getLeafRef() != null
+    getLeafRef() != null
 
 fun VariableImpl.getLeafTrailingComma(): LeafPsiElement? =
     with(PsiTreeUtil.skipWhitespacesAndCommentsForward(element)) {

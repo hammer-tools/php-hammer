@@ -21,7 +21,7 @@ class ProjectTools: Plugin<Project> {
         val pluginInspections = plugin.getElementsByTagName("localInspection")
         val pluginInspectionsMapped = mutableListOf<LocalInspectionNode>()
 
-        for (pluginInspection in 0 until pluginInspections.length) {
+        (0 until pluginInspections.length).forEach { pluginInspection ->
             val pluginInspectionNode = pluginInspections.item(pluginInspection)
 
             with(pluginInspectionNode.attributes) {

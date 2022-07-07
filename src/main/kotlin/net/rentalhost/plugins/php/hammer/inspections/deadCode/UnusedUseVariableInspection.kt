@@ -31,18 +31,18 @@ class UnusedUseVariableInspection: PhpInspection() {
                     .map { it.variableName }
                     .distinct()
 
-                for (useVariable in useVariables) {
-                    if (!functionVariables.contains(useVariable.name)) {
+                useVariables
+                    .filterNot { functionVariables.contains(it.name) }
+                    .forEach {
                         ProblemsHolderService.registerProblem(
                             problemsHolder,
                             element,
-                            useVariable.declarationTextRange(element),
+                            it.declarationTextRange(element),
                             "Unused variable declared in use().",
-                            DeleteUnusedVariableDeclarationQuickFix(SmartPointerManager.createPointer(useVariable)),
+                            DeleteUnusedVariableDeclarationQuickFix(SmartPointerManager.createPointer(it)),
                             ProblemHighlightType.LIKE_UNUSED_SYMBOL
                         )
                     }
-                }
             }
         }
     }
@@ -63,7 +63,7 @@ class UnusedUseVariableInspection: PhpInspection() {
                 return
             }
 
-            (this.useVariable.element ?: return).declarationChildRange(true).delete()
+            (useVariable.element ?: return).declarationChildRange(true).delete()
 
             useElement.deleteTrailingComma()
         }
