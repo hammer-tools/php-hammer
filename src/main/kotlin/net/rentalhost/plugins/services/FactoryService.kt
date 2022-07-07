@@ -84,4 +84,7 @@ object FactoryService {
 
     fun createArrayValue(project: Project, value: String): PhpPsiElement? =
         createPhpPsiFromText(project, mutableListOf(ArrayCreationExpression::class.java, PhpPsiElement::class.java), "[$value]")
+
+    fun createTypeCast(project: Project, castType: String, expression: String): UnaryExpression =
+        PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpression::class.java, "($castType) $expression")
 }
