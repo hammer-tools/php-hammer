@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.extensions.psi
 
+import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpAccessInstruction
 import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpAccessVariableInstruction
 import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpArrayAccessInstruction
@@ -23,6 +24,9 @@ fun FunctionImpl.isAnonymous(): Boolean =
 
 fun FunctionImpl.functionBody(): GroupStatementImpl? =
     PhpPsiUtil.getChildByCondition(this, GroupStatement.INSTANCEOF)
+
+fun FunctionImpl.scopes(): MutableList<FunctionImpl> =
+    mutableListOf(this).apply { addAll(PsiTreeUtil.findChildrenOfType(this@scopes, FunctionImpl::class.java)) }
 
 fun FunctionImpl.accessVariables(): List<PhpAccessInstruction> =
     controlFlow.instructions

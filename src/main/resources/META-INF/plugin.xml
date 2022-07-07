@@ -113,5 +113,15 @@
                          level="WEAK WARNING"
                          shortName="UnusedUseVariableReferenceInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.deadCode.UnusedUseVariableReferenceInspection" />
+
+        <!-- Code Error -->
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Error"
+                         enabledByDefault="true"
+                         displayName="Static anonymous function can't access $this"
+                         level="ERROR"
+                         shortName="StaticAnonymousFunctionCannotAccessThisInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.StaticAnonymousFunctionCannotAccessThisInspection" />
     </extensions>
 </idea-plugin>

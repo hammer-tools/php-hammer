@@ -3,7 +3,6 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
@@ -26,11 +25,7 @@ class AnonymousFunctionStaticInspection: PhpInspection() {
                     element.isShortFunction())
                     return
 
-                val elementScopes = mutableListOf(element)
-
-                elementScopes.addAll(PsiTreeUtil.findChildrenOfType(element, FunctionImpl::class.java))
-
-                for (elementScope in elementScopes) {
+                for (elementScope in element.scopes()) {
                     if (elementScope.accessVariables().find { it.variableName == "this" } != null) {
                         return
                     }
