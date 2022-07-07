@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Builder" pattern="file[php-hammer]:CHANGELOG.md||file[php-hammer]:wiki/Inspections.md||file[php-hammer.buildSrc.main]:kotlin//*||file[php-hammer.buildSrc]:build.gradle.kts" />
+</component>

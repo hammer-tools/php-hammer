@@ -1,66 +1,15 @@
 package net.rentalhost.plugins.gradle
 
-import net.rentalhost.plugins.gradle.services.HTMLService
-import net.rentalhost.plugins.gradle.services.XMLService
+import net.rentalhost.plugins.gradle.tasks.GenerateDocumentationTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.File
 
 class ProjectTools: Plugin<Project> {
     override fun apply(project: Project) {
-        project.task("generateDocumentation") {
-            group = "project tools"
-            description = "Generate project documentation based on plugin.xml file."
-
-            doLast { generateDocumentation(project) }
-        }
+        GenerateDocumentationTask().apply(project)
     }
 
-    private fun generateDocumentation(project: Project) {
-        val plugin = XMLService.parse(File("${project.projectDir}/src/main/resources/META-INF/plugin.xml"))
-        val pluginInspections = plugin.getElementsByTagName("localInspection")
-        val pluginInspectionsMapped = mutableListOf<LocalInspectionNode>()
-
-        (0 until pluginInspections.length).forEach { pluginInspection ->
-            val pluginInspectionNode = pluginInspections.item(pluginInspection)
-
-            with(pluginInspectionNode.attributes) {
-                pluginInspectionsMapped.add(
-                    LocalInspectionNode(
-                        project,
-                        getNamedItem("groupName").textContent,
-                        getNamedItem("displayName").textContent,
-                        getNamedItem("shortName").textContent
-                    )
-                )
-            }
-        }
-
-        val outputInspectionsFile = File("${project.projectDir}/wiki/Inspections.md")
-        var outputInspectionsContent = "Currently, **${pluginInspections.length} inspections** have been implemented.\n\n"
-
-        pluginInspectionsMapped
-            .sortedBy { it.description }
-            .groupBy { it.group }
-            .forEach {
-                outputInspectionsContent += "# ${it.key}\n\n"
-
-                it.value.forEach { localInspection ->
-                    outputInspectionsContent += "## ${localInspection.description}\n\n"
-                    outputInspectionsContent += "${localInspection.readDescription()}\n\n"
-                }
-            }
-
-        outputInspectionsFile.writeText(outputInspectionsContent)
-    }
-
-    private class LocalInspectionNode(
-        private val project: Project,
-        val group: String,
-        val description: String,
-        val shortName: String
-    ) {
-        fun readDescription(): String =
-            HTMLService.toMarkdown(File("${project.projectDir}/src/main/resources/inspectionDescriptions/$shortName.html"))
+    interface ProjectTask {
+        fun apply(project: Project)
     }
 }
