@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.PsiRecursiveElementVisitor
+import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
@@ -85,6 +86,9 @@ object FactoryService {
     fun createArrayValue(project: Project, value: String): PhpPsiElement? =
         createPhpPsiFromText(project, mutableListOf(ArrayCreationExpression::class.java, PhpPsiElement::class.java), "[$value]")
 
-    fun createTypeCast(project: Project, castType: String, expression: String): UnaryExpression =
+    fun createTypeCastExpression(project: Project, castType: String, expression: String): UnaryExpression =
         PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpression::class.java, "($castType) $expression")
+
+    fun createTypeCast(project: Project, castType: String): LeafPsiElement =
+        PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpression::class.java, "$castType\$x").firstChild as LeafPsiElement
 }

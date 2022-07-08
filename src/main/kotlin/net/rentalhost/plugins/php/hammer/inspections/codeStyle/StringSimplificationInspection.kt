@@ -24,7 +24,7 @@ class StringSimplificationInspection: PhpInspection() {
                         parent,
                         "String can be simplified.",
                         LocalQuickFixService.SimpleInlineQuickFix("Replace with type cast (string)") {
-                            parent.replace(FactoryService.createTypeCast(problemsHolder.project, "string", "\$${element.name}"))
+                            parent.replace(FactoryService.createTypeCastExpression(problemsHolder.project, "string", "\$${element.name}"))
                         }
                     )
                 }

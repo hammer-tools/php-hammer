@@ -6,14 +6,15 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
-import net.rentalhost.plugins.extensions.dropWhitespace
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
 
 class TypeCastNormalizationInspection: PhpInspection() {
-    var optionFormatShort: Boolean = true
-    var optionFormatLong: Boolean = false
+    private var optionFormatShort: Boolean = true
+    private var optionFormatLong: Boolean = false
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -26,13 +27,16 @@ class TypeCastNormalizationInspection: PhpInspection() {
                         else -> return
                     }
 
-                    if (element.text.dropWhitespace() == castTo)
+                    if (element.text == castTo)
                         return
 
                     ProblemsHolderService.registerProblem(
                         problemsHolder,
                         element,
-                        "Type cast must be written as $castTo"
+                        "Type cast must be written as $castTo",
+                        LocalQuickFixService.SimpleInlineQuickFix("Replace with $castTo") {
+                            element.replace(FactoryService.createTypeCast(problemsHolder.project, castTo))
+                        }
                     )
                 }
             }

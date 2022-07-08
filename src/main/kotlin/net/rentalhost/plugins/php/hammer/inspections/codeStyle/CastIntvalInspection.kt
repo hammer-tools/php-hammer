@@ -80,7 +80,7 @@ class CastIntvalInspection: PhpInspection() {
             element,
             "This function cast can be replaced with the type cast ($castTypeTo).",
             LocalQuickFixService.SimpleInlineQuickFix("Replace with type cast ($castTypeTo)") {
-                element.replace(FactoryService.createTypeCast(problemsHolder.project, castTypeTo, expressionText))
+                element.replace(FactoryService.createTypeCastExpression(problemsHolder.project, castTypeTo, expressionText))
             }
         )
     }

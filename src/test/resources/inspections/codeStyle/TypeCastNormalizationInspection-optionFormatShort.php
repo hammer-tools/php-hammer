@@ -8,4 +8,4 @@ $dummy = <weak_warning descr="[PHP Hammer] Type cast must be written as (float)"
 $dummy = (bool) $x;
 $dummy = <weak_warning descr="[PHP Hammer] Type cast must be written as (bool)">(BOOL)</weak_warning> $x;
 $dummy = <weak_warning descr="[PHP Hammer] Type cast must be written as (bool)">(boolean)</weak_warning> $x;
-$dummy = <weak_warning descr="[PHP Hammer] Type cast must be written as (bool)">( boolean )</weak_warning> $x;
+$dummy = <weak_warning descr="[PHP Hammer] Type cast must be written as (bool)">( bool )</weak_warning> $x;
