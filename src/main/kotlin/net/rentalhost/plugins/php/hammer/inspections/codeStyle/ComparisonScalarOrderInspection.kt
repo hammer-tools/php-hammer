@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.BinaryExpressionImpl
 import net.rentalhost.plugins.extensions.psi.isScalar
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
@@ -13,6 +14,8 @@ import javax.swing.JComponent
 
 class ComparisonScalarOrderInspection: PhpInspection() {
     var optionScalarLeft: Boolean = false
+
+    @Suppress("MemberVisibilityCanBePrivate")
     var optionScalarRight: Boolean = true
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
@@ -36,7 +39,17 @@ class ComparisonScalarOrderInspection: PhpInspection() {
                     problemsHolder,
                     element,
                     if (optionScalarLeft) "Scalar type must be on the left side."
-                    else "Scalar type must be on the right side."
+                    else "Scalar type must be on the right side.",
+                    LocalQuickFixService.SimpleInlineQuickFix("Flip comparison") {
+                        if (elementLeft != null &&
+                            elementRight != null) {
+                            val elementLeftCopy = elementLeft.copy()
+
+                            @Suppress("MemberVisibilityCanBePrivate")
+                            elementLeft.replace(elementRight)
+                            elementRight.replace(elementLeftCopy)
+                        }
+                    }
                 )
             }
         }
