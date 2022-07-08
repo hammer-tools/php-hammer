@@ -48,7 +48,7 @@ object GitService {
 
                 return GitCommit(
                     commitSplit[1],
-                    with(commitSplit[2]) { substringAfter("tag: ", "") },
+                    with(commitSplit[2]) { substringAfter("tag: ", "").substringBefore(",") },
                     with(commitSplit[3]) { drop(1).substringBefore("]").toLowerCase() },
                     with(commitSplit[3]) { substringAfter("] ").substringBefore(":", "") },
                     with(commitSplit[3]) { substringAfter(": ", "").trim().trimEnd(';') }
