@@ -1,7 +1,7 @@
 <?php
 
-$dummy = (string) $x;
-$dummy = (string) $x;
+$dummy = (string)$x;
+$dummy = (string)$x;
 
 // Not applicable:
 

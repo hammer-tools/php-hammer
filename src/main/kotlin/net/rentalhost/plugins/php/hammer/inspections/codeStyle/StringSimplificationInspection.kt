@@ -6,6 +6,8 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class StringSimplificationInspection: PhpInspection() {
@@ -21,6 +23,9 @@ class StringSimplificationInspection: PhpInspection() {
                         problemsHolder,
                         parent,
                         "String can be simplified.",
+                        LocalQuickFixService.SimpleInlineQuickFix("Replace with type cast (string)") {
+                            parent.replace(FactoryService.createTypeCast(problemsHolder.project, "string", "\$${element.name}"))
+                        }
                     )
                 }
             }
