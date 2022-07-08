@@ -1,5 +1,8 @@
 package net.rentalhost.plugins.services
 
+import com.intellij.util.containers.reverse
+import com.jetbrains.php.lang.lexer.PhpTokenTypes
+
 object CastService {
     @Suppress("SpellCheckingInspection")
     val castFunctions: Map<String, String> = mapOf(
@@ -22,4 +25,18 @@ object CastService {
         Pair("object", "object"),
         Pair("null", "null"),
     )
+
+    val castNormalizationGeneral = mapOf(
+        Pair("double", "float"),
+        Pair("real", "float"),
+    )
+
+    val castNormalizationShort = mapOf(
+        Pair("integer", "int"),
+        Pair("boolean", "bool"),
+    )
+
+    val castNormalizationLong = castNormalizationShort.reverse()
+
+    val castNormalizationTypes = listOf(PhpTokenTypes.opINTEGER_CAST, PhpTokenTypes.opFLOAT_CAST, PhpTokenTypes.opBOOLEAN_CAST)
 }
