@@ -13,8 +13,10 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
 
 class TypeCastNormalizationInspection: PhpInspection() {
-    private var optionFormatShort: Boolean = true
-    private var optionFormatLong: Boolean = false
+    var optionFormatShort: Boolean = true
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    var optionFormatLong: Boolean = false
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
