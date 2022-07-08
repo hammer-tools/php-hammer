@@ -22,13 +22,15 @@ class ComparisonScalarOrderInspection: PhpInspection() {
                 val elementLeft = element.leftOperand
                 val elementRight = element.rightOperand
 
+                val leftScalar = elementLeft.isScalar()
+                val rightScalar = elementRight.isScalar()
+
                 if (optionScalarLeft) {
-                    if (elementLeft.isScalar())
+                    if (leftScalar || !rightScalar)
                         return
                 }
-                else if (elementRight.isScalar()) {
+                else if (rightScalar || !leftScalar)
                     return
-                }
 
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
