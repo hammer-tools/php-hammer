@@ -9,6 +9,7 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 ### Added
 
+- **[ComparisonScalarOrderInspection]**: implemented ("comparison order with scalar normalization");
 - **[StringSimplificationInspection]**: implemented ("string can be simplified");
 - **[ToStringSimplificationInspection]**: implemented ("call to __toString() can be simplified");
 - **[TypeCastNormalizationInspection]**: implemented ("type cast normalization");
@@ -39,6 +40,8 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 - **[NullableTypeRightmostInspection]**: implemented ("nullable type on the rightmost side");
 - **[RedundantReturnPointInspection]**: implemented ("redundant return point");
 - **[SortUseVariablesInspection]**: implemented ("sort use() variables");
+
+[ComparisonScalarOrderInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-comparison-scalar-order-inspection
 
 [StringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-string-simplification-inspection
 

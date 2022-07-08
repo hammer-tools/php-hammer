@@ -7,7 +7,6 @@ import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.config.PhpProjectConfigurationFacade
 import com.jetbrains.php.lang.inspections.PhpInspection
 import java.io.File
-import java.lang.reflect.InvocationTargetException
 import java.util.function.Consumer
 
 abstract class TestCase: BasePlatformTestCase() {
@@ -25,23 +24,14 @@ abstract class TestCase: BasePlatformTestCase() {
         phpLanguageLevel: PhpLanguageLevel? = null,
         quickFixesEnabled: Boolean? = null
     ) {
-        val phpSource = inspectionClass.name.substring(classBaseLength + 1).replace(".", "/")
-        val phpSourceNamed = if (phpSourceSubName == null) phpSource else "$phpSource-$phpSourceSubName"
+        val phpSourceBase = inspectionClass.name.substring(classBaseLength + 1).replace(".", "/")
+        val phpSourceSub = phpSourceSubName ?: "default"
 
         val phpInspection: T = try {
             inspectionClass.getDeclaredConstructor().newInstance()
         }
-        catch (e: InstantiationException) {
-            throw RuntimeException(e)
-        }
-        catch (e: IllegalAccessException) {
-            throw RuntimeException(e)
-        }
-        catch (e: InvocationTargetException) {
-            throw RuntimeException(e)
-        }
-        catch (e: NoSuchMethodException) {
-            throw RuntimeException(e)
+        catch (e: Exception) {
+            throw e
         }
 
         inspectionSetup?.accept(phpInspection)
@@ -51,8 +41,7 @@ abstract class TestCase: BasePlatformTestCase() {
         PhpProjectConfigurationFacade.getInstance(project).languageLevel = phpLanguageLevelDeclared
 
         myFixture.enableInspections(phpInspection)
-        myFixture.configureByFile("$phpSourceNamed.php")
-        myFixture.testHighlighting(true, false, true)
+        myFixture.testHighlighting(true, false, true, "$phpSourceBase/$phpSourceSub.php")
 
         if (quickFixesEnabled != false) {
             val phpLanguageLevelSuffix =
@@ -64,7 +53,7 @@ abstract class TestCase: BasePlatformTestCase() {
 
             if (inspectionQuickFixes.isNotEmpty()) {
                 inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix ?: return@Consumer) })
-                myFixture.checkResultByFile("$phpSourceNamed.fixed$phpLanguageLevelSuffix.php")
+                myFixture.checkResultByFile("$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php")
             }
         }
     }

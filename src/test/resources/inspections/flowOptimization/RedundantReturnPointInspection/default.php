@@ -1,18 +1,16 @@
 <?php
 
-function case1()
-{
-    if (case1()) {
-        case1();
+$dummy = function () {
+    if (x()) {
+        x();
 
         <weak_warning descr="[PHP Hammer] Redundant return point.">return true;</weak_warning>
     }
 
     return true;
-}
+};
 
-function case2()
-{
+$dummy = function () {
     $something = true;
 
     if ($something) {
@@ -22,41 +20,38 @@ function case2()
     }
 
     return $something;
-}
+};
 
-function case3()
-{
-    if (case3()) {
+$dummy = function () {
+    if (x()) {
         <weak_warning descr="[PHP Hammer] Redundant return point.">return;</weak_warning>
-    } else if (case3()) {
+    } else if (x()) {
         return 1;
-    } else if (case3()) {
+    } else if (x()) {
         <weak_warning descr="[PHP Hammer] Redundant return point.">return;</weak_warning>
-    } elseif (case3()) {
+    } elseif (x()) {
         <weak_warning descr="[PHP Hammer] Redundant return point.">return;</weak_warning>
     } else {
         <weak_warning descr="[PHP Hammer] Redundant return point.">return;</weak_warning>
     }
 
     return;
-}
+};
 
-function case4()
-{
-    if (case4()) {
-        case4();
+$dummy = function () {
+    if (x()) {
+        x();
         <weak_warning descr="[PHP Hammer] Redundant return point.">return;</weak_warning>
     }
 
     return;
-}
+};
 
-function case5()
-{
-    if (case5()) {
-        case5();
+$dummy = function () {
+    if (x()) {
+        x();
         <weak_warning descr="[PHP Hammer] Redundant return point.">return TRUE;</weak_warning>
     }
 
     return true;
-}
+};
