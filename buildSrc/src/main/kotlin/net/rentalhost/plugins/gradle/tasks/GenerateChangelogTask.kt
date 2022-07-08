@@ -58,7 +58,7 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                     if (commitBoxes.all { it.value.isEmpty() })
                         return@with
 
-                    if (it.key != "Unreleased") {
+                    if (it.key != "") {
                         urlReferences[it.key] = "https://github.com/hammer-tools/php-hammer/releases/tag/${it.key}"
                     }
 

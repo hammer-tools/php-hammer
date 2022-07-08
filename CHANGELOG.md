@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **[StringSimplificationInspection]**: implemented ("string can be simplified");
+- **[ToStringSimplificationInspection]**: implemented ("call to __toString() can be simplified");
+- **[TypeCastNormalizationInspection]**: implemented ("type cast normalization");
+
 ## [0.2.0] - 2022-07-07
 
 ### Added
@@ -31,6 +39,12 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 - **[NullableTypeRightmostInspection]**: implemented ("nullable type on the rightmost side");
 - **[RedundantReturnPointInspection]**: implemented ("redundant return point");
 - **[SortUseVariablesInspection]**: implemented ("sort use() variables");
+
+[StringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-string-simplification-inspection
+
+[ToStringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-to-string-simplification-inspection
+
+[TypeCastNormalizationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-type-cast-normalization-inspection
 
 [0.2.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.2.0
 
