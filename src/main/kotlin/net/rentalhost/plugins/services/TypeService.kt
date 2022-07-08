@@ -1,6 +1,8 @@
 package net.rentalhost.plugins.services
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.tree.TokenSet
+import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.impl.PhpPsiElementImpl
 import org.apache.commons.lang.StringUtils
 import java.util.*
@@ -10,6 +12,9 @@ import kotlin.streams.toList
 
 object TypeService {
     private val nullType = prependGlobalNamespace(mutableListOf("null"))
+
+    var compareOperations: TokenSet =
+        TokenSet.create(*arrayOf(PhpTokenTypes.opEQUAL, PhpTokenTypes.opNOT_EQUAL, PhpTokenTypes.opIDENTICAL, PhpTokenTypes.opNOT_IDENTICAL))
 
     fun splitTypes(types: String?): Stream<String?> =
         Arrays.stream(StringUtils.split(types, "|"))
