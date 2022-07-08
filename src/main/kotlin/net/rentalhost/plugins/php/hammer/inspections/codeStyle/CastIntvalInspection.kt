@@ -9,10 +9,10 @@ import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
+import net.rentalhost.plugins.services.CastService
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.TypeService
 
 class CastIntvalInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
@@ -24,7 +24,7 @@ class CastIntvalInspection: PhpInspection() {
                     return processSetTypeCast(problemsHolder, element)
                 }
 
-                val castType = TypeService.castFunctions[functionName]
+                val castType = CastService.castFunctions[functionName]
 
                 if (castType != null) {
                     processFunctionCast(problemsHolder, element, castType)
@@ -40,7 +40,7 @@ class CastIntvalInspection: PhpInspection() {
 
         val castElement = element.parameters[0] as? VariableImpl ?: return
         val castType = element.parameters[1] as? StringLiteralExpressionImpl ?: return
-        val castTypeTo = TypeService.castSetType[castType.contents.lowercase()] ?: return
+        val castTypeTo = CastService.castSetType[castType.contents.lowercase()] ?: return
 
         if (castTypeTo == "null") {
             return ProblemsHolderService.registerProblem(
