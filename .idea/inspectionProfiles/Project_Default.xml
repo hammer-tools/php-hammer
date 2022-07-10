@@ -393,7 +393,9 @@
       <option name="ignoreSideEffectConditions" value="true" />
     </inspection_tool>
     <inspection_tool class="DuplicateExpressions" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="DuplicateKeyInSection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="DuplicatePropertyInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DuplicateSectionInFile" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="DuplicateStringLiteralInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="MIN_STRING_LENGTH" value="5" />
       <option name="IGNORE_PROPERTY_KEYS" value="false" />
@@ -1014,7 +1016,7 @@
     <inspection_tool class="MavenRedundantGroupId" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MayBeConstant" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="MeaninglessRecordAnnotationInspection" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="MemberVisibilityCanBePrivate" enabled="true" level="INFO" enabled_by_default="true" editorAttributes="INFO_ATTRIBUTES" />
+    <inspection_tool class="MemberVisibilityCanBePrivate" enabled="false" level="INFO" enabled_by_default="false" editorAttributes="INFO_ATTRIBUTES" />
     <inspection_tool class="MessDetectorValidationInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="MetaAnnotationWithoutRuntimeRetention" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MethodCallInLoopCondition" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -1274,7 +1276,7 @@
     <inspection_tool class="PackageWithTooFewClasses" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="limit" value="3" />
     </inspection_tool>
-    <inspection_tool class="PackageWithTooManyClasses" enabled="true" level="WARNING" enabled_by_default="true">
+    <inspection_tool class="PackageWithTooManyClasses" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="limit" value="50" />
     </inspection_tool>
     <inspection_tool class="ParameterCanBeLocal" enabled="true" level="WARNING" enabled_by_default="true" />

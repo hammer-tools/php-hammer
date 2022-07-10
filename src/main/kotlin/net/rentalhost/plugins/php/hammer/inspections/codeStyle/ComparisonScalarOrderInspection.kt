@@ -14,8 +14,6 @@ import javax.swing.JComponent
 
 class ComparisonScalarOrderInspection: PhpInspection() {
     var optionScalarLeft: Boolean = false
-
-    @Suppress("MemberVisibilityCanBePrivate")
     var optionScalarRight: Boolean = true
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
@@ -45,7 +43,6 @@ class ComparisonScalarOrderInspection: PhpInspection() {
                             elementRight != null) {
                             val elementLeftCopy = elementLeft.copy()
 
-                            @Suppress("MemberVisibilityCanBePrivate")
                             elementLeft.replace(elementRight)
                             elementRight.replace(elementLeftCopy)
                         }

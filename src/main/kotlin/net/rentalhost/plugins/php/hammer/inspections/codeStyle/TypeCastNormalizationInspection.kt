@@ -14,8 +14,6 @@ import javax.swing.JComponent
 
 class TypeCastNormalizationInspection: PhpInspection() {
     var optionFormatShort: Boolean = true
-
-    @Suppress("MemberVisibilityCanBePrivate")
     var optionFormatLong: Boolean = false
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
