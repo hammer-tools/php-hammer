@@ -3,6 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
@@ -15,9 +16,11 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 import javax.swing.JComponent
 
+enum class OptionNullableTypeFormat { SHORT, LONG }
+
 class NullableTypeFormatInspection: PhpInspection() {
-    var optionFormatShort: Boolean = false
-    var optionFormatLong: Boolean = true
+    @OptionTag
+    var optionNullableTypeFormat: OptionNullableTypeFormat = OptionNullableTypeFormat.LONG
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -31,10 +34,10 @@ class NullableTypeFormatInspection: PhpInspection() {
                     val elementTypeIsShort = elementTypeText.startsWith("?")
                     var elementTypeReplacementSuggestion: String? = null
 
-                    if (elementTypeIsShort && optionFormatLong) {
+                    if (elementTypeIsShort && optionNullableTypeFormat === OptionNullableTypeFormat.LONG) {
                         elementTypeReplacementSuggestion = "${elementTypeText.substring(1)}|null"
                     }
-                    else if (!elementTypeIsShort && optionFormatShort) {
+                    else if (!elementTypeIsShort && optionNullableTypeFormat === OptionNullableTypeFormat.SHORT) {
                         val elementTypeSingular = TypeService.exceptNull(elementTypeText).findFirst()
 
                         if (elementTypeSingular.isPresent) {
@@ -50,7 +53,8 @@ class NullableTypeFormatInspection: PhpInspection() {
                         element,
                         "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
                         SimpleTypeReplaceQuickFix(
-                            if (optionFormatLong) "Replace with the long format" else "Replace with the short format",
+                            if (optionNullableTypeFormat === OptionNullableTypeFormat.LONG) "Replace with the long format"
+                            else "Replace with the short format",
                             elementTypeReplacementSuggestion
                         )
                     )
@@ -61,16 +65,15 @@ class NullableTypeFormatInspection: PhpInspection() {
 
     override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP800
 
-    fun useFormatLong(mode: Boolean) {
-        optionFormatShort = !mode
-        optionFormatLong = mode
-    }
-
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: RadioComponent ->
-                radioComponent.addOption("Use short format (\"?int\")", optionFormatShort) { isSelected: Boolean -> useFormatLong(!isSelected) }
-                radioComponent.addOption("Use long format (\"int|null\")", optionFormatLong) { isSelected: Boolean -> useFormatLong(isSelected) }
+                radioComponent.addOption("Use short format (\"?int\")", optionNullableTypeFormat === OptionNullableTypeFormat.SHORT) {
+                    optionNullableTypeFormat = OptionNullableTypeFormat.SHORT
+                }
+                radioComponent.addOption("Use long format (\"int|null\")", optionNullableTypeFormat === OptionNullableTypeFormat.LONG) {
+                    optionNullableTypeFormat = OptionNullableTypeFormat.LONG
+                }
             }
         }
     }

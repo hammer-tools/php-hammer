@@ -1,17 +1,15 @@
 <?php
 
-function case1()
-{
-    if (case1()) {
-        case1();
+$dummy = function () {
+    if (x()) {
+        x();
 
     }
 
     return true;
-}
+};
 
-function case2()
-{
+$dummy = function () {
     $something = true;
 
     if ($something) {
@@ -20,35 +18,32 @@ function case2()
     }
 
     return $something;
-}
+};
 
-function case3()
-{
-    if (case3()) {
-    } else if (case3()) {
+$dummy = function () {
+    if (x()) {
+    } else if (x()) {
         return 1;
-    } else if (case3()) {
-    } elseif (case3()) {
+    } else if (x()) {
+    } elseif (x()) {
     } else {
     }
 
     return;
-}
+};
 
-function case4()
-{
-    if (case4()) {
-        case4();
+$dummy = function () {
+    if (x()) {
+        x();
     }
 
     return;
-}
+};
 
-function case5()
-{
-    if (case5()) {
-        case5();
+$dummy = function () {
+    if (x()) {
+        x();
     }
 
     return true;
-}
+};

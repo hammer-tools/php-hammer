@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.SmartPsiElementPointer
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageFeature
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
@@ -22,7 +23,8 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
 
 class ParameterDefaultsNullInspection: PhpInspection() {
-    var includeAbstractMethods: Boolean = true
+    @OptionTag
+    var optionIncludeAbstractMethods: Boolean = true
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -40,7 +42,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                         parameter.defaultValue != null) {
                         val isAbstractMethod = context.isAbstractMethod()
 
-                        if (isAbstractMethod && !includeAbstractMethods)
+                        if (isAbstractMethod && !optionIncludeAbstractMethods)
                             return
 
                         val defaultValue = parameter.defaultValueType
@@ -70,7 +72,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
 
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
-            component.addCheckbox("Include abstract methods", includeAbstractMethods) { includeAbstractMethods = it }
+            component.addCheckbox("Include abstract methods", optionIncludeAbstractMethods) { optionIncludeAbstractMethods = it }
         }
     }
 

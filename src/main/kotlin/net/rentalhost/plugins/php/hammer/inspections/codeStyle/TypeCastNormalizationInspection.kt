@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.impl.source.tree.LeafPsiElement
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import net.rentalhost.plugins.services.FactoryService
@@ -12,9 +13,11 @@ import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
 
+enum class OptionTypeCastNormalizationFormat { SHORT, LONG }
+
 class TypeCastNormalizationInspection: PhpInspection() {
-    var optionFormatShort: Boolean = true
-    var optionFormatLong: Boolean = false
+    @OptionTag
+    var optionTypeCastNormalizationFormat: OptionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -22,8 +25,8 @@ class TypeCastNormalizationInspection: PhpInspection() {
                 with(element.elementType) {
                     val castTo = when (this) {
                         PhpTokenTypes.opFLOAT_CAST -> "(float)"
-                        PhpTokenTypes.opINTEGER_CAST -> if (optionFormatShort) "(int)" else "(integer)"
-                        PhpTokenTypes.opBOOLEAN_CAST -> if (optionFormatShort) "(bool)" else "(boolean)"
+                        PhpTokenTypes.opINTEGER_CAST -> if (optionTypeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(int)" else "(integer)"
+                        PhpTokenTypes.opBOOLEAN_CAST -> if (optionTypeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(bool)" else "(boolean)"
                         else -> return
                     }
 
@@ -43,16 +46,15 @@ class TypeCastNormalizationInspection: PhpInspection() {
         }
     }
 
-    fun useOptionFormatShort(mode: Boolean) {
-        optionFormatShort = mode
-        optionFormatLong = !mode
-    }
-
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Use short format (int, bool)", optionFormatShort) { isSelected: Boolean -> useOptionFormatShort(isSelected) }
-                radioComponent.addOption("Use long format (integer, boolean)", optionFormatLong) { isSelected: Boolean -> useOptionFormatShort(!isSelected) }
+                radioComponent.addOption("Use short format (int, bool)", optionTypeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) {
+                    optionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT
+                }
+                radioComponent.addOption("Use long format (integer, boolean)", optionTypeCastNormalizationFormat === OptionTypeCastNormalizationFormat.LONG) {
+                    optionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.LONG
+                }
             }
         }
     }

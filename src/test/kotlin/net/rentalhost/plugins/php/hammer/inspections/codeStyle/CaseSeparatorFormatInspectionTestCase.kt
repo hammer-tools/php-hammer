@@ -6,14 +6,14 @@ class CaseSeparatorFormatInspectionTestCase: TestCase() {
     fun testOptionFormatColon(): Unit =
         testInspection(
             CaseSeparatorFormatInspection::class.java,
-            "optionFormatColon",
-            { it.useFormatColon(true) }
+            "optionSeparatorFormatColon",
+            { it.optionSeparatorFormat = OptionSeparatorFormat.COLON }
         )
 
     fun testOptionFormatSemicolon(): Unit =
         testInspection(
             CaseSeparatorFormatInspection::class.java,
-            "optionFormatSemicolon",
-            { it.useFormatColon(false) }
+            "optionSeparatorFormatSemicolon",
+            { it.optionSeparatorFormat = OptionSeparatorFormat.SEMICOLON }
         )
 }
