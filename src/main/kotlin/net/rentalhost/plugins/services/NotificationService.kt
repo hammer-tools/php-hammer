@@ -1,13 +1,9 @@
 package net.rentalhost.plugins.services
 
-import com.intellij.ide.BrowserUtil
+import com.intellij.notification.BrowseNotificationAction
 import com.intellij.notification.Notification
-import com.intellij.notification.NotificationAction
-import com.intellij.notification.NotificationListener.UrlOpeningListener
+import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
-import com.intellij.notification.Notifications
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.application.ModalityState
 
 object NotificationService {
     fun notify(
@@ -18,7 +14,7 @@ object NotificationService {
         val notification = Notification(groupId, "", NotificationType.INFORMATION)
 
         @Suppress("DEPRECATION")
-        notification.setListener(UrlOpeningListener(false))
+        notification.setListener(NotificationListener.UrlOpeningListener(false))
 
         var finalContent = content
 
@@ -26,12 +22,11 @@ object NotificationService {
             for ((name, title, url) in actions) {
                 finalContent = finalContent.replace("\$${name}", "<a href=\"${url}\">${title}</a>")
 
-                notification.addAction(NotificationAction.create(title.replaceFirstChar(Char::titlecase)) { _ -> BrowserUtil.open(url) })
+                notification.addAction(BrowseNotificationAction(title.replaceFirstChar(Char::titlecase), url))
             }
         }
 
         notification.setContent(finalContent)
-
-        ApplicationManager.getApplication().invokeLater({ Notifications.Bus.notify(notification) }, ModalityState.NON_MODAL)
+        notification.notify(null)
     }
 }
