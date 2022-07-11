@@ -11,6 +11,11 @@ fun PsiElement?.insertBeforeElse(addIt: PsiElement, orElse: Lazy<() -> PsiElemen
 fun PsiElement.insertBefore(addIt: PsiElement): PsiElement =
     this.parent.addBefore(addIt, this)
 
+fun PsiElement.swap(swapWith: PsiElement): Unit = with(copy()) {
+    this@swap.replace(swapWith)
+    swapWith.replace(this)
+}
+
 fun PsiElement?.isScalar(): Boolean {
     if (this == null)
         return false

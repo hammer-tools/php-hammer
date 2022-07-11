@@ -7,6 +7,7 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.BinaryExpressionImpl
 import net.rentalhost.plugins.extensions.psi.isScalar
+import net.rentalhost.plugins.extensions.psi.swap
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
@@ -42,13 +43,8 @@ class ComparisonScalarOrderInspection: PhpInspection() {
                     if (optionScalarSide === OptionScalarSide.LEFT) "Scalar type must be on the left side."
                     else "Scalar type must be on the right side.",
                     LocalQuickFixService.SimpleInlineQuickFix("Flip comparison") {
-                        if (elementLeft != null &&
-                            elementRight != null) {
-                            val elementLeftCopy = elementLeft.copy()
-
-                            elementLeft.replace(elementRight)
-                            elementRight.replace(elementLeftCopy)
-                        }
+                        (elementLeft ?: return@SimpleInlineQuickFix)
+                            .swap(elementRight ?: return@SimpleInlineQuickFix)
                     }
                 )
             }
