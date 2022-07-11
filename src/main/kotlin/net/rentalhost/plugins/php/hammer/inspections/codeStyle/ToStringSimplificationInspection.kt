@@ -25,9 +25,10 @@ class ToStringSimplificationInspection: PhpInspection() {
                     problemsHolder,
                     element,
                     "Call to __toString() can be simplified.",
-                    LocalQuickFixService.SimpleInlineQuickFix("Replace with type cast (string)") {
-                        element.replace(FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementBase.text))
-                    }
+                    LocalQuickFixService.SimpleReplaceQuickFix(
+                        "Replace with type cast (string)",
+                        FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementBase.text)
+                    )
                 )
             }
         }

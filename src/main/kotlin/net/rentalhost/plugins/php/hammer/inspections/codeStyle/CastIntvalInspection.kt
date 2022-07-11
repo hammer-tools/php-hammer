@@ -47,9 +47,11 @@ class CastIntvalInspection: PhpInspection() {
                 problemsHolder,
                 element,
                 "This function cast can be replaced with null.",
-                LocalQuickFixService.SimpleInlineQuickFix("Replace with null") {
-                    element.parent.replace(FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = null;"))
-                }
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with null",
+                    element.parent,
+                    FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = null;")
+                )
             )
         }
 
@@ -57,9 +59,11 @@ class CastIntvalInspection: PhpInspection() {
             problemsHolder,
             element,
             "This function cast can be replaced with the type cast ($castTypeTo).",
-            LocalQuickFixService.SimpleInlineQuickFix("Replace with type cast ($castTypeTo)") {
-                element.parent.replace(FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = ($castTypeTo) \$${castElement.name};"))
-            }
+            LocalQuickFixService.SimpleReplaceQuickFix(
+                "Replace with type cast ($castTypeTo)",
+                element.parent,
+                FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = ($castTypeTo) \$${castElement.name};")
+            )
         )
     }
 
@@ -79,9 +83,10 @@ class CastIntvalInspection: PhpInspection() {
             problemsHolder,
             element,
             "This function cast can be replaced with the type cast ($castTypeTo).",
-            LocalQuickFixService.SimpleInlineQuickFix("Replace with type cast ($castTypeTo)") {
-                element.replace(FactoryService.createTypeCastExpression(problemsHolder.project, castTypeTo, expressionText))
-            }
+            LocalQuickFixService.SimpleReplaceQuickFix(
+                "Replace with type cast ($castTypeTo)",
+                FactoryService.createTypeCastExpression(problemsHolder.project, castTypeTo, expressionText)
+            )
         )
     }
 }
