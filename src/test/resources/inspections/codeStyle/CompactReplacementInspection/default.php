@@ -15,6 +15,6 @@ $dummy = function () {
         'y' => $y,
         ... <weak_warning descr="[PHP Hammer] Array can be replaced by compact().">['z' => $z]</weak_warning>,
         'x' => $x,
-        'a' => $a,
+        ... compact('a', "b"),
     ]</weak_warning>;
 };

@@ -11,5 +11,5 @@ $dummy = function () {
 
     ['x'=>$x] = [];
 
-    return compact('y', 'z', 'x', 'a');
+    return compact('y', 'z', 'x', 'a', 'b');
 };
