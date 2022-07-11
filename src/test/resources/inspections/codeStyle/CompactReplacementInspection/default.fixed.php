@@ -9,5 +9,7 @@ $dummy = function () {
     $b = [];
     $c = ['y'];
 
+    ['x'=>$x] = [];
+
     return compact('y', 'z', 'x', 'a');
 };

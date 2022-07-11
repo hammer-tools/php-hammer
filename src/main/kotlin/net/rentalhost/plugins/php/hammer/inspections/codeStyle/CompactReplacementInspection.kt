@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.MultiassignmentExpression
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
@@ -16,7 +17,8 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class CompactReplacementInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is ArrayCreationExpressionImpl) {
+            if (element is ArrayCreationExpressionImpl &&
+                element.parent !is MultiassignmentExpression) {
                 val arrayElements = element.unpackValues()
 
                 if (arrayElements.isEmpty())
