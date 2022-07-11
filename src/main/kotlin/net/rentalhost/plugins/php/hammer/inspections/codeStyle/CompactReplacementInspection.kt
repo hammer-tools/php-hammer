@@ -12,7 +12,6 @@ import net.rentalhost.plugins.extensions.psi.unpackValues
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.TypeService
 
 class CompactReplacementInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
@@ -26,18 +25,16 @@ class CompactReplacementInspection: PhpInspection() {
                 val arrayVariables = mutableListOf<String>()
 
                 for (arrayElement in arrayElements) {
-                    if (arrayElement is ArrayHashElementImpl) {
-                        val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
-                        val arrayElementValue = arrayElement.value as? VariableImpl ?: return
-
-                        if (arrayElementKey.contents != arrayElementValue.name)
-                            return
-
-                        arrayVariables.add("'${arrayElementValue.name}'")
-                    }
-                    else if (TypeService.isVariadic(arrayElement)) {
+                    if (arrayElement !is ArrayHashElementImpl)
                         return
-                    }
+
+                    val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
+                    val arrayElementValue = arrayElement.value as? VariableImpl ?: return
+
+                    if (arrayElementKey.contents != arrayElementValue.name)
+                        return
+
+                    arrayVariables.add("'${arrayElementValue.name}'")
                 }
 
                 ProblemsHolderService.registerProblem(

@@ -7,6 +7,7 @@ $dummy = function () {
 
     $a = compact('x');
     $b = [];
+    $c = ['y'];
 
     return compact('y', 'z', 'x', 'a');
 };
