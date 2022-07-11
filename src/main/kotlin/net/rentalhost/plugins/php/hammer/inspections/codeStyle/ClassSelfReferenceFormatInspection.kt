@@ -7,6 +7,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
+import com.jetbrains.php.lang.psi.elements.impl.MemberReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
@@ -22,34 +23,36 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is ClassReferenceImpl) {
-                PsiTreeUtil.getParentOfType(element, PhpClassImpl::class.java) ?: return
+            if (element is ClassReferenceImpl &&
+                element.parent is MemberReferenceImpl) {
+                val elementClass = PsiTreeUtil.getParentOfType(element, PhpClassImpl::class.java) ?: return
+                val elementClassName = elementClass.name
 
-                val elementClass = element.resolve()
+                val referenceName = element.text.lowercase()
 
-                if (elementClass is PhpClassImpl) {
-                    if (optionReferenceFormat == OptionReferenceFormat.SELF) {
-                        if (element.text.lowercase() == "self") {
-                            return
-                        }
-                    }
-                    else if (element.text.lowercase() == elementClass.name.lowercase()) {
+                if (optionReferenceFormat == OptionReferenceFormat.SELF) {
+                    if (referenceName == "self" ||
+                        referenceName != elementClassName.lowercase()) {
                         return
                     }
-
-                    val expectedFormat =
-                        if (optionReferenceFormat == OptionReferenceFormat.SELF) "self"
-                        else elementClass.name
-
-                    ProblemsHolderService.registerProblem(
-                        problemsHolder,
-                        element,
-                        "Class reference format must be \"$expectedFormat::class\".",
-                        LocalQuickFixService.SimpleInlineQuickFix("Replace with \"$expectedFormat::class\"") {
-                            element.replace(FactoryService.createClassReference(problemsHolder.project, expectedFormat))
-                        }
-                    )
                 }
+                else if (referenceName != "self" ||
+                         referenceName == elementClassName.lowercase()) {
+                    return
+                }
+
+                val expectedFormat =
+                    if (optionReferenceFormat == OptionReferenceFormat.SELF) "self"
+                    else elementClassName
+
+                ProblemsHolderService.registerProblem(
+                    problemsHolder,
+                    element,
+                    "Class reference format must be \"$expectedFormat\".",
+                    LocalQuickFixService.SimpleInlineQuickFix("Replace with \"$expectedFormat\"") {
+                        element.replace(FactoryService.createClassReference(problemsHolder.project, expectedFormat))
+                    }
+                )
             }
         }
     }
@@ -57,8 +60,12 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Prefer self::class", optionReferenceFormat === OptionReferenceFormat.SELF) { optionReferenceFormat = OptionReferenceFormat.SELF }
-                radioComponent.addOption("Prefer ClassName::class", optionReferenceFormat === OptionReferenceFormat.NAMED) { optionReferenceFormat = OptionReferenceFormat.NAMED }
+                radioComponent.addOption("Prefer self reference", optionReferenceFormat === OptionReferenceFormat.SELF) {
+                    optionReferenceFormat = OptionReferenceFormat.SELF
+                }
+                radioComponent.addOption("Prefer ClassName reference", optionReferenceFormat === OptionReferenceFormat.NAMED) {
+                    optionReferenceFormat = OptionReferenceFormat.NAMED
+                }
             }
         }
     }

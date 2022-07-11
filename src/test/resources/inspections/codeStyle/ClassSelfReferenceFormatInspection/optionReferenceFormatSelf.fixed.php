@@ -15,3 +15,13 @@ class Dummy
 // Not applicable:
 
 $dummy = Dummy::DUMMY;
+
+class DummyB extends Dummy
+{
+    function dummy()
+    {
+        return
+            self::DUMMY ||
+            Dummy::DUMMY;
+    }
+}

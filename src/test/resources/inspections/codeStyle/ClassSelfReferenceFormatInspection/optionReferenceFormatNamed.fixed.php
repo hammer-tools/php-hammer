@@ -12,6 +12,22 @@ class Dummy
     }
 }
 
+class DummyB extends Dummy
+{
+    function dummy()
+    {
+        return DummyB::DUMMY;
+    }
+}
+
 // Not applicable:
 
 $dummy = Dummy::DUMMY;
+
+class DummyC extends Dummy
+{
+    function dummy()
+    {
+        return Dummy::DUMMY;
+    }
+}
