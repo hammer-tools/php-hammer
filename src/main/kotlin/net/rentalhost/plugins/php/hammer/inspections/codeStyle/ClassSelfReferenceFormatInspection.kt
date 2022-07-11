@@ -9,17 +9,16 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MemberReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
+import net.rentalhost.plugins.enums.OptionClassSelfReferenceFormat
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
 
-enum class OptionReferenceFormat { SELF, NAMED }
-
 class ClassSelfReferenceFormatInspection: PhpInspection() {
     @OptionTag
-    var optionReferenceFormat: OptionReferenceFormat = OptionReferenceFormat.SELF
+    var optionClassSelfReferenceFormat: OptionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -30,7 +29,7 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
 
                 val referenceName = element.text.lowercase()
 
-                if (optionReferenceFormat == OptionReferenceFormat.SELF) {
+                if (optionClassSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) {
                     if (referenceName == "self" ||
                         referenceName != elementClassName.lowercase()) {
                         return
@@ -42,7 +41,7 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
                 }
 
                 val expectedFormat =
-                    if (optionReferenceFormat == OptionReferenceFormat.SELF) "self"
+                    if (optionClassSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) "self"
                     else elementClassName
 
                 ProblemsHolderService.registerProblem(
@@ -61,11 +60,11 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Prefer self reference", optionReferenceFormat === OptionReferenceFormat.SELF) {
-                    optionReferenceFormat = OptionReferenceFormat.SELF
+                radioComponent.addOption("Prefer self reference", optionClassSelfReferenceFormat === OptionClassSelfReferenceFormat.SELF) {
+                    optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF
                 }
-                radioComponent.addOption("Prefer ClassName reference", optionReferenceFormat === OptionReferenceFormat.NAMED) {
-                    optionReferenceFormat = OptionReferenceFormat.NAMED
+                radioComponent.addOption("Prefer ClassName reference", optionClassSelfReferenceFormat === OptionClassSelfReferenceFormat.NAMED) {
+                    optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.NAMED
                 }
             }
         }

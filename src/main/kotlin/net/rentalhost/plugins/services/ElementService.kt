@@ -29,7 +29,7 @@ object ElementService {
         return element
     }
 
-    fun isCompactFunction(element: PsiElement): Boolean =
+    private fun isCompactFunction(element: PsiElement): Boolean =
         element is FunctionReferenceImpl &&
         element.name?.lowercase() == "compact"
 

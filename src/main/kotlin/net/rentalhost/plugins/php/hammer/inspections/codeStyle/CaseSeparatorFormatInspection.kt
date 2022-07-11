@@ -11,17 +11,16 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.GroupStatementSimpleImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpCaseImpl
+import net.rentalhost.plugins.enums.OptionCaseSeparatorFormat
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
 
-enum class OptionSeparatorFormat { COLON, SEMICOLON }
-
 class CaseSeparatorFormatInspection: PhpInspection() {
     @OptionTag
-    var optionSeparatorFormat: OptionSeparatorFormat = OptionSeparatorFormat.COLON
+    var optionCaseSeparatorFormat: OptionCaseSeparatorFormat = OptionCaseSeparatorFormat.COLON
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -35,10 +34,10 @@ class CaseSeparatorFormatInspection: PhpInspection() {
                     val elementSeparatorColon = elementSeparator.text == ":"
                     var elementSeparatorReplacement: PsiElement? = null
 
-                    if (elementSeparatorColon && optionSeparatorFormat === OptionSeparatorFormat.SEMICOLON) {
+                    if (elementSeparatorColon && optionCaseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON) {
                         elementSeparatorReplacement = FactoryService.createSemicolon(problemsHolder.project)
                     }
-                    else if (!elementSeparatorColon && optionSeparatorFormat === OptionSeparatorFormat.COLON) {
+                    else if (!elementSeparatorColon && optionCaseSeparatorFormat === OptionCaseSeparatorFormat.COLON) {
                         elementSeparatorReplacement = FactoryService.createColon(problemsHolder.project)
                     }
 
@@ -61,8 +60,10 @@ class CaseSeparatorFormatInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Use colon", optionSeparatorFormat === OptionSeparatorFormat.COLON) { optionSeparatorFormat = OptionSeparatorFormat.COLON }
-                radioComponent.addOption("Use semicolon", optionSeparatorFormat === OptionSeparatorFormat.SEMICOLON) { optionSeparatorFormat = OptionSeparatorFormat.SEMICOLON }
+                radioComponent.addOption("Use colon", optionCaseSeparatorFormat === OptionCaseSeparatorFormat.COLON) { optionCaseSeparatorFormat = OptionCaseSeparatorFormat.COLON }
+                radioComponent.addOption("Use semicolon", optionCaseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON) {
+                    optionCaseSeparatorFormat = OptionCaseSeparatorFormat.SEMICOLON
+                }
             }
         }
     }

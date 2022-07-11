@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.BinaryExpressionImpl
+import net.rentalhost.plugins.enums.OptionComparisonScalarSide
 import net.rentalhost.plugins.extensions.psi.isScalar
 import net.rentalhost.plugins.extensions.psi.swap
 import net.rentalhost.plugins.services.LocalQuickFixService
@@ -14,11 +15,9 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 import javax.swing.JComponent
 
-enum class OptionScalarSide { LEFT, RIGHT }
-
 class ComparisonScalarOrderInspection: PhpInspection() {
     @OptionTag
-    var optionScalarSide: OptionScalarSide = OptionScalarSide.RIGHT
+    var optionComparisonScalarSide: OptionComparisonScalarSide = OptionComparisonScalarSide.RIGHT
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -30,7 +29,7 @@ class ComparisonScalarOrderInspection: PhpInspection() {
                 val leftScalar = elementLeft.isScalar()
                 val rightScalar = elementRight.isScalar()
 
-                if (optionScalarSide === OptionScalarSide.LEFT) {
+                if (optionComparisonScalarSide === OptionComparisonScalarSide.LEFT) {
                     if (leftScalar || !rightScalar)
                         return
                 }
@@ -40,7 +39,7 @@ class ComparisonScalarOrderInspection: PhpInspection() {
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     element,
-                    if (optionScalarSide === OptionScalarSide.LEFT) "Scalar type must be on the left side."
+                    if (optionComparisonScalarSide === OptionComparisonScalarSide.LEFT) "Scalar type must be on the left side."
                     else "Scalar type must be on the right side.",
                     LocalQuickFixService.SimpleInlineQuickFix("Flip comparison") {
                         (elementLeft ?: return@SimpleInlineQuickFix)
@@ -54,8 +53,12 @@ class ComparisonScalarOrderInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Scalar at left", optionScalarSide === OptionScalarSide.LEFT) { optionScalarSide = OptionScalarSide.LEFT }
-                radioComponent.addOption("Scalar at right", optionScalarSide === OptionScalarSide.RIGHT) { optionScalarSide = OptionScalarSide.RIGHT }
+                radioComponent.addOption("Scalar at left", optionComparisonScalarSide === OptionComparisonScalarSide.LEFT) {
+                    optionComparisonScalarSide = OptionComparisonScalarSide.LEFT
+                }
+                radioComponent.addOption("Scalar at right", optionComparisonScalarSide === OptionComparisonScalarSide.RIGHT) {
+                    optionComparisonScalarSide = OptionComparisonScalarSide.RIGHT
+                }
             }
         }
     }

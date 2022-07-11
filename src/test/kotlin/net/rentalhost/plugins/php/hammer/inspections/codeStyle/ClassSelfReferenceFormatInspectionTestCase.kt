@@ -1,19 +1,20 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
+import net.rentalhost.plugins.enums.OptionClassSelfReferenceFormat
 import net.rentalhost.plugins.services.TestCase
 
 class ClassSelfReferenceFormatInspectionTestCase: TestCase() {
-    fun testOptionReferenceFormatSelf(): Unit =
+    fun testOptionClassSelfReferenceFormatSelf(): Unit =
         testInspection(
             ClassSelfReferenceFormatInspection::class.java,
-            "optionReferenceFormatSelf",
-            { it.optionReferenceFormat = OptionReferenceFormat.SELF }
+            "optionClassSelfReferenceFormatSelf",
+            { it.optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF }
         )
 
-    fun testOptionReferenceFormatNamed(): Unit =
+    fun testOptionClassSelfReferenceFormatNamed(): Unit =
         testInspection(
             ClassSelfReferenceFormatInspection::class.java,
-            "optionReferenceFormatNamed",
-            { it.optionReferenceFormat = OptionReferenceFormat.NAMED }
+            "optionClassSelfReferenceFormatNamed",
+            { it.optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.NAMED }
         )
 }

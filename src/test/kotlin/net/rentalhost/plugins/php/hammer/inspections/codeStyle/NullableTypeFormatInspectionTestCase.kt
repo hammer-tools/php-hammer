@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
+import net.rentalhost.plugins.enums.OptionNullableTypeFormat
 import net.rentalhost.plugins.services.TestCase
 
 class NullableTypeFormatInspectionTestCase: TestCase() {

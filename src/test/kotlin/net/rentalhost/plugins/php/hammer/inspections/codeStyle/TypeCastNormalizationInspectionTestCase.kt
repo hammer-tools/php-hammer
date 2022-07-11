@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
+import net.rentalhost.plugins.enums.OptionTypeCastNormalizationFormat
 import net.rentalhost.plugins.services.TestCase
 
 class TypeCastNormalizationInspectionTestCase: TestCase() {

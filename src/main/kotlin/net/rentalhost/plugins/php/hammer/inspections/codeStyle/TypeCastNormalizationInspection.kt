@@ -7,13 +7,12 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
+import net.rentalhost.plugins.enums.OptionTypeCastNormalizationFormat
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
-
-enum class OptionTypeCastNormalizationFormat { SHORT, LONG }
 
 class TypeCastNormalizationInspection: PhpInspection() {
     @OptionTag

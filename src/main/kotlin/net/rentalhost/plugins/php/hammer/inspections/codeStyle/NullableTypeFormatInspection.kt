@@ -9,14 +9,13 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
 import com.jetbrains.php.lang.psi.elements.impl.PhpTypeDeclarationImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
+import net.rentalhost.plugins.enums.OptionNullableTypeFormat
 import net.rentalhost.plugins.services.LocalQuickFixService.SimpleTypeReplaceQuickFix
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.OptionsPanelService.RadioComponent
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 import javax.swing.JComponent
-
-enum class OptionNullableTypeFormat { SHORT, LONG }
 
 class NullableTypeFormatInspection: PhpInspection() {
     @OptionTag
