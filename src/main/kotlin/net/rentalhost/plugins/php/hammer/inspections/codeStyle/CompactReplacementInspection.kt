@@ -9,6 +9,8 @@ import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import net.rentalhost.plugins.extensions.psi.unpackValues
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.TypeService
 
@@ -21,6 +23,8 @@ class CompactReplacementInspection: PhpInspection() {
                 if (arrayElements.isEmpty())
                     return
 
+                val arrayVariables = mutableListOf<String>()
+
                 for (arrayElement in arrayElements) {
                     if (arrayElement is ArrayHashElementImpl) {
                         val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
@@ -28,6 +32,8 @@ class CompactReplacementInspection: PhpInspection() {
 
                         if (arrayElementKey.contents != arrayElementValue.name)
                             return
+
+                        arrayVariables.add("'${arrayElementValue.name}'")
                     }
                     else if (TypeService.isVariadic(arrayElement)) {
                         return
@@ -37,7 +43,11 @@ class CompactReplacementInspection: PhpInspection() {
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     element,
-                    "Array can be replaced by compact()."
+                    "Array can be replaced by compact().",
+                    LocalQuickFixService.SimpleReplaceQuickFix(
+                        "Replace with compact()",
+                        FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables)
+                    )
                 )
             }
         }

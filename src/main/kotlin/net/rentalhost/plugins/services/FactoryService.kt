@@ -59,6 +59,9 @@ object FactoryService {
     fun createReturnType(project: Project, returnType: String): PhpReturnType =
         PhpPsiElementFactory.createReturnType(project, returnType)
 
+    fun createFunctionCall(project: Project, functionName: String, parameters: List<String>): FunctionReference =
+        PhpPsiElementFactory.createPhpPsiFromText(project, FunctionReference::class.java, "$functionName(${parameters.joinToString(",")});")
+
     fun createParameterType(project: Project, parameterType: String): PhpParameterType =
         PhpPsiElementFactory.createParameterType(project, parameterType)
 
