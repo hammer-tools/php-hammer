@@ -7,7 +7,6 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
-import com.jetbrains.php.lang.psi.elements.impl.MemberReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
 import net.rentalhost.plugins.enums.OptionClassSelfReferenceFormat
 import net.rentalhost.plugins.services.FactoryService
@@ -22,8 +21,7 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is ClassReferenceImpl &&
-                element.parent is MemberReferenceImpl) {
+            if (element is ClassReferenceImpl) {
                 val elementClass = PsiTreeUtil.getParentOfType(element, PhpClassImpl::class.java) ?: return
                 val elementClassName = elementClass.name
 
