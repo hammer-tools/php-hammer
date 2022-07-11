@@ -142,6 +142,15 @@
                          shortName="ClassSelfReferenceFormatInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ClassSelfReferenceFormatInspection" />
 
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Replace with compact()"
+                         level="WEAK WARNING"
+                         shortName="CompactReplacementInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.CompactReplacementInspection" />
+
         <!-- Flow Optimization -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
