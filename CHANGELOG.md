@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **[ClassSelfReferenceFormatInspection]**: implemented ("class self-reference format normalization");
+- **[CompactReplacementInspection]**: implemented ("replace with compact()");
+
 ## [0.3.0] - 2022-07-10
 
 ### Added
@@ -40,6 +47,10 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 - **[NullableTypeRightmostInspection]**: implemented ("nullable type on the rightmost side");
 - **[RedundantReturnPointInspection]**: implemented ("redundant return point");
 - **[SortUseVariablesInspection]**: implemented ("sort use() variables");
+
+[ClassSelfReferenceFormatInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-class-self-reference-format-inspection
+
+[CompactReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-compact-replacement-inspection
 
 [0.3.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.3.0
 

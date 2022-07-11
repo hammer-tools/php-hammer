@@ -1,10 +1,9 @@
 package net.rentalhost.plugins.services
 
+import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
-import com.jetbrains.php.lang.psi.elements.impl.ControlStatementImpl
-import com.jetbrains.php.lang.psi.elements.impl.ElseIfImpl
-import com.jetbrains.php.lang.psi.elements.impl.ElseImpl
-import com.jetbrains.php.lang.psi.elements.impl.IfImpl
+import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
+import com.jetbrains.php.lang.psi.elements.impl.*
 
 object ElementService {
     fun conditionalStarter(element: PhpPsiElement): ControlStatementImpl? {
@@ -28,5 +27,23 @@ object ElementService {
             return null
 
         return element
+    }
+
+    fun isCompactFunction(element: PsiElement): Boolean =
+        element is FunctionReferenceImpl &&
+        element.name?.lowercase() == "compact"
+
+    fun getCompactNames(element: PsiElement): List<String>? {
+        if (isCompactFunction(element) &&
+            element is FunctionReferenceImpl) {
+            return element.parameters.map {
+                if (it !is StringLiteralExpression)
+                    return null
+
+                return@map it.contents
+            }
+        }
+
+        return null
     }
 }

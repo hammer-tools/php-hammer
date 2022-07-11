@@ -1,11 +1,10 @@
 package net.rentalhost.plugins.extensions.psi
 
 import com.intellij.psi.PsiElement
-import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl
-import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpPsiElementImpl
+import net.rentalhost.plugins.services.ElementService
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.TypeService
 
@@ -19,28 +18,10 @@ fun ArrayCreationExpressionImpl.unpackValues(): MutableList<PsiElement> {
         }
         else if (arrayElement is PhpPsiElementImpl<*> &&
                  TypeService.isVariadic(arrayElement)) {
-            val variadicElement = arrayElement.firstPsiChild
+            val compactNames = ElementService.getCompactNames(arrayElement.firstPsiChild as PsiElement)
 
-            if (variadicElement is FunctionReferenceImpl &&
-                variadicElement.name?.lowercase() == "compact") {
-                val compactVariables = mutableListOf<PsiElement>()
-
-                for (compactArgument in variadicElement.parameters) {
-                    if (compactArgument !is StringLiteralExpression) {
-                        arrayElements.add(arrayElement)
-
-                        continue
-                    }
-
-                    compactVariables.add(
-                        FactoryService.createArrayValue(
-                            this.project,
-                            "'${compactArgument.contents}'=>\$${compactArgument.contents}"
-                        ) as PsiElement
-                    )
-                }
-
-                arrayElements.addAll(compactVariables)
+            if (compactNames != null) {
+                arrayElements.addAll(compactNames.map { FactoryService.createArrayKeyValue(arrayElement.project, "'$it'", "\$$it") })
 
                 continue
             }
