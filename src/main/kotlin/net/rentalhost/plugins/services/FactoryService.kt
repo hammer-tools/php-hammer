@@ -62,6 +62,9 @@ object FactoryService {
     fun createParameterType(project: Project, parameterType: String): PhpParameterType =
         PhpPsiElementFactory.createParameterType(project, parameterType)
 
+    fun createClassReference(project: Project, qualifiedName: String): ClassReference =
+        PhpPsiElementFactory.createClassReference(project, qualifiedName)
+
     fun createComplexParameter(project: Project, parameterText: String): Parameter =
         PhpPsiElementFactory.createComplexParameter(project, parameterText)
 
