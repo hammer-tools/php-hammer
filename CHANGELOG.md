@@ -12,6 +12,12 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 - **[ClassSelfReferenceFormatInspection]**: implemented ("class self-reference format normalization");
 - **[CompactReplacementInspection]**: implemented ("replace with compact()");
 
+[0.4.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.4.0
+
+[ClassSelfReferenceFormatInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-class-self-reference-format-inspection
+
+[CompactReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-compact-replacement-inspection
+
 ## [0.3.0] - 2022-07-10
 
 ### Added
@@ -20,6 +26,16 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 - **[StringSimplificationInspection]**: implemented ("string can be simplified");
 - **[ToStringSimplificationInspection]**: implemented ("call to __toString() can be simplified");
 - **[TypeCastNormalizationInspection]**: implemented ("type cast normalization");
+
+[0.3.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.3.0
+
+[ComparisonScalarOrderInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-comparison-scalar-order-inspection
+
+[StringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-string-simplification-inspection
+
+[ToStringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-to-string-simplification-inspection
+
+[TypeCastNormalizationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-type-cast-normalization-inspection
 
 ## [0.2.0] - 2022-07-07
 
@@ -36,33 +52,6 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 ### Fixed
 
 - **[SortUseVariablesInspection]**: fix `use()` sort with not used variables, keeping original order as exception;
-
-## [0.1.0] - 2022-07-02
-
-### Added
-
-- **[ArrayPackableInspection]**: implemented ("array can be packed");
-- **[CaseSeparatorFormatInspection]**: implemented ("case separator format");
-- **[NullableTypeFormatInspection]**: implemented ("nullable types format");
-- **[NullableTypeRightmostInspection]**: implemented ("nullable type on the rightmost side");
-- **[RedundantReturnPointInspection]**: implemented ("redundant return point");
-- **[SortUseVariablesInspection]**: implemented ("sort use() variables");
-
-[0.4.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.4.0
-
-[ClassSelfReferenceFormatInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-class-self-reference-format-inspection
-
-[CompactReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-compact-replacement-inspection
-
-[0.3.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.3.0
-
-[ComparisonScalarOrderInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-comparison-scalar-order-inspection
-
-[StringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-string-simplification-inspection
-
-[ToStringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-to-string-simplification-inspection
-
-[TypeCastNormalizationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-type-cast-normalization-inspection
 
 [0.2.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.2.0
 
@@ -82,6 +71,17 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 [SortUseVariablesInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-sort-use-variables-inspection
 
+## [0.1.0] - 2022-07-02
+
+### Added
+
+- **[ArrayPackableInspection]**: implemented ("array can be packed");
+- **[CaseSeparatorFormatInspection]**: implemented ("case separator format");
+- **[NullableTypeFormatInspection]**: implemented ("nullable types format");
+- **[NullableTypeRightmostInspection]**: implemented ("nullable type on the rightmost side");
+- **[RedundantReturnPointInspection]**: implemented ("redundant return point");
+- **[SortUseVariablesInspection]**: implemented ("sort use() variables");
+
 [0.1.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.1.0
 
 [ArrayPackableInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-array-packable-inspection
@@ -93,4 +93,6 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 [NullableTypeRightmostInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-nullable-type-rightmost-inspection
 
 [RedundantReturnPointInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-redundant-return-point-inspection
+
+[SortUseVariablesInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-sort-use-variables-inspection
 

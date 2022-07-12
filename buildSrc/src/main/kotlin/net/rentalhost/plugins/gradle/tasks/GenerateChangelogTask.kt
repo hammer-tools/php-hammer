@@ -27,8 +27,6 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
 
         val commits = GitService.getCommits(project.projectDir)
 
-        val urlReferences = mutableMapOf<String, String>()
-
         commits.groupBy { it.tag }
             .forEach {
                 with(it.value) {
@@ -58,6 +56,8 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                     if (commitBoxes.all { it.value.isEmpty() })
                         return@with
 
+                    val urlReferences = mutableMapOf<String, String>()
+
                     if (it.key != "") {
                         urlReferences[it.key] = "https://github.com/hammer-tools/php-hammer/releases/tag/${it.key}"
                     }
@@ -77,10 +77,10 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
 
                         changelogResult += "\n"
                     }
+
+                    urlReferences.forEach { (reference, url) -> changelogResult += "[$reference]: $url\n\n" }
                 }
             }
-
-        urlReferences.forEach { (reference, url) -> changelogResult += "[$reference]: $url\n\n" }
 
         File("${project.projectDir}/CHANGELOG.md").writeText(changelogResult)
     }

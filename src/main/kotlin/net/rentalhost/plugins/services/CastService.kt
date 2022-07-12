@@ -1,7 +1,6 @@
 package net.rentalhost.plugins.services
 
 object CastService {
-    @Suppress("SpellCheckingInspection")
     val castFunctions: Map<String, String> = mapOf(
         Pair("boolval", "bool"),
         Pair("intval", "int"),
