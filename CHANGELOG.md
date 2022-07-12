@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **[DollarSignOutsideCurlyBracesInspection]**: implemented ("dollar sign outside of the curly braces");
+
+[DollarSignOutsideCurlyBracesInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-dollar-sign-outside-curly-braces-inspection
+
 ## [0.4.0] - 2022-07-11
 
 ### Added
