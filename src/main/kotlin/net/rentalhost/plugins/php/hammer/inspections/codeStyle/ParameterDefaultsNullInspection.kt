@@ -45,14 +45,14 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                         return
                 }
 
+                val isAbstractMethod = context.isAbstractMethod()
+
+                if (isAbstractMethod && !optionIncludeAbstractMethods)
+                    return
+
                 for (parameter in element.parameters) {
                     if (parameter is ParameterImpl &&
                         parameter.defaultValue != null) {
-                        val isAbstractMethod = context.isAbstractMethod()
-
-                        if (isAbstractMethod && !optionIncludeAbstractMethods)
-                            return
-
                         val defaultValue = parameter.defaultValueType
 
                         if (defaultValue.toString() != "null") {
