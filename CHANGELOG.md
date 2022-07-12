@@ -5,13 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.0] - 2022-07-12
 
 ### Added
 
 - **[DollarSignOutsideCurlyBracesInspection]**: implemented ("dollar sign outside of the curly braces");
 
+### Fixed
+
+- **[StringSimplificationInspection]**: fix for "{$x->from->y()}" case;
+
+[0.5.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.5.0
+
 [DollarSignOutsideCurlyBracesInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-dollar-sign-outside-curly-braces-inspection
+
+[StringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-string-simplification-inspection
 
 ## [0.4.0] - 2022-07-11
 

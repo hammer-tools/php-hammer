@@ -25,7 +25,10 @@ class StringSimplificationInspection: PhpInspection() {
                         "String can be simplified.",
                         LocalQuickFixService.SimpleReplaceQuickFix(
                             "Replace with type cast (string)",
-                            FactoryService.createTypeCastExpression(problemsHolder.project, "string", "\$${element.name}")
+                            FactoryService.createTypeCastExpression(
+                                problemsHolder.project, "string",
+                                element.text.substringAfter("{").substringBefore("}")
+                            )
                         )
                     )
                 }
