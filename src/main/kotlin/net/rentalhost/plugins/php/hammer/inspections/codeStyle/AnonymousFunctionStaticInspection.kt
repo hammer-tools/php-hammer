@@ -48,7 +48,10 @@ class AnonymousFunctionStaticInspection: PhpInspection() {
 
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
-            component.addCheckbox("Include abstract methods", includeShortFunctions) { includeShortFunctions = it }
+            component.addCheckbox(
+                "Include short functions", includeShortFunctions,
+                "This option allows the inspection to check arrow functions (<code>fn()</code>), in addition to regular functions (<code>function()</code>)."
+            ) { includeShortFunctions = it }
         }
     }
 

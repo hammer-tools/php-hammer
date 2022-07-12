@@ -53,12 +53,15 @@ class ComparisonScalarOrderInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Scalar at left", optionComparisonScalarSide === OptionComparisonScalarSide.LEFT) {
-                    optionComparisonScalarSide = OptionComparisonScalarSide.LEFT
-                }
-                radioComponent.addOption("Scalar at right", optionComparisonScalarSide === OptionComparisonScalarSide.RIGHT) {
-                    optionComparisonScalarSide = OptionComparisonScalarSide.RIGHT
-                }
+                radioComponent.addOption(
+                    "Prefer scalar at left", optionComparisonScalarSide === OptionComparisonScalarSide.LEFT,
+                    "Your conditionals will look like: <code>true === \$example</code>"
+                ) { optionComparisonScalarSide = OptionComparisonScalarSide.LEFT }
+
+                radioComponent.addOption(
+                    "Prefer scalar at right", optionComparisonScalarSide === OptionComparisonScalarSide.RIGHT,
+                    "Your conditionals will look like: <code>\$example === true</code>"
+                ) { optionComparisonScalarSide = OptionComparisonScalarSide.RIGHT }
             }
         }
     }

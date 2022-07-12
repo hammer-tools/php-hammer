@@ -60,10 +60,15 @@ class CaseSeparatorFormatInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Use colon", optionCaseSeparatorFormat === OptionCaseSeparatorFormat.COLON) { optionCaseSeparatorFormat = OptionCaseSeparatorFormat.COLON }
-                radioComponent.addOption("Use semicolon", optionCaseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON) {
-                    optionCaseSeparatorFormat = OptionCaseSeparatorFormat.SEMICOLON
-                }
+                radioComponent.addOption(
+                    "Prefer colon as separator", optionCaseSeparatorFormat === OptionCaseSeparatorFormat.COLON,
+                    "So your code will look like: <code>case 'example':</code>"
+                ) { optionCaseSeparatorFormat = OptionCaseSeparatorFormat.COLON }
+
+                radioComponent.addOption(
+                    "Prefer semicolon as separator", optionCaseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON,
+                    "So your code will look like: <code>case 'example';</code>"
+                ) { optionCaseSeparatorFormat = OptionCaseSeparatorFormat.SEMICOLON }
             }
         }
     }

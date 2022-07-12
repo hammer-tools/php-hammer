@@ -23,9 +23,10 @@ class OptionsPanelService private constructor() {
         }
     }
 
-    fun addCheckbox(text: String, selected: Boolean, updateConsumer: Consumer<Boolean>) {
+    fun addCheckbox(text: String, selected: Boolean, tooltip: String, updateConsumer: Consumer<Boolean>) {
         optionsPanel.add(with(JCheckBox(text, selected)) {
             addItemListener { updateConsumer.accept(isSelected) }
+            toolTipText = tooltip
             this
         }, "wrap")
     }
@@ -37,8 +38,8 @@ class OptionsPanelService private constructor() {
 
         internal var selectedOption: RadioOption? = null
 
-        fun addOption(text: String, selected: Boolean, updateConsumer: Consumer<Boolean>) {
-            val newOption = RadioOption(text, selected, updateConsumer)
+        fun addOption(text: String, selected: Boolean, tooltip: String, updateConsumer: Consumer<Boolean>) {
+            val newOption = RadioOption(text, selected, tooltip, updateConsumer)
 
             radioOptions.add(newOption)
 
@@ -47,11 +48,12 @@ class OptionsPanelService private constructor() {
             }
         }
 
-        inner class RadioOption internal constructor(text: String, selected: Boolean, val updateConsumer: Consumer<Boolean>) {
+        inner class RadioOption internal constructor(text: String, selected: Boolean, tooltip: String?, val updateConsumer: Consumer<Boolean>) {
             val radioButton: JRadioButton
 
             init {
                 radioButton = JRadioButton(text, selected)
+                radioButton.toolTipText = tooltip
                 radioButton.addItemListener {
                     val isSelected = radioButton.isSelected
 

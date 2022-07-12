@@ -58,12 +58,15 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Prefer self reference", optionClassSelfReferenceFormat === OptionClassSelfReferenceFormat.SELF) {
-                    optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF
-                }
-                radioComponent.addOption("Prefer ClassName reference", optionClassSelfReferenceFormat === OptionClassSelfReferenceFormat.NAMED) {
-                    optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.NAMED
-                }
+                radioComponent.addOption(
+                    "Prefer self reference", optionClassSelfReferenceFormat === OptionClassSelfReferenceFormat.SELF,
+                    "It will replace references to the class itself such as <code>Dummy::something()</code> with <code>self::something()</code>."
+                ) { optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF }
+
+                radioComponent.addOption(
+                    "Prefer ClassName reference", optionClassSelfReferenceFormat === OptionClassSelfReferenceFormat.NAMED,
+                    "It will replace references to the class itself such as <code>self::something()</code> with <code>Dummy::something()</code>"
+                ) { optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.NAMED }
             }
         }
     }

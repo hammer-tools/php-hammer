@@ -5,15 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.1] - 2022-07-12
 
-### Added
+### Changed
 
 - **[ParameterDefaultsNullInspection]**: added option to include methods that are overridden, but disabled by default;
+- **[ParameterDefaultsNullInspection]**: added an option to disable inspection on untyped or nullable parameters as it may cause behavior change, disabled by default;
 
 ### Fixed
 
 - **[ParameterDefaultsNullInspection]**: fix wrong "?int" to "?int|null", must be "int|null";
+
+[0.5.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.5.1
 
 [ParameterDefaultsNullInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-defaults-null-inspection
 

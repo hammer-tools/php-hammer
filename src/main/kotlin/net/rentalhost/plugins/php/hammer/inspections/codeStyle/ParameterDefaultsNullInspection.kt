@@ -92,9 +92,20 @@ class ParameterDefaultsNullInspection: PhpInspection() {
 
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
-            component.addCheckbox("Include abstract methods", optionIncludeAbstractMethods) { optionIncludeAbstractMethods = it }
-            component.addCheckbox("Include methods that are overridden", optionIncludeOverridenMethods) { optionIncludeOverridenMethods = it }
-            component.addCheckbox("Include nullable parameters", optionIncludeNullableParameters) { optionIncludeNullableParameters = it }
+            component.addCheckbox(
+                "Include abstract methods", optionIncludeAbstractMethods,
+                "This option allows inspecting abstract methods, however, a quick-fix will not be available and any action to correct this inspection will have to be done manually."
+            ) { optionIncludeAbstractMethods = it }
+
+            component.addCheckbox(
+                "Include methods that are overridden", optionIncludeOverridenMethods,
+                "This option allows inspecting methods that have been overridden by other methods of child classes. Although a quick-fix is available, refactoring may be required."
+            ) { optionIncludeOverridenMethods = it }
+
+            component.addCheckbox(
+                "Include nullable parameters", optionIncludeNullableParameters,
+                "This option allows inspecting nullable parameters, which implicitly include untyped parameters. Although a quick-fix is available, it can affect the behavior of code."
+            ) { optionIncludeNullableParameters = it }
         }
     }
 

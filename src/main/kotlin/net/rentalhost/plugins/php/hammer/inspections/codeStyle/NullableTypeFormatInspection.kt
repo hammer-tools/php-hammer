@@ -67,12 +67,15 @@ class NullableTypeFormatInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: RadioComponent ->
-                radioComponent.addOption("Use short format (\"?int\")", optionNullableTypeFormat === OptionNullableTypeFormat.SHORT) {
-                    optionNullableTypeFormat = OptionNullableTypeFormat.SHORT
-                }
-                radioComponent.addOption("Use long format (\"int|null\")", optionNullableTypeFormat === OptionNullableTypeFormat.LONG) {
-                    optionNullableTypeFormat = OptionNullableTypeFormat.LONG
-                }
+                radioComponent.addOption(
+                    "Prefer short format", optionNullableTypeFormat === OptionNullableTypeFormat.SHORT,
+                    "Your nullable types will look like: <code>?int</code>"
+                ) { optionNullableTypeFormat = OptionNullableTypeFormat.SHORT }
+
+                radioComponent.addOption(
+                    "Prefer long format", optionNullableTypeFormat === OptionNullableTypeFormat.LONG,
+                    "Your nullable types will look like: <code>int|null</code>"
+                ) { optionNullableTypeFormat = OptionNullableTypeFormat.LONG }
             }
         }
     }

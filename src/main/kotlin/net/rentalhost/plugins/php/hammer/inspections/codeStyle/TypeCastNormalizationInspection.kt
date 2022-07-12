@@ -49,12 +49,15 @@ class TypeCastNormalizationInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption("Use short format (int, bool)", optionTypeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) {
-                    optionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT
-                }
-                radioComponent.addOption("Use long format (integer, boolean)", optionTypeCastNormalizationFormat === OptionTypeCastNormalizationFormat.LONG) {
-                    optionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.LONG
-                }
+                radioComponent.addOption(
+                    "Prefer short format", optionTypeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT,
+                    "Your casts will look like: <code>(int) \$example</code>"
+                ) { optionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT }
+
+                radioComponent.addOption(
+                    "Prefer long format", optionTypeCastNormalizationFormat === OptionTypeCastNormalizationFormat.LONG,
+                    "Your casts will look like: <code>(integer) \$example</code>"
+                ) { optionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.LONG }
             }
         }
     }
