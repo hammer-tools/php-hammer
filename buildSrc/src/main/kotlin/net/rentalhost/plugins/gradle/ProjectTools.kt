@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 class ProjectTools: Plugin<Project> {
     companion object {
-        fun prop(project: Project, key: String) =
+        fun prop(project: Project, key: String): String =
             project.findProperty(key).toString()
     }
 

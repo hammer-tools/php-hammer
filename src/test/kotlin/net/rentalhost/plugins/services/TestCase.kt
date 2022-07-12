@@ -22,7 +22,7 @@ abstract class TestCase: BasePlatformTestCase() {
         phpSourceSubName: String? = null,
         inspectionSetup: Consumer<T>? = null,
         phpLanguageLevel: PhpLanguageLevel? = null,
-    ) = testInspection(inspectionClass, phpSourceSubName, inspectionSetup, phpLanguageLevel, quickFixesEnabled = false)
+    ): Unit = testInspection(inspectionClass, phpSourceSubName, inspectionSetup, phpLanguageLevel, quickFixesEnabled = false)
 
     protected fun <T: PhpInspection?> testInspection(
         inspectionClass: Class<T>,

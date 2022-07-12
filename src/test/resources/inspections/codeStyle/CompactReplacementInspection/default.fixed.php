@@ -11,5 +11,9 @@ $dummy = function () {
 
     ['x'=>$x] = [];
 
-    return compact('y', 'z', 'x', 'a', 'b');
+    $dummy = compact('y', 'z', 'x', 'a', 'b');
+
+    // Not applicable because of the variable with reference:
+
+    $dummy = ['x' => &$x];
 };

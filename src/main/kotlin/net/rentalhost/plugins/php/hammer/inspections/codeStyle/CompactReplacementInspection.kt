@@ -9,6 +9,7 @@ import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
+import net.rentalhost.plugins.extensions.psi.isRef
 import net.rentalhost.plugins.extensions.psi.unpackValues
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
@@ -30,8 +31,12 @@ class CompactReplacementInspection: PhpInspection() {
                     if (arrayElement !is ArrayHashElementImpl)
                         return
 
-                    val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
                     val arrayElementValue = arrayElement.value as? VariableImpl ?: return
+
+                    if (arrayElementValue.isRef())
+                        return
+
+                    val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
 
                     if (arrayElementKey.contents != arrayElementValue.name)
                         return

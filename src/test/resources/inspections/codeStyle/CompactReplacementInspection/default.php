@@ -11,10 +11,14 @@ $dummy = function () {
 
     ['x'=>$x] = [];
 
-    return <weak_warning descr="[PHP Hammer] Array can be replaced by compact().">[
+    $dummy = <weak_warning descr="[PHP Hammer] Array can be replaced by compact().">[
         'y' => $y,
         ... <weak_warning descr="[PHP Hammer] Array can be replaced by compact().">['z' => $z]</weak_warning>,
         'x' => $x,
         ... compact('a', "b"),
     ]</weak_warning>;
+
+    // Not applicable because of the variable with reference:
+
+    $dummy = ['x' => &$x];
 };
