@@ -10,10 +10,10 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
 
     fun testElse(): Unit = testInspection(ParameterDefaultsNullInspection::class.java)
 
-    fun testIncludeAbstractMethodsDisabled(): Unit = testInspection(
+    fun testIncludeAbstractMethods(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
-        "optionIncludeAbstractMethodsDisabled",
-        { it.optionIncludeAbstractMethods = false },
+        "optionIncludeAbstractMethods",
+        { it.optionIncludeAbstractMethods = true },
         quickFixesEnabled = false
     )
 }

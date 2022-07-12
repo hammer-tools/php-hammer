@@ -34,6 +34,8 @@ abstract class DummyA
     }
 }
 
+// Not applicable, abstract methods:
+
 abstract class DummyB
 {
     abstract function dummyA($a, $b = 123);

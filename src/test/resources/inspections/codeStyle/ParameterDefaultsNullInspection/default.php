@@ -27,19 +27,21 @@ abstract class DummyA
     }
 }
 
+// Not applicable, abstract methods:
+
 abstract class DummyB
 {
-    abstract function dummyA($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>);
+    abstract function dummyA($a, $b = 123);
 }
 
 interface IDummyA
 {
-    function dummyA($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>);
+    function dummyA($a, $b = 123);
 }
 
 interface IDummyC
 {
-    function dummyA(<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">int $b = 123</weak_warning>);
+    function dummyA(int $b = 123);
 }
 
 // Not applicable for quick-fix only:

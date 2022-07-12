@@ -24,7 +24,7 @@ import javax.swing.JComponent
 
 class ParameterDefaultsNullInspection: PhpInspection() {
     @OptionTag
-    var optionIncludeAbstractMethods: Boolean = true
+    var optionIncludeAbstractMethods: Boolean = false
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {

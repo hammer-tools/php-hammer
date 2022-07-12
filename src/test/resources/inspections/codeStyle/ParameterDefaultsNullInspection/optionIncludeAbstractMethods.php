@@ -14,17 +14,17 @@ abstract class DummyA
 
 abstract class DummyB
 {
-    abstract function dummyA($a, $b = 123);
+    abstract function dummyA($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>);
 }
 
 interface IDummyA
 {
-    function dummyA($a, $b = 123);
+    function dummyA($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>);
 }
 
 interface IDummyC
 {
-    function dummyA(int $b = 123);
+    function dummyA(<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">int $b = 123</weak_warning>);
 }
 
 // Keep inspecting another cases:
