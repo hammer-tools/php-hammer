@@ -7,6 +7,10 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 ## [Unreleased]
 
+### Added
+
+- **[ParameterDefaultsNullInspection]**: added option to include methods that are overridden, but disabled by default;
+
 ### Fixed
 
 - **[ParameterDefaultsNullInspection]**: fix wrong "?int" to "?int|null", must be "int|null";

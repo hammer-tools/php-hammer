@@ -14,5 +14,15 @@ fun PhpClassMember.isMemberOverridden(): Boolean {
     return isOverridden
 }
 
+fun PhpClassMember.isMemberOverrided(): Boolean {
+    var isOverrided = false
+
+    PhpClassHierarchyUtils.processOverridingMembers(this) { _, _, _ ->
+        isOverrided = true
+        false
+    }
+    return isOverrided
+}
+
 fun PhpClassMember.isDefinedByOwnClass(): Boolean =
     !isMemberOverridden()

@@ -107,3 +107,17 @@ $dummy = new class
     {
     }
 };
+
+class DummyE
+{
+    function dummy(int $a = 123)
+    {
+    }
+}
+
+$dummy = new class
+    extends DummyE {
+    function dummy(int $a = 123)
+    {
+    }
+};

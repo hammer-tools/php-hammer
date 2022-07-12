@@ -26,6 +26,9 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     @OptionTag
     var optionIncludeAbstractMethods: Boolean = false
 
+    @OptionTag
+    var optionIncludeOverridenMethods: Boolean = false
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is ParameterListImpl) {
@@ -34,8 +37,13 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 if (context !is FunctionImpl)
                     return
 
-                if (context is MethodImpl && !context.isDefinedByOwnClass())
-                    return
+                if (context is MethodImpl) {
+                    if (!context.isDefinedByOwnClass())
+                        return
+
+                    if (!optionIncludeOverridenMethods && context.isMemberOverrided())
+                        return
+                }
 
                 for (parameter in element.parameters) {
                     if (parameter is ParameterImpl &&
@@ -73,6 +81,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.addCheckbox("Include abstract methods", optionIncludeAbstractMethods) { optionIncludeAbstractMethods = it }
+            component.addCheckbox("Include methods that are overridden", optionIncludeOverridenMethods) { optionIncludeOverridenMethods = it }
         }
     }
 

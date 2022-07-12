@@ -16,4 +16,11 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
         { it.optionIncludeAbstractMethods = true },
         quickFixesEnabled = false
     )
+
+    fun testIncludeOverridenMethods(): Unit = testInspection(
+        ParameterDefaultsNullInspection::class.java,
+        "optionIncludeOverridenMethods",
+        { it.optionIncludeOverridenMethods = true },
+        quickFixesEnabled = false
+    )
 }
