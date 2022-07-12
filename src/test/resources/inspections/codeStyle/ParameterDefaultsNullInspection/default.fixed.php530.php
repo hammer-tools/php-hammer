@@ -16,6 +16,10 @@ $dummy = function (bool|null $a = null) {
     $a = $a === null ? false : $a;
 };
 
+$dummy = function(int|null $a = null) {
+    $a = $a === null ? 0 : $a;
+};
+
 abstract class DummyA
 {
     function dummyA($a, $b = null)

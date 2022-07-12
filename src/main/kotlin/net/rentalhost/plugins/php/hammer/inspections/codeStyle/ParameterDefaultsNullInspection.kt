@@ -103,7 +103,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
             if (parameterTypeDeclaration.isNullableEx())
                 return
 
-            parameterTypeDeclaration.replaceWith(project, parameterTypeDeclaration.text + "|null")
+            parameterTypeDeclaration.replaceWith(project, parameterTypeDeclaration.text.substringAfter("?") + "|null")
         }
 
         private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
