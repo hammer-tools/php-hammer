@@ -21,4 +21,10 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
         "optionIncludeOverridenMethods",
         { it.optionIncludeOverridenMethods = true }
     )
+
+    fun testIncludeNullableParameters(): Unit = testInspectionOnly(
+        ParameterDefaultsNullInspection::class.java,
+        "optionIncludeNullableParameters",
+        { it.optionIncludeNullableParameters = true }
+    )
 }

@@ -1,31 +1,34 @@
 <?php
 
-$dummy = function ($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>) {
-};
-
-$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$a = 123</weak_warning>) {
-};
-
-$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">bool $a = false</weak_warning>) {
-};
-
-$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">bool|null $a = false</weak_warning>) {
-};
-
 $dummy = function(<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">?int $a = 0</weak_warning>) {
+};
+
+// Not applicable because parameter is nullable/untyped:
+
+$dummy = function ($a, $b = 123) {
+};
+
+$dummy = function ($a = 123) {
+};
+
+$dummy = function (string|null $a = '') {
 };
 
 abstract class DummyA
 {
-    function dummyA($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>)
+    function dummyA($a, $b = 123)
     {
     }
 
-    function dummyB($a, <weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">$b = 123</weak_warning>)
+    function dummyB($a, $b = 123)
     {
         return $b;
     }
 }
+
+$dummy = function (&$a = 123) {
+};
+
 
 // Not applicable, abstract methods:
 
@@ -45,9 +48,6 @@ interface IDummyC
 }
 
 // Not applicable for quick-fix only:
-
-$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">&$a = 123</weak_warning>) {
-};
 
 $dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">int &$a = 123</weak_warning>) {
 };

@@ -29,6 +29,9 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     @OptionTag
     var optionIncludeOverridenMethods: Boolean = false
 
+    @OptionTag
+    var optionIncludeNullableParameters: Boolean = false
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is ParameterListImpl) {
@@ -55,23 +58,32 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                         parameter.defaultValue != null) {
                         val defaultValue = parameter.defaultValueType
 
-                        if (defaultValue.toString() != "null") {
-                            ProblemsHolderService.registerProblem(
-                                problemsHolder,
-                                parameter,
-                                "Default value of the parameter must be \"null\".",
-                                run {
-                                    if (isAbstractMethod ||
-                                        parameter.isPassByRef)
-                                        return@run null
+                        if (defaultValue.toString() == "null")
+                            continue
 
-                                    ReplaceWithNullQuickFix(
-                                        SmartPointerManager.createPointer(context),
-                                        SmartPointerManager.createPointer(parameter)
-                                    )
-                                }
-                            )
+                        if (!optionIncludeNullableParameters) {
+                            if (parameter.declaredType.toString() == "")
+                                continue
+
+                            if (parameter.typeDeclaration?.isNullableEx() == true)
+                                continue
                         }
+
+                        ProblemsHolderService.registerProblem(
+                            problemsHolder,
+                            parameter,
+                            "Default value of the parameter must be \"null\".",
+                            run {
+                                if (isAbstractMethod ||
+                                    parameter.isPassByRef)
+                                    return@run null
+
+                                ReplaceWithNullQuickFix(
+                                    SmartPointerManager.createPointer(context),
+                                    SmartPointerManager.createPointer(parameter)
+                                )
+                            }
+                        )
                     }
                 }
             }
@@ -82,6 +94,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.addCheckbox("Include abstract methods", optionIncludeAbstractMethods) { optionIncludeAbstractMethods = it }
             component.addCheckbox("Include methods that are overridden", optionIncludeOverridenMethods) { optionIncludeOverridenMethods = it }
+            component.addCheckbox("Include nullable parameters", optionIncludeNullableParameters) { optionIncludeNullableParameters = it }
         }
     }
 

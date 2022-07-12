@@ -1,38 +1,35 @@
 <?php
 
-$dummy = function ($a, $b = null) {
-    $b = $b === null ? 123 : $b;
-};
-
-$dummy = function ($a = null) {
-    $a = $a === null ? 123 : $a;
-};
-
-$dummy = function (bool|null $a = null) {
-    $a = $a === null ? false : $a;
-};
-
-$dummy = function (bool|null $a = null) {
-    $a = $a === null ? false : $a;
-};
-
 $dummy = function(int|null $a = null) {
     $a = $a === null ? 0 : $a;
 };
 
+// Not applicable because parameter is nullable/untyped:
+
+$dummy = function ($a, $b = 123) {
+};
+
+$dummy = function ($a = 123) {
+};
+
+$dummy = function (string|null $a = '') {
+};
+
 abstract class DummyA
 {
-    function dummyA($a, $b = null)
+    function dummyA($a, $b = 123)
     {
-        $b = $b === null ? 123 : $b;
     }
 
-    function dummyB($a, $b = null)
+    function dummyB($a, $b = 123)
     {
-        $b = $b === null ? 123 : $b;
         return $b;
     }
 }
+
+$dummy = function (&$a = 123) {
+};
+
 
 // Not applicable, abstract methods:
 
@@ -52,9 +49,6 @@ interface IDummyC
 }
 
 // Not applicable for quick-fix only:
-
-$dummy = function (&$a = 123) {
-};
 
 $dummy = function (int &$a = 123) {
 };
