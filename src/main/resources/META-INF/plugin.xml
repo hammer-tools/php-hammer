@@ -190,6 +190,16 @@
                          shortName="StaticAnonymousFunctionCannotAccessThisInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.StaticAnonymousFunctionCannotAccessThisInspection" />
 
+        <!-- Code Error -->
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Error"
+                         enabledByDefault="true"
+                         displayName="Class name must match the file that stores it"
+                         level="ERROR"
+                         shortName="FileClassnameCaseInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.FileClassnameCaseInspection" />
+
         <!-- Deprecation -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
