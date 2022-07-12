@@ -190,6 +190,16 @@
                          shortName="StaticAnonymousFunctionCannotAccessThisInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.StaticAnonymousFunctionCannotAccessThisInspection" />
 
+        <!-- Deprecation -->
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Deprecation"
+                         enabledByDefault="true"
+                         displayName="Dollar sign outside of the curly braces"
+                         level="WARNING"
+                         shortName="DollarSignOutsideCurlyBracesInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.deprecation.DollarSignOutsideCurlyBracesInspection" />
+
         <!-- Plugin -->
         <applicationService serviceImplementation="net.rentalhost.plugins.services.SettingsService" />
 
