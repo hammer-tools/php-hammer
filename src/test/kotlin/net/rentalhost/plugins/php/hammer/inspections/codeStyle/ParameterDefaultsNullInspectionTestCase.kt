@@ -10,17 +10,15 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
 
     fun testElse(): Unit = testInspection(ParameterDefaultsNullInspection::class.java)
 
-    fun testIncludeAbstractMethods(): Unit = testInspection(
+    fun testIncludeAbstractMethods(): Unit = testInspectionOnly(
         ParameterDefaultsNullInspection::class.java,
         "optionIncludeAbstractMethods",
-        { it.optionIncludeAbstractMethods = true },
-        quickFixesEnabled = false
+        { it.optionIncludeAbstractMethods = true }
     )
 
-    fun testIncludeOverridenMethods(): Unit = testInspection(
+    fun testIncludeOverridenMethods(): Unit = testInspectionOnly(
         ParameterDefaultsNullInspection::class.java,
         "optionIncludeOverridenMethods",
-        { it.optionIncludeOverridenMethods = true },
-        quickFixesEnabled = false
+        { it.optionIncludeOverridenMethods = true }
     )
 }

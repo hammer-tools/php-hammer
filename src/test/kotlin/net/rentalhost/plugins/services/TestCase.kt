@@ -17,6 +17,13 @@ abstract class TestCase: BasePlatformTestCase() {
         myFixture.testDataPath = File("src/test/resources").absolutePath
     }
 
+    protected fun <T: PhpInspection?> testInspectionOnly(
+        inspectionClass: Class<T>,
+        phpSourceSubName: String? = null,
+        inspectionSetup: Consumer<T>? = null,
+        phpLanguageLevel: PhpLanguageLevel? = null,
+    ) = testInspection(inspectionClass, phpSourceSubName, inspectionSetup, phpLanguageLevel, quickFixesEnabled = false)
+
     protected fun <T: PhpInspection?> testInspection(
         inspectionClass: Class<T>,
         phpSourceSubName: String? = null,

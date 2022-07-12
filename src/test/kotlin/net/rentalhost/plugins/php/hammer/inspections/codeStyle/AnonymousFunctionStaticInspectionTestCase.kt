@@ -5,10 +5,9 @@ import net.rentalhost.plugins.services.TestCase
 class AnonymousFunctionStaticInspectionTestCase: TestCase() {
     fun testAll(): Unit = testInspection(AnonymousFunctionStaticInspection::class.java)
 
-    fun testIncludeShortFunctionsDisabled(): Unit = testInspection(
+    fun testIncludeShortFunctionsDisabled(): Unit = testInspectionOnly(
         AnonymousFunctionStaticInspection::class.java,
         "includeShortFunctionsDisabled",
-        { it.includeShortFunctions = false },
-        quickFixesEnabled = false
+        { it.includeShortFunctions = false }
     )
 }
