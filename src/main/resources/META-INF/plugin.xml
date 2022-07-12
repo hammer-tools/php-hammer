@@ -190,7 +190,6 @@
                          shortName="StaticAnonymousFunctionCannotAccessThisInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.StaticAnonymousFunctionCannotAccessThisInspection" />
 
-        <!-- Code Error -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Error"
