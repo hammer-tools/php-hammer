@@ -1,0 +1,35 @@
+<idea-plugin>
+    <id>$pluginId</id>
+    <name>$pluginTitle</name>
+    <version>$pluginVersion</version>
+
+    <vendor email="david.rodrigues@rentalhost.net">Rentalhost.net</vendor>
+
+    <idea-version since-build="$pluginBuildSince" until-build="$pluginBuildUntil" />
+
+    <description><![CDATA[
+        $pluginDescription
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.jetbrains.php</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        $pluginInspections
+
+        <!-- Plugin -->
+        <applicationService serviceImplementation="net.rentalhost.plugins.services.SettingsService" />
+
+        <notificationGroup id="net.rentalhost.plugins.notification.INSTALLED"
+                           displayType="STICKY_BALLOON" />
+        <notificationGroup id="net.rentalhost.plugins.notification.UPDATED"
+                           displayType="STICKY_BALLOON" />
+    </extensions>
+
+    <applicationListeners>
+        <listener
+            activeInHeadlessMode="false"
+            class="net.rentalhost.plugins.services.listeners.PluginUpdateListener"
+            topic="com.intellij.openapi.project.ProjectManagerListener" />
+    </applicationListeners>
+</idea-plugin>

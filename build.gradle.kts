@@ -1,4 +1,4 @@
-fun properties(key: String) = project.findProperty(key).toString()
+fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
@@ -6,8 +6,8 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.7.0"
 }
 
-group = properties("pluginGroup")
-version = properties("pluginVersion")
+group = prop("pluginId")
+version = prop("pluginVersion")
 
 repositories {
     mavenCentral()
@@ -18,21 +18,17 @@ apply {
 }
 
 intellij {
-    pluginName.set(properties("pluginName"))
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
+    pluginName.set(prop("pluginName"))
+    version.set(prop("platformVersion"))
+    type.set("IU")
 
-    plugins.set(
-        properties("platformPlugins")
-            .replace("[platformPhpBuild]", properties("platformPhpBuild"))
-            .split(',')
-    )
+    plugins.set(listOf("com.jetbrains.php:${prop("platformPhpBuild")}"))
 }
 
 tasks {
     withType<JavaCompile> {
-        sourceCompatibility = properties("javaVersion")
-        targetCompatibility = properties("javaVersion")
+        sourceCompatibility = prop("javaVersion")
+        targetCompatibility = prop("javaVersion")
     }
 
     test {
@@ -57,12 +53,11 @@ tasks {
     }
 
     wrapper {
-        gradleVersion = properties("gradleVersion")
+        gradleVersion = prop("gradleVersion")
     }
 
     patchPluginXml {
-        version.set(properties("pluginVersion"))
-        sinceBuild.set(properties("pluginSinceBuild"))
+        dependsOn("generatePluginXML")
     }
 
     signPlugin {
@@ -90,6 +85,6 @@ tasks {
 
         jbrVersion.set("11_0_15b2043.56")
 
-        ideDir.set(file("${System.getProperty("user.home")}\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PhpStorm\\${properties("platformPhpToolbox")}"))
+        ideDir.set(file("${System.getProperty("user.home")}\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PhpStorm\\${prop("platformPhpToolbox")}"))
     }
 }

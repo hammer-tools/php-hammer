@@ -1,14 +1,15 @@
 <idea-plugin>
     <id>net.rentalhost.plugins.php.hammer</id>
-    <name>PHP Hammer</name>
+    <name>🔨 PHP Hammer</name>
     <version>0.6.0</version>
+
     <vendor email="david.rodrigues@rentalhost.net">Rentalhost.net</vendor>
 
-    <idea-version since-build="221" />
+    <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections">new inspections</a>
-        in the PHP language with support for quick-fixes.
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>21 new
+    inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
@@ -16,6 +17,60 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Code Style -->
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Anonymous function can be static"
+                         level="WEAK WARNING"
+                         shortName="AnonymousFunctionStaticInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.AnonymousFunctionStaticInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Array can be packed"
+                         level="WEAK WARNING"
+                         shortName="ArrayPackableInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ArrayPackableInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Call to __toString() can be simplified"
+                         level="WEAK WARNING"
+                         shortName="ToStringSimplificationInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ToStringSimplificationInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Case separator format"
+                         level="WEAK WARNING"
+                         shortName="CaseSeparatorFormatInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.CaseSeparatorFormatInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Class self-reference format normalization"
+                         level="WEAK WARNING"
+                         shortName="ClassSelfReferenceFormatInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ClassSelfReferenceFormatInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Comparison order with scalar normalization"
+                         level="WEAK WARNING"
+                         shortName="ComparisonScalarOrderInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ComparisonScalarOrderInspection" />
+
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
@@ -33,33 +88,6 @@
                          level="WEAK WARNING"
                          shortName="NullableTypeRightmostInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.NullableTypeRightmostInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
-                         enabledByDefault="true"
-                         displayName="Array can be packed"
-                         level="WEAK WARNING"
-                         shortName="ArrayPackableInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ArrayPackableInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
-                         enabledByDefault="true"
-                         displayName="Case separator format"
-                         level="WEAK WARNING"
-                         shortName="CaseSeparatorFormatInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.CaseSeparatorFormatInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
-                         enabledByDefault="true"
-                         displayName="Sort use() variables"
-                         level="WEAK WARNING"
-                         shortName="SortUseVariablesInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.SortUseVariablesInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
@@ -83,19 +111,28 @@
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
-                         displayName="Anonymous function can be static"
+                         displayName="Replace function cast to type cast"
                          level="WEAK WARNING"
-                         shortName="AnonymousFunctionStaticInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.AnonymousFunctionStaticInspection" />
+                         shortName="CastIntvalInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.CastIntvalInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
-                         displayName="Replace function cast to type cast"
+                         displayName="Replace with compact()"
                          level="WEAK WARNING"
-                         shortName="CastIntvalInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.CastIntvalInspection" />
+                         shortName="CompactReplacementInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.CompactReplacementInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Sort use() variables"
+                         level="WEAK WARNING"
+                         shortName="SortUseVariablesInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.SortUseVariablesInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
@@ -110,46 +147,10 @@
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Style"
                          enabledByDefault="true"
-                         displayName="Call to __toString() can be simplified"
-                         level="WEAK WARNING"
-                         shortName="ToStringSimplificationInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ToStringSimplificationInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
-                         enabledByDefault="true"
                          displayName="Type cast normalization"
                          level="WEAK WARNING"
                          shortName="TypeCastNormalizationInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.TypeCastNormalizationInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
-                         enabledByDefault="true"
-                         displayName="Comparison order with scalar normalization"
-                         level="WEAK WARNING"
-                         shortName="ComparisonScalarOrderInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ComparisonScalarOrderInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
-                         enabledByDefault="true"
-                         displayName="Class self-reference format normalization"
-                         level="WEAK WARNING"
-                         shortName="ClassSelfReferenceFormatInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ClassSelfReferenceFormatInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
-                         enabledByDefault="true"
-                         displayName="Replace with compact()"
-                         level="WEAK WARNING"
-                         shortName="CompactReplacementInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.CompactReplacementInspection" />
 
         <!-- Flow Optimization -->
         <localInspection language="PHP"
@@ -166,30 +167,21 @@
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Dead Code"
                          enabledByDefault="true"
-                         displayName="Unused use() variable"
-                         level="WEAK WARNING"
-                         shortName="UnusedUseVariableInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.deadCode.UnusedUseVariableInspection" />
-
-        <localInspection language="PHP"
-                         groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Dead Code"
-                         enabledByDefault="true"
                          displayName="Unused use() reference for variable"
                          level="WEAK WARNING"
                          shortName="UnusedUseVariableReferenceInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.deadCode.UnusedUseVariableReferenceInspection" />
 
-        <!-- Code Error -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Error"
+                         groupName="Dead Code"
                          enabledByDefault="true"
-                         displayName="Static anonymous function can't access $this"
-                         level="ERROR"
-                         shortName="StaticAnonymousFunctionCannotAccessThisInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.StaticAnonymousFunctionCannotAccessThisInspection" />
+                         displayName="Unused use() variable"
+                         level="WEAK WARNING"
+                         shortName="UnusedUseVariableInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.deadCode.UnusedUseVariableInspection" />
 
+        <!-- Code Error -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Error"
@@ -198,6 +190,15 @@
                          level="ERROR"
                          shortName="FileClassnameCaseInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.FileClassnameCaseInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Error"
+                         enabledByDefault="true"
+                         displayName="Static anonymous function can't access $this"
+                         level="ERROR"
+                         shortName="StaticAnonymousFunctionCannotAccessThisInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.StaticAnonymousFunctionCannotAccessThisInspection" />
 
         <!-- Deprecation -->
         <localInspection language="PHP"
