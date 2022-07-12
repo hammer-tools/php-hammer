@@ -27,7 +27,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     var optionIncludeAbstractMethods: Boolean = false
 
     @OptionTag
-    var optionIncludeOverridenMethods: Boolean = false
+    var optionIncludeOverriddenMethods: Boolean = false
 
     @OptionTag
     var optionIncludeNullableParameters: Boolean = false
@@ -44,7 +44,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                     if (!context.isDefinedByOwnClass())
                         return
 
-                    if (!optionIncludeOverridenMethods && context.isMemberOverrided())
+                    if (!optionIncludeOverriddenMethods && context.isMemberOverrided())
                         return
                 }
 
@@ -98,9 +98,9 @@ class ParameterDefaultsNullInspection: PhpInspection() {
             ) { optionIncludeAbstractMethods = it }
 
             component.addCheckbox(
-                "Include methods that are overridden", optionIncludeOverridenMethods,
+                "Include methods that are overridden", optionIncludeOverriddenMethods,
                 "This option allows inspecting methods that have been overridden by other methods of child classes. Although a quick-fix is available, refactoring may be required."
-            ) { optionIncludeOverridenMethods = it }
+            ) { optionIncludeOverriddenMethods = it }
 
             component.addCheckbox(
                 "Include nullable parameters", optionIncludeNullableParameters,
