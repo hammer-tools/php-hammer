@@ -23,6 +23,9 @@ fun PsiElement.isVariadicPreceded(): Boolean {
         .node.elementType == PhpTokenTypes.opVARIADIC
 }
 
+fun PsiElement.isStub(): Boolean =
+    containingFile.virtualFile.path.contains("/php.jar!/")
+
 fun PsiElement?.isScalar(): Boolean {
     if (this == null)
         return false

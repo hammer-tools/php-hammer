@@ -1,0 +1,23 @@
+<html lang="en">
+    <body>
+        This inspection identifies calls to methods belonging to the parent that are empty.<br /><br />
+
+        Empty methods are usually created so that an implementation of the class determines that an abstract method
+        serves no purpose at that level, and that they may be implemented at lower levels.<br /><br />
+
+        <pre><code>abstract class A {
+    abstract function example();
+}
+
+class B extends A {
+    function example() { /* literally nothing */ }
+}
+
+class C extends B {
+    function example() {
+        parent::example(); // why?
+        /* doSomething() */
+    }
+}</code></pre>
+    </body>
+</html>
