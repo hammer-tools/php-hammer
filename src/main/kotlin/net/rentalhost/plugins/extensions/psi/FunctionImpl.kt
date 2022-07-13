@@ -4,6 +4,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpAccessInstruction
 import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpAccessVariableInstruction
 import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpArrayAccessInstruction
+import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
@@ -14,10 +15,10 @@ fun FunctionImpl.isAbstractMethod(): Boolean =
     this is MethodImpl && this.isAbstract
 
 fun FunctionImpl.isStatic(): Boolean =
-    firstChild.text.lowercase() == "static"
+    node.findChildByType(PhpTokenTypes.kwSTATIC) != null
 
 fun FunctionImpl.isShortFunction(): Boolean =
-    firstChild.text.lowercase() == "fn"
+    node.findChildByType(PhpTokenTypes.kwFN) != null
 
 fun FunctionImpl.isAnonymous(): Boolean =
     name == ""

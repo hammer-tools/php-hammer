@@ -29,13 +29,9 @@ object ElementService {
         return element
     }
 
-    private fun isCompactFunction(element: PsiElement): Boolean =
-        element is FunctionReferenceImpl &&
-        element.name?.lowercase() == "compact"
-
     fun getCompactNames(element: PsiElement): List<String>? {
-        if (isCompactFunction(element) &&
-            element is FunctionReferenceImpl) {
+        if (element is FunctionReferenceImpl &&
+            (element.name ?: return null).lowercase() == "compact") {
             return element.parameters.map {
                 if (it !is StringLiteralExpression)
                     return null
