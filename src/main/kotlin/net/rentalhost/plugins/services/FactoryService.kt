@@ -12,6 +12,7 @@ import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.impl.AssignmentExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.GroupStatementImpl
 import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
+import com.jetbrains.php.lang.psi.elements.impl.UnaryExpressionImpl
 
 object FactoryService {
     private fun <T: PhpPsiElement?> createPhpPsiFromText(
@@ -106,4 +107,10 @@ object FactoryService {
 
     fun createCurlyVariable(project: Project, variableName: String): PsiElement =
         PhpPsiElementFactory.createPhpPsiFromText(project, Variable::class.java, "\"{\$$variableName}\";")
+
+    fun createUnaryRightOperation(project: Project, element: String, operator: String): UnaryExpressionImpl =
+        PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpressionImpl::class.java, "$element$operator;")
+
+    fun createUnaryLeftOperation(project: Project, element: String, operator: String): UnaryExpressionImpl =
+        PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpressionImpl::class.java, "$operator$element;")
 }

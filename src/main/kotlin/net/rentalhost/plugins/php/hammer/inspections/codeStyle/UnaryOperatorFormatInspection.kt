@@ -8,10 +8,10 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.Statement
-import com.jetbrains.php.lang.psi.elements.impl.MemberReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.UnaryExpressionImpl
-import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import net.rentalhost.plugins.enums.OptionUnaryOperatorSideFormat
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
@@ -26,6 +26,7 @@ class UnaryOperatorFormatInspection: PhpInspection() {
                 if (element.parent !is Statement)
                     return
 
+                val unaryElement = element.firstPsiChild ?: return
                 val unaryOperator = element.operation ?: return
                 val unaryIncrease = unaryOperator.elementType === PhpTokenTypes.opINCREMENT
                 val unaryDecrease = unaryOperator.elementType === PhpTokenTypes.opDECREMENT
@@ -34,26 +35,34 @@ class UnaryOperatorFormatInspection: PhpInspection() {
                     return
 
                 val unaryOperationRight = element.lastChild === unaryOperator
+                val unaryOperationPreferRight = optionUnaryOperatorSide == OptionUnaryOperatorSideFormat.RIGHT
 
-                if (optionUnaryOperatorSide == OptionUnaryOperatorSideFormat.RIGHT) {
+                if (unaryOperationPreferRight) {
                     if (unaryOperationRight)
                         return
                 }
-                else if (!unaryOperationRight)
+                else if (!unaryOperationRight) {
                     return
-
-                val unaryElement = element.firstPsiChild ?: return
-                val unaryElementText = when (unaryElement) {
-                    is VariableImpl -> unaryElement.text
-                    is MemberReferenceImpl -> unaryElement.text
-                    else -> "\$example"
                 }
 
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     element,
-                    if (unaryOperationRight) "Unary expression must be written as $unaryElementText${unaryOperator.text}"
-                    else "Unary expression must be written as ${unaryOperator.text}$unaryElementText"
+                    if (unaryOperationPreferRight) "Unary expression must be written as ${unaryElement.text}${unaryOperator.text}"
+                    else "Unary expression must be written as ${unaryOperator.text}${unaryElement.text}",
+                    LocalQuickFixService.SimpleReplaceQuickFix(
+                        "Swap unary operation elements",
+                        if (unaryOperationPreferRight) FactoryService.createUnaryRightOperation(
+                            problemsHolder.project,
+                            unaryElement.text,
+                            unaryOperator.text
+                        )
+                        else FactoryService.createUnaryLeftOperation(
+                            problemsHolder.project,
+                            unaryElement.text,
+                            unaryOperator.text
+                        )
+                    )
                 )
             }
         }
