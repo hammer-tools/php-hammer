@@ -2,10 +2,7 @@ package net.rentalhost.plugins.services
 
 import net.miginfocom.swing.MigLayout
 import java.util.function.Consumer
-import javax.swing.ButtonGroup
-import javax.swing.JCheckBox
-import javax.swing.JPanel
-import javax.swing.JRadioButton
+import javax.swing.*
 
 class OptionsPanelService private constructor() {
     private val optionsPanel: JPanel = JPanel(MigLayout("fillx"))
@@ -30,6 +27,9 @@ class OptionsPanelService private constructor() {
             this
         }, "wrap")
     }
+
+    fun addLabel(text: String): Unit =
+        optionsPanel.add(JLabel(text), "wrap")
 
     inner class RadioComponent {
         internal val radioOptions: MutableList<RadioOption> = ArrayList()

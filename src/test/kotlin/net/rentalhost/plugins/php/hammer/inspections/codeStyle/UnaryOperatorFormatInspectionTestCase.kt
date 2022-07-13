@@ -15,4 +15,10 @@ class UnaryOperatorFormatInspectionTestCase: TestCase() {
         "optionUnaryOperatorSideRight",
         { it.optionUnaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
     )
+
+    fun testOptionIncludeForRepeatedExpressionsDisabled(): Unit = testInspectionOnly(
+        UnaryOperatorFormatInspection::class.java,
+        "includeForRepeatedExpressionsDisabled",
+        { it.includeForRepeatedExpressions = false }
+    )
 }

@@ -15,6 +15,12 @@ for (; ; <weak_warning descr="[PHP Hammer] Unary expression must be written as +
 for (; ; ++$a) {
 }
 
+for (; ; <weak_warning descr="[PHP Hammer] Unary expression must be written as ++$a">$a++</weak_warning>, <weak_warning descr="[PHP Hammer] Unary expression must be written as ++$b">$b++</weak_warning>) {
+}
+
+for (; ; --$a, --$b) {
+}
+
 // Not applicable:
 
 $dummy = ++$a;

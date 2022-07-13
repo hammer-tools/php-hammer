@@ -8,6 +8,7 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.Statement
+import com.jetbrains.php.lang.psi.elements.impl.ForImpl
 import com.jetbrains.php.lang.psi.elements.impl.UnaryExpressionImpl
 import net.rentalhost.plugins.enums.OptionUnaryOperatorSideFormat
 import net.rentalhost.plugins.services.FactoryService
@@ -18,21 +19,33 @@ import javax.swing.JComponent
 
 class UnaryOperatorFormatInspection: PhpInspection() {
     @OptionTag
+    var includeForRepeatedExpressions = true
+
+    @OptionTag
     var optionUnaryOperatorSide: OptionUnaryOperatorSideFormat = OptionUnaryOperatorSideFormat.RIGHT
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is UnaryExpressionImpl) {
-                if (element.parent !is Statement)
-                    return
-
-                val unaryElement = element.firstPsiChild ?: return
                 val unaryOperator = element.operation ?: return
                 val unaryIncrease = unaryOperator.elementType === PhpTokenTypes.opINCREMENT
                 val unaryDecrease = unaryOperator.elementType === PhpTokenTypes.opDECREMENT
 
                 if (!unaryIncrease && !unaryDecrease)
                     return
+
+                val unaryElement = element.firstPsiChild ?: return
+
+                val elementParent = element.parent
+
+                if (elementParent is ForImpl) {
+                    if (!includeForRepeatedExpressions ||
+                        !elementParent.repeatedExpressions.contains(element))
+                        return
+                }
+                else if (elementParent !is Statement) {
+                    return
+                }
 
                 val unaryOperationRight = element.lastChild === unaryOperator
                 val unaryOperationPreferRight = optionUnaryOperatorSide == OptionUnaryOperatorSideFormat.RIGHT
@@ -70,6 +83,13 @@ class UnaryOperatorFormatInspection: PhpInspection() {
 
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
+            component.addCheckbox(
+                "Include for() repeated expressions", includeForRepeatedExpressions,
+                "This option allows the inspection to act on the third expression of the <code>for(; ; \$a++)</code> looping."
+            ) { includeForRepeatedExpressions = it }
+
+            component.addLabel("Preferred format:")
+
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
                 radioComponent.addOption(
                     "Prefer left side", optionUnaryOperatorSide === OptionUnaryOperatorSideFormat.LEFT,
