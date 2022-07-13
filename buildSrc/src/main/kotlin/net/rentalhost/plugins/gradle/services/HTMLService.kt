@@ -24,7 +24,6 @@ object HTMLService {
             }
 
             val body = body()
-
             val codes = mutableMapOf<String, String>()
 
             body.select("br").remove()
@@ -40,7 +39,7 @@ object HTMLService {
             }
 
             convertTagToMarkdown(body, "strong") { "**${it}**" }
-            convertTagToMarkdown(body, "code") { "`${it}`" }
+            convertTagToMarkdown(body, "code") { "`` ${it} ``" }
 
             var result = body.html()
                 .replace(removeIndentRegex, "")
