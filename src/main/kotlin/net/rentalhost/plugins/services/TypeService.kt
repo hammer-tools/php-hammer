@@ -13,6 +13,8 @@ import kotlin.streams.toList
 object TypeService {
     private val nullType = prependGlobalNamespace(mutableListOf("null"))
 
+    private val unaryIncreaseDecreaseOperators = arrayOf(PhpTokenTypes.opINCREMENT, PhpTokenTypes.opDECREMENT)
+
     var compareOperations: TokenSet =
         TokenSet.create(*arrayOf(PhpTokenTypes.opEQUAL, PhpTokenTypes.opNOT_EQUAL, PhpTokenTypes.opIDENTICAL, PhpTokenTypes.opNOT_IDENTICAL))
 

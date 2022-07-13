@@ -8,7 +8,7 @@
     <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>23 new
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>24 new
     inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
@@ -151,6 +151,15 @@
                          level="WEAK WARNING"
                          shortName="TypeCastNormalizationInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.TypeCastNormalizationInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Unary increase/decrease format"
+                         level="WEAK WARNING"
+                         shortName="UnaryOperatorFormatInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.UnaryOperatorFormatInspection" />
 
         <!-- Flow Optimization -->
         <localInspection language="PHP"
