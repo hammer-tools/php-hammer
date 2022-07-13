@@ -5,7 +5,6 @@ import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
-import net.rentalhost.plugins.extensions.getVersionWithoutPatch
 import net.rentalhost.plugins.services.NotificationService
 import net.rentalhost.plugins.services.ResourceService
 import net.rentalhost.plugins.services.SettingsService
@@ -25,14 +24,11 @@ internal class PluginUpdateListener: ProjectManagerListener {
 
                 notifyInstall()
             }
-
-            if (pluginVersion != plugin.getVersionWithoutPatch()) {
-                pluginVersion = plugin.getVersionWithoutPatch()
-
-                if (!pluginFreshInstalled) {
-                    notifyUpdate()
-                }
+            else if (pluginVersion != plugin.version) {
+                notifyUpdate(pluginVersion, plugin.version)
             }
+
+            pluginVersion = plugin.version
         }
     }
 
@@ -44,9 +40,11 @@ internal class PluginUpdateListener: ProjectManagerListener {
         )
     }
 
-    private fun notifyUpdate() = NotificationService.notify(
+    private fun notifyUpdate(versionBefore: String?, versionAfter: String) = NotificationService.notify(
         "net.rentalhost.plugins.notification.UPDATED",
-        ResourceService.read("/plugin/news.html").replace("\$pluginVersion", plugin.getVersionWithoutPatch()),
+        ResourceService.read("/plugin/news.html")
+            .replace("\$beforeNote", if (versionBefore != null) ", replacing the previously installed version (was $versionBefore)" else "")
+            .replace("\$pluginVersion", versionAfter),
         listOf(tripleChangelog, tripleFreemium)
     )
 }
