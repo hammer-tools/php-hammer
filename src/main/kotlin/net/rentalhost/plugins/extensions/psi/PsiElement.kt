@@ -6,6 +6,7 @@ import com.intellij.psi.util.elementType
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.parser.PhpElementTypes
 import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
 
 fun PsiElement?.insertBeforeElse(addIt: PsiElement, orElse: Lazy<() -> PsiElement>): PsiElement =
     this?.parent?.addBefore(addIt, this) ?: orElse.value.invoke()
@@ -25,6 +26,9 @@ fun PsiElement.isVariadicPreceded(): Boolean {
 
 fun PsiElement.isStub(): Boolean =
     containingFile.virtualFile.path.contains("/php.jar!/")
+
+fun PsiElement.isStrictlyStatement(): Boolean =
+    this::class == StatementImpl::class
 
 fun PsiElement?.isScalar(): Boolean {
     if (this == null)

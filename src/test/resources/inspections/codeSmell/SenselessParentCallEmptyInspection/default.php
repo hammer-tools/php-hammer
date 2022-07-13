@@ -32,6 +32,9 @@ class C extends B
     public function exampleEmpty()
     {
         <weak_warning descr="[PHP Hammer] Senseless call to empty parent::exampleEmpty().">parent::exampleEmpty()</weak_warning>;
+
+        // Not applicable:
+        return parent::exampleEmpty();
     }
 
     public function exampleFilled()

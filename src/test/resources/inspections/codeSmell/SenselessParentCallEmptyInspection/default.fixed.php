@@ -2,19 +2,43 @@
 
 abstract class A
 {
-    abstract function example();
+    abstract public function exampleEmpty();
 }
 
 class B extends A
 {
-    function example()
+    public function __construct()
     {
+    }
+
+    public function exampleEmpty()
+    {
+    }
+
+    public function exampleFilled()
+    {
+         return $this;
     }
 }
 
 class C extends B
 {
-    function example()
+    public function __construct()
     {
+        // Not applicable:
+        parent::__construct();
+    }
+
+    public function exampleEmpty()
+    {
+
+        // Not applicable:
+        return parent::exampleEmpty();
+    }
+
+    public function exampleFilled()
+    {
+        // Not applicable:
+        parent::exampleFilled();
     }
 }

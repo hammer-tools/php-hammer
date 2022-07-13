@@ -3,6 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.codeInsight.PhpScopeHolder
 import com.jetbrains.php.lang.inspections.PhpInspection
@@ -11,13 +12,16 @@ import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import net.rentalhost.plugins.extensions.psi.functionBody
 import net.rentalhost.plugins.extensions.psi.getMemberOverridden
+import net.rentalhost.plugins.extensions.psi.isStrictlyStatement
 import net.rentalhost.plugins.extensions.psi.isStub
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class SenselessParentCallEmptyInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element !is MethodReferenceImpl)
+            if (element !is MethodReferenceImpl ||
+                !element.parent.isStrictlyStatement())
                 return
 
             val elementBase = element.firstPsiChild as? ClassReferenceImpl ?: return
@@ -47,7 +51,11 @@ class SenselessParentCallEmptyInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Senseless call to empty parent::${element.name}()."
+                "Senseless call to empty parent::${element.name}().",
+                LocalQuickFixService.SimpleDeleteQuickFix(
+                    "Delete call to parent::${element.name}()",
+                    SmartPointerManager.createPointer(element.parent)
+                )
             )
         }
     }
