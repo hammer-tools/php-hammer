@@ -6,13 +6,13 @@ import net.rentalhost.plugins.services.TestCase
 class ComparisonScalarOrderInspectionTestCase: TestCase() {
     fun testOptionComparisonScalarRight(): Unit = testInspection(
         ComparisonScalarOrderInspection::class.java,
-        "optionComparisonScalarSideRight",
-        { it.optionComparisonScalarSide = OptionComparisonScalarSide.RIGHT }
+        "comparisonScalarSideRight",
+        { it.comparisonScalarSide = OptionComparisonScalarSide.RIGHT }
     )
 
     fun testOptionComparisonScalarLeft(): Unit = testInspection(
         ComparisonScalarOrderInspection::class.java,
-        "optionComparisonScalarSideLeft",
-        { it.optionComparisonScalarSide = OptionComparisonScalarSide.LEFT }
+        "comparisonScalarSideLeft",
+        { it.comparisonScalarSide = OptionComparisonScalarSide.LEFT }
     )
 }

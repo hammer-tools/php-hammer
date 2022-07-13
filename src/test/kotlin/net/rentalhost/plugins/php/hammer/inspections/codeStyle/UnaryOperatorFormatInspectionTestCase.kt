@@ -6,14 +6,14 @@ import net.rentalhost.plugins.services.TestCase
 class UnaryOperatorFormatInspectionTestCase: TestCase() {
     fun testOptionUnaryOperatorSideLeft(): Unit = testInspection(
         UnaryOperatorFormatInspection::class.java,
-        "optionUnaryOperatorSideLeft",
-        { it.optionUnaryOperatorSide = OptionUnaryOperatorSideFormat.LEFT }
+        "unaryOperatorSideLeft",
+        { it.unaryOperatorSide = OptionUnaryOperatorSideFormat.LEFT }
     )
 
     fun testOptionUnaryOperatorSideRight(): Unit = testInspection(
         UnaryOperatorFormatInspection::class.java,
-        "optionUnaryOperatorSideRight",
-        { it.optionUnaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
+        "unaryOperatorSideRight",
+        { it.unaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
     )
 
     fun testOptionIncludeForRepeatedExpressionsDisabled(): Unit = testInspection(

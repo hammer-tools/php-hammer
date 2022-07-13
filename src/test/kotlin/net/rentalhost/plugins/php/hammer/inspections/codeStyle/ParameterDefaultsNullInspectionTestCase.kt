@@ -12,25 +12,25 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
 
     fun testIncludeAbstractMethods(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
-        "optionIncludeAbstractMethods",
-        { it.optionIncludeAbstractMethods = true }
+        "includeAbstractMethods",
+        { it.includeAbstractMethods = true }
     )
 
     fun testIncludeOverriddenMethods(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
-        "optionIncludeOverriddenMethods",
-        { it.optionIncludeOverriddenMethods = true }
+        "includeOverriddenMethods",
+        { it.includeOverriddenMethods = true }
     )
 
     fun testIncludeNullableParameters(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
-        "optionIncludeNullableParameters",
-        { it.optionIncludeNullableParameters = true }
+        "includeNullableParameters",
+        { it.includeNullableParameters = true }
     )
 
     fun testIncludeParametersWithReference(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
-        "optionIncludeParametersWithReference",
-        { it.optionIncludeParametersWithReference = true }
+        "includeParametersWithReference",
+        { it.includeParametersWithReference = true }
     )
 }

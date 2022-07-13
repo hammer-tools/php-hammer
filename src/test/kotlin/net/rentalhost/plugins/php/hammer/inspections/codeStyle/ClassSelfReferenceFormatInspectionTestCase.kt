@@ -7,14 +7,14 @@ class ClassSelfReferenceFormatInspectionTestCase: TestCase() {
     fun testOptionClassSelfReferenceFormatSelf(): Unit =
         testInspection(
             ClassSelfReferenceFormatInspection::class.java,
-            "optionClassSelfReferenceFormatSelf",
-            { it.optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF }
+            "classSelfReferenceFormatSelf",
+            { it.classSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF }
         )
 
     fun testOptionClassSelfReferenceFormatNamed(): Unit =
         testInspection(
             ClassSelfReferenceFormatInspection::class.java,
-            "optionClassSelfReferenceFormatNamed",
-            { it.optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.NAMED }
+            "classSelfReferenceFormatNamed",
+            { it.classSelfReferenceFormat = OptionClassSelfReferenceFormat.NAMED }
         )
 }

@@ -4,7 +4,7 @@ import org.gradle.api.Project
 import java.io.File
 
 object InspectionService {
-    fun get(project: Project): MutableList<LocalInspectionNode> {
+    fun getInspection(project: Project): MutableList<LocalInspectionNode> {
         val plugin = XMLService.parse(File("${project.projectDir}/src/main/resources/META-INF/plugin.xml"))
         val pluginInspections = plugin.getElementsByTagName("localInspection")
         val pluginInspectionsMapped = mutableListOf<LocalInspectionNode>()

@@ -20,7 +20,7 @@ import javax.swing.JComponent
 
 class CaseSeparatorFormatInspection: PhpInspection() {
     @OptionTag
-    var optionCaseSeparatorFormat: OptionCaseSeparatorFormat = OptionCaseSeparatorFormat.COLON
+    var caseSeparatorFormat: OptionCaseSeparatorFormat = OptionCaseSeparatorFormat.COLON
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -34,10 +34,10 @@ class CaseSeparatorFormatInspection: PhpInspection() {
                     val elementSeparatorColon = elementSeparator.text == ":"
                     var elementSeparatorReplacement: PsiElement? = null
 
-                    if (elementSeparatorColon && optionCaseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON) {
+                    if (elementSeparatorColon && caseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON) {
                         elementSeparatorReplacement = FactoryService.createSemicolon(problemsHolder.project)
                     }
-                    else if (!elementSeparatorColon && optionCaseSeparatorFormat === OptionCaseSeparatorFormat.COLON) {
+                    else if (!elementSeparatorColon && caseSeparatorFormat === OptionCaseSeparatorFormat.COLON) {
                         elementSeparatorReplacement = FactoryService.createColon(problemsHolder.project)
                     }
 
@@ -61,14 +61,14 @@ class CaseSeparatorFormatInspection: PhpInspection() {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
                 radioComponent.addOption(
-                    "Prefer colon as separator", optionCaseSeparatorFormat === OptionCaseSeparatorFormat.COLON,
+                    "Prefer colon as separator", caseSeparatorFormat === OptionCaseSeparatorFormat.COLON,
                     "So your code will look like: <code>case 'example':</code>"
-                ) { optionCaseSeparatorFormat = OptionCaseSeparatorFormat.COLON }
+                ) { caseSeparatorFormat = OptionCaseSeparatorFormat.COLON }
 
                 radioComponent.addOption(
-                    "Prefer semicolon as separator", optionCaseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON,
+                    "Prefer semicolon as separator", caseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON,
                     "So your code will look like: <code>case 'example';</code>"
-                ) { optionCaseSeparatorFormat = OptionCaseSeparatorFormat.SEMICOLON }
+                ) { caseSeparatorFormat = OptionCaseSeparatorFormat.SEMICOLON }
             }
         }
     }

@@ -24,16 +24,16 @@ import javax.swing.JComponent
 
 class ParameterDefaultsNullInspection: PhpInspection() {
     @OptionTag
-    var optionIncludeAbstractMethods: Boolean = false
+    var includeAbstractMethods: Boolean = false
 
     @OptionTag
-    var optionIncludeOverriddenMethods: Boolean = false
+    var includeOverriddenMethods: Boolean = false
 
     @OptionTag
-    var optionIncludeNullableParameters: Boolean = false
+    var includeNullableParameters: Boolean = false
 
     @OptionTag
-    var optionIncludeParametersWithReference: Boolean = false
+    var includeParametersWithReference: Boolean = false
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -47,19 +47,19 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                     if (!context.isDefinedByOwnClass())
                         return
 
-                    if (!optionIncludeOverriddenMethods && context.isMemberOverrided())
+                    if (!includeOverriddenMethods && context.isMemberOverrided())
                         return
                 }
 
                 val isAbstractMethod = context.isAbstractMethod()
 
-                if (isAbstractMethod && !optionIncludeAbstractMethods)
+                if (isAbstractMethod && !includeAbstractMethods)
                     return
 
                 for (parameter in element.parameters) {
                     if (parameter is ParameterImpl &&
                         parameter.defaultValue != null) {
-                        if (!optionIncludeParametersWithReference &&
+                        if (!includeParametersWithReference &&
                             parameter.isPassByRef)
                             return
 
@@ -68,7 +68,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                         if (defaultValue.toString() == "null")
                             continue
 
-                        if (!optionIncludeNullableParameters) {
+                        if (!includeNullableParameters) {
                             if (parameter.declaredType.toString() == "")
                                 continue
 
@@ -100,24 +100,24 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.addCheckbox(
-                "Include abstract methods", optionIncludeAbstractMethods,
+                "Include abstract methods", includeAbstractMethods,
                 "This option allows inspecting abstract methods, however, a quick-fix will not be available and any action to correct this inspection will have to be done manually."
-            ) { optionIncludeAbstractMethods = it }
+            ) { includeAbstractMethods = it }
 
             component.addCheckbox(
-                "Include methods that are overridden", optionIncludeOverriddenMethods,
+                "Include methods that are overridden", includeOverriddenMethods,
                 "This option allows inspecting methods that have been overridden by other methods of child classes. Although a quick-fix is available, refactoring may be required."
-            ) { optionIncludeOverriddenMethods = it }
+            ) { includeOverriddenMethods = it }
 
             component.addCheckbox(
-                "Include nullable parameters", optionIncludeNullableParameters,
+                "Include nullable parameters", includeNullableParameters,
                 "This option allows inspecting nullable parameters, which implicitly include untyped parameters. Although a quick-fix is available, it can affect the behavior of code."
-            ) { optionIncludeNullableParameters = it }
+            ) { includeNullableParameters = it }
 
             component.addCheckbox(
-                "Include parameters with reference", optionIncludeParametersWithReference,
+                "Include parameters with reference", includeParametersWithReference,
                 "This option allows you to inspect parameters that are passed by reference."
-            ) { optionIncludeParametersWithReference = it }
+            ) { includeParametersWithReference = it }
         }
     }
 

@@ -17,7 +17,7 @@ import javax.swing.JComponent
 
 class ComparisonScalarOrderInspection: PhpInspection() {
     @OptionTag
-    var optionComparisonScalarSide: OptionComparisonScalarSide = OptionComparisonScalarSide.RIGHT
+    var comparisonScalarSide: OptionComparisonScalarSide = OptionComparisonScalarSide.RIGHT
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -29,7 +29,7 @@ class ComparisonScalarOrderInspection: PhpInspection() {
                 val leftScalar = elementLeft.isScalar()
                 val rightScalar = elementRight.isScalar()
 
-                if (optionComparisonScalarSide === OptionComparisonScalarSide.LEFT) {
+                if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) {
                     if (leftScalar || !rightScalar)
                         return
                 }
@@ -39,7 +39,7 @@ class ComparisonScalarOrderInspection: PhpInspection() {
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     element,
-                    if (optionComparisonScalarSide === OptionComparisonScalarSide.LEFT) "Scalar type must be on the left side."
+                    if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "Scalar type must be on the left side."
                     else "Scalar type must be on the right side.",
                     LocalQuickFixService.SimpleInlineQuickFix("Flip comparison") {
                         (elementLeft ?: return@SimpleInlineQuickFix)
@@ -54,14 +54,14 @@ class ComparisonScalarOrderInspection: PhpInspection() {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
                 radioComponent.addOption(
-                    "Prefer scalar at left", optionComparisonScalarSide === OptionComparisonScalarSide.LEFT,
+                    "Prefer scalar at left", comparisonScalarSide === OptionComparisonScalarSide.LEFT,
                     "Your conditionals will look like: <code>true === \$example</code>"
-                ) { optionComparisonScalarSide = OptionComparisonScalarSide.LEFT }
+                ) { comparisonScalarSide = OptionComparisonScalarSide.LEFT }
 
                 radioComponent.addOption(
-                    "Prefer scalar at right", optionComparisonScalarSide === OptionComparisonScalarSide.RIGHT,
+                    "Prefer scalar at right", comparisonScalarSide === OptionComparisonScalarSide.RIGHT,
                     "Your conditionals will look like: <code>\$example === true</code>"
-                ) { optionComparisonScalarSide = OptionComparisonScalarSide.RIGHT }
+                ) { comparisonScalarSide = OptionComparisonScalarSide.RIGHT }
             }
         }
     }

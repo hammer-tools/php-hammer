@@ -17,7 +17,7 @@ internal class GenerateDocumentationTask: ProjectTools.ProjectTask() {
     }
 
     private fun generateDocumentation(project: Project) {
-        val pluginInspections = InspectionService.get(project)
+        val pluginInspections = InspectionService.getInspection(project)
 
         val outputInspectionsFile = File("${project.projectDir}/wiki/Inspections.md")
         var outputInspectionsContent = "Currently, **${pluginInspections.size} inspections** have been implemented.\n\n"

@@ -22,7 +22,7 @@ internal class GeneratePluginXMLTask: ProjectTools.ProjectTask() {
     private fun generatePluginXML(project: Project) {
         var pluginXMLContents = ResourceService.read("/plugin.stub.xml")
         val pluginTitle = Parser.unescapeEntities(ProjectTools.prop(project, "pluginTitle"), false)
-        val pluginInspections = InspectionService.get(project)
+        val pluginInspections = InspectionService.getInspection(project)
 
         for (copyProperty in copyProperties) {
             pluginXMLContents = pluginXMLContents.replace("\$$copyProperty", ProjectTools.prop(project, copyProperty))

@@ -17,7 +17,7 @@ import javax.swing.JComponent
 
 class ClassSelfReferenceFormatInspection: PhpInspection() {
     @OptionTag
-    var optionClassSelfReferenceFormat: OptionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF
+    var classSelfReferenceFormat: OptionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -27,7 +27,7 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
 
                 val referenceName = element.text.lowercase()
 
-                if (optionClassSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) {
+                if (classSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) {
                     if (referenceName == "self" ||
                         referenceName != elementClassName.lowercase()) {
                         return
@@ -39,7 +39,7 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
                 }
 
                 val expectedFormat =
-                    if (optionClassSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) "self"
+                    if (classSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) "self"
                     else elementClassName
 
                 ProblemsHolderService.registerProblem(
@@ -59,14 +59,14 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
                 radioComponent.addOption(
-                    "Prefer self reference", optionClassSelfReferenceFormat === OptionClassSelfReferenceFormat.SELF,
+                    "Prefer self reference", classSelfReferenceFormat === OptionClassSelfReferenceFormat.SELF,
                     "It will replace references to the class itself such as <code>Dummy::something()</code> with <code>self::something()</code>."
-                ) { optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF }
+                ) { classSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF }
 
                 radioComponent.addOption(
-                    "Prefer ClassName reference", optionClassSelfReferenceFormat === OptionClassSelfReferenceFormat.NAMED,
+                    "Prefer ClassName reference", classSelfReferenceFormat === OptionClassSelfReferenceFormat.NAMED,
                     "It will replace references to the class itself such as <code>self::something()</code> with <code>Dummy::something()</code>"
-                ) { optionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.NAMED }
+                ) { classSelfReferenceFormat = OptionClassSelfReferenceFormat.NAMED }
             }
         }
     }

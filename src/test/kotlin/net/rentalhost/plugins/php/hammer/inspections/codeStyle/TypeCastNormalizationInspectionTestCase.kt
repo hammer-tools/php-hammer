@@ -6,13 +6,13 @@ import net.rentalhost.plugins.services.TestCase
 class TypeCastNormalizationInspectionTestCase: TestCase() {
     fun testOptionFormatShort(): Unit = testInspection(
         TypeCastNormalizationInspection::class.java,
-        "optionTypeCastNormalizationFormatShort",
-        { it.optionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT }
+        "typeCastNormalizationFormatShort",
+        { it.typeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT }
     )
 
     fun testOptionFormatLong(): Unit = testInspection(
         TypeCastNormalizationInspection::class.java,
-        "optionTypeCastNormalizationFormatLong",
-        { it.optionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.LONG }
+        "typeCastNormalizationFormatLong",
+        { it.typeCastNormalizationFormat = OptionTypeCastNormalizationFormat.LONG }
     )
 }

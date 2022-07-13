@@ -19,7 +19,7 @@ import javax.swing.JComponent
 
 class NullableTypeFormatInspection: PhpInspection() {
     @OptionTag
-    var optionNullableTypeFormat: OptionNullableTypeFormat = OptionNullableTypeFormat.LONG
+    var nullableTypeFormat: OptionNullableTypeFormat = OptionNullableTypeFormat.LONG
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -33,10 +33,10 @@ class NullableTypeFormatInspection: PhpInspection() {
                     val elementTypeIsShort = elementTypeText.startsWith("?")
                     var elementTypeReplacementSuggestion: String? = null
 
-                    if (elementTypeIsShort && optionNullableTypeFormat === OptionNullableTypeFormat.LONG) {
+                    if (elementTypeIsShort && nullableTypeFormat === OptionNullableTypeFormat.LONG) {
                         elementTypeReplacementSuggestion = "${elementTypeText.substring(1)}|null"
                     }
-                    else if (!elementTypeIsShort && optionNullableTypeFormat === OptionNullableTypeFormat.SHORT) {
+                    else if (!elementTypeIsShort && nullableTypeFormat === OptionNullableTypeFormat.SHORT) {
                         val elementTypeSingular = TypeService.exceptNull(elementTypeText).findFirst()
 
                         if (elementTypeSingular.isPresent) {
@@ -52,7 +52,7 @@ class NullableTypeFormatInspection: PhpInspection() {
                         element,
                         "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
                         SimpleTypeReplaceQuickFix(
-                            if (optionNullableTypeFormat === OptionNullableTypeFormat.LONG) "Replace with the long format"
+                            if (nullableTypeFormat === OptionNullableTypeFormat.LONG) "Replace with the long format"
                             else "Replace with the short format",
                             elementTypeReplacementSuggestion
                         )
@@ -68,14 +68,14 @@ class NullableTypeFormatInspection: PhpInspection() {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.delegateRadioCreation { radioComponent: RadioComponent ->
                 radioComponent.addOption(
-                    "Prefer short format", optionNullableTypeFormat === OptionNullableTypeFormat.SHORT,
+                    "Prefer short format", nullableTypeFormat === OptionNullableTypeFormat.SHORT,
                     "Your nullable types will look like: <code>?int</code>"
-                ) { optionNullableTypeFormat = OptionNullableTypeFormat.SHORT }
+                ) { nullableTypeFormat = OptionNullableTypeFormat.SHORT }
 
                 radioComponent.addOption(
-                    "Prefer long format", optionNullableTypeFormat === OptionNullableTypeFormat.LONG,
+                    "Prefer long format", nullableTypeFormat === OptionNullableTypeFormat.LONG,
                     "Your nullable types will look like: <code>int|null</code>"
-                ) { optionNullableTypeFormat = OptionNullableTypeFormat.LONG }
+                ) { nullableTypeFormat = OptionNullableTypeFormat.LONG }
             }
         }
     }

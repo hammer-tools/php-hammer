@@ -19,10 +19,10 @@ import javax.swing.JComponent
 
 class UnaryOperatorFormatInspection: PhpInspection() {
     @OptionTag
-    var includeForRepeatedExpressions = true
+    var includeForRepeatedExpressions: Boolean = true
 
     @OptionTag
-    var optionUnaryOperatorSide: OptionUnaryOperatorSideFormat = OptionUnaryOperatorSideFormat.RIGHT
+    var unaryOperatorSide: OptionUnaryOperatorSideFormat = OptionUnaryOperatorSideFormat.RIGHT
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
@@ -48,7 +48,7 @@ class UnaryOperatorFormatInspection: PhpInspection() {
                 }
 
                 val unaryOperationRight = element.lastChild === unaryOperator
-                val unaryOperationPreferRight = optionUnaryOperatorSide == OptionUnaryOperatorSideFormat.RIGHT
+                val unaryOperationPreferRight = unaryOperatorSide == OptionUnaryOperatorSideFormat.RIGHT
 
                 if (unaryOperationPreferRight) {
                     if (unaryOperationRight)
@@ -92,14 +92,14 @@ class UnaryOperatorFormatInspection: PhpInspection() {
 
             component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
                 radioComponent.addOption(
-                    "Prefer left side", optionUnaryOperatorSide === OptionUnaryOperatorSideFormat.LEFT,
+                    "Prefer left side", unaryOperatorSide === OptionUnaryOperatorSideFormat.LEFT,
                     "Your unary operations will look like: <code>++\$example</code>"
-                ) { optionUnaryOperatorSide = OptionUnaryOperatorSideFormat.LEFT }
+                ) { unaryOperatorSide = OptionUnaryOperatorSideFormat.LEFT }
 
                 radioComponent.addOption(
-                    "Prefer right side", optionUnaryOperatorSide === OptionUnaryOperatorSideFormat.RIGHT,
+                    "Prefer right side", unaryOperatorSide === OptionUnaryOperatorSideFormat.RIGHT,
                     "Your unary operations will look like: <code>\$example++</code>"
-                ) { optionUnaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
+                ) { unaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
             }
         }
     }
