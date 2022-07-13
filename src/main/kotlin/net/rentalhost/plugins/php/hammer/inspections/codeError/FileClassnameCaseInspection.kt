@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.xmlb.annotations.OptionTag
+import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
 import net.rentalhost.plugins.extensions.psi.getBasename
@@ -41,10 +42,11 @@ class FileClassnameCaseInspection: PhpInspection() {
                         problemsHolder,
                         element.nameIdentifier ?: return,
                         "Class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\").",
-                        LocalQuickFixService.SimpleReplaceQuickFix(
+                        if (PhpLangUtil.isPhpIdentifier(fileBasename)) LocalQuickFixService.SimpleReplaceQuickFix(
                             "Rename class to match filename",
                             FactoryService.createClassReference(problemsHolder.project, fileBasename)
                         )
+                        else null
                     )
                 }
             }
