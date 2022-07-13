@@ -10,19 +10,19 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
 
     fun testElse(): Unit = testInspection(ParameterDefaultsNullInspection::class.java)
 
-    fun testIncludeAbstractMethods(): Unit = testInspectionOnly(
+    fun testIncludeAbstractMethods(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
         "optionIncludeAbstractMethods",
         { it.optionIncludeAbstractMethods = true }
     )
 
-    fun testIncludeOverridenMethods(): Unit = testInspectionOnly(
+    fun testIncludeOverridenMethods(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
         "optionIncludeOverridenMethods",
         { it.optionIncludeOverriddenMethods = true }
     )
 
-    fun testIncludeNullableParameters(): Unit = testInspectionOnly(
+    fun testIncludeNullableParameters(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
         "optionIncludeNullableParameters",
         { it.optionIncludeNullableParameters = true }

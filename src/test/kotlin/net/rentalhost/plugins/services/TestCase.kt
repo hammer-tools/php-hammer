@@ -17,13 +17,6 @@ abstract class TestCase: BasePlatformTestCase() {
         myFixture.testDataPath = File("src/test/resources").absolutePath
     }
 
-    protected fun <T: PhpInspection?> testInspectionOnly(
-        inspectionClass: Class<T>,
-        phpSourceSubName: String? = null,
-        inspectionSetup: Consumer<T>? = null,
-        phpLanguageLevel: PhpLanguageLevel? = null,
-    ): Unit = testInspection(inspectionClass, phpSourceSubName, inspectionSetup, phpLanguageLevel, quickFixesEnabled = false)
-
     protected fun <T: PhpInspection?> testInspection(
         inspectionClass: Class<T>,
         phpSourceSubName: String? = null,
@@ -55,12 +48,17 @@ abstract class TestCase: BasePlatformTestCase() {
                 if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP810) ""
                 else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
 
-            val inspectionQuickFixes = myFixture.getAllQuickFixes()
-                .filter { it !is EmptyIntentionAction }
+            val quickFixFile = "$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php"
 
-            if (inspectionQuickFixes.isNotEmpty()) {
-                inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix ?: return@Consumer) })
-                myFixture.checkResultByFile("$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php")
+            if (File("src/test/resources/$quickFixFile").exists()) {
+                val inspectionQuickFixes = myFixture.getAllQuickFixes()
+                    .filter { it !is EmptyIntentionAction }
+
+                if (inspectionQuickFixes.isNotEmpty()) {
+                    inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix ?: return@Consumer) })
+
+                    myFixture.checkResultByFile(quickFixFile)
+                }
             }
         }
     }

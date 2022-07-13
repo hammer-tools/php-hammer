@@ -16,7 +16,7 @@ class UnaryOperatorFormatInspectionTestCase: TestCase() {
         { it.optionUnaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
     )
 
-    fun testOptionIncludeForRepeatedExpressionsDisabled(): Unit = testInspectionOnly(
+    fun testOptionIncludeForRepeatedExpressionsDisabled(): Unit = testInspection(
         UnaryOperatorFormatInspection::class.java,
         "includeForRepeatedExpressionsDisabled",
         { it.includeForRepeatedExpressions = false }
