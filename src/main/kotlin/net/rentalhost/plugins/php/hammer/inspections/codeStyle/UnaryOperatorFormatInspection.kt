@@ -7,8 +7,8 @@ import com.intellij.psi.util.elementType
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
-import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.impl.ForImpl
+import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
 import com.jetbrains.php.lang.psi.elements.impl.UnaryExpressionImpl
 import net.rentalhost.plugins.enums.OptionUnaryOperatorSideFormat
 import net.rentalhost.plugins.services.FactoryService
@@ -43,7 +43,7 @@ class UnaryOperatorFormatInspection: PhpInspection() {
                         !elementParent.repeatedExpressions.contains(element))
                         return
                 }
-                else if (elementParent !is Statement) {
+                else if (elementParent::class !== StatementImpl::class) {
                     return
                 }
 

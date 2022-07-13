@@ -28,3 +28,7 @@ $dummy = $a++;
 
 $dummy = ++self::$a;
 $dummy = self::$a++;
+
+$dummy = function () {
+    return ++$a;
+};
