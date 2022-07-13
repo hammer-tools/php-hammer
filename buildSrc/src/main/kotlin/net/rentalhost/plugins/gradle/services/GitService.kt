@@ -56,6 +56,10 @@ object GitService {
             }
         }
 
+        fun isRecentlyImplemented(): Boolean =
+            box == "added" &&
+            message.startsWith("implemented (")
+
         fun isInspectionRelated(): Boolean =
             classReference.endsWith("Inspection")
 

@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **[ArrayMapFirstClassInspection]**: implemented ("first-class callable replacement for array_map()");
+- **[BacktickReplacementInspection]**: implemented ("replace backtick operator");
+- **[FunctionErrorSilencedInspection]**: implemented ("function call using error control operator");
+- **[SenselessArrayMergeUsageInspection]**: implemented ("senseless array_merge() usage");
+- **[SenselessParentCallEmptyInspection]**: implemented ("senseless call to empty parent method");
+- **[UnaryOperatorFormatInspection]**: implemented ("unary increase/decrease format");
+
+### Changed
+
+- **[FileClassnameCaseInspection]**: added option to allow checking non-root classes from file, disabled by default;
+- **[FileClassnameCaseInspection]**: added the option to allow the inspection to check files with more than one class definition, disabled by default;
+- **[FileClassnameCaseInspection]**: added an option that allows to ignore classes that belong to files that would become invalid identifiers, disabled by default;
+- **[ParameterDefaultsNullInspection]**: added an option to allow inspection to work on referenced parameters, disabled by default;
+
+### Fixed
+
+- **[FileClassnameCaseInspection]**: files starting with numbers can throw exceptions to quick-fix;
+
+[ArrayMapFirstClassInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-array-map-first-class-inspection
+
+[BacktickReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-backtick-replacement-inspection
+
+[FunctionErrorSilencedInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-function-error-silenced-inspection
+
+[SenselessArrayMergeUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-senseless-array-merge-usage-inspection
+
+[SenselessParentCallEmptyInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-senseless-parent-call-empty-inspection
+
+[UnaryOperatorFormatInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-unary-operator-format-inspection
+
+[FileClassnameCaseInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-file-classname-case-inspection
+
+[ParameterDefaultsNullInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-defaults-null-inspection
+
 ## [0.6.0] - 2022-07-12
 
 ### Added

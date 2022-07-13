@@ -32,7 +32,7 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                 with(it.value) {
                     val commitBoxes = boxNames.associateWith { mutableListOf<GitCommit>() }
 
-                    val recentlyAdded = mutableListOf<String>()
+                    val recentlyImplemented = mutableListOf<String>()
                     val recentlyRemoved = mutableListOf<String>()
 
                     reversed()
@@ -42,12 +42,12 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                         .forEach commitLoop@{
                             val commitBox = commitBoxes[it.box] ?: return@commitLoop
 
-                            if (recentlyAdded.contains(it.classReference) ||
+                            if (recentlyImplemented.contains(it.classReference) ||
                                 recentlyRemoved.contains(it.classReference)) {
                                 return@commitLoop
                             }
-                            else if (it.box == "added") {
-                                recentlyAdded.add(it.classReference)
+                            else if (it.isRecentlyImplemented()) {
+                                recentlyImplemented.add(it.classReference)
                             }
 
                             commitBox.add(it)
@@ -70,10 +70,13 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
 
                         changelogResult += "### ${key.capitalized()}\n\n"
 
-                        value.sortedBy { it.classReference }.forEach {
-                            urlReferences[it.classReference] = it.getClassReferenceUrl()
-                            changelogResult += "- ${it.getMessagePrintable()}\n"
-                        }
+                        value
+                            .sortedBy { it.classReference }
+                            .sortedByDescending { it.isRecentlyImplemented() }
+                            .forEach {
+                                urlReferences[it.classReference] = it.getClassReferenceUrl()
+                                changelogResult += "- ${it.getMessagePrintable()}\n"
+                            }
 
                         changelogResult += "\n"
                     }
