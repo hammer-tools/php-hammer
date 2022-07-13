@@ -4,9 +4,8 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
-import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
-import net.rentalhost.plugins.extensions.psi.isVariadic
+import net.rentalhost.plugins.extensions.psi.isVariadicPreceded
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
@@ -18,13 +17,9 @@ class SenselessArrayMergeUsageInspection: PhpInspection() {
                 (element.name ?: return).lowercase() == "array_merge") {
                 val elementSimplified = when (element.parameters.size) {
                     0 -> FactoryService.createArrayEmpty(problemsHolder.project)
-                    1 -> element.parameters[0]
+                    1 -> with(element.parameters[0]) { if (isVariadicPreceded()) return else this }
                     else -> return
                 }
-
-                if (elementSimplified is ArrayCreationExpressionImpl &&
-                    elementSimplified.isVariadic())
-                    return
 
                 ProblemsHolderService.registerProblem(
                     problemsHolder,

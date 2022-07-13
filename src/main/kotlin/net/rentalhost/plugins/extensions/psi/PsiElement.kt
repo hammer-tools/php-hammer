@@ -1,6 +1,8 @@
 package net.rentalhost.plugins.extensions.psi
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.impl.source.tree.LeafPsiElement
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import com.jetbrains.php.lang.parser.PhpElementTypes
 import com.jetbrains.php.lang.psi.elements.*
@@ -15,6 +17,12 @@ fun PsiElement.swap(swapWith: PsiElement): Unit = with(copy()) {
     this@swap.replace(swapWith)
     swapWith.replace(this)
 }
+
+fun PsiElement.isVariadicPreceded(): Boolean =
+    with(PsiTreeUtil.skipWhitespacesAndCommentsBackward(this)) {
+        return this is LeafPsiElement &&
+               this.text == "..."
+    }
 
 fun PsiElement?.isScalar(): Boolean {
     if (this == null)

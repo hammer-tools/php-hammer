@@ -9,3 +9,5 @@ $dummy = <weak_warning descr="[PHP Hammer] Senseless array_merge() usage.">array
 $dummy = array_merge([1, 2, 3], [1, 2, 3]);
 
 $dummy = array_merge(... [1, 2, 3]);
+
+$dummy = array_merge(... x());

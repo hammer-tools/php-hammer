@@ -9,3 +9,5 @@ $dummy = [1, 2, 3];
 $dummy = array_merge([1, 2, 3], [1, 2, 3]);
 
 $dummy = array_merge(... [1, 2, 3]);
+
+$dummy = array_merge(... x());
