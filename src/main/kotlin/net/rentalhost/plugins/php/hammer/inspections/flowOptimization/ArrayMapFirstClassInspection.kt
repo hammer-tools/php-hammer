@@ -9,6 +9,8 @@ import com.jetbrains.php.lang.psi.elements.impl.*
 import net.rentalhost.plugins.extensions.psi.functionBody
 import net.rentalhost.plugins.extensions.psi.isShortFunction
 import net.rentalhost.plugins.extensions.psi.isVariadicPreceded
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class ArrayMapFirstClassInspection: PhpInspection() {
@@ -40,8 +42,12 @@ class ArrayMapFirstClassInspection: PhpInspection() {
 
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
-                    element,
+                    parameterFirst,
                     "Call to array_map() can be replaced by first-class callback.",
+                    LocalQuickFixService.SimpleReplaceQuickFix(
+                        "Replace with first-class callable",
+                        FactoryService.createFunctionCallable(problemsHolder.project, functionReturnCall.name ?: return)
+                    )
                 )
             }
         }

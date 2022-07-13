@@ -63,6 +63,9 @@ object FactoryService {
     fun createFunctionCall(project: Project, functionName: String, parameters: List<String>): FunctionReference =
         PhpPsiElementFactory.createPhpPsiFromText(project, FunctionReference::class.java, "$functionName(${parameters.joinToString(",")});")
 
+    fun createFunctionCallable(project: Project, functionName: String): PhpCallableFunction =
+        PhpPsiElementFactory.createPhpPsiFromText(project, PhpCallableFunction::class.java, "$functionName(...);")
+
     fun createParameterType(project: Project, parameterType: String): PhpParameterType =
         PhpPsiElementFactory.createParameterType(project, parameterType)
 
