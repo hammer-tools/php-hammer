@@ -7,9 +7,17 @@ class FileClassnameCaseInspectionTestCase: TestCase() {
 
     fun testIncorrectName(): Unit = testInspection(FileClassnameCaseInspection::class.java, "IncorrectName")
 
+    fun testOptionIncludeNonRootedClassesDisabled(): Unit = testInspectionOnly(FileClassnameCaseInspection::class.java, "Rooted")
+
     fun testOptionIncludeNonRootedClasses(): Unit = testInspectionOnly(
         FileClassnameCaseInspection::class.java,
         "NonRooted",
         { it.includeNonRootedClasses = true }
+    )
+
+    fun testOptionIncludeFilesWithMultipleClasses(): Unit = testInspectionOnly(
+        FileClassnameCaseInspection::class.java,
+        "MultiClasses",
+        { it.includeFilesWithMultipleClasses = true }
     )
 }

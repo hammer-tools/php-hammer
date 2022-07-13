@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
@@ -18,6 +19,9 @@ class FileClassnameCaseInspection: PhpInspection() {
     @OptionTag
     var includeNonRootedClasses: Boolean = false
 
+    @OptionTag
+    var includeFilesWithMultipleClasses: Boolean = false
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is PhpClassImpl &&
@@ -26,6 +30,10 @@ class FileClassnameCaseInspection: PhpInspection() {
                     return
 
                 val file = element.containingFile
+
+                if (!includeFilesWithMultipleClasses && PsiTreeUtil.collectElementsOfType(file, PhpClassImpl::class.java).size > 1)
+                    return
+
                 val fileBasename = file.getBasename()
 
                 if (fileBasename != element.name) {
@@ -49,6 +57,11 @@ class FileClassnameCaseInspection: PhpInspection() {
                 "Include non-rooted classes", includeNonRootedClasses,
                 "This option will allow this inspection to check all classes present in the file. By default, only classes defined at the root of the file are analyzed."
             ) { includeNonRootedClasses = it }
+
+            component.addCheckbox(
+                "Include files with multiple classes", includeFilesWithMultipleClasses,
+                "This option will allow the inspection to analyze files that define multiple classes. By default, only classes with a single class definition are inspected."
+            ) { includeFilesWithMultipleClasses = it }
         }
     }
 }
