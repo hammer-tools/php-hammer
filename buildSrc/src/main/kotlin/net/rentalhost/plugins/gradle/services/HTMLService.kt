@@ -38,8 +38,8 @@ object HTMLService {
                 }
             }
 
-            convertTagToMarkdown(body, "strong") { "**${it}**" }
-            convertTagToMarkdown(body, "code") { "`` ${it} ``" }
+            convertTagToMarkdown(body, "strong") { "**$it**" }
+            convertTagToMarkdown(body, "code") { "`` $it ``" }
 
             var result = body.html()
                 .replace(removeIndentRegex, "")
