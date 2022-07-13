@@ -89,6 +89,9 @@ object FactoryService {
     fun createAssignmentStatement(project: Project, assignment: String): StatementImpl =
         PhpPsiElementFactory.createPhpPsiFromText(project, AssignmentExpressionImpl::class.java, assignment).parent as StatementImpl
 
+    fun createArrayEmpty(project: Project): ArrayCreationExpression =
+        PhpPsiElementFactory.createPhpPsiFromText(project, ArrayCreationExpression::class.java, "[];")
+
     fun createArrayValue(project: Project, value: String): PhpPsiElement? =
         createPhpPsiFromText(project, mutableListOf(ArrayCreationExpression::class.java, PhpPsiElement::class.java), "[$value]")
 
