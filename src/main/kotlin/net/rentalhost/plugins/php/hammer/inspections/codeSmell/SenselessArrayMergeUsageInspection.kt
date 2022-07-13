@@ -8,6 +8,7 @@ import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import net.rentalhost.plugins.extensions.psi.isVariadic
 import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class SenselessArrayMergeUsageInspection: PhpInspection() {
@@ -29,6 +30,10 @@ class SenselessArrayMergeUsageInspection: PhpInspection() {
                     problemsHolder,
                     element,
                     "Senseless array_merge() usage.",
+                    LocalQuickFixService.SimpleReplaceQuickFix(
+                        "Simplify useless array_merge()",
+                        elementSimplified
+                    )
                 )
             }
         }
