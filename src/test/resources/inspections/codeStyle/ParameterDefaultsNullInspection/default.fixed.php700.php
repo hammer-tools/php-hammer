@@ -48,11 +48,6 @@ interface IDummyC
     function dummyA(int $b = 123);
 }
 
-// Not applicable for quick-fix only:
-
-$dummy = function (int &$a = 123) {
-};
-
 // Dummy:
 
 interface IDummyB
@@ -66,6 +61,9 @@ abstract class DummyC
 }
 
 // Not applicable:
+
+$dummy = function (int &$a = 123) {
+};
 
 $dummy = function ($a) {
 };

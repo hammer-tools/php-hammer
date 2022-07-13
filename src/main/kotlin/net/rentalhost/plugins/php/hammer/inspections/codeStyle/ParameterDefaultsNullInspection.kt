@@ -32,6 +32,9 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     @OptionTag
     var optionIncludeNullableParameters: Boolean = false
 
+    @OptionTag
+    var optionIncludeParametersWithReference: Boolean = false
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is ParameterListImpl) {
@@ -56,6 +59,10 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 for (parameter in element.parameters) {
                     if (parameter is ParameterImpl &&
                         parameter.defaultValue != null) {
+                        if (!optionIncludeParametersWithReference &&
+                            parameter.isPassByRef)
+                            return
+
                         val defaultValue = parameter.defaultValueType
 
                         if (defaultValue.toString() == "null")
@@ -106,6 +113,11 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 "Include nullable parameters", optionIncludeNullableParameters,
                 "This option allows inspecting nullable parameters, which implicitly include untyped parameters. Although a quick-fix is available, it can affect the behavior of code."
             ) { optionIncludeNullableParameters = it }
+
+            component.addCheckbox(
+                "Include parameters with reference", optionIncludeParametersWithReference,
+                "This option allows you to inspect parameters that are passed by reference."
+            ) { optionIncludeParametersWithReference = it }
         }
     }
 

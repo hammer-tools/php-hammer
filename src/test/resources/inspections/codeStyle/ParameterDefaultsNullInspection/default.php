@@ -47,11 +47,6 @@ interface IDummyC
     function dummyA(int $b = 123);
 }
 
-// Not applicable for quick-fix only:
-
-$dummy = function (<weak_warning descr="[PHP Hammer] Default value of the parameter must be \"null\".">int &$a = 123</weak_warning>) {
-};
-
 // Dummy:
 
 interface IDummyB
@@ -65,6 +60,9 @@ abstract class DummyC
 }
 
 // Not applicable:
+
+$dummy = function (int &$a = 123) {
+};
 
 $dummy = function ($a) {
 };
