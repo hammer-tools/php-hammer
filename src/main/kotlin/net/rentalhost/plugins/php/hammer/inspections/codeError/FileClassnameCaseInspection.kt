@@ -23,6 +23,9 @@ class FileClassnameCaseInspection: PhpInspection() {
     @OptionTag
     var includeFilesWithMultipleClasses: Boolean = false
 
+    @OptionTag
+    var includeFilesWithInvalidIdentifier: Boolean = false
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is PhpClassImpl &&
@@ -36,13 +39,17 @@ class FileClassnameCaseInspection: PhpInspection() {
                     return
 
                 val fileBasename = file.getBasename()
+                val fileIdentifierValid = PhpLangUtil.isPhpIdentifier(fileBasename)
+
+                if (!includeFilesWithInvalidIdentifier && !fileIdentifierValid)
+                    return
 
                 if (fileBasename != element.name) {
                     ProblemsHolderService.registerProblem(
                         problemsHolder,
                         element.nameIdentifier ?: return,
                         "Class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\").",
-                        if (PhpLangUtil.isPhpIdentifier(fileBasename)) LocalQuickFixService.SimpleReplaceQuickFix(
+                        if (fileIdentifierValid) LocalQuickFixService.SimpleReplaceQuickFix(
                             "Rename class to match filename",
                             FactoryService.createClassReference(problemsHolder.project, fileBasename)
                         )
@@ -64,6 +71,12 @@ class FileClassnameCaseInspection: PhpInspection() {
                 "Include files with multiple classes", includeFilesWithMultipleClasses,
                 "This option will allow the inspection to analyze files that define multiple classes. By default, only classes with a single class definition are inspected."
             ) { includeFilesWithMultipleClasses = it }
+
+            component.addCheckbox(
+                "Include files with incompatible identifiers", includeFilesWithInvalidIdentifier,
+                "This option will allow this inspection to analyze files even if their names cannot be used as class identifiers. Regardless, quick-fix will not be available in " +
+                "these cases naturally."
+            ) { includeFilesWithInvalidIdentifier = it }
         }
     }
 }
