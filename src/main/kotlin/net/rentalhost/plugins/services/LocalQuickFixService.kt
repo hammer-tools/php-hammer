@@ -32,9 +32,7 @@ object LocalQuickFixService {
         }
     }
 
-    class SimpleDeleteQuickFix constructor(
-        quickFixTitle: String
-    ): SimpleQuickFix(quickFixTitle) {
+    class SimpleDeleteQuickFix constructor(quickFixTitle: String): SimpleQuickFix(quickFixTitle) {
         override fun applyFix(project: Project, descriptor: ProblemDescriptor): Unit =
             descriptor.psiElement.delete()
     }

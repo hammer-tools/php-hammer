@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import net.rentalhost.plugins.extensions.psi.getErrorControlOperator
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class FunctionErrorSilencedInspection: PhpInspection() {
@@ -17,7 +18,8 @@ class FunctionErrorSilencedInspection: PhpInspection() {
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     errorControlOperator,
-                    "Function call is using error control operator."
+                    "Function call is using error control operator.",
+                    LocalQuickFixService.SimpleReplaceQuickFix("Remove the \"@\" operator", element.parent, element)
                 )
             }
         }
