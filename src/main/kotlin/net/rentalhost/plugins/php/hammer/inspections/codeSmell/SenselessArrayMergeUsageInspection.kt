@@ -15,6 +15,9 @@ class SenselessArrayMergeUsageInspection: PhpInspection() {
         override fun visitElement(element: PsiElement) {
             if (element is FunctionReferenceImpl &&
                 (element.name ?: return).lowercase() == "array_merge") {
+                if (element.parameterList == null)
+                    return
+
                 val elementSimplified = when (element.parameters.size) {
                     0 -> FactoryService.createArrayEmpty(problemsHolder.project)
                     1 -> with(element.parameters[0]) { if (isVariadicPreceded()) return else this }
