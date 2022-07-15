@@ -17,19 +17,18 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class CastIntvalInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is FunctionReferenceImpl) {
-                val functionName = (element.name ?: return).lowercase()
+            if (element !is FunctionReferenceImpl)
+                return
 
-                if (functionName == "settype") {
-                    return processSetTypeCast(problemsHolder, element)
-                }
+            val functionName = (element.name ?: return).lowercase()
 
-                val castType = CastService.castFunctions[functionName]
+            if (functionName == "settype")
+                return processSetTypeCast(problemsHolder, element)
 
-                if (castType != null) {
-                    processFunctionCast(problemsHolder, element, castType)
-                }
-            }
+            val castType = CastService.castFunctions[functionName]
+
+            if (castType != null)
+                processFunctionCast(problemsHolder, element, castType)
         }
     }
 

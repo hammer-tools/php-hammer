@@ -12,22 +12,23 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class StaticAnonymousFunctionCannotAccessThisInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is FunctionImpl &&
-                element.isAnonymous() &&
-                element.isStatic()) {
-                for (elementScope in element.scopes()) {
-                    if (elementScope.accessVariables().find { it.variableName == "this" } == null)
-                        continue
+            if (element !is FunctionImpl ||
+                !element.isAnonymous() ||
+                !element.isStatic())
+                return
 
-                    ProblemsHolderService.registerProblem(
-                        problemsHolder,
-                        element.firstChild,
-                        "Static anonymous functions cannot access \$this.",
-                        LocalQuickFixService.SimpleDeleteQuickFix("Delete this \"static\" declaration")
-                    )
+            for (elementScope in element.scopes()) {
+                if (elementScope.accessVariables().find { it.variableName == "this" } == null)
+                    continue
 
-                    return
-                }
+                ProblemsHolderService.registerProblem(
+                    problemsHolder,
+                    element.firstChild,
+                    "Static anonymous functions cannot access \$this.",
+                    LocalQuickFixService.SimpleDeleteQuickFix("Delete this \"static\" declaration")
+                )
+
+                return
             }
         }
     }

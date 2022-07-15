@@ -16,50 +16,50 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class UnusedUseVariableReferenceInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is PhpUseListImpl) {
-                val useVariables = with(element.getVariables()) {
-                    if (isNullOrEmpty())
-                        return
+            if (element !is PhpUseListImpl)
+                return
 
-                    filter { it.isRef() }
+            val useVariables = with(element.getVariables()) {
+                if (isNullOrEmpty())
+                    return
+
+                filter { it.isRef() }
+            }
+
+            val useContext = element.context as FunctionImpl
+
+            val useContextAssignment = lazy {
+                with(useContext.parent.parent) {
+                    if (this is AssignmentExpressionImpl) this.variable?.name
+                    else null
                 }
+            }
 
-                val useContext = element.context as FunctionImpl
+            val functionVariablesWriting = useContext.accessMutableVariables().names()
 
-                val useContextAssignment = lazy {
-                    with(useContext.parent.parent) {
-                        if (this is AssignmentExpressionImpl) this.variable?.name
-                        else null
-                    }
-                }
+            for (useVariable in useVariables) {
+                if (!functionVariablesWriting.contains(useVariable.name)) {
+                    if (useContextAssignment.value == useVariable.name)
+                        continue
 
-                val functionVariablesWriting = useContext.accessMutableVariables().names()
+                    val functionContext = PsiTreeUtil.getParentOfType(useContext, FunctionImpl::class.java)
 
-                for (useVariable in useVariables) {
-                    if (!functionVariablesWriting.contains(useVariable.name)) {
-                        if (useContextAssignment.value == useVariable.name) {
+                    if (functionContext is FunctionImpl) {
+                        val functionContextVariablesWriting = functionContext.accessMutableVariables().names()
+
+                        if (functionContextVariablesWriting.contains(useVariable.name)) {
                             continue
                         }
+                    }
 
-                        val functionContext = PsiTreeUtil.getParentOfType(useContext, FunctionImpl::class.java)
-
-                        if (functionContext is FunctionImpl) {
-                            val functionContextVariablesWriting = functionContext.accessMutableVariables().names()
-
-                            if (functionContextVariablesWriting.contains(useVariable.name)) {
-                                continue
-                            }
-                        }
-
-                        with(useVariable.getLeafRef() as PsiElement) {
-                            ProblemsHolderService.registerProblem(
-                                problemsHolder,
-                                this,
-                                "Unused reference for variable declared in use().",
-                                LocalQuickFixService.SimpleDeleteQuickFix("Delete reference indicator (\"&\")"),
-                                ProblemHighlightType.LIKE_UNUSED_SYMBOL
-                            )
-                        }
+                    with(useVariable.getLeafRef() as PsiElement) {
+                        ProblemsHolderService.registerProblem(
+                            problemsHolder,
+                            this,
+                            "Unused reference for variable declared in use().",
+                            LocalQuickFixService.SimpleDeleteQuickFix("Delete reference indicator (\"&\")"),
+                            ProblemHighlightType.LIKE_UNUSED_SYMBOL
+                        )
                     }
                 }
             }

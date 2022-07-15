@@ -20,29 +20,29 @@ class AnonymousFunctionStaticInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is FunctionImpl &&
-                element.isAnonymous() &&
-                !element.isStatic()) {
-                if (!includeShortFunctions &&
-                    element.isShortFunction())
+            if (element !is FunctionImpl ||
+                !element.isAnonymous() ||
+                element.isStatic())
+                return
+
+            if (!includeShortFunctions &&
+                element.isShortFunction())
+                return
+
+            for (elementScope in element.scopes()) {
+                if (elementScope.accessVariables().find { it.variableName == "this" } != null)
                     return
-
-                for (elementScope in element.scopes()) {
-                    if (elementScope.accessVariables().find { it.variableName == "this" } != null) {
-                        return
-                    }
-                }
-
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element.firstChild,
-                    "This anonymous function can be static.",
-                    LocalQuickFixService.SimpleInlineQuickFix(
-                        "Make this function static",
-                        applyFix = { element.insertBefore(FactoryService.createStaticKeyword(problemsHolder.project)) }
-                    )
-                )
             }
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element.firstChild,
+                "This anonymous function can be static.",
+                LocalQuickFixService.SimpleInlineQuickFix(
+                    "Make this function static",
+                    applyFix = { element.insertBefore(FactoryService.createStaticKeyword(problemsHolder.project)) }
+                )
+            )
         }
     }
 

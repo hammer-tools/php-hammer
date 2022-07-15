@@ -13,27 +13,28 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class SenselessArrayMergeUsageInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is FunctionReferenceImpl &&
-                (element.name ?: return).lowercase() == "array_merge") {
-                if (element.parameterList == null)
-                    return
+            if (element !is FunctionReferenceImpl ||
+                (element.name ?: return).lowercase() != "array_merge")
+                return
 
-                val elementSimplified = when (element.parameters.size) {
-                    0 -> FactoryService.createArrayEmpty(problemsHolder.project)
-                    1 -> with(element.parameters[0]) { if (isVariadicPreceded()) return else this }
-                    else -> return
-                }
+            if (element.parameterList == null)
+                return
 
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    "Senseless array_merge() usage.",
-                    LocalQuickFixService.SimpleReplaceQuickFix(
-                        "Simplify useless array_merge()",
-                        elementSimplified
-                    )
-                )
+            val elementSimplified = when (element.parameters.size) {
+                0 -> FactoryService.createArrayEmpty(problemsHolder.project)
+                1 -> with(element.parameters[0]) { if (isVariadicPreceded()) return else this }
+                else -> return
             }
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Senseless array_merge() usage.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Simplify useless array_merge()",
+                    elementSimplified
+                )
+            )
         }
     }
 }

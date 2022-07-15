@@ -19,31 +19,32 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class UnusedUseVariableInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is PhpUseListImpl) {
-                val useVariables = element.getVariables()
+            if (element !is PhpUseListImpl)
+                return
 
-                if (useVariables.isNullOrEmpty())
-                    return
+            val useVariables = element.getVariables()
 
-                val useContext = element.context as FunctionImpl
+            if (useVariables.isNullOrEmpty())
+                return
 
-                val functionVariables = useContext.accessVariables()
-                    .map { it.variableName }
-                    .distinct()
+            val useContext = element.context as FunctionImpl
 
-                useVariables
-                    .filterNot { functionVariables.contains(it.name) }
-                    .forEach {
-                        ProblemsHolderService.registerProblem(
-                            problemsHolder,
-                            element,
-                            it.declarationTextRange(element),
-                            "Unused variable declared in use().",
-                            DeleteUnusedVariableDeclarationQuickFix(SmartPointerManager.createPointer(it)),
-                            ProblemHighlightType.LIKE_UNUSED_SYMBOL
-                        )
-                    }
-            }
+            val functionVariables = useContext.accessVariables()
+                .map { it.variableName }
+                .distinct()
+
+            useVariables
+                .filterNot { functionVariables.contains(it.name) }
+                .forEach {
+                    ProblemsHolderService.registerProblem(
+                        problemsHolder,
+                        element,
+                        it.declarationTextRange(element),
+                        "Unused variable declared in use().",
+                        DeleteUnusedVariableDeclarationQuickFix(SmartPointerManager.createPointer(it)),
+                        ProblemHighlightType.LIKE_UNUSED_SYMBOL
+                    )
+                }
         }
     }
 

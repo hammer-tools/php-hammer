@@ -16,40 +16,41 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class ArrayMapFirstClassInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is FunctionReferenceImpl &&
-                (element.name ?: return).lowercase() == "array_map" &&
-                element.parameters.size == 2) {
-                val parameterFirst = element.parameters[0] as? PhpExpressionImpl ?: return
-                val parameterFunction = parameterFirst.firstPsiChild as? FunctionImpl ?: return
+            if (element !is FunctionReferenceImpl ||
+                (element.name ?: return).lowercase() != "array_map" ||
+                element.parameters.size != 2)
+                return
 
-                if (parameterFunction.parameters.size != 1)
-                    return
+            val parameterFirst = element.parameters[0] as? PhpExpressionImpl ?: return
+            val parameterFunction = parameterFirst.firstPsiChild as? FunctionImpl ?: return
 
-                val functionReturnCall =
-                    if (parameterFunction.isShortFunction()) parameterFunction.lastChild
-                    else (parameterFunction.functionBody()?.firstPsiChild as? PhpReturnImpl ?: return).argument
+            if (parameterFunction.parameters.size != 1)
+                return
 
-                if (functionReturnCall !is FunctionReferenceImpl ||
-                    functionReturnCall.parameters.size != 1)
-                    return
+            val functionReturnCall =
+                if (parameterFunction.isShortFunction()) parameterFunction.lastChild
+                else (parameterFunction.functionBody()?.firstPsiChild as? PhpReturnImpl ?: return).argument
 
-                val functionReturnCallVariable = (functionReturnCall.parameters[0] as? VariableImpl ?: return)
-                val parameterFunctionVariable = parameterFunction.parameters[0]
+            if (functionReturnCall !is FunctionReferenceImpl ||
+                functionReturnCall.parameters.size != 1)
+                return
 
-                if (functionReturnCallVariable.name != parameterFunctionVariable.name ||
-                    functionReturnCallVariable.isVariadicPreceded())
-                    return
+            val functionReturnCallVariable = (functionReturnCall.parameters[0] as? VariableImpl ?: return)
+            val parameterFunctionVariable = parameterFunction.parameters[0]
 
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    parameterFirst,
-                    "Call to array_map() can be replaced by first-class callback.",
-                    LocalQuickFixService.SimpleReplaceQuickFix(
-                        "Replace with first-class callable",
-                        FactoryService.createFunctionCallable(problemsHolder.project, functionReturnCall.name ?: return)
-                    )
+            if (functionReturnCallVariable.name != parameterFunctionVariable.name ||
+                functionReturnCallVariable.isVariadicPreceded())
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                parameterFirst,
+                "Call to array_map() can be replaced by first-class callback.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with first-class callable",
+                    FactoryService.createFunctionCallable(problemsHolder.project, functionReturnCall.name ?: return)
                 )
-            }
+            )
         }
     }
 

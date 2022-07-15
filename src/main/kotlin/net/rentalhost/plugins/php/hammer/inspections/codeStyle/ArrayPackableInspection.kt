@@ -18,37 +18,37 @@ import net.rentalhost.plugins.services.TypeService
 class ArrayPackableInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is ArrayCreationExpressionImpl) {
-                val elementChildren = element.unpackValues()
+            if (element !is ArrayCreationExpressionImpl)
+                return
 
-                if (elementChildren.isEmpty())
-                    return
+            val elementChildren = element.unpackValues()
 
-                var elementContainsIndex = false
+            if (elementChildren.isEmpty())
+                return
 
-                for ((elementChildIndex, elementChild) in elementChildren.withIndex()) {
-                    if (elementChild is ArrayHashElementImpl) {
-                        elementContainsIndex = true
+            var elementContainsIndex = false
 
-                        if ((elementChild.key ?: return).text != elementChildIndex.toString()) {
-                            return
-                        }
-                    }
-                    else if (TypeService.isVariadic(elementChild)) {
+            for ((elementChildIndex, elementChild) in elementChildren.withIndex()) {
+                if (elementChild is ArrayHashElementImpl) {
+                    elementContainsIndex = true
+
+                    if ((elementChild.key ?: return).text != elementChildIndex.toString())
                         return
-                    }
                 }
-
-                if (!elementContainsIndex)
+                else if (TypeService.isVariadic(elementChild)) {
                     return
-
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    "Packed array can be simplified.",
-                    DropArrayKeysQuickFix()
-                )
+                }
             }
+
+            if (!elementContainsIndex)
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Packed array can be simplified.",
+                DropArrayKeysQuickFix()
+            )
         }
     }
 

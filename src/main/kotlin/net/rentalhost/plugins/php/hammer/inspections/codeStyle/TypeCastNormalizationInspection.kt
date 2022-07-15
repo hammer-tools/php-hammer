@@ -20,28 +20,29 @@ class TypeCastNormalizationInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is LeafPsiElement) {
-                with(element.elementType) {
-                    val castTo = when (this) {
-                        PhpTokenTypes.opFLOAT_CAST -> "(float)"
-                        PhpTokenTypes.opINTEGER_CAST -> if (typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(int)" else "(integer)"
-                        PhpTokenTypes.opBOOLEAN_CAST -> if (typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(bool)" else "(boolean)"
-                        else -> return
-                    }
+            if (element !is LeafPsiElement)
+                return
 
-                    if (element.text == castTo)
-                        return
-
-                    ProblemsHolderService.registerProblem(
-                        problemsHolder,
-                        element,
-                        "Type cast must be written as $castTo",
-                        LocalQuickFixService.SimpleReplaceQuickFix(
-                            "Replace with $castTo",
-                            FactoryService.createTypeCast(problemsHolder.project, castTo)
-                        )
-                    )
+            with(element.elementType) {
+                val castTo = when (this) {
+                    PhpTokenTypes.opFLOAT_CAST -> "(float)"
+                    PhpTokenTypes.opINTEGER_CAST -> if (typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(int)" else "(integer)"
+                    PhpTokenTypes.opBOOLEAN_CAST -> if (typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(bool)" else "(boolean)"
+                    else -> return
                 }
+
+                if (element.text == castTo)
+                    return
+
+                ProblemsHolderService.registerProblem(
+                    problemsHolder,
+                    element,
+                    "Type cast must be written as $castTo",
+                    LocalQuickFixService.SimpleReplaceQuickFix(
+                        "Replace with $castTo",
+                        FactoryService.createTypeCast(problemsHolder.project, castTo)
+                    )
+                )
             }
         }
     }

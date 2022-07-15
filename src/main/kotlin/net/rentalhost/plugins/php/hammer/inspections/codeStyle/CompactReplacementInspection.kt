@@ -18,42 +18,43 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class CompactReplacementInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is ArrayCreationExpressionImpl &&
-                element.parent !is MultiassignmentExpression) {
-                val arrayElements = element.unpackValues()
+            if (element !is ArrayCreationExpressionImpl ||
+                element.parent is MultiassignmentExpression)
+                return
 
-                if (arrayElements.isEmpty())
+            val arrayElements = element.unpackValues()
+
+            if (arrayElements.isEmpty())
+                return
+
+            val arrayVariables = mutableListOf<String>()
+
+            for (arrayElement in arrayElements) {
+                if (arrayElement !is ArrayHashElementImpl)
                     return
 
-                val arrayVariables = mutableListOf<String>()
+                val arrayElementValue = arrayElement.value as? VariableImpl ?: return
 
-                for (arrayElement in arrayElements) {
-                    if (arrayElement !is ArrayHashElementImpl)
-                        return
+                if (arrayElementValue.isRef())
+                    return
 
-                    val arrayElementValue = arrayElement.value as? VariableImpl ?: return
+                val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
 
-                    if (arrayElementValue.isRef())
-                        return
+                if (arrayElementKey.contents != arrayElementValue.name)
+                    return
 
-                    val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
-
-                    if (arrayElementKey.contents != arrayElementValue.name)
-                        return
-
-                    arrayVariables.add("'${arrayElementValue.name}'")
-                }
-
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    "Array can be replaced by compact().",
-                    LocalQuickFixService.SimpleReplaceQuickFix(
-                        "Replace with compact()",
-                        FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables)
-                    )
-                )
+                arrayVariables.add("'${arrayElementValue.name}'")
             }
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Array can be replaced by compact().",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with compact()",
+                    FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables)
+                )
+            )
         }
     }
 }

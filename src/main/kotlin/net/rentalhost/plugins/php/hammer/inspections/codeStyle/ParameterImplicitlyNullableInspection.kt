@@ -15,38 +15,39 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class ParameterImplicitlyNullableInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is ParameterImpl) {
-                if (!element.defaultValueType.isNullable)
-                    return
+            if (element !is ParameterImpl)
+                return
 
-                val declaredType = element.declaredType
+            if (!element.defaultValueType.isNullable)
+                return
 
-                if (declaredType.isEmpty ||
-                    declaredType.isNullable ||
-                    declaredType.types.contains(PhpType._MIXED))
-                    return
+            val declaredType = element.declaredType
 
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    "Parameter type is implicitly null.",
-                    LocalQuickFixService.SimpleInlineQuickFix("Add explicit \"null\" type") {
-                        if (element.typeDeclaration != null) {
-                            (element.typeDeclaration ?: return@SimpleInlineQuickFix)
-                                .replace(FactoryService.createParameterType(problemsHolder.project, (element.typeDeclaration ?: return@SimpleInlineQuickFix).text + "|null"))
-                        }
-                        else {
-                            val parameterComplex = FactoryService.createComplexParameter(problemsHolder.project, element.text)
+            if (declaredType.isEmpty ||
+                declaredType.isNullable ||
+                declaredType.types.contains(PhpType._MIXED))
+                return
 
-                            with(parameterComplex.typeDeclaration as PhpTypeDeclarationImpl) {
-                                replace(FactoryService.createParameterType(problemsHolder.project, "$text|null"))
-                            }
-
-                            element.replace(FactoryService.createComplexParameterDoctypeCompatible(problemsHolder.project, parameterComplex.text))
-                        }
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Parameter type is implicitly null.",
+                LocalQuickFixService.SimpleInlineQuickFix("Add explicit \"null\" type") {
+                    if (element.typeDeclaration != null) {
+                        (element.typeDeclaration ?: return@SimpleInlineQuickFix)
+                            .replace(FactoryService.createParameterType(problemsHolder.project, (element.typeDeclaration ?: return@SimpleInlineQuickFix).text + "|null"))
                     }
-                )
-            }
+                    else {
+                        val parameterComplex = FactoryService.createComplexParameter(problemsHolder.project, element.text)
+
+                        with(parameterComplex.typeDeclaration as PhpTypeDeclarationImpl) {
+                            replace(FactoryService.createParameterType(problemsHolder.project, "$text|null"))
+                        }
+
+                        element.replace(FactoryService.createComplexParameterDoctypeCompatible(problemsHolder.project, parameterComplex.text))
+                    }
+                }
+            )
         }
     }
 

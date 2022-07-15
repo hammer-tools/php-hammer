@@ -18,35 +18,37 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class SortUseVariablesInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is PhpUseListImpl) {
-                val useVariables = element.getVariables()
+            if (element !is PhpUseListImpl)
+                return
 
-                if (useVariables == null ||
-                    useVariables.size < 2)
-                    return
+            val useVariables = element.getVariables()
 
-                val useContext = element.context as FunctionImpl
+            if (useVariables == null ||
+                useVariables.size < 2)
+                return
 
-                val functionVariablesSorted = useContext.accessVariables()
-                    .sortedBy { it.anchor.startOffset }
-                    .distinctBy { it.variableName }
+            val useContext = element.context as FunctionImpl
 
-                val useVariablesNames = useVariables.map { it.name }
+            val functionVariablesSorted = useContext.accessVariables()
+                .sortedBy { it.anchor.startOffset }
+                .distinctBy { it.variableName }
 
-                val useVariablesSorted = useVariables
-                    .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
-                val useVariablesSortedNames = useVariablesSorted.map { it.name }
+            val useVariablesNames = useVariables.map { it.name }
 
-                if (useVariablesNames.toString() != useVariablesSortedNames.toString()) {
-                    ProblemsHolderService.registerProblem(
-                        problemsHolder,
-                        element,
-                        useVariables.declarationTextRange(element),
-                        "Unorganized use() variables.",
-                        SortByUsageQuickFix(useVariablesSorted)
-                    )
-                }
-            }
+            val useVariablesSorted = useVariables
+                .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
+            val useVariablesSortedNames = useVariablesSorted.map { it.name }
+
+            if (useVariablesNames.toString() == useVariablesSortedNames.toString())
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                useVariables.declarationTextRange(element),
+                "Unorganized use() variables.",
+                SortByUsageQuickFix(useVariablesSorted)
+            )
         }
     }
 

@@ -21,37 +21,38 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is ClassReferenceImpl) {
-                val elementClass = PsiTreeUtil.getParentOfType(element, PhpClassImpl::class.java) ?: return
-                val elementClassName = elementClass.name
+            if (element !is ClassReferenceImpl)
+                return
 
-                val referenceName = element.text.lowercase()
+            val elementClass = PsiTreeUtil.getParentOfType(element, PhpClassImpl::class.java) ?: return
+            val elementClassName = elementClass.name
 
-                if (classSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) {
-                    if (referenceName == "self" ||
-                        referenceName != elementClassName.lowercase()) {
-                        return
-                    }
-                }
-                else if (referenceName != "self" ||
-                         referenceName == elementClassName.lowercase()) {
+            val referenceName = element.text.lowercase()
+
+            if (classSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) {
+                if (referenceName == "self" ||
+                    referenceName != elementClassName.lowercase()) {
                     return
                 }
-
-                val expectedFormat =
-                    if (classSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) "self"
-                    else elementClassName
-
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    "Class reference format must be \"$expectedFormat\".",
-                    LocalQuickFixService.SimpleReplaceQuickFix(
-                        "Replace with \"$expectedFormat\"",
-                        FactoryService.createClassReference(problemsHolder.project, expectedFormat)
-                    )
-                )
             }
+            else if (referenceName != "self" ||
+                     referenceName == elementClassName.lowercase()) {
+                return
+            }
+
+            val expectedFormat =
+                if (classSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) "self"
+                else elementClassName
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Class reference format must be \"$expectedFormat\".",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with \"$expectedFormat\"",
+                    FactoryService.createClassReference(problemsHolder.project, expectedFormat)
+                )
+            )
         }
     }
 

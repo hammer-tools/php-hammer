@@ -37,61 +37,62 @@ class ParameterDefaultsNullInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is ParameterListImpl) {
-                val context = element.context
+            if (element !is ParameterListImpl)
+                return
 
-                if (context !is FunctionImpl)
+            val context = element.context
+
+            if (context !is FunctionImpl)
+                return
+
+            if (context is MethodImpl) {
+                if (!context.isDefinedByOwnClass())
                     return
 
-                if (context is MethodImpl) {
-                    if (!context.isDefinedByOwnClass())
-                        return
-
-                    if (!includeOverriddenMethods && context.isMemberOverrided())
-                        return
-                }
-
-                val isAbstractMethod = context.isAbstractMethod()
-
-                if (isAbstractMethod && !includeAbstractMethods)
+                if (!includeOverriddenMethods && context.isMemberOverrided())
                     return
+            }
 
-                for (parameter in element.parameters) {
-                    if (parameter is ParameterImpl &&
-                        parameter.defaultValue != null) {
-                        if (!includeParametersWithReference &&
-                            parameter.isPassByRef)
-                            return
+            val isAbstractMethod = context.isAbstractMethod()
 
-                        val defaultValue = parameter.defaultValueType
+            if (isAbstractMethod && !includeAbstractMethods)
+                return
 
-                        if (defaultValue.toString() == "null")
+            for (parameter in element.parameters) {
+                if (parameter is ParameterImpl &&
+                    parameter.defaultValue != null) {
+                    if (!includeParametersWithReference &&
+                        parameter.isPassByRef)
+                        return
+
+                    val defaultValue = parameter.defaultValueType
+
+                    if (defaultValue.toString() == "null")
+                        continue
+
+                    if (!includeNullableParameters) {
+                        if (parameter.declaredType.toString() == "")
                             continue
 
-                        if (!includeNullableParameters) {
-                            if (parameter.declaredType.toString() == "")
-                                continue
-
-                            if (parameter.typeDeclaration?.isNullableEx() == true)
-                                continue
-                        }
-
-                        ProblemsHolderService.registerProblem(
-                            problemsHolder,
-                            parameter,
-                            "Default value of the parameter must be \"null\".",
-                            run {
-                                if (isAbstractMethod ||
-                                    parameter.isPassByRef)
-                                    return@run null
-
-                                ReplaceWithNullQuickFix(
-                                    SmartPointerManager.createPointer(context),
-                                    SmartPointerManager.createPointer(parameter)
-                                )
-                            }
-                        )
+                        if (parameter.typeDeclaration?.isNullableEx() == true)
+                            continue
                     }
+
+                    ProblemsHolderService.registerProblem(
+                        problemsHolder,
+                        parameter,
+                        "Default value of the parameter must be \"null\".",
+                        run {
+                            if (isAbstractMethod ||
+                                parameter.isPassByRef)
+                                return@run null
+
+                            ReplaceWithNullQuickFix(
+                                SmartPointerManager.createPointer(context),
+                                SmartPointerManager.createPointer(parameter)
+                            )
+                        }
+                    )
                 }
             }
         }

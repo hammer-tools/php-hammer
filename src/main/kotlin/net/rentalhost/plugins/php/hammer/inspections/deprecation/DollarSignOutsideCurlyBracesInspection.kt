@@ -13,28 +13,31 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class DollarSignOutsideCurlyBracesInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is VariableImpl) {
-                val parent = element.parent
+            if (element !is VariableImpl)
+                return
 
-                if (parent is StringLiteralExpressionImpl) {
-                    val elementCurly = element.text
+            val parent = element.parent
 
-                    if (elementCurly.startsWith("\${") &&
-                        elementCurly.endsWith("}")) {
-                        val replaceWith = elementCurly.substring(2, elementCurly.length - 1)
+            if (parent !is StringLiteralExpressionImpl)
+                return
 
-                        ProblemsHolderService.registerProblem(
-                            problemsHolder,
-                            element,
-                            "Deprecated: using \${var} in strings.",
-                            LocalQuickFixService.SimpleReplaceQuickFix(
-                                "Replace with {\$$replaceWith}",
-                                FactoryService.createCurlyVariable(problemsHolder.project, replaceWith)
-                            )
-                        )
-                    }
-                }
-            }
+            val elementCurly = element.text
+
+            if (!elementCurly.startsWith("\${") ||
+                !elementCurly.endsWith("}"))
+                return
+
+            val replaceWith = elementCurly.substring(2, elementCurly.length - 1)
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Deprecated: using \${var} in strings.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with {\$$replaceWith}",
+                    FactoryService.createCurlyVariable(problemsHolder.project, replaceWith)
+                )
+            )
         }
     }
 }

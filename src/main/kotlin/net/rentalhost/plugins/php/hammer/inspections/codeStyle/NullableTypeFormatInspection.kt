@@ -23,42 +23,44 @@ class NullableTypeFormatInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is PhpTypeDeclarationImpl) {
-                val elementType = (element as PhpTypeDeclaration).type
-                val elementTypes = elementType.types
+            if (element !is PhpTypeDeclarationImpl)
+                return
 
-                if (elementTypes.size == 2 &&
-                    elementTypes.contains(PhpType._NULL)) {
-                    val elementTypeText = element.getText()
-                    val elementTypeIsShort = elementTypeText.startsWith("?")
-                    var elementTypeReplacementSuggestion: String? = null
+            val elementType = (element as PhpTypeDeclaration).type
+            val elementTypes = elementType.types
 
-                    if (elementTypeIsShort && nullableTypeFormat === OptionNullableTypeFormat.LONG) {
-                        elementTypeReplacementSuggestion = "${elementTypeText.substring(1)}|null"
-                    }
-                    else if (!elementTypeIsShort && nullableTypeFormat === OptionNullableTypeFormat.SHORT) {
-                        val elementTypeSingular = TypeService.exceptNull(elementTypeText).findFirst()
+            if (elementTypes.size != 2 ||
+                !elementTypes.contains(PhpType._NULL))
+                return
 
-                        if (elementTypeSingular.isPresent) {
-                            elementTypeReplacementSuggestion = "?${elementTypeSingular.get()}"
-                        }
-                    }
+            val elementTypeText = element.getText()
+            val elementTypeIsShort = elementTypeText.startsWith("?")
+            var elementTypeReplacementSuggestion: String? = null
 
-                    if (elementTypeReplacementSuggestion == null)
-                        return
+            if (elementTypeIsShort && nullableTypeFormat === OptionNullableTypeFormat.LONG) {
+                elementTypeReplacementSuggestion = "${elementTypeText.substring(1)}|null"
+            }
+            else if (!elementTypeIsShort && nullableTypeFormat === OptionNullableTypeFormat.SHORT) {
+                val elementTypeSingular = TypeService.exceptNull(elementTypeText).findFirst()
 
-                    ProblemsHolderService.registerProblem(
-                        problemsHolder,
-                        element,
-                        "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
-                        SimpleTypeReplaceQuickFix(
-                            if (nullableTypeFormat === OptionNullableTypeFormat.LONG) "Replace with the long format"
-                            else "Replace with the short format",
-                            elementTypeReplacementSuggestion
-                        )
-                    )
+                if (elementTypeSingular.isPresent) {
+                    elementTypeReplacementSuggestion = "?${elementTypeSingular.get()}"
                 }
             }
+
+            if (elementTypeReplacementSuggestion == null)
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
+                SimpleTypeReplaceQuickFix(
+                    if (nullableTypeFormat === OptionNullableTypeFormat.LONG) "Replace with the long format"
+                    else "Replace with the short format",
+                    elementTypeReplacementSuggestion
+                )
+            )
         }
     }
 

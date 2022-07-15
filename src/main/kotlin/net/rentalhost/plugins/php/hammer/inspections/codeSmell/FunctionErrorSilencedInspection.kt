@@ -12,16 +12,15 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class FunctionErrorSilencedInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is FunctionReferenceImpl) {
-                val errorControlOperator = element.getErrorControlOperator() ?: return
+            if (element !is FunctionReferenceImpl)
+                return
 
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    errorControlOperator,
-                    "Function call is using error control operator.",
-                    LocalQuickFixService.SimpleReplaceQuickFix("Remove the \"@\" operator", element.parent, element)
-                )
-            }
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element.getErrorControlOperator() ?: return,
+                "Function call is using error control operator.",
+                LocalQuickFixService.SimpleReplaceQuickFix("Remove the \"@\" operator", element.parent, element)
+            )
         }
     }
 }

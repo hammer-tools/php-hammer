@@ -13,24 +13,25 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class ToStringSimplificationInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is MethodReferenceImpl &&
-                (element.name ?: return).lowercase() == "__tostring") {
-                val elementBase = element.firstPsiChild ?: return
+            if (element !is MethodReferenceImpl ||
+                (element.name ?: return).lowercase() != "__tostring")
+                return
 
-                if (elementBase is ClassReferenceImpl &&
-                    elementBase.text.lowercase() == "parent")
-                    return
+            val elementBase = element.firstPsiChild ?: return
 
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    "Call to __toString() can be simplified.",
-                    LocalQuickFixService.SimpleReplaceQuickFix(
-                        "Replace with type cast (string)",
-                        FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementBase.text)
-                    )
+            if (elementBase is ClassReferenceImpl &&
+                elementBase.text.lowercase() == "parent")
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Call to __toString() can be simplified.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with type cast (string)",
+                    FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementBase.text)
                 )
-            }
+            )
         }
     }
 }

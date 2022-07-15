@@ -21,32 +21,33 @@ class ComparisonScalarOrderInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is BinaryExpressionImpl &&
-                TypeService.compareOperations.contains(element.operationType)) {
-                val elementLeft = element.leftOperand
-                val elementRight = element.rightOperand
+            if (element !is BinaryExpressionImpl ||
+                !TypeService.compareOperations.contains(element.operationType))
+                return
 
-                val leftScalar = elementLeft.isScalar()
-                val rightScalar = elementRight.isScalar()
+            val elementLeft = element.leftOperand
+            val elementRight = element.rightOperand
 
-                if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) {
-                    if (leftScalar || !rightScalar)
-                        return
-                }
-                else if (rightScalar || !leftScalar)
+            val leftScalar = elementLeft.isScalar()
+            val rightScalar = elementRight.isScalar()
+
+            if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) {
+                if (leftScalar || !rightScalar)
                     return
-
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "Scalar type must be on the left side."
-                    else "Scalar type must be on the right side.",
-                    LocalQuickFixService.SimpleInlineQuickFix("Flip comparison") {
-                        (elementLeft ?: return@SimpleInlineQuickFix)
-                            .swap(elementRight ?: return@SimpleInlineQuickFix)
-                    }
-                )
             }
+            else if (rightScalar || !leftScalar)
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "Scalar type must be on the left side."
+                else "Scalar type must be on the right side.",
+                LocalQuickFixService.SimpleInlineQuickFix("Flip comparison") {
+                    (elementLeft ?: return@SimpleInlineQuickFix)
+                        .swap(elementRight ?: return@SimpleInlineQuickFix)
+                }
+            )
         }
     }
 

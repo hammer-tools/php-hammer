@@ -15,28 +15,29 @@ import net.rentalhost.plugins.services.StringService
 class BacktickReplacementInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is PhpShellCommandExpressionImpl) {
-                val commandContents = element.text.substring(1, element.text.length - 1)
-                val commandVariable = PsiTreeUtil.findChildrenOfType(element, VariableImpl::class.java).toList()
+            if (element !is PhpShellCommandExpressionImpl)
+                return
 
-                val containsVariableOnly = commandVariable.size == 1 &&
-                                           commandVariable[0].prevSibling.text == "`" &&
-                                           commandVariable[0].nextSibling.text == "`"
+            val commandContents = element.text.substring(1, element.text.length - 1)
+            val commandVariable = PsiTreeUtil.findChildrenOfType(element, VariableImpl::class.java).toList()
 
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    "Backtick operator can be replaced by shell_exec().",
-                    LocalQuickFixService.SimpleReplaceQuickFix(
-                        "Replace by shell_exec()",
-                        FactoryService.createFunctionCall(
-                            problemsHolder.project, "shell_exec",
-                            if (containsVariableOnly) listOf("\$${commandVariable.first().name}")
-                            else listOf(StringService.addQuotes(commandContents, commandVariable.isNotEmpty(), false))
-                        )
+            val containsVariableOnly = commandVariable.size == 1 &&
+                                       commandVariable[0].prevSibling.text == "`" &&
+                                       commandVariable[0].nextSibling.text == "`"
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                "Backtick operator can be replaced by shell_exec().",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace by shell_exec()",
+                    FactoryService.createFunctionCall(
+                        problemsHolder.project, "shell_exec",
+                        if (containsVariableOnly) listOf("\$${commandVariable.first().name}")
+                        else listOf(StringService.addQuotes(commandContents, commandVariable.isNotEmpty(), false))
                     )
                 )
-            }
+            )
         }
     }
 }

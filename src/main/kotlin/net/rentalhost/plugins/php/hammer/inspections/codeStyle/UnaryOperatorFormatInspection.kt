@@ -26,58 +26,59 @@ class UnaryOperatorFormatInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is UnaryExpressionImpl) {
-                val unaryOperator = element.operation ?: return
-                val unaryIncrease = unaryOperator.elementType === PhpTokenTypes.opINCREMENT
-                val unaryDecrease = unaryOperator.elementType === PhpTokenTypes.opDECREMENT
+            if (element !is UnaryExpressionImpl)
+                return
 
-                if (!unaryIncrease && !unaryDecrease)
+            val unaryOperator = element.operation ?: return
+            val unaryIncrease = unaryOperator.elementType === PhpTokenTypes.opINCREMENT
+            val unaryDecrease = unaryOperator.elementType === PhpTokenTypes.opDECREMENT
+
+            if (!unaryIncrease && !unaryDecrease)
+                return
+
+            val unaryElement = element.firstPsiChild ?: return
+
+            val elementParent = element.parent
+
+            if (elementParent is ForImpl) {
+                if (!includeForRepeatedExpressions ||
+                    !elementParent.repeatedExpressions.contains(element))
                     return
+            }
+            else if (!elementParent.isStrictlyStatement()) {
+                return
+            }
 
-                val unaryElement = element.firstPsiChild ?: return
+            val unaryOperationRight = element.lastChild === unaryOperator
+            val unaryOperationPreferRight = unaryOperatorSide == OptionUnaryOperatorSideFormat.RIGHT
 
-                val elementParent = element.parent
-
-                if (elementParent is ForImpl) {
-                    if (!includeForRepeatedExpressions ||
-                        !elementParent.repeatedExpressions.contains(element))
-                        return
-                }
-                else if (!elementParent.isStrictlyStatement()) {
+            if (unaryOperationPreferRight) {
+                if (unaryOperationRight)
                     return
-                }
+            }
+            else if (!unaryOperationRight) {
+                return
+            }
 
-                val unaryOperationRight = element.lastChild === unaryOperator
-                val unaryOperationPreferRight = unaryOperatorSide == OptionUnaryOperatorSideFormat.RIGHT
-
-                if (unaryOperationPreferRight) {
-                    if (unaryOperationRight)
-                        return
-                }
-                else if (!unaryOperationRight) {
-                    return
-                }
-
-                ProblemsHolderService.registerProblem(
-                    problemsHolder,
-                    element,
-                    if (unaryOperationPreferRight) "Unary expression must be written as ${unaryElement.text}${unaryOperator.text}"
-                    else "Unary expression must be written as ${unaryOperator.text}${unaryElement.text}",
-                    LocalQuickFixService.SimpleReplaceQuickFix(
-                        "Swap unary operation elements",
-                        if (unaryOperationPreferRight) FactoryService.createUnaryRightOperation(
-                            problemsHolder.project,
-                            unaryElement.text,
-                            unaryOperator.text
-                        )
-                        else FactoryService.createUnaryLeftOperation(
-                            problemsHolder.project,
-                            unaryElement.text,
-                            unaryOperator.text
-                        )
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element,
+                if (unaryOperationPreferRight) "Unary expression must be written as ${unaryElement.text}${unaryOperator.text}"
+                else "Unary expression must be written as ${unaryOperator.text}${unaryElement.text}",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Swap unary operation elements",
+                    if (unaryOperationPreferRight) FactoryService.createUnaryRightOperation(
+                        problemsHolder.project,
+                        unaryElement.text,
+                        unaryOperator.text
+                    )
+                    else FactoryService.createUnaryLeftOperation(
+                        problemsHolder.project,
+                        unaryElement.text,
+                        unaryOperator.text
                     )
                 )
-            }
+            )
         }
     }
 

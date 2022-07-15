@@ -28,35 +28,38 @@ class FileClassnameCaseInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is PhpClassImpl &&
-                element.name != "") {
-                if (!includeNonRootedClasses && element.parent.parent !is PsiFile)
-                    return
+            if (element !is PhpClassImpl ||
+                element.name == "")
+                return
 
-                val file = element.containingFile
+            if (!includeNonRootedClasses &&
+                element.parent.parent !is PsiFile)
+                return
 
-                if (!includeFilesWithMultipleClasses && PsiTreeUtil.collectElementsOfType(file, PhpClassImpl::class.java).size > 1)
-                    return
+            val file = element.containingFile
 
-                val fileBasename = file.getBasename()
-                val fileIdentifierValid = PhpLangUtil.isPhpIdentifier(fileBasename)
+            if (!includeFilesWithMultipleClasses && PsiTreeUtil.collectElementsOfType(file, PhpClassImpl::class.java).size > 1)
+                return
 
-                if (!includeFilesWithInvalidIdentifier && !fileIdentifierValid)
-                    return
+            val fileBasename = file.getBasename()
+            val fileIdentifierValid = PhpLangUtil.isPhpIdentifier(fileBasename)
 
-                if (fileBasename != element.name) {
-                    ProblemsHolderService.registerProblem(
-                        problemsHolder,
-                        element.nameIdentifier ?: return,
-                        "Class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\").",
-                        if (fileIdentifierValid) LocalQuickFixService.SimpleReplaceQuickFix(
-                            "Rename class to match filename",
-                            FactoryService.createClassReference(problemsHolder.project, fileBasename)
-                        )
-                        else null
-                    )
-                }
-            }
+            if (!includeFilesWithInvalidIdentifier && !fileIdentifierValid)
+                return
+
+            if (fileBasename == element.name)
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                element.nameIdentifier ?: return,
+                "Class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\").",
+                if (fileIdentifierValid) LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Rename class to match filename",
+                    FactoryService.createClassReference(problemsHolder.project, fileBasename)
+                )
+                else null
+            )
         }
     }
 

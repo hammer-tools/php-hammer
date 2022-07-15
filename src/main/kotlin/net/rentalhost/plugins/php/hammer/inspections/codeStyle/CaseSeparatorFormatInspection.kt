@@ -24,36 +24,39 @@ class CaseSeparatorFormatInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is PhpCaseImpl) {
-                val elementSeparator = PsiTreeUtil.skipWhitespacesAndCommentsForward(
-                    if (element.condition is GroupStatementSimpleImpl) element.firstChild
-                    else element.condition
-                )
+            if (element !is PhpCaseImpl)
+                return
 
-                if (elementSeparator is LeafPsiElement) {
-                    val elementSeparatorColon = elementSeparator.text == ":"
-                    var elementSeparatorReplacement: PsiElement? = null
+            val elementSeparator = PsiTreeUtil.skipWhitespacesAndCommentsForward(
+                if (element.condition is GroupStatementSimpleImpl) element.firstChild
+                else element.condition
+            )
 
-                    if (elementSeparatorColon && caseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON) {
-                        elementSeparatorReplacement = FactoryService.createSemicolon(problemsHolder.project)
-                    }
-                    else if (!elementSeparatorColon && caseSeparatorFormat === OptionCaseSeparatorFormat.COLON) {
-                        elementSeparatorReplacement = FactoryService.createColon(problemsHolder.project)
-                    }
+            if (elementSeparator !is LeafPsiElement)
+                return
 
-                    if (elementSeparatorReplacement != null) {
-                        ProblemsHolderService.registerProblem(
-                            problemsHolder,
-                            elementSeparator,
-                            "Wrong switch() \"${element.firstChild.text}\" separator.",
-                            LocalQuickFixService.SimpleLeafReplaceQuickFix(
-                                "Replace with ${elementSeparatorReplacement.elementType.toString()} separator",
-                                SmartPointerManager.createPointer(elementSeparatorReplacement)
-                            )
-                        )
-                    }
-                }
+            val elementSeparatorColon = elementSeparator.text == ":"
+            var elementSeparatorReplacement: PsiElement? = null
+
+            if (elementSeparatorColon && caseSeparatorFormat === OptionCaseSeparatorFormat.SEMICOLON) {
+                elementSeparatorReplacement = FactoryService.createSemicolon(problemsHolder.project)
             }
+            else if (!elementSeparatorColon && caseSeparatorFormat === OptionCaseSeparatorFormat.COLON) {
+                elementSeparatorReplacement = FactoryService.createColon(problemsHolder.project)
+            }
+
+            if (elementSeparatorReplacement == null)
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                elementSeparator,
+                "Wrong switch() \"${element.firstChild.text}\" separator.",
+                LocalQuickFixService.SimpleLeafReplaceQuickFix(
+                    "Replace with ${elementSeparatorReplacement.elementType.toString()} separator",
+                    SmartPointerManager.createPointer(elementSeparatorReplacement)
+                )
+            )
         }
     }
 

@@ -13,26 +13,28 @@ import net.rentalhost.plugins.services.ProblemsHolderService
 class StringSimplificationInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
         override fun visitElement(element: PsiElement) {
-            if (element is VariableImpl) {
-                val parent = element.parent
+            if (element !is VariableImpl)
+                return
 
-                if (parent is StringLiteralExpressionImpl &&
-                    element.prevSibling === parent.firstChild &&
-                    element.nextSibling === parent.lastChild) {
-                    ProblemsHolderService.registerProblem(
-                        problemsHolder,
-                        parent,
-                        "String can be simplified.",
-                        LocalQuickFixService.SimpleReplaceQuickFix(
-                            "Replace with type cast (string)",
-                            FactoryService.createTypeCastExpression(
-                                problemsHolder.project, "string",
-                                element.text.substringAfter("{").substringBefore("}")
-                            )
-                        )
+            val parent = element.parent
+
+            if (parent !is StringLiteralExpressionImpl ||
+                element.prevSibling !== parent.firstChild ||
+                element.nextSibling !== parent.lastChild)
+                return
+
+            ProblemsHolderService.registerProblem(
+                problemsHolder,
+                parent,
+                "String can be simplified.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with type cast (string)",
+                    FactoryService.createTypeCastExpression(
+                        problemsHolder.project, "string",
+                        element.text.substringAfter("{").substringBefore("}")
                     )
-                }
-            }
+                )
+            )
         }
     }
 }
