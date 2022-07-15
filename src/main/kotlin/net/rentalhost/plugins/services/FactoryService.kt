@@ -108,6 +108,9 @@ object FactoryService {
     fun createTypeCast(project: Project, castType: String): LeafPsiElement =
         PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpression::class.java, "$castType\$x").firstChild as LeafPsiElement
 
+    fun createTypeCastDouble(project: Project, castTypeFinal: String, castTypeInitial: String, value: String): UnaryExpression =
+        PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpression::class.java, "($castTypeFinal)($castTypeInitial)$value")
+
     fun createCurlyVariable(project: Project, variableName: String): PsiElement =
         PhpPsiElementFactory.createPhpPsiFromText(project, Variable::class.java, "\"{\$$variableName}\";")
 
