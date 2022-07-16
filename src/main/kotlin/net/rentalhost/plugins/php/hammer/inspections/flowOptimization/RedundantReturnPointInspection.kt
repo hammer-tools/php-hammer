@@ -28,10 +28,10 @@ class RedundantReturnPointInspection: PhpInspection() {
             if (elementNext !is PhpReturnImpl)
                 return
 
-            val elementReturn = FormatterService.normalize(problemsHolder.project, element.text)
-            val elementNextReturn = FormatterService.normalize(problemsHolder.project, elementNext.text)
+            val elementReturn = FormatterService.normalize(problemsHolder.project, element)
+            val elementNextReturn = FormatterService.normalize(problemsHolder.project, elementNext)
 
-            if (elementReturn != elementNextReturn)
+            if (elementReturn.text != elementNextReturn.text)
                 return
 
             ProblemsHolderService.registerProblem(

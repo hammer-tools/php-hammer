@@ -55,3 +55,12 @@ $dummy = function () {
 
     return true;
 };
+
+$dummy = function () {
+    if (x()) {
+        x();
+        <weak_warning descr="[PHP Hammer] Redundant return point.">return /** ... */ true;</weak_warning>
+    }
+
+    return true;
+};

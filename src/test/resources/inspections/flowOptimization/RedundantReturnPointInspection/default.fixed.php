@@ -47,3 +47,11 @@ $dummy = function () {
 
     return true;
 };
+
+$dummy = function () {
+    if (x()) {
+        x();
+    }
+
+    return true;
+};
