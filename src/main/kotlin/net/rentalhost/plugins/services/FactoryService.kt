@@ -57,6 +57,9 @@ object FactoryService {
     fun createStaticKeyword(project: Project): PsiElement =
         PhpPsiElementFactory.createFromText(project, PhpTokenTypes.kwSTATIC, "static")
 
+    fun createExpression(project: Project, expression: String): PhpExpression =
+        PhpPsiElementFactory.createPhpPsiFromText(project, PhpExpression::class.java, "$expression;")
+
     fun createReturnType(project: Project, returnType: String): PhpReturnType =
         PhpPsiElementFactory.createReturnType(project, returnType)
 

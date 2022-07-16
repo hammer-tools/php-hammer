@@ -3,7 +3,11 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.elementType
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.lexer.PhpTokenTypes
+import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import net.rentalhost.plugins.services.FactoryService
@@ -24,7 +28,14 @@ class StringSimplificationInspection: PhpInspection() {
                 return
 
             val elementText = element.text
-            val elementTextNormalized = elementText.substringAfter("{").substringBefore("}")
+            val elementTextCropped = elementText.substringAfter("{").substringBefore("}")
+            val elementTextNormalized =
+                if (elementText.startsWith("\${")) "\$$elementTextCropped"
+                else elementTextCropped
+
+            val isArrayKey =
+                if (parent.parent is PhpPsiElement) PsiTreeUtil.skipWhitespacesAndCommentsForward(parent.parent).elementType == PhpTokenTypes.opHASH_ARRAY
+                else false
 
             ProblemsHolderService.registerProblem(
                 problemsHolder,
@@ -32,11 +43,8 @@ class StringSimplificationInspection: PhpInspection() {
                 "String can be simplified.",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with type cast (string)",
-                    FactoryService.createTypeCastExpression(
-                        problemsHolder.project, "string",
-                        if (elementText.startsWith("\${")) "\$$elementTextNormalized"
-                        else elementTextNormalized
-                    )
+                    if (isArrayKey) FactoryService.createExpression(problemsHolder.project, elementTextNormalized)
+                    else FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementTextNormalized)
                 )
             )
         }
