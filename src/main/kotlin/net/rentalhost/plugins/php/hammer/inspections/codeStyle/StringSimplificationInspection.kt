@@ -23,6 +23,9 @@ class StringSimplificationInspection: PhpInspection() {
                 element.nextSibling !== parent.lastChild)
                 return
 
+            val elementText = element.text
+            val elementTextNormalized = elementText.substringAfter("{").substringBefore("}")
+
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 parent,
@@ -31,7 +34,8 @@ class StringSimplificationInspection: PhpInspection() {
                     "Replace with type cast (string)",
                     FactoryService.createTypeCastExpression(
                         problemsHolder.project, "string",
-                        element.text.substringAfter("{").substringBefore("}")
+                        if (elementText.startsWith("\${")) "\$$elementTextNormalized"
+                        else elementTextNormalized
                     )
                 )
             )
