@@ -2,6 +2,7 @@ package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.PsiWhiteSpace
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
@@ -42,6 +43,12 @@ class IfSimplificationOrInspection: PhpInspection() {
                 LocalQuickFixService.SimpleInlineQuickFix("Simplify conditional with the subsequent") {
                     val elementCondition = element.condition ?: return@SimpleInlineQuickFix
                     val elementNextCondition = elementNext.condition ?: return@SimpleInlineQuickFix
+
+                    if (element is If &&
+                        elementNext is If &&
+                        element.nextSibling is PsiWhiteSpace) {
+                        element.nextSibling.delete()
+                    }
 
                     val elementMergedCondition = FactoryService.createBinaryExpression(
                         problemsHolder.project,

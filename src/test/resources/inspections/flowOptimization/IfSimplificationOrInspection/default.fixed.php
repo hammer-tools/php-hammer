@@ -1,21 +1,18 @@
 <?php
 
 $dummy1000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         return true;
     }
 };
 
 $dummy2000 = function ($dummy) {
-
     if (($dummy || $dummy) || $dummy || $dummy || ($dummy || $dummy)) {
         return true;
     }
 };
 
 $dummy3000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         return true;
     } else {
@@ -24,7 +21,6 @@ $dummy3000 = function ($dummy) {
 };
 
 $dummy4000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         return true;
     } elseif ($dummy) {
@@ -33,7 +29,6 @@ $dummy4000 = function ($dummy) {
 };
 
 $dummy5000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         return true;
     } elseif ($dummy) {
@@ -44,7 +39,6 @@ $dummy5000 = function ($dummy) {
 };
 
 $dummy6000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         return true;
     } else if ($dummy) {
@@ -53,7 +47,6 @@ $dummy6000 = function ($dummy) {
 };
 
 $dummy7000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         return true;
     } else if ($dummy) {
@@ -112,7 +105,6 @@ $dummy12500 = function ($dummy) {
 };
 
 $dummy13000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         // Comment.
         return /** Comment. */
@@ -121,35 +113,30 @@ $dummy13000 = function ($dummy) {
 };
 
 $dummy14000 = function ($dummy) {
-
     if (((($dummy)) || ((($dummy)))) || $dummy) {
         return true;
     }
 };
 
 $dummy15000 = function ($dummy) {
-
     if ($dummy || ((($dummy)) || ((($dummy))))) {
         return true;
     }
 };
 
 $dummy16000 = function ($dummy) {
-
     if ($dummy instanceof DateTime || $dummy) {
         return true;
     }
 };
 
 $dummy17000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         throw new Exception;
     }
 };
 
 $dummy18000 = function ($dummy) {
-
     if ($dummy || $dummy) {
         exit(0);
     }
