@@ -1,55 +1,40 @@
 <?php
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    }
+$dummy1000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy || $dummy) {
         return true;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if (($dummy || $dummy) || $dummy) {
-        return true;
-    }
+$dummy2000 = function ($dummy) {
 
-    if ($dummy || ($dummy || $dummy)) {
+    if (($dummy || $dummy) || $dummy || $dummy || ($dummy || $dummy)) {
         return true;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    }
+$dummy3000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy || $dummy) {
         return true;
     } else {
         return false;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    }
+$dummy4000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy || $dummy) {
         return true;
     } elseif ($dummy) {
         return false;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    }
+$dummy5000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy || $dummy) {
         return true;
     } elseif ($dummy) {
         return false;
@@ -58,24 +43,18 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    }
+$dummy6000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy || $dummy) {
         return true;
     } else if ($dummy) {
         return false;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    }
+$dummy7000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy || $dummy) {
         return true;
     } else if ($dummy) {
         return false;
@@ -84,121 +63,101 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    } else if ($dummy) {
+$dummy8000 = function ($dummy) {
+    if ($dummy || $dummy) {
         return true;
     } elseif ($dummy) {
         return false;
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy9000 = function ($dummy) {
     if ($dummy) {
         return false;
-    } else if ($dummy) {
-        return true;
-    } else if ($dummy) {
+    } else if ($dummy || $dummy) {
         return true;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    } elseif ($dummy) {
+$dummy10000 = function ($dummy) {
+    if ($dummy || $dummy) {
         return true;
     } else if ($dummy) {
         return false;
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy11000 = function ($dummy) {
     if ($dummy) {
         return false;
-    } elseif ($dummy) {
-        return true;
-    } else if ($dummy) {
+    } else if ($dummy || $dummy) {
         return true;
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy12000 = function ($dummy) {
     if ($dummy) {
         return false;
-    } elseif ($dummy) {
-        return true;
-    } elseif ($dummy) {
+    } elseif ($dummy || $dummy) {
         return true;
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy12500 = function ($dummy) {
     if ($dummy) {
+        return false;
+    } else if ($dummy || $dummy) {
         return true;
     }
+};
 
-    if ($dummy) {
+$dummy13000 = function ($dummy) {
+
+    if ($dummy || $dummy) {
         // Comment.
         return /** Comment. */
             true; # Comment.
     }
 };
 
-$dummy = function () use ($dummy) {
-    if (((($dummy)) || ((($dummy))))) {
-        return true;
-    }
+$dummy14000 = function ($dummy) {
 
-    if ($dummy) {
+    if (((($dummy)) || ((($dummy)))) || $dummy) {
         return true;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        return true;
-    }
+$dummy15000 = function ($dummy) {
 
-    if (((($dummy)) || ((($dummy))))) {
+    if ($dummy || ((($dummy)) || ((($dummy))))) {
         return true;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy instanceof DateTime) {
-        return true;
-    }
+$dummy16000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy instanceof DateTime || $dummy) {
         return true;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        throw new Exception;
-    }
+$dummy17000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy || $dummy) {
         throw new Exception;
     }
 };
 
-$dummy = function () use ($dummy) {
-    if ($dummy) {
-        exit(0);
-    }
+$dummy18000 = function ($dummy) {
 
-    if ($dummy) {
+    if ($dummy || $dummy) {
         exit(0);
     }
 };
 
 // Not applicable:
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         return true;
     }
@@ -208,7 +167,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         return true;
     }
@@ -218,7 +177,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy && $dummy) {
         return true;
     }
@@ -228,7 +187,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         return true;
     }
@@ -238,7 +197,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if (((($dummy)) && ((($dummy))))) {
         return true;
     }
@@ -248,7 +207,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         $dummy = 1;
     }
@@ -258,7 +217,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         exit(0);
     }

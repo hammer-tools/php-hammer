@@ -1,6 +1,6 @@
 <?php
 
-$dummy = function () use ($dummy) {
+$dummy1000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
@@ -10,7 +10,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy2000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> (($dummy || $dummy) || $dummy) {
         return true;
     }
@@ -20,7 +20,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy3000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
@@ -32,7 +32,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy4000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
@@ -44,7 +44,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy5000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
@@ -58,7 +58,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy6000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
@@ -70,7 +70,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy7000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
@@ -84,7 +84,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy8000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     } else if ($dummy) {
@@ -94,7 +94,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy9000 = function ($dummy) {
     if ($dummy) {
         return false;
     } else <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
@@ -104,7 +104,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy10000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     } elseif ($dummy) {
@@ -114,7 +114,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy11000 = function ($dummy) {
     if ($dummy) {
         return false;
     } <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">elseif</weak_warning> ($dummy) {
@@ -124,7 +124,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy12000 = function ($dummy) {
     if ($dummy) {
         return false;
     } <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">elseif</weak_warning> ($dummy) {
@@ -134,8 +134,19 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy12500 = function ($dummy) {
+    if ($dummy) {
+        return false;
+    } else <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+        return true;
+    } elseif ($dummy) {
+        return true;
+    }
+};
+
+$dummy13000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+        // Comment (dropped).
         return true;
     }
 
@@ -146,7 +157,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy14000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> (((($dummy)) || ((($dummy))))) {
         return true;
     }
@@ -156,7 +167,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy15000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
@@ -166,7 +177,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy16000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy instanceof DateTime) {
         return true;
     }
@@ -176,7 +187,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy17000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         throw new Exception;
     }
@@ -186,7 +197,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy18000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         exit(0);
     }
@@ -198,7 +209,7 @@ $dummy = function () use ($dummy) {
 
 // Not applicable:
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         return true;
     }
@@ -208,7 +219,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         return true;
     }
@@ -218,7 +229,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy && $dummy) {
         return true;
     }
@@ -228,7 +239,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         return true;
     }
@@ -238,7 +249,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if (((($dummy)) && ((($dummy))))) {
         return true;
     }
@@ -248,7 +259,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         $dummy = 1;
     }
@@ -258,7 +269,7 @@ $dummy = function () use ($dummy) {
     }
 };
 
-$dummy = function () use ($dummy) {
+$dummy = function ($dummy) {
     if ($dummy) {
         exit(0);
     }
