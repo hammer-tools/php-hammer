@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **[SenselessNumberFormatZeroDecimalInspection]**: implemented ("senseless number_format() with zero decimal point");
+- **[StringCurlyInspection]**: implemented ("variable must have curly braces");
+
+### Changed
+
+- **[RedundantReturnPointInspection]**: now it understand situations that include comments;
+- **[StringSimplificationInspection]**: quick-fix does not needs add type casting when applied to array key;
+
+### Fixed
+
+- **[StringSimplificationInspection]**: fix normalization for deprecated ${x} variable format;
+
+[SenselessNumberFormatZeroDecimalInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-senseless-number-format-zero-decimal-inspection
+
+[StringCurlyInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-string-curly-inspection
+
+[RedundantReturnPointInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-redundant-return-point-inspection
+
+[StringSimplificationInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-string-simplification-inspection
+
 ## [0.7.0] - 2022-07-13
 
 ### Added
