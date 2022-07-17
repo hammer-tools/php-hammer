@@ -1,14 +1,14 @@
 <idea-plugin>
     <id>net.rentalhost.plugins.php.hammer</id>
     <name>🔨 PHP Hammer</name>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
 
     <vendor email="david.rodrigues@rentalhost.net">Rentalhost.net</vendor>
 
     <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>29 new
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>30 new
     inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
@@ -188,6 +188,15 @@
                          level="WEAK WARNING"
                          shortName="ArrayMapFirstClassInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.flowOptimization.ArrayMapFirstClassInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Flow Optimization"
+                         enabledByDefault="true"
+                         displayName="Merge simple subsequent conditionals"
+                         level="WEAK WARNING"
+                         shortName="IfSimplificationOrInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.flowOptimization.IfSimplificationOrInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"

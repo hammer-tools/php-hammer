@@ -30,6 +30,25 @@ fun PsiElement.isStub(): Boolean =
 fun PsiElement.isStrictlyStatement(): Boolean =
     this::class == StatementImpl::class
 
+fun PsiElement?.unparenthesize(): PsiElement? =
+    if (this is ParenthesizedExpression) this.argument.unparenthesize()
+    else this
+
+fun PsiElement.getNextTreePsiSibling(): PsiElement? {
+    var element: PsiElement? = this
+
+    while (element != null) {
+        with(PsiTreeUtil.skipWhitespacesAndCommentsForward(element)) {
+            if (this != null)
+                return this
+        }
+
+        element = element.parent
+    }
+
+    return null
+}
+
 fun PsiElement?.isScalar(): Boolean {
     if (this == null)
         return false

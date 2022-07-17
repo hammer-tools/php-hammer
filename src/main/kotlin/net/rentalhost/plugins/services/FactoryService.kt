@@ -124,6 +124,9 @@ object FactoryService {
     fun createUnaryLeftOperation(project: Project, element: String, operator: String): UnaryExpressionImpl =
         PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpressionImpl::class.java, "$operator$element;")
 
+    fun createBinaryExpression(project: Project, expression: String): BinaryExpression =
+        PhpPsiElementFactory.createPhpPsiFromText(project, BinaryExpression::class.java, "$expression;")
+
     fun createWhiteSpace(project: Project, whitespace: String = " "): PsiWhiteSpace =
         PsiFileFactory.getInstance(project).createFileFromText(
             "DUMMY__.${PhpFileType.INSTANCE.defaultExtension}", PhpFileType.INSTANCE,

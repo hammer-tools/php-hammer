@@ -1,0 +1,23 @@
+<html lang="en">
+    <body>
+        This inspection identifies <code>if()</code> conditions that can be merged with subsequent one.
+        However, complex conditions are ignored in order to maintain a better visual quality of the code.<br /><br />
+
+        <strong>Example:</strong>
+
+        <pre><code>if (condition()) {
+    return true;
+}
+
+if (anotherCondition()) {
+    return true;
+}</code></pre>
+
+        <strong>Becomes:</strong>
+
+        <pre><code>if (condition() ||
+    anotherCondition()) {
+    return true;
+}</code></pre>
+    </body>
+</html>
