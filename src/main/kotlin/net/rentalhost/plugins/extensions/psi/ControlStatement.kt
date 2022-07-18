@@ -1,18 +1,22 @@
 package net.rentalhost.plugins.extensions.psi
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.elementType
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.*
 
-private fun isSimplified(element: PsiElement?): Boolean =
+private fun isSimplified(element: PsiElement?, exceptBy: IElementType): Boolean =
     element !is BinaryExpression ||
-    (element.operation.elementType != PhpTokenTypes.opAND &&
-     isSimplified(element.leftOperand.unparenthesize()) &&
-     isSimplified(element.rightOperand.unparenthesize()))
+    (element.operation.elementType != exceptBy &&
+     isSimplified(element.leftOperand.unparenthesize(), exceptBy) &&
+     isSimplified(element.rightOperand.unparenthesize(), exceptBy))
 
 fun ControlStatement.isOrSimplified(): Boolean =
-    isSimplified(this.condition.unparenthesize())
+    isSimplified(this.condition.unparenthesize(), PhpTokenTypes.opAND)
+
+fun ControlStatement.isAndSimplified(): Boolean =
+    isSimplified(this.condition.unparenthesize(), PhpTokenTypes.opOR)
 
 fun ControlStatement.getNextSiblingConditional(): ControlStatement? {
     return when (this) {
