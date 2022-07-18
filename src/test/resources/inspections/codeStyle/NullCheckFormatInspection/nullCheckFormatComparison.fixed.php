@@ -1,16 +1,22 @@
 <?php
 
-$dummy = is_null($dummy);
+$dummy = $dummy === null;
 
-$dummy = !is_null($dummy);
+$dummy = $dummy !== null;
+
+$dummy = ($dummy = $dummy) === null;
 
 $dummy = $dummy === null;
 
 $dummy = $dummy !== null;
 
+$dummy = ($dummy = $dummy) === null;
+
 $dummy = null === $dummy;
 
 $dummy = null !== $dummy;
+
+$dummy = null !== ($dummy = $dummy);
 
 // Not applicable:
 

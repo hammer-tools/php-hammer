@@ -38,10 +38,9 @@ class AnonymousFunctionStaticInspection: PhpInspection() {
                 problemsHolder,
                 element.firstChild,
                 "This anonymous function can be static.",
-                LocalQuickFixService.SimpleInlineQuickFix(
-                    "Make this function static",
-                    applyFix = { element.insertBefore(FactoryService.createStaticKeyword(problemsHolder.project)) }
-                )
+                LocalQuickFixService.SimpleInlineQuickFix("Make this function static") {
+                    element.insertBefore(FactoryService.createStaticKeyword(problemsHolder.project))
+                }
             )
         }
     }

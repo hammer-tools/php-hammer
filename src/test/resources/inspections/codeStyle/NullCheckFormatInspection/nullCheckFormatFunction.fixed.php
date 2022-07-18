@@ -4,13 +4,19 @@ $dummy = is_null($dummy);
 
 $dummy = !is_null($dummy);
 
-$dummy = $dummy === null;
+$dummy = is_null($dummy = $dummy);
 
-$dummy = $dummy !== null;
+$dummy = is_null($dummy);
 
-$dummy = null === $dummy;
+$dummy = !is_null($dummy);
 
-$dummy = null !== $dummy;
+$dummy = is_null($dummy = $dummy);
+
+$dummy = is_null($dummy);
+
+$dummy = !is_null($dummy);
+
+$dummy = !is_null($dummy = $dummy);
 
 // Not applicable:
 

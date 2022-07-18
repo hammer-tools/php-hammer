@@ -64,8 +64,11 @@ object FactoryService {
     fun createReturnType(project: Project, returnType: String): PhpReturnType =
         PhpPsiElementFactory.createReturnType(project, returnType)
 
-    fun createFunctionCall(project: Project, functionName: String, parameters: List<String>): FunctionReference =
-        PhpPsiElementFactory.createPhpPsiFromText(project, FunctionReference::class.java, "$functionName(${parameters.joinToString(",")});")
+    fun createFunctionCall(project: Project, functionName: String, parameters: List<String>): PsiElement =
+        PhpPsiElementFactory.createFromText(project, PsiElement::class.java, "$functionName(${parameters.joinToString(",")});", intArrayOf(0, 2, 0))
+
+    fun createFunctionCall(project: Project, not: Boolean, functionName: String, parameters: List<String>): PsiElement =
+        createFunctionCall(project, if (not) "!$functionName" else functionName, parameters)
 
     fun createFunctionCallable(project: Project, functionName: String): PhpCallableFunction =
         PhpPsiElementFactory.createPhpPsiFromText(project, PhpCallableFunction::class.java, "$functionName(...);")
@@ -129,6 +132,9 @@ object FactoryService {
 
     fun createBinaryExpression(project: Project, expression: String): BinaryExpression =
         PhpPsiElementFactory.createPhpPsiFromText(project, BinaryExpression::class.java, "$expression;")
+
+    fun createComparisonExpression(project: Project, leftOperand: String, operator: String, rightOperand: String): BinaryExpression =
+        createBinaryExpression(project, "$leftOperand$operator$rightOperand")
 
     fun createWhiteSpace(project: Project, whitespace: String = " "): PsiWhiteSpace =
         PsiFileFactory.getInstance(project).createFileFromText(

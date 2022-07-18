@@ -5,12 +5,17 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
+import com.jetbrains.php.lang.psi.elements.AssignmentExpression
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.UnaryExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.enums.OptionNullCheckFormat
 import net.rentalhost.plugins.extensions.psi.isName
+import net.rentalhost.plugins.extensions.psi.unparenthesize
 import net.rentalhost.plugins.extensions.psi.withOptionalNotOperator
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
@@ -28,10 +33,30 @@ class NullCheckFormatInspection: PhpInspection() {
                 function.parameters.size != 1)
                 return
 
+            val functionBase = function.withOptionalNotOperator()
+
             ProblemsHolderService.registerProblem(
                 problemsHolder,
-                function.withOptionalNotOperator(),
-                "Null check must be via comparison."
+                functionBase,
+                "Null check must be via comparison.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with comparison",
+                    lazy {
+                        val functionParameter = function.parameters[0]
+                        val functionParameterText =
+                            if (functionParameter is AssignmentExpression) "(${functionParameter.text})"
+                            else functionParameter.text
+
+                        val functionBaseNot = functionBase is UnaryExpression
+
+                        FactoryService.createComparisonExpression(
+                            problemsHolder.project,
+                            functionParameterText,
+                            if (functionBaseNot) "!==" else "===",
+                            "null"
+                        )
+                    }
+                )
             )
         }
 
@@ -46,16 +71,32 @@ class NullCheckFormatInspection: PhpInspection() {
             if (!comparisonIdentical && !comparisonNotIdentical)
                 return
 
-            val nullLeft = (comparison.leftOperand ?: return).text.lowercase() == "null"
-            val nullRight = (comparison.rightOperand ?: return).text.lowercase() == "null"
+            val comparisonLeftOperand = comparison.leftOperand ?: return
+            val comparisonRightOperand = comparison.rightOperand ?: return
+
+            val nullLeft = comparisonLeftOperand.text.lowercase() == "null"
+            val nullRight = comparisonRightOperand.text.lowercase() == "null"
 
             if (!nullLeft && !nullRight)
                 return
 
+            val functionParameter = FactoryService.createExpression(
+                problemsHolder.project,
+                if (nullLeft) comparisonRightOperand.text
+                else comparisonLeftOperand.text
+            )
+
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 comparison,
-                "Null check must be via is_null() function."
+                "Null check must be via is_null() function.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with is_null()",
+                    FactoryService.createFunctionCall(
+                        problemsHolder.project, comparisonNotIdentical, "is_null",
+                        listOf((functionParameter.unparenthesize() ?: return).text)
+                    )
+                )
             )
         }
     }

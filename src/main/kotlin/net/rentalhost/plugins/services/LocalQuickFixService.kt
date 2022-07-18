@@ -45,6 +45,10 @@ object LocalQuickFixService {
             this.replaceTo = SmartPointerManager.createPointer(replaceTo)
         }
 
+        constructor(quickFixTitle: String, replaceTo: Lazy<PsiElement>): super(quickFixTitle) {
+            this.replaceTo = SmartPointerManager.createPointer(replaceTo.value)
+        }
+
         constructor(quickFixTitle: String, replaceFrom: PsiElement, replaceTo: PsiElement): super(quickFixTitle) {
             this.replaceFrom = SmartPointerManager.createPointer(replaceFrom)
             this.replaceTo = SmartPointerManager.createPointer(replaceTo)
