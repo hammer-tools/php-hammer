@@ -4,14 +4,14 @@ import net.rentalhost.plugins.enums.OptionClassSelfReferenceFormat
 import net.rentalhost.plugins.services.TestCase
 
 class ClassSelfReferenceFormatInspectionTestCase: TestCase() {
-    fun testOptionClassSelfReferenceFormatSelf(): Unit =
+    fun testClassSelfReferenceFormatSelf(): Unit =
         testInspection(
             ClassSelfReferenceFormatInspection::class.java,
             "classSelfReferenceFormatSelf",
             { it.classSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF }
         )
 
-    fun testOptionClassSelfReferenceFormatNamed(): Unit =
+    fun testClassSelfReferenceFormatNamed(): Unit =
         testInspection(
             ClassSelfReferenceFormatInspection::class.java,
             "classSelfReferenceFormatNamed",

@@ -4,13 +4,13 @@ import net.rentalhost.plugins.enums.OptionComparisonScalarSide
 import net.rentalhost.plugins.services.TestCase
 
 class ComparisonScalarOrderInspectionTestCase: TestCase() {
-    fun testOptionComparisonScalarRight(): Unit = testInspection(
+    fun testComparisonScalarRight(): Unit = testInspection(
         ComparisonScalarOrderInspection::class.java,
         "comparisonScalarSideRight",
         { it.comparisonScalarSide = OptionComparisonScalarSide.RIGHT }
     )
 
-    fun testOptionComparisonScalarLeft(): Unit = testInspection(
+    fun testComparisonScalarLeft(): Unit = testInspection(
         ComparisonScalarOrderInspection::class.java,
         "comparisonScalarSideLeft",
         { it.comparisonScalarSide = OptionComparisonScalarSide.LEFT }

@@ -4,14 +4,14 @@ import net.rentalhost.plugins.enums.OptionNullableTypeFormat
 import net.rentalhost.plugins.services.TestCase
 
 class NullableTypeFormatInspectionTestCase: TestCase() {
-    fun testOptionFormatLong(): Unit =
+    fun testFormatLong(): Unit =
         testInspection(
             NullableTypeFormatInspection::class.java,
             "nullableTypeFormatLong",
             { it.nullableTypeFormat = OptionNullableTypeFormat.LONG }
         )
 
-    fun testOptionFormatShort(): Unit =
+    fun testFormatShort(): Unit =
         testInspection(
             NullableTypeFormatInspection::class.java,
             "nullableTypeFormatShort",

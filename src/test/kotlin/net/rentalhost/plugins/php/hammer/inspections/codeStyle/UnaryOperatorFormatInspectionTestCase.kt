@@ -4,19 +4,19 @@ import net.rentalhost.plugins.enums.OptionUnaryOperatorSideFormat
 import net.rentalhost.plugins.services.TestCase
 
 class UnaryOperatorFormatInspectionTestCase: TestCase() {
-    fun testOptionUnaryOperatorSideLeft(): Unit = testInspection(
+    fun testUnaryOperatorSideLeft(): Unit = testInspection(
         UnaryOperatorFormatInspection::class.java,
         "unaryOperatorSideLeft",
         { it.unaryOperatorSide = OptionUnaryOperatorSideFormat.LEFT }
     )
 
-    fun testOptionUnaryOperatorSideRight(): Unit = testInspection(
+    fun testUnaryOperatorSideRight(): Unit = testInspection(
         UnaryOperatorFormatInspection::class.java,
         "unaryOperatorSideRight",
         { it.unaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
     )
 
-    fun testOptionIncludeForRepeatedExpressionsDisabled(): Unit = testInspection(
+    fun testIncludeForRepeatedExpressionsDisabled(): Unit = testInspection(
         UnaryOperatorFormatInspection::class.java,
         "includeForRepeatedExpressionsDisabled",
         { it.includeForRepeatedExpressions = false }

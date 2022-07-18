@@ -13,15 +13,15 @@ class FileClassnameCaseInspectionTestCase: TestCase() {
         it.includeFilesWithInvalidIdentifier = true
     })
 
-    fun testOptionIncludeNonRootedClassesDisabled(): Unit = testInspection(FileClassnameCaseInspection::class.java, "Rooted")
+    fun testIncludeNonRootedClassesDisabled(): Unit = testInspection(FileClassnameCaseInspection::class.java, "Rooted")
 
-    fun testOptionIncludeNonRootedClasses(): Unit = testInspection(
+    fun testIncludeNonRootedClasses(): Unit = testInspection(
         FileClassnameCaseInspection::class.java,
         "NonRooted",
         { it.includeNonRootedClasses = true }
     )
 
-    fun testOptionIncludeFilesWithMultipleClasses(): Unit = testInspection(
+    fun testIncludeFilesWithMultipleClasses(): Unit = testInspection(
         FileClassnameCaseInspection::class.java,
         "MultiClasses",
         { it.includeFilesWithMultipleClasses = true }
