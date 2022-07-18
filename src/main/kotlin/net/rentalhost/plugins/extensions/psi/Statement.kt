@@ -6,6 +6,7 @@ import com.jetbrains.php.lang.psi.elements.PhpExit
 import com.jetbrains.php.lang.psi.elements.PhpReturn
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.impl.PhpThrowImpl
+import net.rentalhost.plugins.services.FactoryService
 
 fun Statement.getSingleStatement(): PsiElement? =
     if (this !is GroupStatement) this
@@ -17,3 +18,6 @@ fun Statement.isTerminatingStatement(): Boolean = with(this.unwrapStatement()) {
     this is PhpThrowImpl ||
     this is PhpExit
 }
+
+fun Statement.rebuild(): PsiElement =
+    replace(FactoryService.createStatement(this.project, text))

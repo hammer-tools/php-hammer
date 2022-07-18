@@ -1,9 +1,25 @@
 <?php
 
 $dummy = function ($dummy) {
+    return true;
+};
+
+$dummy = function ($dummy) {
+    return true;
+};
+
+$dummy = function ($dummy) {
+    $dummy++;
+
+    return true;
+};
+
+$dummy = function ($dummy) {
     if ($dummy) {
-        return true;
+        return false;
     } else {
+        $dummy++;
+
         return true;
     }
 };
@@ -11,9 +27,9 @@ $dummy = function ($dummy) {
 $dummy = function ($dummy) {
     if ($dummy) {
         return false;
-    } elseif ($dummy) {
-        return true;
     } else {
+        $dummy++;
+
         return true;
     }
 };
@@ -21,19 +37,9 @@ $dummy = function ($dummy) {
 $dummy = function ($dummy) {
     if ($dummy) {
         return false;
-    } else if ($dummy) {
-        return true;
     } else {
-        return true;
-    }
-};
+        $dummy++;
 
-$dummy = function ($dummy) {
-    if ($dummy) {
-        return false;
-    } elseif ($dummy) {
-        return true;
-    } else {
         return true;
     }
 };

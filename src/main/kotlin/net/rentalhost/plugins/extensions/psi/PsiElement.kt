@@ -14,6 +14,19 @@ fun PsiElement?.insertBeforeElse(addIt: PsiElement, orElse: Lazy<() -> PsiElemen
 fun PsiElement.insertBefore(addIt: PsiElement): PsiElement =
     this.parent.addBefore(addIt, this)
 
+fun PsiElement.replaceWithGroupStatement(groupStatement: GroupStatement) {
+    val elementReplacement = replace(groupStatement)
+
+    elementReplacement.firstChild.delete()
+    elementReplacement.lastChild.delete()
+
+    val elementReplacementParent = elementReplacement.parent
+
+    if (elementReplacementParent is Statement) {
+        elementReplacementParent.rebuild()
+    }
+}
+
 fun PsiElement.swap(swapWith: PsiElement): Unit = with(copy()) {
     this@swap.replace(swapWith)
     swapWith.replace(this)

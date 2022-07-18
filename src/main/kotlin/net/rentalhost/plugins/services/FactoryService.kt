@@ -94,6 +94,9 @@ object FactoryService {
     fun createFunctionBody(project: Project, functionBody: String): GroupStatementImpl =
         PhpPsiElementFactory.createPhpPsiFromText(project, GroupStatementImpl::class.java, "function () {$functionBody}")
 
+    fun createStatement(project: Project, statement: String): Statement =
+        PhpPsiElementFactory.createStatement(project, statement)
+
     fun createAssignmentStatement(project: Project, assignment: String): StatementImpl =
         PhpPsiElementFactory.createPhpPsiFromText(project, AssignmentExpressionImpl::class.java, assignment).parent as StatementImpl
 
