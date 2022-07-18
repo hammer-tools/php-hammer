@@ -9,6 +9,8 @@ import com.jetbrains.php.lang.psi.elements.ElseIf
 import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.isAndSimplified
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class IfSimplificationAndInspection: PhpInspection() {
@@ -23,7 +25,8 @@ class IfSimplificationAndInspection: PhpInspection() {
             if (!element.isAndSimplified())
                 return
 
-            val elementChildren = (element.statement ?: return).children
+            val elementStatement = element.statement ?: return
+            val elementChildren = elementStatement.children
 
             if (elementChildren.size != 1)
                 return
@@ -48,7 +51,21 @@ class IfSimplificationAndInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element.firstChild,
-                "Nested condition can be merged with this."
+                "Nested condition can be merged with this.",
+                LocalQuickFixService.SimpleInlineQuickFix("Nested condition can be merged with this.") {
+                    val elementCondition = element.condition ?: return@SimpleInlineQuickFix
+                    val elementChildCondition = elementChild.condition ?: return@SimpleInlineQuickFix
+                    val elementChildStatement = elementChild.statement ?: return@SimpleInlineQuickFix
+
+                    elementCondition.replace(
+                        FactoryService.createBinaryExpression(
+                            problemsHolder.project,
+                            "${elementCondition.text}&&${elementChildCondition.text}"
+                        )
+                    )
+
+                    elementStatement.replace(elementChildStatement)
+                }
             )
         }
 
