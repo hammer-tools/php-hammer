@@ -4,9 +4,13 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiWhiteSpace
 import com.jetbrains.php.lang.inspections.PhpInspection
-import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.ControlStatement
+import com.jetbrains.php.lang.psi.elements.Else
+import com.jetbrains.php.lang.psi.elements.ElseIf
+import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.getNextSiblingConditional
+import net.rentalhost.plugins.extensions.psi.getSingleStatement
 import net.rentalhost.plugins.extensions.psi.isOrSimplified
 import net.rentalhost.plugins.extensions.psi.isTerminatingStatement
 import net.rentalhost.plugins.services.FactoryService
@@ -25,12 +29,18 @@ class IfSimplificationOrInspection: PhpInspection() {
             if (!elementNext.isOrSimplified())
                 return
 
-            val elementNormalized = FormatterService.normalize(problemsHolder.project, (element.statement as? GroupStatement ?: return))
+            val elementNormalized = FormatterService.normalize(
+                problemsHolder.project,
+                (element.statement ?: return).getSingleStatement() ?: return
+            )
 
             if (!elementNormalized.isTerminatingStatement())
                 return
 
-            val elementNextNormalized = FormatterService.normalize(problemsHolder.project, (elementNext.statement as? GroupStatement ?: return))
+            val elementNextNormalized = FormatterService.normalize(
+                problemsHolder.project,
+                (elementNext.statement ?: return).getSingleStatement() ?: return
+            )
 
             if (!elementNextNormalized.isTerminatingStatement() ||
                 elementNextNormalized.text != elementNormalized.text)

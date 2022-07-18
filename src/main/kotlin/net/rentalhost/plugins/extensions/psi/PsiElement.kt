@@ -34,6 +34,12 @@ fun PsiElement?.unparenthesize(): PsiElement? =
     if (this is ParenthesizedExpression) this.argument.unparenthesize()
     else this
 
+fun PsiElement.unwrapStatement(): PsiElement {
+    return if (this is StatementImpl &&
+               this::class == StatementImpl::class) (this.firstPsiChild ?: return this).unwrapStatement()
+    else this
+}
+
 fun PsiElement.getNextTreePsiSibling(): PsiElement? {
     var element: PsiElement? = this
 

@@ -12,9 +12,8 @@ fun Statement.getSingleStatement(): PsiElement? =
     else if (this.statements.size == 1) this.statements.first()
     else null
 
-fun Statement.isTerminatingStatement(): Boolean = with(getSingleStatement()) {
+fun Statement.isTerminatingStatement(): Boolean = with(this.unwrapStatement()) {
     this is PhpReturn ||
     this is PhpThrowImpl ||
-    this is PhpExit ||
-    (this is Statement && isTerminatingStatement())
+    this is PhpExit
 }
