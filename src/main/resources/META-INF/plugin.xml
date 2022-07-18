@@ -8,7 +8,7 @@
     <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>31 new
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>32 new
     inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
@@ -180,6 +180,15 @@
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.StringCurlyInspection" />
 
         <!-- Flow Optimization -->
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Flow Optimization"
+                         enabledByDefault="true"
+                         displayName="Drop useless conditional"
+                         level="WEAK WARNING"
+                         shortName="IfSimplificationElseInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.flowOptimization.IfSimplificationElseInspection" />
+
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Flow Optimization"
