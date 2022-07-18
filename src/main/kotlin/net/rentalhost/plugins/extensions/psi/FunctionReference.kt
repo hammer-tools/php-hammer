@@ -7,6 +7,10 @@ import com.jetbrains.php.lang.psi.elements.impl.UnaryExpressionImpl
 fun FunctionReference.getErrorControlOperator(): PsiElement? =
     with(this.parent) {
         return if (this is UnaryExpressionImpl &&
-                   this.firstChild.text === "@") return this.firstChild
+                   this.firstChild.text == "@") return this.firstChild
         else null
     }
+
+fun FunctionReference.isName(expectedName: String): Boolean {
+    return (name ?: return false).lowercase() == expectedName
+}

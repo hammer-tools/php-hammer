@@ -43,6 +43,13 @@ fun PsiElement.isStub(): Boolean =
 fun PsiElement.isStrictlyStatement(): Boolean =
     this::class == StatementImpl::class
 
+fun PsiElement.withOptionalNotOperator(): PsiElement {
+    val elementParent = this.parent as? UnaryExpression ?: return this
+
+    return if (elementParent.operation.elementType === PhpTokenTypes.opNOT) parent
+    else this
+}
+
 fun PsiElement?.unparenthesize(): PsiElement? =
     if (this is ParenthesizedExpression) this.argument.unparenthesize()
     else this
