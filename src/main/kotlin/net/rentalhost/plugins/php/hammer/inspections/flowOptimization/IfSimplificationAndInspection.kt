@@ -8,6 +8,7 @@ import com.jetbrains.php.lang.psi.elements.Else
 import com.jetbrains.php.lang.psi.elements.ElseIf
 import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.extensions.psi.getSingleStatement
 import net.rentalhost.plugins.extensions.psi.isAndSimplified
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
@@ -26,12 +27,7 @@ class IfSimplificationAndInspection: PhpInspection() {
                 return
 
             val elementStatement = element.statement ?: return
-            val elementChildren = elementStatement.children
-
-            if (elementChildren.size != 1)
-                return
-
-            val elementChild = elementChildren[0]
+            val elementChild = elementStatement.getSingleStatement()
 
             if (elementChild !is If ||
                 elementChild.elseBranch != null ||

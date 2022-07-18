@@ -8,6 +8,12 @@ $dummy1000 = function ($dummy) {
     }
 };
 
+$dummy1500 = function ($dummy) {
+    <weak_warning descr="[PHP Hammer] Nested condition can be merged with this.">if</weak_warning> ($dummy)
+        if ($dummy)
+            return true;
+};
+
 $dummy2000 = function ($dummy) {
     <weak_warning descr="[PHP Hammer] Nested condition can be merged with this.">if</weak_warning> (($dummy && $dummy) && $dummy) {
         if ($dummy && ($dummy && $dummy)) {

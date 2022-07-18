@@ -6,6 +6,11 @@ $dummy1000 = function ($dummy) {
     }
 };
 
+$dummy1500 = function ($dummy) {
+    if ($dummy && $dummy)
+        return true;
+};
+
 $dummy2000 = function ($dummy) {
     if (($dummy && $dummy) && $dummy && $dummy && ($dummy && $dummy)) {
         return true;
