@@ -5,16 +5,16 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.SmartPsiElementPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageFeature
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.ParameterList
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
-import com.jetbrains.php.lang.psi.elements.impl.ParameterListImpl
+import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.*
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LanguageService
@@ -35,11 +35,8 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     @OptionTag
     var includeParametersWithReference: Boolean = false
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
-        override fun visitElement(element: PsiElement) {
-            if (element !is ParameterListImpl)
-                return
-
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
+        override fun visitPhpParameterList(element: ParameterList) {
             val context = element.context
 
             if (context !is FunctionImpl)

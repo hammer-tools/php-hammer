@@ -1,11 +1,10 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
-import com.jetbrains.php.lang.psi.elements.impl.BinaryExpressionImpl
+import com.jetbrains.php.lang.psi.elements.BinaryExpression
+import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.enums.OptionComparisonScalarSide
 import net.rentalhost.plugins.extensions.psi.isScalar
 import net.rentalhost.plugins.extensions.psi.swap
@@ -19,10 +18,9 @@ class ComparisonScalarOrderInspection: PhpInspection() {
     @OptionTag
     var comparisonScalarSide: OptionComparisonScalarSide = OptionComparisonScalarSide.RIGHT
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
-        override fun visitElement(element: PsiElement) {
-            if (element !is BinaryExpressionImpl ||
-                !TypeService.compareOperations.contains(element.operationType))
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
+        override fun visitPhpBinaryExpression(element: BinaryExpression) {
+            if (!TypeService.compareOperations.contains(element.operationType))
                 return
 
             val elementLeft = element.leftOperand

@@ -1,14 +1,13 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.util.elementType
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
+import com.jetbrains.php.lang.psi.elements.UnaryExpression
 import com.jetbrains.php.lang.psi.elements.impl.ForImpl
-import com.jetbrains.php.lang.psi.elements.impl.UnaryExpressionImpl
+import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.enums.OptionUnaryOperatorSideFormat
 import net.rentalhost.plugins.extensions.psi.isStrictlyStatement
 import net.rentalhost.plugins.services.FactoryService
@@ -24,11 +23,8 @@ class UnaryOperatorFormatInspection: PhpInspection() {
     @OptionTag
     var unaryOperatorSide: OptionUnaryOperatorSideFormat = OptionUnaryOperatorSideFormat.RIGHT
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
-        override fun visitElement(element: PsiElement) {
-            if (element !is UnaryExpressionImpl)
-                return
-
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
+        override fun visitPhpUnaryExpression(element: UnaryExpression) {
             val unaryOperator = element.operation ?: return
             val unaryIncrease = unaryOperator.elementType === PhpTokenTypes.opINCREMENT
             val unaryDecrease = unaryOperator.elementType === PhpTokenTypes.opDECREMENT

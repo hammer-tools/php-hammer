@@ -1,15 +1,14 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.codeInsight.PhpScopeHolder
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
-import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
+import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.functionBody
 import net.rentalhost.plugins.extensions.psi.getMemberOverridden
 import net.rentalhost.plugins.extensions.psi.isStrictlyStatement
@@ -18,10 +17,9 @@ import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class SenselessParentCallEmptyInspection: PhpInspection() {
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
-        override fun visitElement(element: PsiElement) {
-            if (element !is MethodReferenceImpl ||
-                !element.parent.isStrictlyStatement())
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
+        override fun visitPhpMethodReference(element: MethodReference) {
+            if (!element.parent.isStrictlyStatement())
                 return
 
             val elementBase = element.firstPsiChild as? ClassReferenceImpl ?: return

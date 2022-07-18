@@ -7,35 +7,35 @@ import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpArrayAccessInst
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.GroupStatement
-import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.GroupStatementImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
+import com.jetbrains.php.lang.psi.elements.Function as PhpFunction
 
-fun FunctionImpl.isAbstractMethod(): Boolean =
+fun PhpFunction.isAbstractMethod(): Boolean =
     this is MethodImpl && this.isAbstract
 
-fun FunctionImpl.isStatic(): Boolean =
+fun PhpFunction.isStatic(): Boolean =
     node.findChildByType(PhpTokenTypes.kwSTATIC) != null
 
-fun FunctionImpl.isShortFunction(): Boolean =
+fun PhpFunction.isShortFunction(): Boolean =
     node.findChildByType(PhpTokenTypes.kwFN) != null
 
-fun FunctionImpl.isAnonymous(): Boolean =
+fun PhpFunction.isAnonymous(): Boolean =
     name == ""
 
-fun FunctionImpl.functionBody(): GroupStatementImpl? =
+fun PhpFunction.functionBody(): GroupStatementImpl? =
     PhpPsiUtil.getChildByCondition(this, GroupStatement.INSTANCEOF)
 
-fun FunctionImpl.scopes(): MutableList<FunctionImpl> =
-    mutableListOf(this).apply { addAll(PsiTreeUtil.findChildrenOfType(this@scopes, FunctionImpl::class.java)) }
+fun PhpFunction.scopes(): MutableList<PhpFunction> =
+    mutableListOf(this).apply { addAll(PsiTreeUtil.findChildrenOfType(this@scopes, PhpFunction::class.java)) }
 
-fun FunctionImpl.accessVariables(): List<PhpAccessInstruction> =
+fun PhpFunction.accessVariables(): List<PhpAccessInstruction> =
     controlFlow.instructions
         .filterIsInstance(PhpAccessInstruction::class.java)
         .filter { it is PhpAccessVariableInstruction || it is PhpArrayAccessInstruction }
         .filter { it.variableName != null }
 
-fun FunctionImpl.accessMutableVariables(): List<PhpAccessInstruction> =
+fun PhpFunction.accessMutableVariables(): List<PhpAccessInstruction> =
     accessVariables().filter {
         it is PhpArrayAccessInstruction ||
         it.access.isWrite ||

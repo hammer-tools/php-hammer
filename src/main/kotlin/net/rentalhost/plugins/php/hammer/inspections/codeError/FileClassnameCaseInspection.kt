@@ -1,14 +1,14 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
+import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.getBasename
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
@@ -26,10 +26,9 @@ class FileClassnameCaseInspection: PhpInspection() {
     @OptionTag
     var includeFilesWithInvalidIdentifier: Boolean = false
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
-        override fun visitElement(element: PsiElement) {
-            if (element !is PhpClassImpl ||
-                element.name == "")
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
+        override fun visitPhpClass(element: PhpClass) {
+            if (element.name == "")
                 return
 
             if (!includeNonRootedClasses &&

@@ -5,10 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.8.0] - 2022-07-18
 
 ### Added
 
+- **[IfSimplificationAndInspection]**: implemented ("merge simple nested conditionals");
+- **[IfSimplificationElseInspection]**: implemented ("drop useless conditional");
+- **[IfSimplificationOrInspection]**: implemented ("merge simple subsequent conditionals");
+- **[NullCheckFormatInspection]**: implemented ("null check format");
 - **[SenselessNumberFormatZeroDecimalInspection]**: implemented ("senseless number_format() with zero decimal point");
 - **[StringCurlyInspection]**: implemented ("variable must have curly braces");
 
@@ -20,6 +24,16 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 ### Fixed
 
 - **[StringSimplificationInspection]**: fix normalization for deprecated ${x} variable format;
+
+[0.8.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.8.0
+
+[IfSimplificationAndInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-if-simplification-and-inspection
+
+[IfSimplificationElseInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-if-simplification-else-inspection
+
+[IfSimplificationOrInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-if-simplification-or-inspection
+
+[NullCheckFormatInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-null-check-format-inspection
 
 [SenselessNumberFormatZeroDecimalInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-senseless-number-format-zero-decimal-inspection
 

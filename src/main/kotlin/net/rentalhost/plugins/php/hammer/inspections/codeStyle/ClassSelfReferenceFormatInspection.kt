@@ -1,13 +1,12 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
-import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
+import com.jetbrains.php.lang.psi.elements.ClassReference
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
+import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.enums.OptionClassSelfReferenceFormat
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LocalQuickFixService
@@ -19,11 +18,8 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
     @OptionTag
     var classSelfReferenceFormat: OptionClassSelfReferenceFormat = OptionClassSelfReferenceFormat.SELF
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PsiElementVisitor() {
-        override fun visitElement(element: PsiElement) {
-            if (element !is ClassReferenceImpl)
-                return
-
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
+        override fun visitPhpClassReference(element: ClassReference) {
             val elementClass = PsiTreeUtil.getParentOfType(element, PhpClassImpl::class.java) ?: return
             val elementClassName = elementClass.name
 

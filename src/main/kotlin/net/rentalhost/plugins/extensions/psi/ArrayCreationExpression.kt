@@ -1,20 +1,20 @@
 package net.rentalhost.plugins.extensions.psi
 
 import com.intellij.psi.PsiElement
-import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
+import com.jetbrains.php.lang.psi.elements.ArrayCreationExpression
 import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpPsiElementImpl
 import net.rentalhost.plugins.services.ElementService
 import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.TypeService
 
-fun ArrayCreationExpressionImpl.unpackValues(): MutableList<PsiElement> {
+fun ArrayCreationExpression.unpackValues(): MutableList<PsiElement> {
     val arrayElements = mutableListOf<PsiElement>()
 
     for (arrayElement in children) {
         if (arrayElement is PhpPsiElementImpl<*> &&
-            TypeService.isVariadic(arrayElement, ArrayCreationExpressionImpl::class.java)) {
-            arrayElements.addAll((arrayElement.firstPsiChild as ArrayCreationExpressionImpl).unpackValues())
+            TypeService.isVariadic(arrayElement, ArrayCreationExpression::class.java)) {
+            arrayElements.addAll((arrayElement.firstPsiChild as ArrayCreationExpression).unpackValues())
         }
         else if (arrayElement is PhpPsiElementImpl<*> &&
                  TypeService.isVariadic(arrayElement)) {

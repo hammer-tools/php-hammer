@@ -1,7 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
@@ -24,12 +23,10 @@ class NullCheckFormatInspection: PhpInspection() {
     @OptionTag
     var nullCheckFormat: OptionNullCheckFormat = OptionNullCheckFormat.COMPARISON
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object: PhpElementVisitor() {
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
         override fun visitPhpFunctionCall(function: FunctionReference) {
-            if (nullCheckFormat != OptionNullCheckFormat.COMPARISON)
-                return
-
-            if (!function.isName("is_null") ||
+            if (nullCheckFormat != OptionNullCheckFormat.COMPARISON ||
+                !function.isName("is_null") ||
                 function.parameters.size != 1)
                 return
 
