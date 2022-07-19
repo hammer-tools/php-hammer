@@ -8,7 +8,7 @@
     <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>35 new
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>36 new
     inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
@@ -308,6 +308,15 @@
                          level="ERROR"
                          shortName="FileClassnameCaseInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.FileClassnameCaseInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Error"
+                         enabledByDefault="true"
+                         displayName="Invalid compact() argument"
+                         level="ERROR"
+                         shortName="CompactArgumentInvalidInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.CompactArgumentInvalidInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
