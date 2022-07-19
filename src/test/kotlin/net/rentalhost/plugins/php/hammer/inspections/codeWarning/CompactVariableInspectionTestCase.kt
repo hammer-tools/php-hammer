@@ -8,4 +8,8 @@ class CompactVariableInspectionTestCase: TestCase() {
     fun testIncludeStrings(): Unit = testInspection(CompactVariableInspection::class.java, "includeStrings", {
         it.includeStrings = false
     })
+
+    fun testIncludeArrays(): Unit = testInspection(CompactVariableInspection::class.java, "includeArrays", {
+        it.includeArrays = false
+    })
 }

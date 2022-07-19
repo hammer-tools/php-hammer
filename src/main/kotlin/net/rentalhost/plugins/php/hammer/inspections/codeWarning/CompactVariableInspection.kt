@@ -22,6 +22,9 @@ class CompactVariableInspection: PhpInspection() {
     @OptionTag
     var includeStrings: Boolean = true
 
+    @OptionTag
+    var includeArrays: Boolean = true
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
         override fun visitPhpFunctionCall(element: FunctionReference) {
             if (!element.isName("compact"))
@@ -37,11 +40,18 @@ class CompactVariableInspection: PhpInspection() {
                 values
                     .filterIsInstance(Variable::class.java)
                     .forEach {
-                        if (!includeStrings) {
-                            val variableTypes = it.getTypes()
+                        val variableTypes by lazy { it.getTypes() }
 
+                        if (!includeStrings) {
                             if (variableTypes.size == 1 &&
                                 variableTypes[0] === PhpType._STRING) {
+                                return@forEach
+                            }
+                        }
+
+                        if (!includeArrays) {
+                            if (variableTypes.size == 1 &&
+                                variableTypes[0] === PhpType._ARRAY) {
                                 return@forEach
                             }
                         }
@@ -62,11 +72,18 @@ class CompactVariableInspection: PhpInspection() {
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
             component.addCheckbox(
-                "Include strings-type", includeStrings,
+                "Include string-type", includeStrings,
                 "This option allows this inspection to consider variables that stores a value of type string, " +
                 "which can represent the name of a variable that will be packed by <code>compact()</code>. " +
                 "However, how is this not very common this option is enabled by default."
             ) { includeStrings = it }
+
+            component.addCheckbox(
+                "Include array-type", includeArrays,
+                "This option allows this inspection to consider variables that stores a value of type array, " +
+                "which can represent the names of variables that will be packed by <code>compact()</code>. " +
+                "However, how is this not very common this option is enabled by default."
+            ) { includeArrays = it }
         }
     }
 }
