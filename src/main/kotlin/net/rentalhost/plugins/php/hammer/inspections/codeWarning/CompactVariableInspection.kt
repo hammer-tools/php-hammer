@@ -20,10 +20,11 @@ class CompactVariableInspection: PhpInspection() {
                 return
 
             for (parameter in element.parameters) {
-                val values =
-                    if (parameter is StringLiteralExpression) continue
-                    else if (parameter is ArrayCreationExpressionImpl) parameter.values().toList()
-                    else listOf(parameter)
+                val values = when (parameter) {
+                    is StringLiteralExpression -> continue
+                    is ArrayCreationExpressionImpl -> parameter.values().toList()
+                    else -> listOf(parameter)
+                }
 
                 values
                     .filterIsInstance(Variable::class.java)
