@@ -8,6 +8,8 @@ import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.isName
+import net.rentalhost.plugins.services.FactoryService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import kotlin.streams.toList
 
@@ -28,7 +30,11 @@ class CompactVariableInspection: PhpInspection() {
                     .forEach {
                         ProblemsHolderService.registerProblem(
                             problemsHolder, it,
-                            "Variables should be avoided in compact()."
+                            "Variables should be avoided in compact().",
+                            LocalQuickFixService.SimpleReplaceQuickFix(
+                                "Replace with string",
+                                FactoryService.createStringLiteral(problemsHolder.project, it.name)
+                            )
                         )
                     }
             }

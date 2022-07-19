@@ -100,6 +100,9 @@ object FactoryService {
     fun createStatement(project: Project, statement: String): Statement =
         PhpPsiElementFactory.createStatement(project, statement)
 
+    fun createStringLiteral(project: Project, string: String): StringLiteralExpression =
+        PhpPsiElementFactory.createPhpPsiFromText(project, StringLiteralExpression::class.java, "'$string'")
+
     fun createAssignmentStatement(project: Project, assignment: String): StatementImpl =
         PhpPsiElementFactory.createPhpPsiFromText(project, AssignmentExpressionImpl::class.java, assignment).parent as StatementImpl
 
