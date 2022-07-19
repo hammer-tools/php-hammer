@@ -8,7 +8,7 @@
     <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>33 new
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>34 new
     inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
@@ -318,6 +318,16 @@
                          level="WARNING"
                          shortName="DollarSignOutsideCurlyBracesInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.deprecation.DollarSignOutsideCurlyBracesInspection" />
+
+        <!-- Code Warning -->
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Warning"
+                         enabledByDefault="true"
+                         displayName="Variable usage in compact()"
+                         level="WARNING"
+                         shortName="CompactVariableInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeWarning.CompactVariableInspection" />
 
         <!-- Plugin -->
         <applicationService serviceImplementation="net.rentalhost.plugins.services.SettingsService" />
