@@ -1,8 +1,8 @@
 <?php
 
-$dummy = "<weak_warning descr="[PHP Hammer] Variable must have curly braces.">$a</weak_warning>";
+$dummy = "<weak_warning descr="🔨 PHP Hammer: Variable must have curly braces.">$a</weak_warning>";
 
-$dummy = "dummy <weak_warning descr="[PHP Hammer] Variable must have curly braces.">$a</weak_warning> dummy";
+$dummy = "dummy <weak_warning descr="🔨 PHP Hammer: Variable must have curly braces.">$a</weak_warning> dummy";
 
 // Not applicable:
 

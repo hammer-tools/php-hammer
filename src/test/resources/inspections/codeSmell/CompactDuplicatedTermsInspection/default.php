@@ -1,27 +1,27 @@
 <?php
 
 $dummy = function ($a, $b) {
-    return compact('a', <weak_warning descr="[PHP Hammer] Duplicated term in compact().">'a'</weak_warning>, 'b');
+    return compact('a', <weak_warning descr="🔨 PHP Hammer: Duplicated term in compact().">'a'</weak_warning>, 'b');
 };
 
 $dummy = function ($a, $b) {
-    return compact('a', [<weak_warning descr="[PHP Hammer] Duplicated term in compact().">'a'</weak_warning>, 'b']);
+    return compact('a', [<weak_warning descr="🔨 PHP Hammer: Duplicated term in compact().">'a'</weak_warning>, 'b']);
 };
 
 $dummy = function ($a, $b) {
-    return compact(['a', <weak_warning descr="[PHP Hammer] Duplicated term in compact().">'a'</weak_warning>], 'b');
+    return compact(['a', <weak_warning descr="🔨 PHP Hammer: Duplicated term in compact().">'a'</weak_warning>], 'b');
 };
 
 $dummy = function ($a, $b) {
-    return compact(['a'], <weak_warning descr="[PHP Hammer] Duplicated term in compact().">'a'</weak_warning>, 'b');
+    return compact(['a'], <weak_warning descr="🔨 PHP Hammer: Duplicated term in compact().">'a'</weak_warning>, 'b');
 };
 
 $dummy = function ($a, $b) {
-    return compact('a', [<weak_warning descr="[PHP Hammer] Duplicated term in compact().">'a'</weak_warning>], 'b');
+    return compact('a', [<weak_warning descr="🔨 PHP Hammer: Duplicated term in compact().">'a'</weak_warning>], 'b');
 };
 
 $dummy = function ($a, $b) {
-    return compact('a', ['b', <weak_warning descr="[PHP Hammer] Duplicated term in compact().">'a'</weak_warning>]);
+    return compact('a', ['b', <weak_warning descr="🔨 PHP Hammer: Duplicated term in compact().">'a'</weak_warning>]);
 };
 
 // Not applicable:

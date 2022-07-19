@@ -7,7 +7,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 
 private fun applyTemplate(descriptionTemplate: String) =
-    "[PHP Hammer] $descriptionTemplate"
+    "\uD83D\uDD28 PHP Hammer: $descriptionTemplate"
 
 object ProblemsHolderService {
     fun registerProblem(
