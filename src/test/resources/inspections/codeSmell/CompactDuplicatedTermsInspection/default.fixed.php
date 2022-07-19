@@ -1,27 +1,27 @@
 <?php
 
 $dummy = function ($a, $b) {
-    return compact('a', 'a', 'b');
+    return compact('a', 'b');
 };
 
 $dummy = function ($a, $b) {
-    return compact('a', ['a', 'b']);
+    return compact('a', ['b']);
 };
 
 $dummy = function ($a, $b) {
-    return compact(['a', 'a'], 'b');
+    return compact(['a'], 'b');
 };
 
 $dummy = function ($a, $b) {
-    return compact(['a'], 'a', 'b');
+    return compact(['a'], 'b');
 };
 
 $dummy = function ($a, $b) {
-    return compact('a', ['a'], 'b');
+    return compact('a', 'b');
 };
 
 $dummy = function ($a, $b) {
-    return compact('a', ['b', 'a']);
+    return compact('a', ['b']);
 };
 
 // Not applicable:

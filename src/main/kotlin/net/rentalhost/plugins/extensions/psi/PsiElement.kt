@@ -60,6 +60,20 @@ fun PsiElement.unwrapStatement(): PsiElement {
     else this
 }
 
+fun PsiElement.getCommaRange(): Pair<PsiElement, PsiElement> {
+    val leftComma = PsiTreeUtil.skipWhitespacesAndCommentsBackward(this)
+
+    if (leftComma.elementType == PhpTokenTypes.opCOMMA)
+        return Pair(leftComma!!, this)
+
+    val rightComma = PsiTreeUtil.skipWhitespacesAndCommentsForward(this)
+
+    if (rightComma.elementType == PhpTokenTypes.opCOMMA)
+        return Pair(this, rightComma!!)
+
+    return Pair(this, this)
+}
+
 fun PsiElement.getNextTreePsiSibling(): PsiElement? {
     var element: PsiElement? = this
 

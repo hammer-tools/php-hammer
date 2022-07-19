@@ -1,12 +1,18 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.util.containers.isEmpty
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.ParameterList
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.extensions.psi.delete
+import net.rentalhost.plugins.extensions.psi.getCommaRange
 import net.rentalhost.plugins.extensions.psi.isName
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import kotlin.streams.toList
 
@@ -36,7 +42,21 @@ class CompactDuplicatedTermsInspection: PhpInspection() {
 
                             ProblemsHolderService.registerProblem(
                                 problemsHolder, it,
-                                "Duplicated term in compact()."
+                                "Duplicated term in compact().",
+                                LocalQuickFixService.SimpleInlineQuickFix("Drop duplicated term") {
+                                    val array = PsiTreeUtil.getParentOfType(it, ArrayCreationExpressionImpl::class.java, false, ParameterList::class.java)
+                                    val range = when {
+                                        array != null -> it.parent
+                                        else -> it
+                                    }
+
+                                    range.getCommaRange().delete()
+
+                                    if (array != null &&
+                                        array.values().isEmpty()) {
+                                        array.getCommaRange().delete()
+                                    }
+                                }
                             )
                         }
                 }
