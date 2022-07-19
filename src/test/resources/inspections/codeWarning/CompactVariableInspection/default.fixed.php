@@ -40,6 +40,10 @@ $dummy = function ($a, $b, array $c) {
     return compact('a', 'b', 'c');
 };
 
+$dummy = function ($a) {
+    return compact(... ['a']);
+};
+
 // Not applicable:
 
 $dummy = function ($a, $b, $c) {

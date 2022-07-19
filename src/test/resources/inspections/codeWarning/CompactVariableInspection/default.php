@@ -40,6 +40,10 @@ $dummy = function ($a, $b, array $c) {
     return compact('a', 'b', <warning descr="🔨 PHP Hammer: Variables should be avoided in compact().">$c</warning>);
 };
 
+$dummy = function ($a) {
+    return compact(... [<warning descr="🔨 PHP Hammer: Variables should be avoided in compact().">$a</warning>]);
+};
+
 // Not applicable:
 
 $dummy = function ($a, $b, $c) {

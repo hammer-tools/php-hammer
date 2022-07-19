@@ -37,3 +37,15 @@ $dummy = function ($a, $b) {
 $dummy = function ($a, $b) {
     return compact(['a', 'b']);
 };
+
+$dummy = function ($a) {
+    return compact(... $a);
+};
+
+$dummy = function ($a) {
+    return compact(... [$a]);
+};
+
+$dummy = function ($a) {
+    return compact(... ['a']);
+};

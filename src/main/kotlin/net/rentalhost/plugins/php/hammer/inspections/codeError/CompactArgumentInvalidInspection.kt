@@ -10,6 +10,8 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.getTypes
 import net.rentalhost.plugins.extensions.psi.isName
+import net.rentalhost.plugins.services.ElementService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import kotlin.streams.toList
 
@@ -40,7 +42,10 @@ class CompactArgumentInvalidInspection: PhpInspection() {
 
                         ProblemsHolderService.registerProblem(
                             problemsHolder, it,
-                            "Invalid argument for compact() function."
+                            "Invalid argument for compact() function.",
+                            LocalQuickFixService.SimpleInlineQuickFix("Drop invalid term") {
+                                ElementService.dropCompactArgument(it)
+                            }
                         )
                     }
             }
