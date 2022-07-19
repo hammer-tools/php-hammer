@@ -4,4 +4,8 @@ import net.rentalhost.plugins.services.TestCase
 
 class CompactVariableInspectionTestCase: TestCase() {
     fun testAll(): Unit = testInspection(CompactVariableInspection::class.java)
+
+    fun testIncludeStrings(): Unit = testInspection(CompactVariableInspection::class.java, "includeStrings", {
+        it.includeStrings = false
+    })
 }
