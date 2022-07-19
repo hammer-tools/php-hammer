@@ -1,4 +1,8 @@
 <?php
 
+// Native functions.
+
 // xdebug-related Functions.
-xdebug_break();
+
+if (xdebug_break()) {
+}

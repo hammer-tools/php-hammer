@@ -1,10 +1,13 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.SmartPointerManager
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import javax.swing.JComponent
@@ -29,7 +32,13 @@ class DebugFunctionUsageInspection: PhpInspection() {
                 !isXdebugFunction)
                 return
 
-            ProblemsHolderService.registerProblem(problemsHolder, function, "Debug-related function usage.")
+            ProblemsHolderService.registerProblem(
+                problemsHolder, function, "Debug-related function usage.",
+                if (function.parent::class == StatementImpl::class) LocalQuickFixService.SimpleDeleteQuickFix(
+                    "Drop debug function", SmartPointerManager.createPointer(function.parent)
+                )
+                else null
+            )
         }
     }
 
