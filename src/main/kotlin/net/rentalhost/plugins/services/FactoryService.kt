@@ -4,7 +4,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.PsiRecursiveElementVisitor
-import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
@@ -138,10 +137,4 @@ object FactoryService {
 
     fun createComparisonExpression(project: Project, leftOperand: String, operator: String, rightOperand: String): BinaryExpression =
         createBinaryExpression(project, "$leftOperand$operator$rightOperand")
-
-    fun createWhiteSpace(project: Project, whitespace: String = " "): PsiWhiteSpace =
-        PsiFileFactory.getInstance(project).createFileFromText(
-            "DUMMY__.${PhpFileType.INSTANCE.defaultExtension}", PhpFileType.INSTANCE,
-            "<?php$whitespace", System.currentTimeMillis(), false
-        ).children[1] as PsiWhiteSpace
 }

@@ -17,8 +17,8 @@ class IfSimplificationElseInspection: PhpInspection() {
             val elementParent = element.parent as? If ?: return
             val elementReference = elementParent.elseIfBranches.lastOrNull() ?: elementParent
 
-            val elementNormalized = FormatterService.normalizeText(element.statement ?: return)
-            val elementReferenceNormalized = FormatterService.normalizeText(elementReference.statement ?: return)
+            val elementNormalized = FormatterService.normalize(element.statement ?: return)
+            val elementReferenceNormalized = FormatterService.normalize(elementReference.statement ?: return)
 
             if (elementNormalized != elementReferenceNormalized)
                 return

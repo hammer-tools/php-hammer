@@ -35,7 +35,7 @@ class IfSimplificationOrInspection: PhpInspection() {
 
             if (elementNextNormalized !is Statement ||
                 !elementNextNormalized.isTerminatingStatement() ||
-                FormatterService.normalizeText(elementNextNormalized) != FormatterService.normalizeText(elementNormalized))
+                FormatterService.normalize(elementNextNormalized) != FormatterService.normalize(elementNormalized))
                 return
 
             ProblemsHolderService.registerProblem(
