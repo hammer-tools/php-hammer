@@ -16,6 +16,9 @@ class NativeMemberUsageInspection: PhpInspection() {
     @OptionTag
     var strictChecking: Boolean = true
 
+    @OptionTag
+    var includeStaticCall: Boolean = true
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
         private fun visit(element: MemberReference) {
             val elementBase = element.firstPsiChild
@@ -31,6 +34,12 @@ class NativeMemberUsageInspection: PhpInspection() {
 
             if (!strictChecking && elementTypes.size > elementTypesNatives.size)
                 return
+
+            if (!includeStaticCall && element.isStatic && elementTypesNatives.all { it == PhpType._STRING }) {
+                if (element is FieldReference ||
+                    element is MethodReference)
+                    return
+            }
 
             ProblemsHolderService.registerProblem(
                 problemsHolder,
@@ -50,6 +59,14 @@ class NativeMemberUsageInspection: PhpInspection() {
                 "Strict check", strictChecking,
                 "This option makes this checking strict, meaning that variables that mix native types with object types will also be inspected."
             ) { strictChecking = it }
+
+            component.addCheckbox(
+                "Include static call", includeStaticCall,
+                "This option includes calls to static methods or properties access on <code>string</code> type. " +
+                "This condition is sometimes valid when the string contains the name of a class. " +
+                "Try keeping this option enabled, and alternatively use a <code>@var</code> phpdoc " +
+                "declaring the type of class that must be present in the string."
+            ) { includeStaticCall = it }
         }
     }
 }

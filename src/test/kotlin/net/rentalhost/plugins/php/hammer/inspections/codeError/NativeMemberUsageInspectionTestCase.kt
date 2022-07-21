@@ -8,4 +8,8 @@ class NativeMemberUsageInspectionTestCase: TestCase() {
     fun testStrictCheckingDisabled(): Unit = testInspection(NativeMemberUsageInspection::class.java, "strictCheckingDisabled", {
         it.strictChecking = false
     })
+
+    fun testIncludeStaticCallDisabled(): Unit = testInspection(NativeMemberUsageInspection::class.java, "includeStaticCall", {
+        it.includeStaticCall = false
+    })
 }
