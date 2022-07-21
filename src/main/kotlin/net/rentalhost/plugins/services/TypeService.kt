@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.TokenSet
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.impl.PhpPsiElementImpl
+import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import org.apache.commons.lang.StringUtils
 import java.util.*
 import java.util.stream.Collectors
@@ -12,6 +13,15 @@ import kotlin.streams.toList
 
 object TypeService {
     private val nullType = prependGlobalNamespace(mutableListOf("null"))
+
+    val nativeTypes: List<String> = listOf(
+        PhpType._STRING,
+        PhpType._INT, PhpType._INTEGER,
+        PhpType._BOOL, PhpType._BOOLEAN,
+        PhpType._FLOAT, PhpType._DOUBLE,
+        PhpType._ARRAY, PhpType._ITERABLE,
+        PhpType._TRUE, PhpType._FALSE
+    )
 
     var compareOperations: TokenSet =
         TokenSet.create(*arrayOf(PhpTokenTypes.opEQUAL, PhpTokenTypes.opNOT_EQUAL, PhpTokenTypes.opIDENTICAL, PhpTokenTypes.opNOT_IDENTICAL))
