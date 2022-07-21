@@ -19,8 +19,7 @@ object TypeService {
         PhpType._INT, PhpType._INTEGER,
         PhpType._BOOL, PhpType._BOOLEAN,
         PhpType._FLOAT, PhpType._DOUBLE,
-        PhpType._ARRAY, PhpType._ITERABLE,
-        PhpType._TRUE, PhpType._FALSE
+        PhpType._ARRAY
     )
 
     var compareOperations: TokenSet =

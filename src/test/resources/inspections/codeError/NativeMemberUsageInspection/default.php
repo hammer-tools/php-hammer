@@ -8,6 +8,10 @@ $dummy = function (string|null $x) {
     <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>->dummy();
 };
 
+$dummy = function (DateTime|string $x) {
+    <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>->dummy();
+};
+
 // Not applicable:
 
 $dummy = function ($x) {
@@ -23,9 +27,5 @@ $dummy = function (mixed $x) {
 };
 
 $dummy = function (DateTime $x) {
-    $x->dummy();
-};
-
-$dummy = function (DateTime|string $x) {
     $x->dummy();
 };
