@@ -53,5 +53,27 @@ $dummy = function () {
         x();
     }
 
-    return true;
+    return /** ... */ (FN () => 123 /** ... */);
+};
+
+$dummy = function () {
+    if (x()) {
+    }
+
+    return new DateTime;
+};
+
+$dummy = function () {
+    if (x()) {
+    }
+
+    return DateTime(1, 2, 3);
+};
+
+$dummy = function () {
+    if (x()) {
+    }
+
+    return DateTime::createFromFormat(
+    );
 };

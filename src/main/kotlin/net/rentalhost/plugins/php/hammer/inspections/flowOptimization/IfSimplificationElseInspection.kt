@@ -17,17 +17,10 @@ class IfSimplificationElseInspection: PhpInspection() {
             val elementParent = element.parent as? If ?: return
             val elementReference = elementParent.elseIfBranches.lastOrNull() ?: elementParent
 
-            val elementNormalized = FormatterService.normalize(
-                problemsHolder.project,
-                element.statement ?: return
-            )
+            val elementNormalized = FormatterService.normalizeText(element.statement ?: return)
+            val elementReferenceNormalized = FormatterService.normalizeText(elementReference.statement ?: return)
 
-            val elementReferenceNormalized = FormatterService.normalize(
-                problemsHolder.project,
-                elementReference.statement ?: return
-            )
-
-            if (elementNormalized.text != elementReferenceNormalized.text)
+            if (elementNormalized != elementReferenceNormalized)
                 return
 
             ProblemsHolderService.registerProblem(

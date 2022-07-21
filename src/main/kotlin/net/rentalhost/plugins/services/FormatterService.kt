@@ -6,11 +6,14 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager
-import com.intellij.psi.impl.source.codeStyle.CodeFormatterFacade
+import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.jetbrains.php.lang.formatter.ui.predefinedStyle.PSR12CodeStyle
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
+import com.jetbrains.php.lang.psi.elements.ClassReference
+import com.jetbrains.php.lang.psi.elements.ConstantReference
 import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.elements.Statement
+import com.jetbrains.php.lang.psi.elements.impl.NewExpressionImpl
 
 object FormatterService {
     private val projectCodeStyle: CodeStyleSettings = CodeStyleSettingsManager().createSettings()
@@ -19,26 +22,44 @@ object FormatterService {
         PSR12CodeStyle().apply(projectCodeStyle)
     }
 
-    fun normalize(project: Project, element: PsiElement): Statement {
-        val elementCopy = element.copy()
+    private object ElementReassemble {
+        fun visit(element: PsiElement, appender: (String) -> Unit) {
+            when {
+                element is PsiComment ||
+                element is PsiWhiteSpace -> return
 
-        TreeService.getChildren(elementCopy, PsiComment::class)
-            .forEach { it.delete() }
+                element is ConstantReference ||
+                element is ClassReference ||
+                element::class == LeafPsiElement::class -> appender.invoke(element.text.lowercase())
 
-        TreeService.getChildren(elementCopy, PsiWhiteSpace::class)
-            .forEach { it.replace(FactoryService.createWhiteSpace(project)) }
+                element is NewExpressionImpl &&
+                element.parameters.isEmpty() -> appender.invoke("new " + (element.classReference ?: return).text.lowercase())
 
-        val elementStatement = PhpPsiElementFactory.createStatement(project, "if(1)${elementCopy.text}") as If
+                else -> {
+                    var child = element.firstChild
 
-        with(CodeStyleSettingsManager.getInstance(elementStatement.project)) {
-            @Suppress("TestOnlyProblems")
-            synchronized(this) {
-                setTemporarySettings(projectCodeStyle)
-                CodeFormatterFacade(projectCodeStyle, elementStatement.language).processElement(elementStatement.node)
-                dropTemporarySettings()
+                    if (child == null) {
+                        appender.invoke(element.text)
+                        return
+                    }
+
+                    while (child != null) {
+                        visit(child, appender)
+                        child = child.nextSibling
+                    }
+                }
             }
         }
-
-        return elementStatement.statement!!
     }
+
+    fun normalizeText(element: PsiElement, postfix: String = "|"): String {
+        var elementText = ""
+
+        ElementReassemble.visit(element) { s -> elementText += s + postfix }
+
+        return elementText
+    }
+
+    fun normalize(project: Project, element: PsiElement): Statement =
+        (PhpPsiElementFactory.createStatement(project, "if(1)${normalizeText(element, "")}") as If).statement!!
 }

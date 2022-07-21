@@ -3,10 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiWhiteSpace
 import com.jetbrains.php.lang.inspections.PhpInspection
-import com.jetbrains.php.lang.psi.elements.ControlStatement
-import com.jetbrains.php.lang.psi.elements.Else
-import com.jetbrains.php.lang.psi.elements.ElseIf
-import com.jetbrains.php.lang.psi.elements.If
+import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.getNextSiblingConditional
 import net.rentalhost.plugins.extensions.psi.getSingleStatement
@@ -28,21 +25,17 @@ class IfSimplificationOrInspection: PhpInspection() {
             if (!elementNext.isOrSimplified())
                 return
 
-            val elementNormalized = FormatterService.normalize(
-                problemsHolder.project,
-                (element.statement ?: return).getSingleStatement() ?: return
-            )
+            val elementNormalized = (element.statement ?: return).getSingleStatement() ?: return
 
-            if (!elementNormalized.isTerminatingStatement())
+            if (elementNormalized !is Statement ||
+                !elementNormalized.isTerminatingStatement())
                 return
 
-            val elementNextNormalized = FormatterService.normalize(
-                problemsHolder.project,
-                (elementNext.statement ?: return).getSingleStatement() ?: return
-            )
+            val elementNextNormalized = (elementNext.statement ?: return).getSingleStatement() ?: return
 
-            if (!elementNextNormalized.isTerminatingStatement() ||
-                elementNextNormalized.text != elementNormalized.text)
+            if (elementNextNormalized !is Statement ||
+                !elementNextNormalized.isTerminatingStatement() ||
+                FormatterService.normalizeText(elementNextNormalized) != FormatterService.normalizeText(elementNormalized))
                 return
 
             ProblemsHolderService.registerProblem(
