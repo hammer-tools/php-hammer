@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2022-07-21
+
+### Added
+
+- **[NativeMemberUsageInspection]**: implemented ("using native types as objects");
+
+### Fixed
+
+- **[DebugFunctionUsageInspection]**: improved identification of helper functions such as dd();
+
+[0.10.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.10.0
+
+[NativeMemberUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-native-member-usage-inspection
+
+[DebugFunctionUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-debug-function-usage-inspection
+
 ## [0.9.0] - 2022-07-19
 
 ### Added
