@@ -19,13 +19,21 @@ abstract class TestCase: BasePlatformTestCase() {
 
     protected fun <T: PhpInspection?> testInspection(
         inspectionClass: Class<T>,
-        phpSourceSubName: String? = null,
+        phpSourceSubName: String?,
+        inspectionSetup: Consumer<T>? = null,
+        phpLanguageLevel: PhpLanguageLevel? = null,
+        quickFixesEnabled: Boolean? = null
+    ): Unit = testInspection(inspectionClass, listOf(phpSourceSubName), inspectionSetup, phpLanguageLevel, quickFixesEnabled)
+
+    protected fun <T: PhpInspection?> testInspection(
+        inspectionClass: Class<T>,
+        phpSourceSubNames: List<String?>? = null,
         inspectionSetup: Consumer<T>? = null,
         phpLanguageLevel: PhpLanguageLevel? = null,
         quickFixesEnabled: Boolean? = null
     ) {
         val phpSourceBase = inspectionClass.name.substring(classBaseLength + 1).replace(".", "/")
-        val phpSourceSub = phpSourceSubName ?: "default"
+        val phpSourceSub = phpSourceSubNames?.first() ?: "default"
 
         val phpInspection: T = try {
             inspectionClass.getDeclaredConstructor().newInstance()
@@ -41,6 +49,11 @@ abstract class TestCase: BasePlatformTestCase() {
         PhpProjectConfigurationFacade.getInstance(project).languageLevel = phpLanguageLevelDeclared
 
         myFixture.enableInspections(phpInspection)
+
+        if (phpSourceSubNames != null && phpSourceSubNames.size > 1) {
+            myFixture.configureByFiles(*phpSourceSubNames.drop(1).toTypedArray())
+        }
+
         myFixture.testHighlighting(true, false, true, "$phpSourceBase/$phpSourceSub.php")
 
         if (quickFixesEnabled != false) {

@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.SmartPointerManager
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
@@ -43,7 +44,11 @@ class DebugFunctionUsageInspection: PhpInspection() {
             if (function.parameterList == null)
                 return
 
-            val functionName = function.fqn.toString()
+            val functionResolve = function.resolve()
+
+            val functionName =
+                if (functionResolve is Function) functionResolve.fqn
+                else function.fqn.toString()
 
             val isNativeFunction by lazy { nativeFunctions.contains(functionName) || nativeRegex.containsMatchIn(functionName) }
             val isXdebugFunction by lazy { xdebugEnabled && xdebugRegex.containsMatchIn(functionName) }
