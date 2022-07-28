@@ -58,6 +58,11 @@ tasks {
 
     patchPluginXml {
         dependsOn("generatePluginXML")
+
+        pluginId.set(prop("pluginId"))
+        version.set(prop("pluginVersion"))
+        sinceBuild.set(prop("pluginBuildSince"))
+        untilBuild.set(prop("pluginBuildUntil"))
     }
 
     signPlugin {
@@ -81,7 +86,7 @@ tasks {
 
     runIde {
         jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
-        jvmArgs("-Xmx2048m")
+        jvmArgs("-Xmx4096m")
 
         jbrVersion.set("11_0_15b2043.56")
 
