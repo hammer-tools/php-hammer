@@ -27,7 +27,7 @@ class ClassnameLiteralInspection: PhpInspection() {
 
             val stringNormalized = stringBuilder.toString()
 
-            if (!LanguageService.isNamespacedClassname(stringNormalized))
+            if (!LanguageService.isQualifiedClassname(stringNormalized))
                 return
 
             val classname = PhpLangUtil.toFQN(stringNormalized)

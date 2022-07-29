@@ -5,11 +5,11 @@ import com.jetbrains.php.config.PhpLanguageFeature
 import com.jetbrains.php.config.PhpProjectConfigurationFacade
 
 object LanguageService {
-    private val namespacedClassnameRegex: Regex = Regex("\\\\?\\w+(?:\\\\[A-Z][A-Za-z\\d]*)+")
+    private val qualifiedClassname: Regex = Regex("(?:\\\\?[a-z][a-z_\\d]*)?(?:\\\\[a-z][a-z_\\d]*)+", RegexOption.IGNORE_CASE)
 
     fun hasFeature(project: Project, languageFeature: PhpLanguageFeature): Boolean =
         PhpProjectConfigurationFacade.getInstance(project).languageLevel.hasFeature(languageFeature)
 
-    fun isNamespacedClassname(string: String) =
-        namespacedClassnameRegex.matches(string)
+    fun isQualifiedClassname(string: String): Boolean =
+        qualifiedClassname.matches(string)
 }
