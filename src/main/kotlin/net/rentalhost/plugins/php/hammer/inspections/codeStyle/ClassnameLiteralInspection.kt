@@ -6,10 +6,7 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.services.ClassService
-import net.rentalhost.plugins.services.LanguageService
-import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.TypeService
+import net.rentalhost.plugins.services.*
 
 class ClassnameLiteralInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -34,13 +31,16 @@ class ClassnameLiteralInspection: PhpInspection() {
                 return
 
             val classname = PhpLangUtil.toFQN(stringNormalized)
-
-            ClassService.findFQN(classname, string.project) ?: return
+            val classReference = ClassService.findFQN(classname, string.project) ?: return
 
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 string,
-                "String can be replaced by ::class equivalent."
+                "String can be replaced by ::class equivalent.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with ::class equivalent",
+                    lazy { FactoryService.createClassConstantReference(problemsHolder.project, classReference.fqn) }
+                )
             )
         }
     }

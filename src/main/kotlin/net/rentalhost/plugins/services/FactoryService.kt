@@ -93,6 +93,9 @@ object FactoryService {
     fun createConstantReference(project: Project, constantName: String): ConstantReference =
         PhpPsiElementFactory.createConstantReference(project, constantName)
 
+    fun createClassConstantReference(project: Project, classReference: String): ClassConstantReference =
+        PhpPsiElementFactory.createPhpPsiFromText(project, ClassConstantReference::class.java, "$classReference::class;")
+
     fun createFunctionBody(project: Project, functionBody: String): GroupStatementImpl =
         PhpPsiElementFactory.createPhpPsiFromText(project, GroupStatementImpl::class.java, "function () {$functionBody}")
 
