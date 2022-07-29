@@ -9,6 +9,7 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.extensions.psi.isExactly
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
 import net.rentalhost.plugins.services.ProblemsHolderService
@@ -61,7 +62,7 @@ class DebugFunctionUsageInspection: PhpInspection() {
 
             ProblemsHolderService.registerProblem(
                 problemsHolder, function, "Debug-related function usage.",
-                if (function.parent::class == StatementImpl::class) LocalQuickFixService.SimpleDeleteQuickFix(
+                if (function.parent.isExactly<StatementImpl>()) LocalQuickFixService.SimpleDeleteQuickFix(
                     "Drop debug function", SmartPointerManager.createPointer(function.parent)
                 )
                 else null

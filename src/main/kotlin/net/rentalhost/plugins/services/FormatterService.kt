@@ -10,6 +10,7 @@ import com.jetbrains.php.lang.formatter.ui.predefinedStyle.PSR12CodeStyle
 import com.jetbrains.php.lang.psi.elements.ClassReference
 import com.jetbrains.php.lang.psi.elements.ConstantReference
 import com.jetbrains.php.lang.psi.elements.impl.NewExpressionImpl
+import net.rentalhost.plugins.extensions.psi.isExactly
 
 object FormatterService {
     private val projectCodeStyle: CodeStyleSettings = CodeStyleSettingsManager().createSettings()
@@ -26,7 +27,7 @@ object FormatterService {
 
                 element is ConstantReference ||
                 element is ClassReference ||
-                element::class == LeafPsiElement::class -> appender.invoke(element.text.lowercase())
+                element.isExactly<LeafPsiElement>() -> appender.invoke(element.text.lowercase())
 
                 element is NewExpressionImpl &&
                 element.parameters.isEmpty() -> appender.invoke("new " + (element.classReference ?: return).text.lowercase())

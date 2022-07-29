@@ -40,8 +40,11 @@ fun PsiElement.isVariadicPreceded(): Boolean {
 fun PsiElement.isStub(): Boolean =
     containingFile.virtualFile.path.contains("/php.jar!/")
 
+inline fun <reified T: PsiElement> PsiElement?.isExactly(): Boolean =
+    this != null && this::class == T::class
+
 fun PsiElement.isStrictlyStatement(): Boolean =
-    this::class == StatementImpl::class
+    isExactly<StatementImpl>()
 
 fun PsiElement.withOptionalNotOperator(): PsiElement {
     val elementParent = this.parent as? UnaryExpression ?: return this
@@ -55,8 +58,7 @@ fun PsiElement?.unparenthesize(): PsiElement? =
     else this
 
 fun PsiElement.unwrapStatement(): PsiElement {
-    return if (this is StatementImpl &&
-               this::class == StatementImpl::class) (this.firstPsiChild ?: return this).unwrapStatement()
+    return if (this is StatementImpl && isExactly<StatementImpl>()) (this.firstPsiChild ?: return this).unwrapStatement()
     else this
 }
 
