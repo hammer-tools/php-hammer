@@ -9,6 +9,7 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 ### Added
 
+- **PhpStorm 2022.2** is now supported;
 - **[ClassnameLiteralInspection]**: implemented ("class name as string can be replaced");
 
 [0.11.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.11.0

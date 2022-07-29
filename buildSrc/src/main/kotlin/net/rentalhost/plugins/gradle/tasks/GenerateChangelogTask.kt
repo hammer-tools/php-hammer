@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.gradle.tasks
 
 import net.rentalhost.plugins.gradle.ProjectTools
+import net.rentalhost.plugins.gradle.services.ChangelogService
 import net.rentalhost.plugins.gradle.services.GitService
 import net.rentalhost.plugins.gradle.services.GitService.GitCommit
 import org.gradle.api.Project
@@ -26,6 +27,7 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                               "and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).\n\n"
 
         val commits = GitService.getCommits(project.projectDir)
+        val extrasCommits = ChangelogService.getExtraCommits(File("${project.projectDir}/buildSrc/changelog.extras")).groupBy { it.tag }
 
         commits.groupBy { it.tag }
             .forEach {
@@ -53,6 +55,14 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                             commitBox.add(it)
                         }
 
+                    val extrasCommitsTag = extrasCommits.get(it.key)
+
+                    if (!extrasCommitsTag.isNullOrEmpty()) {
+                        extrasCommitsTag.forEach commitLoop@{
+                            (commitBoxes[it.box] ?: return@commitLoop).add(it)
+                        }
+                    }
+
                     if (commitBoxes.all { it.value.isEmpty() })
                         return@with
 
@@ -73,10 +83,12 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                         value
                             .sortedBy { it.classReference }
                             .sortedByDescending { it.isRecentlyImplemented() }
-                            .forEach {
-                                urlReferences[it.classReference] = it.getClassReferenceUrl()
-                                changelogResult += "- ${it.getMessagePrintable()}\n"
+                            .also {
+                                it.filter { it.classReference != "" }
+                                    .forEach { urlReferences[it.classReference] = it.getClassReferenceUrl() }
                             }
+                            .sortedBy { it.classReference != "" }
+                            .forEach { changelogResult += "- ${it.getMessagePrintable()}\n" }
 
                         changelogResult += "\n"
                     }

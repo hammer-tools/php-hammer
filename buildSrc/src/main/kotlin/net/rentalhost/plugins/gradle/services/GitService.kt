@@ -70,7 +70,8 @@ object GitService {
             "https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-${getClassReferenceDashed()}"
 
         fun getMessagePrintable(): String =
-            "**[$classReference]**: $message;"
+            if (classReference == "") "$message;"
+            else "**[$classReference]**: $message;"
 
         fun getTagDescription(): String {
             if (tag == "")
