@@ -8,7 +8,7 @@
     <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>38 new
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>39 new
     inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
@@ -52,6 +52,15 @@
                          level="WEAK WARNING"
                          shortName="CaseSeparatorFormatInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.CaseSeparatorFormatInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Style"
+                         enabledByDefault="true"
+                         displayName="Class name as string can be replaced"
+                         level="WEAK WARNING"
+                         shortName="ClassnameLiteralInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.ClassnameLiteralInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
