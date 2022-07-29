@@ -2,20 +2,42 @@ package net.rentalhost.plugins.services.listeners
 
 import com.intellij.ide.plugins.IdeaPluginDescriptor
 import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.notification.Notification
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
 import net.rentalhost.plugins.services.NotificationService
+import net.rentalhost.plugins.services.NotificationService.NotificationItem
 import net.rentalhost.plugins.services.ResourceService
 import net.rentalhost.plugins.services.SettingsService
+import java.time.ZonedDateTime
+
+const val homeUrl: String = "https://github.com/hammer-tools/php-hammer"
+const val changelogUrl: String = "https://github.com/hammer-tools/php-hammer/blob/master/CHANGELOG.md"
+const val freemiumUrl: String = "https://github.com/hammer-tools/php-hammer/wiki/Freemium"
+const val inspectionsUrl: String = "https://github.com/hammer-tools/php-hammer/wiki/Inspections"
+const val reviewsUrl: String = "https://plugins.jetbrains.com/plugin/19515--php-hammer/reviews/new"
 
 internal class PluginUpdateListener: ProjectManagerListener {
     private val plugin: IdeaPluginDescriptor = PluginManagerCore.getPlugin(PluginId.findId("net.rentalhost.plugins.php.hammer"))!!
 
-    private val tripleHome = Triple("home", "home", "https://github.com/hammer-tools/php-hammer")
-    private val tripleChangelog = Triple("changelog", "changelog", "https://github.com/hammer-tools/php-hammer/blob/master/CHANGELOG.md")
-    private val tripleFreemium = Triple("freemium", "freemium", "https://github.com/hammer-tools/php-hammer/wiki/Freemium")
-    private val tripleInspections = Triple("inspections", "inspections", "https://github.com/hammer-tools/php-hammer/wiki/Inspections")
+    private val tripleHome = NotificationItem("home", "project home", "home", homeUrl)
+    private val tripleChangelog = NotificationItem("changelog", "changelog", changelogUrl)
+    private val tripleFreemium = NotificationItem("freemium", "freemium", freemiumUrl)
+    private val tripleInspections = NotificationItem("inspections", "inspections", inspectionsUrl)
+
+    private val tripleReviewNow = NotificationItem("review", "review", reviewsUrl) { notification -> closeReview(notification) }
+    private val tripleReviewLater = NotificationItem("Remember later") { notification -> closeReview(notification, true) }
+    private val tripleReviewNever = NotificationItem("Never ask again") { notification -> closeReview(notification) }
+    private val tripleReviewHome = tripleHome.withoutActionButton()
+
+    private fun closeReview(notification: Notification, disableReview: Boolean = false) {
+        notification.expire()
+
+        if (disableReview) {
+            SettingsService.Review.disableReviewNotification()
+        }
+    }
 
     override fun projectOpened(project: Project) {
         with(SettingsService.getInstance().state) {
@@ -29,8 +51,18 @@ internal class PluginUpdateListener: ProjectManagerListener {
             else if (pluginVersion != plugin.version) {
                 notifyUpdate(pluginVersion, plugin.version)
             }
+            else if (SettingsService.Review.isReviewTime()) {
+                notifyReview()
+            }
 
             pluginVersion = plugin.version
+
+            if (installedAt == null) {
+                val date = ZonedDateTime.now()
+
+                installedAt = date.toEpochSecond()
+                reviewAfter = date.plusDays(30).toEpochSecond()
+            }
         }
     }
 
@@ -49,4 +81,14 @@ internal class PluginUpdateListener: ProjectManagerListener {
             .replace("\$pluginVersion", versionAfter),
         listOf(tripleChangelog, tripleFreemium)
     )
+
+    private fun notifyReview() {
+        SettingsService.Review.rememberReviewNotificationLater()
+
+        NotificationService.notify(
+            "net.rentalhost.plugins.notification.REVIEW",
+            ResourceService.read("/plugin/review.html"),
+            listOf(tripleReviewNow, tripleReviewLater, tripleReviewNever, tripleReviewHome)
+        )
+    }
 }
