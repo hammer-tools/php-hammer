@@ -7,6 +7,7 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpClass
+import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.getBasename
@@ -32,7 +33,8 @@ class FileClassnameCaseInspection: PhpInspection() {
                 return
 
             if (!includeNonRootedClasses &&
-                element.parent.parent !is PsiFile)
+                element.parent.parent !is PsiFile &&
+                element.parent.parent !is PhpNamespace)
                 return
 
             val file = element.containingFile
