@@ -3,13 +3,25 @@ package net.rentalhost.plugins.services
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 
 private fun applyTemplate(descriptionTemplate: String) =
     "\uD83D\uDD28 PHP Hammer: $descriptionTemplate"
 
+private val inspectionsCountKeys =
+    Key<Boolean>("inspectionsCountedKey")
+
 object ProblemsHolderService {
+    private fun increaseInspections(element: PsiElement) {
+        if (element.getUserData(inspectionsCountKeys) == null) {
+            element.putUserData(inspectionsCountKeys, true)
+
+            SettingsService.increaseInspections()
+        }
+    }
+
     fun registerProblem(
         problemsHolder: ProblemsHolder,
         element: PsiElement,
@@ -18,7 +30,7 @@ object ProblemsHolderService {
         localQuickFix: LocalQuickFix? = null,
         problemHighlightType: ProblemHighlightType? = null
     ) {
-        SettingsService.increaseInspections()
+        increaseInspections(element)
 
         problemsHolder.registerProblem(
             element, applyTemplate(descriptionTemplate),

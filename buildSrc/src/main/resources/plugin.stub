@@ -24,6 +24,8 @@
                            displayType="STICKY_BALLOON" />
         <notificationGroup id="net.rentalhost.plugins.notification.UPDATED"
                            displayType="STICKY_BALLOON" />
+        <notificationGroup id="net.rentalhost.plugins.notification.REVIEW"
+                           displayType="STICKY_BALLOON" />
     </extensions>
 
     <applicationListeners>
