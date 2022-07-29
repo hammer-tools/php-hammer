@@ -17,11 +17,15 @@ object ProblemsHolderService {
         descriptionTemplate: String,
         localQuickFix: LocalQuickFix? = null,
         problemHighlightType: ProblemHighlightType? = null
-    ): Unit = problemsHolder.registerProblem(
-        element, applyTemplate(descriptionTemplate),
-        problemHighlightType ?: ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-        textRange, localQuickFix
-    )
+    ) {
+        SettingsService.increaseInspections()
+
+        problemsHolder.registerProblem(
+            element, applyTemplate(descriptionTemplate),
+            problemHighlightType ?: ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+            textRange, localQuickFix
+        )
+    }
 
     fun registerProblem(
         problemsHolder: ProblemsHolder,

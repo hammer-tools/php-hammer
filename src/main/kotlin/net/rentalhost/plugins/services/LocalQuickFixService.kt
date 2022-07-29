@@ -22,6 +22,8 @@ object LocalQuickFixService {
         private val considerParent: Boolean = false
     ): SimpleQuickFix(quickFixTitle) {
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            SettingsService.increaseFixes()
+
             val phpTypeDeclaration =
                 if (considerParent) descriptor.psiElement.parent
                 else descriptor.psiElement
@@ -33,8 +35,11 @@ object LocalQuickFixService {
     }
 
     class SimpleDeleteQuickFix(quickFixTitle: String, val element: SmartPsiElementPointer<PsiElement>? = null): SimpleQuickFix(quickFixTitle) {
-        override fun applyFix(project: Project, descriptor: ProblemDescriptor): Unit =
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            SettingsService.increaseFixes()
+
             (element?.element ?: descriptor.psiElement).delete()
+        }
     }
 
     class SimpleReplaceQuickFix: SimpleQuickFix {
@@ -55,6 +60,8 @@ object LocalQuickFixService {
         }
 
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            SettingsService.increaseFixes()
+
             val replaceFrom =
                 if (replaceFrom == null) descriptor.psiElement
                 else ((replaceFrom as SmartPsiElementPointer).element ?: return)
@@ -67,7 +74,11 @@ object LocalQuickFixService {
         quickFixTitle: String,
         private val applyFix: () -> Unit
     ): SimpleQuickFix(quickFixTitle) {
-        override fun applyFix(project: Project, descriptor: ProblemDescriptor): Unit = applyFix.invoke()
+        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            SettingsService.increaseFixes()
+
+            applyFix.invoke()
+        }
     }
 
     class SimpleLeafReplaceQuickFix(
@@ -75,6 +86,8 @@ object LocalQuickFixService {
         private val leafReplacement: SmartPsiElementPointer<PsiElement>
     ): SimpleQuickFix(quickFixTitle) {
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+            SettingsService.increaseFixes()
+
             descriptor.psiElement.replace(leafReplacement.element ?: return)
         }
     }

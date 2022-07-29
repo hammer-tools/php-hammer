@@ -12,9 +12,21 @@ class SettingsService: PersistentStateComponent<SettingsState> {
         fun getInstance(): SettingsService =
             ApplicationManager.getApplication().getService(SettingsService::class.java)
 
+        fun increaseFixes() {
+            getInstance().state.countFixes++
+        }
+
+        fun increaseInspections() {
+            getInstance().state.countInspections++
+        }
+
         class State {
             var pluginFreshInstalled: Boolean = false
             var pluginVersion: String? = null
+
+            var countProjects: Int = 0
+            var countInspections: Int = 0
+            var countFixes: Int = 0
         }
     }
 

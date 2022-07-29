@@ -19,6 +19,8 @@ internal class PluginUpdateListener: ProjectManagerListener {
 
     override fun projectOpened(project: Project) {
         with(SettingsService.getInstance().state) {
+            countProjects++
+
             if (!pluginFreshInstalled) {
                 pluginFreshInstalled = true
 
