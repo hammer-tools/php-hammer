@@ -10,23 +10,18 @@ import net.rentalhost.plugins.services.NotificationService
 import net.rentalhost.plugins.services.NotificationService.NotificationItem
 import net.rentalhost.plugins.services.ResourceService
 import net.rentalhost.plugins.services.SettingsService
+import net.rentalhost.plugins.services.UrlService
 import java.time.ZonedDateTime
-
-const val homeUrl: String = "https://github.com/hammer-tools/php-hammer"
-const val changelogUrl: String = "https://github.com/hammer-tools/php-hammer/blob/master/CHANGELOG.md"
-const val freemiumUrl: String = "https://github.com/hammer-tools/php-hammer/wiki/Freemium"
-const val inspectionsUrl: String = "https://github.com/hammer-tools/php-hammer/wiki/Inspections"
-const val reviewsUrl: String = "https://plugins.jetbrains.com/plugin/19515--php-hammer/reviews/new"
 
 internal class PluginUpdateListener: ProjectManagerListener {
     private val plugin: IdeaPluginDescriptor = PluginManagerCore.getPlugin(PluginId.findId("net.rentalhost.plugins.php.hammer"))!!
 
-    private val tripleHome = NotificationItem("home", "project home", "home", homeUrl)
-    private val tripleChangelog = NotificationItem("changelog", "changelog", changelogUrl)
-    private val tripleFreemium = NotificationItem("freemium", "freemium", freemiumUrl)
-    private val tripleInspections = NotificationItem("inspections", "inspections", inspectionsUrl)
+    private val tripleHome = NotificationItem("home", "project home", "home", UrlService.homeUrl)
+    private val tripleChangelog = NotificationItem("changelog", "changelog", UrlService.changelogUrl)
+    private val tripleFreemium = NotificationItem("freemium", "freemium", UrlService.freemiumUrl)
+    private val tripleInspections = NotificationItem("inspections", "inspections", UrlService.inspectionsUrl)
 
-    private val tripleReviewNow = NotificationItem("review", "review", reviewsUrl) { notification -> closeReview(notification) }
+    private val tripleReviewNow = NotificationItem("review", "review", UrlService.reviewsUrl) { notification -> closeReview(notification) }
     private val tripleReviewLater = NotificationItem("Remember later") { notification -> closeReview(notification, true) }
     private val tripleReviewNever = NotificationItem("Never ask again") { notification -> closeReview(notification) }
     private val tripleReviewHome = tripleHome.withoutActionButton()
