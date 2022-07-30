@@ -1,5 +1,7 @@
 package net.rentalhost.plugins.gradle.services
 
+import net.rentalhost.plugins.gradle.ProjectTools
+import org.gradle.api.Project
 import java.io.File
 import kotlin.random.Random
 
@@ -73,11 +75,11 @@ object GitService {
             if (classReference == "") "$message;"
             else "**[$classReference]**: $message;"
 
-        fun getTagDescription(): String {
-            if (tag == "")
-                return "[Unreleased]"
+        fun getTag(project: Project): String =
+            if (tag == "") ProjectTools.prop(project, "pluginVersion")
+            else tag.substringBefore("-")
 
-            return "[${tag.substringBefore("-")}] - $date"
-        }
+        fun getTagDescription(project: Project): String =
+            "[${getTag(project)}] - $date"
     }
 }

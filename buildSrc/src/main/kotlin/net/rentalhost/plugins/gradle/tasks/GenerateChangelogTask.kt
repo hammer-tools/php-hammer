@@ -72,7 +72,13 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                         urlReferences[it.key] = "https://github.com/hammer-tools/php-hammer/releases/tag/${it.key}"
                     }
 
-                    changelogResult += "## ${first().getTagDescription()}\n\n"
+                    with(first()) {
+                        changelogResult += "## ${getTagDescription(project)}\n\n"
+
+                        with(getTag(project)) {
+                            urlReferences[this] = "https://github.com/hammer-tools/php-hammer/releases/tag/$this"
+                        }
+                    }
 
                     for ((key, value) in commitBoxes) {
                         if (value.isEmpty())
