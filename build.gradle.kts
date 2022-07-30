@@ -8,6 +8,10 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.7.0"
 }
 
+dependencies {
+    implementation("io.sentry:sentry:6.3.0")
+}
+
 group = prop("pluginId")
 version = prop("pluginVersion")
 
