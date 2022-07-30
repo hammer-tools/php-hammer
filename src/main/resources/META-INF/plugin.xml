@@ -383,6 +383,9 @@
                            displayType="STICKY_BALLOON" />
         <notificationGroup id="net.rentalhost.plugins.notification.REVIEW"
                            displayType="STICKY_BALLOON" />
+
+        <toolWindow id="PHP Hammer" icon="/META-INF/pluginIcon.png" anchor="right"
+                    factoryClass="net.rentalhost.plugins.services.SidebarService" />
     </extensions>
 
     <applicationListeners>
