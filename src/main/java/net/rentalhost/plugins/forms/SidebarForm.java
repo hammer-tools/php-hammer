@@ -9,14 +9,18 @@ import net.rentalhost.plugins.services.SettingsService;
 import net.rentalhost.plugins.services.UrlService;
 
 public final class SidebarForm {
-    private JPanel  panel;
+    private JPanel panel;
+
+    private JLabel labelTitle;
+    private JLabel labelVersion;
+
     private JButton buttonHome;
-    private JLabel  labelTitle;
-    private JButton buttonReview;
-    private JButton buttonChangelog;
     private JButton buttonInspections;
-    private JLabel  labelInspections;
-    private JLabel  labelFixes;
+    private JButton buttonChangelog;
+    private JButton buttonReview;
+
+    private JLabel labelInspections;
+    private JLabel labelFixes;
 
     private final String labelInspectionsText;
     private final String labelFixesText;
@@ -24,7 +28,7 @@ public final class SidebarForm {
     public SidebarForm(final Project project) {
         final SettingsService.Companion.State state = SettingsService.Companion.getInstance().getState();
 
-        labelTitle.setText(labelTitle.getText() + state.getPluginVersion());
+        labelVersion.setText(state.getPluginVersion());
 
         buttonHome.addActionListener(e -> BrowserUtil.open(UrlService.homeUrl));
         buttonInspections.addActionListener(e -> BrowserUtil.open(UrlService.inspectionsUrl));
