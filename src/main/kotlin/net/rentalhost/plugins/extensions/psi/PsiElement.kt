@@ -7,6 +7,8 @@ import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.parser.PhpElementTypes
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 fun PsiElement?.insertBeforeElse(addIt: PsiElement, orElse: Lazy<() -> PsiElement>): PsiElement =
     this?.parent?.addBefore(addIt, this) ?: orElse.value.invoke()
@@ -40,8 +42,12 @@ fun PsiElement.isVariadicPreceded(): Boolean {
 fun PsiElement.isStub(): Boolean =
     containingFile.virtualFile.path.contains("/php.jar!/")
 
-inline fun <reified T: PsiElement> PsiElement?.isExactly(): Boolean =
-    this != null && this::class == T::class
+@OptIn(ExperimentalContracts::class)
+inline fun <reified T: PsiElement> PsiElement?.isExactly(): Boolean {
+    contract { returns(true) implies (this@isExactly is T) }
+
+    return this != null && this::class == T::class
+}
 
 fun PsiElement.isStrictlyStatement(): Boolean =
     isExactly<StatementImpl>()
@@ -58,7 +64,7 @@ fun PsiElement?.unparenthesize(): PsiElement? =
     else this
 
 fun PsiElement.unwrapStatement(): PsiElement {
-    return if (this is StatementImpl && isExactly<StatementImpl>()) (this.firstPsiChild ?: return this).unwrapStatement()
+    return if (isExactly<StatementImpl>()) (this.firstPsiChild ?: return this).unwrapStatement()
     else this
 }
 
