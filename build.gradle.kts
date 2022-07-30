@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
@@ -26,9 +28,15 @@ intellij {
 }
 
 tasks {
-    withType<JavaCompile> {
-        sourceCompatibility = prop("javaVersion")
-        targetCompatibility = prop("javaVersion")
+    java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_11.toString()
+        }
     }
 
     test {

@@ -55,7 +55,7 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                             commitBox.add(it)
                         }
 
-                    val extrasCommitsTag = extrasCommits.get(it.key)
+                    val extrasCommitsTag = extrasCommits[it.key]
 
                     if (!extrasCommitsTag.isNullOrEmpty()) {
                         extrasCommitsTag.forEach commitLoop@{
