@@ -77,6 +77,13 @@ tasks {
         untilBuild.set(prop("pluginBuildUntil"))
     }
 
+    setupDependencies {
+        doLast {
+            // Fixes IDEA-298989.
+            fileTree("$buildDir/instrumented/instrumentCode") { include("**/*Form.class") }.files.forEach { delete(it) }
+        }
+    }
+
     signPlugin {
         certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
         privateKey.set(System.getenv("PRIVATE_KEY"))
