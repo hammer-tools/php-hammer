@@ -20,12 +20,7 @@ class ClassnameLiteralInspection: PhpInspection() {
                 !TypeService.compareOperations.contains(stringParent.operationType))
                 return
 
-            val stringBuilder = StringBuilder()
-
-            if (!string.createLiteralTextEscaper().decode(string.valueRange, stringBuilder))
-                return
-
-            val stringNormalized = stringBuilder.toString()
+            val stringNormalized = StringService.unescapeString(string)
 
             if (!LanguageService.isQualifiedClassname(stringNormalized))
                 return

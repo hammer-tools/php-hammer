@@ -8,7 +8,7 @@
     <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>39 new
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>40 new
     inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
@@ -364,6 +364,15 @@
                          level="WARNING"
                          shortName="DebugFunctionUsageInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeWarning.DebugFunctionUsageInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Warning"
+                         enabledByDefault="true"
+                         displayName="Usage of backslash on filesystem-related names"
+                         level="WARNING"
+                         shortName="BackslashFilenameUsageInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeWarning.BackslashFilenameUsageInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"

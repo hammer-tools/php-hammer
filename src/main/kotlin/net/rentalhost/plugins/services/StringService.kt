@@ -1,5 +1,7 @@
 package net.rentalhost.plugins.services
 
+import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
+
 object StringService {
     fun addQuotes(string: String, isComplex: Boolean, addSlashes: Boolean = true): String =
         if (isComplex) {
@@ -7,4 +9,8 @@ object StringService {
             else "\"${string}\""
         }
         else "'${string}'"
+
+    fun unescapeString(string: StringLiteralExpression): String = StringBuilder().also {
+        string.createLiteralTextEscaper().decode(string.valueRange, it)
+    }.toString()
 }
