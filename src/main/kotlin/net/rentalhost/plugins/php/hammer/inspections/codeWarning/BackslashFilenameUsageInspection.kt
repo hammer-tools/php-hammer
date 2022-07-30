@@ -5,6 +5,7 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.StringService
 
@@ -39,6 +40,7 @@ class BackslashFilenameUsageInspection: PhpInspection() {
         Pair("\\filesize", listOf(0)),
         Pair("\\filetype", listOf(0)),
         Pair("\\fopen", listOf(0)),
+        Pair("\\glob", listOf(0)),
         Pair("\\is_dir", listOf(0)),
         Pair("\\is_executable", listOf(0)),
         Pair("\\is_file", listOf(0)),
@@ -84,7 +86,10 @@ class BackslashFilenameUsageInspection: PhpInspection() {
 
                 ProblemsHolderService.registerProblem(
                     problemsHolder, functionParameterElement,
-                    "Using backslash on filesystem-related name"
+                    "Using backslash on filesystem-related name",
+                    LocalQuickFixService.SimpleInlineQuickFix("Replace backslash") {
+                        functionParameterElement.updateText(functionParameterContents.replace("\\", "/"))
+                    }
                 )
             }
         }
