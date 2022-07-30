@@ -2,9 +2,12 @@ package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.extensions.psi.getConcatenatedElements
+import net.rentalhost.plugins.extensions.psi.unparenthesize
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.StringService
@@ -78,19 +81,32 @@ class BackslashFilenameUsageInspection: PhpInspection() {
             val functionParameters = filesystemFunctions[functionName] ?: return
 
             for (functionParameter in functionParameters) {
-                val functionParameterElement = function.getParameter(functionParameter) as? StringLiteralExpression ?: continue
-                val functionParameterContents = StringService.unescapeString(functionParameterElement)
+                val functionParameterElement = function.getParameter(functionParameter).unparenthesize() ?: continue
+                val functionParameterStrings = when (functionParameterElement) {
+                    is StringLiteralExpression ->
+                        listOf(functionParameterElement)
 
-                if (!functionParameterContents.contains("\\"))
-                    continue
+                    is ConcatenationExpression ->
+                        functionParameterElement.getConcatenatedElements()
+                            .filterIsInstance(StringLiteralExpression::class.java)
 
-                ProblemsHolderService.registerProblem(
-                    problemsHolder, functionParameterElement,
-                    "Using backslash on filesystem-related name",
-                    LocalQuickFixService.SimpleInlineQuickFix("Replace backslash") {
-                        functionParameterElement.updateText(functionParameterContents.replace("\\", "/"))
-                    }
-                )
+                    else -> continue
+                }
+
+                for (functionParameterString in functionParameterStrings) {
+                    val functionParameterStringContents = StringService.unescapeString(functionParameterString)
+
+                    if (!functionParameterStringContents.contains("\\"))
+                        continue
+
+                    ProblemsHolderService.registerProblem(
+                        problemsHolder, functionParameterString,
+                        "Using backslash on filesystem-related name",
+                        LocalQuickFixService.SimpleInlineQuickFix("Replace backslash") {
+                            functionParameterString.updateText(functionParameterStringContents.replace("\\", "/"))
+                        }
+                    )
+                }
             }
         }
     }

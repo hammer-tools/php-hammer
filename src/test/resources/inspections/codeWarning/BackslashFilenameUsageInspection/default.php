@@ -24,6 +24,16 @@ $dummy = RENAME(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-r
 
 $dummy = glob(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\example.*"</warning>);
 
+$dummy = basename(__DIR__ . <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>);
+
+$dummy = basename(__DIR__ . __DIR__ . <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning> . __DIR__);
+
+$dummy = basename((__DIR__) . __DIR__ . <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning> . __DIR__);
+
+$dummy = basename((__DIR__) . __DIR__ . (<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>) . __DIR__);
+
+$dummy = basename((__DIR__ . __DIR__ . (<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>) . __DIR__));
+
 // Not applicable:
 
 $dummy = basename();

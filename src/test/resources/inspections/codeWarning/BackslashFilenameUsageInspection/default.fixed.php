@@ -24,6 +24,16 @@ $dummy = RENAME("/example.php", "/example.php");
 
 $dummy = glob("/example.*");
 
+$dummy = basename(__DIR__ . '/file.php');
+
+$dummy = basename(__DIR__ . __DIR__ . '/file.php' . __DIR__);
+
+$dummy = basename((__DIR__) . __DIR__ . '/file.php' . __DIR__);
+
+$dummy = basename((__DIR__) . __DIR__ . ('/file.php') . __DIR__);
+
+$dummy = basename((__DIR__ . __DIR__ . ('/file.php') . __DIR__));
+
 // Not applicable:
 
 $dummy = basename();
