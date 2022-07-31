@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - 2022-07-31
+
+### Added
+
+- **[BackslashFilenameUsageInspection]**: implemented ("usage of backslash on filesystem-related names");
+- **[FunctionAliasUsageInspection]**: implemented ("usage of alias function");
+
+### Changed
+
+- **[DebugFunctionUsageInspection]**: is now disabled on Blade files to avoid issues with @extends();
+
+### Fixed
+
+- **[SenselessNumberFormatZeroDecimalInspection]**: applicable only if the last argument is an empty string;
+
+[0.12.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.12.0
+
+[BackslashFilenameUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-backslash-filename-usage-inspection
+
+[FunctionAliasUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-function-alias-usage-inspection
+
+[DebugFunctionUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-debug-function-usage-inspection
+
+[SenselessNumberFormatZeroDecimalInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-senseless-number-format-zero-decimal-inspection
+
 ## [0.11.1] - 2022-07-30
 
 ### Fixed

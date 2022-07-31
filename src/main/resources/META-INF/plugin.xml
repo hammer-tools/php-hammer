@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>net.rentalhost.plugins.php.hammer</id>
     <name>🔨 PHP Hammer</name>
-    <version>0.11.1</version>
+    <version>0.12.0</version>
 
     <vendor email="david.rodrigues@rentalhost.net">Rentalhost.net</vendor>
 
