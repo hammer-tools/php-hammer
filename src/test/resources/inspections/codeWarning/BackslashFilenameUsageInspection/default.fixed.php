@@ -34,6 +34,18 @@ $dummy = basename((__DIR__) . __DIR__ . ('/file.php') . __DIR__);
 
 $dummy = basename((__DIR__ . __DIR__ . ('/file.php') . __DIR__));
 
+include "/test.php";
+
+include_once "/test.php";
+
+include __DIR__ . "/test.php";
+
+include((__DIR__) . ("/test.php"));
+
+require "/test.php";
+
+require_once "/test.php";
+
 // Not applicable:
 
 $dummy = basename();
@@ -47,3 +59,5 @@ $dummy = basename("dir/file.php", "dir\\file.php");
 $dummy = basename(str_replace("\\", DIRECTORY_SEPARATOR, "\\file.php"));
 
 $dummy = nonFilesystemRelated("\\file.php");
+
+include 'test.php';

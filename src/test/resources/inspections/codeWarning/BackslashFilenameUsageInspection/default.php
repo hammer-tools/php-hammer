@@ -34,6 +34,18 @@ $dummy = basename((__DIR__) . __DIR__ . (<warning descr="🔨 PHP Hammer: Using 
 
 $dummy = basename((__DIR__ . __DIR__ . (<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>) . __DIR__));
 
+include <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+
+include_once <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+
+include __DIR__ . <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+
+include((__DIR__) . (<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>));
+
+require <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+
+require_once <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+
 // Not applicable:
 
 $dummy = basename();
@@ -47,3 +59,5 @@ $dummy = basename("dir/file.php", "dir\\file.php");
 $dummy = basename(str_replace("\\", DIRECTORY_SEPARATOR, "\\file.php"));
 
 $dummy = nonFilesystemRelated("\\file.php");
+
+include 'test.php';
