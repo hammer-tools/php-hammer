@@ -9,6 +9,7 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.extensions.psi.isBlade
 import net.rentalhost.plugins.extensions.psi.isExactly
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.OptionsPanelService
@@ -42,6 +43,9 @@ class DebugFunctionUsageInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
         override fun visitPhpFunctionCall(function: FunctionReference) {
+            if (function.containingFile.isBlade())
+                return
+
             if (function.parameterList == null)
                 return
 

@@ -48,7 +48,6 @@ com.jetbrains.performancePlugin
 com.jetbrains.performancePlugin.dynamicPlugins
 com.jetbrains.php.architecture
 com.jetbrains.php.behat
-com.jetbrains.php.blade
 com.jetbrains.php.codeception
 com.jetbrains.php.dql
 com.jetbrains.php.drupal
