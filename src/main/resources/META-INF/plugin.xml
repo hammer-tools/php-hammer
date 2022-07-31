@@ -8,7 +8,7 @@
     <idea-version since-build="221" until-build="222.*" />
 
     <description><![CDATA[
-        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>40 new
+        <strong>🔨 PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>41 new
     inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.
     ]]></description>
 
@@ -288,6 +288,15 @@
                          level="WEAK WARNING"
                          shortName="SenselessNumberFormatZeroDecimalInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeSmell.SenselessNumberFormatZeroDecimalInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Smell"
+                         enabledByDefault="true"
+                         displayName="Usage of alias function"
+                         level="WEAK WARNING"
+                         shortName="FunctionAliasUsageInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeSmell.FunctionAliasUsageInspection" />
 
         <!-- Dead Code -->
         <localInspection language="PHP"

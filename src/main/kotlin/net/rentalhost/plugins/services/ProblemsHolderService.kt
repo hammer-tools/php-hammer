@@ -6,6 +6,8 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
+import com.intellij.refactoring.suggested.endOffset
+import com.intellij.refactoring.suggested.startOffset
 
 private fun applyTemplate(descriptionTemplate: String) =
     "\uD83D\uDD28 PHP Hammer: $descriptionTemplate"
@@ -52,5 +54,20 @@ object ProblemsHolderService {
         descriptionTemplate,
         localQuickFix,
         problemHighlightType
+    )
+
+    fun registerProblem(
+        problemsHolder: ProblemsHolder,
+        elementBase: PsiElement,
+        elementFrom: PsiElement,
+        elementTo: PsiElement,
+        descriptionTemplate: String,
+        localQuickFix: LocalQuickFix? = null
+    ): Unit = registerProblem(
+        problemsHolder,
+        elementBase,
+        TextRange(elementFrom.startOffset - elementBase.startOffset, elementTo.endOffset - elementBase.startOffset),
+        descriptionTemplate,
+        localQuickFix
     )
 }
