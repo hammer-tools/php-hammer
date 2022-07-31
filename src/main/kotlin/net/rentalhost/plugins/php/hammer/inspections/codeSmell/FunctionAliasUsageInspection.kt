@@ -5,7 +5,9 @@ import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.services.FactoryService
 import net.rentalhost.plugins.services.LanguageService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class FunctionAliasUsageInspection: PhpInspection() {
@@ -35,12 +37,18 @@ class FunctionAliasUsageInspection: PhpInspection() {
             if (functionName == "\\srand" && !LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP710))
                 return
 
+            val functionIdentifier = (function.nameNode ?: return).psi
+
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 function,
                 function.firstChild,
-                (function.nameNode ?: return).psi,
+                functionIdentifier,
                 "Using function alias.",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Replace with target function", functionIdentifier,
+                    FactoryService.createFunctionIdentifier(problemsHolder.project, functionTarget)
+                )
             )
         }
     }

@@ -72,6 +72,15 @@ object FactoryService {
     fun createFunctionCallable(project: Project, functionName: String): PhpCallableFunction =
         PhpPsiElementFactory.createPhpPsiFromText(project, PhpCallableFunction::class.java, "$functionName(...);")
 
+    fun createFunctionIdentifier(project: Project, functionName: String): PsiElement =
+        PhpPsiElementFactory.createPhpPsiFromText(project, FunctionReference::class.java, "$functionName();").firstChild
+
+    fun createFunctionUse(project: Project, useVariables: String): PhpUseList =
+        PhpPsiElementFactory.createPhpPsiFromText(project, PhpUseList::class.java, "function () use($useVariables) {}")
+
+    fun createFunctionBody(project: Project, functionBody: String): GroupStatementImpl =
+        PhpPsiElementFactory.createPhpPsiFromText(project, GroupStatementImpl::class.java, "function () {$functionBody}")
+
     fun createParameterType(project: Project, parameterType: String): PhpParameterType =
         PhpPsiElementFactory.createParameterType(project, parameterType)
 
@@ -87,17 +96,11 @@ object FactoryService {
     fun createFieldType(project: Project, fieldType: String): PhpFieldType =
         PhpPsiElementFactory.createPhpPsiFromText(project, PhpFieldType::class.java, "class A{public $fieldType \$a}")
 
-    fun createFunctionUse(project: Project, useVariables: String): PhpUseList =
-        PhpPsiElementFactory.createPhpPsiFromText(project, PhpUseList::class.java, "function () use($useVariables) {}")
-
     fun createConstantReference(project: Project, constantName: String): ConstantReference =
         PhpPsiElementFactory.createConstantReference(project, constantName)
 
     fun createClassConstantReference(project: Project, classReference: String): ClassConstantReference =
         PhpPsiElementFactory.createPhpPsiFromText(project, ClassConstantReference::class.java, "$classReference::class;")
-
-    fun createFunctionBody(project: Project, functionBody: String): GroupStatementImpl =
-        PhpPsiElementFactory.createPhpPsiFromText(project, GroupStatementImpl::class.java, "function () {$functionBody}")
 
     fun createStatement(project: Project, statement: String): Statement =
         PhpPsiElementFactory.createStatement(project, statement)
