@@ -34,6 +34,8 @@ $dummy = basename((__DIR__) . __DIR__ . (<warning descr="🔨 PHP Hammer: Using 
 
 $dummy = basename((__DIR__ . __DIR__ . (<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>) . __DIR__));
 
+basename($dummy = <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>);
+
 include <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
 
 include_once <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
@@ -45,6 +47,8 @@ include((__DIR__) . (<warning descr="🔨 PHP Hammer: Using backslash on filesys
 require <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
 
 require_once <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+
+include $dummy = <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
 
 // Not applicable:
 

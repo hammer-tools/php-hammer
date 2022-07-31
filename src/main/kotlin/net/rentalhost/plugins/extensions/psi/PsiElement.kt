@@ -68,6 +68,11 @@ fun PsiElement.unwrapStatement(): PsiElement {
     else this
 }
 
+fun PsiElement.followContents(): PsiElement = with(unparenthesize()) {
+    if (this is AssignmentExpression) return@with value.unparenthesize()
+    else this
+} ?: this
+
 fun PsiElement.getCommaRange(): Pair<PsiElement, PsiElement> {
     val leftComma = PsiTreeUtil.skipWhitespacesAndCommentsBackward(this)
 

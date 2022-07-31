@@ -34,6 +34,8 @@ $dummy = basename((__DIR__) . __DIR__ . ('/file.php') . __DIR__);
 
 $dummy = basename((__DIR__ . __DIR__ . ('/file.php') . __DIR__));
 
+basename($dummy = "/test.php");
+
 include "/test.php";
 
 include_once "/test.php";
@@ -45,6 +47,8 @@ include((__DIR__) . ("/test.php"));
 require "/test.php";
 
 require_once "/test.php";
+
+include $dummy = "/test.php";
 
 // Not applicable:
 

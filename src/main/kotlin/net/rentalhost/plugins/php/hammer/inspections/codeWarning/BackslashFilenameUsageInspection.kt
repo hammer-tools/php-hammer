@@ -8,8 +8,8 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.Include
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.extensions.psi.followContents
 import net.rentalhost.plugins.extensions.psi.getConcatenatedElements
-import net.rentalhost.plugins.extensions.psi.unparenthesize
 import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 import net.rentalhost.plugins.services.StringService
@@ -108,12 +108,12 @@ class BackslashFilenameUsageInspection: PhpInspection() {
 
         override fun visitPhpFunctionCall(function: FunctionReference) {
             (filesystemFunctions[(function.fqn ?: return).lowercase()] ?: return)
-                .mapNotNull { function.getParameter(it).unparenthesize() }
+                .mapNotNull { function.getParameter(it)?.followContents() }
                 .forEach { processParameter(it) }
         }
 
         override fun visitPhpInclude(include: Include) {
-            processParameter(include.argument.unparenthesize() ?: return)
+            processParameter((include.argument ?: return).followContents())
         }
     }
 }
