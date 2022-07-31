@@ -49,7 +49,7 @@ class NullableTypeFormatInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Nullable type must be written as \"$elementTypeReplacementSuggestion\".",
+                "nullable type must be written as \"$elementTypeReplacementSuggestion\"",
                 SimpleTypeReplaceQuickFix(
                     if (nullableTypeFormat === OptionNullableTypeFormat.LONG) "Replace with the long format"
                     else "Replace with the short format",

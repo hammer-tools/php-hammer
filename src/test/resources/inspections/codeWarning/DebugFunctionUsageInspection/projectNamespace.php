@@ -2,4 +2,4 @@
 
 namespace Project\Namespace;
 
-<warning descr="🔨 PHP Hammer: Debug-related function usage.">dd()</warning>;
+<warning descr="🔨 PHP Hammer: debug function usage.">dd()</warning>;

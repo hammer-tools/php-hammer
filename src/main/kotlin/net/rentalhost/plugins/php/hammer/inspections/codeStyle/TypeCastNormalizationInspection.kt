@@ -37,7 +37,7 @@ class TypeCastNormalizationInspection: PhpInspection() {
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     element,
-                    "Type cast must be written as $castTo",
+                    "type cast must be written as $castTo",
                     LocalQuickFixService.SimpleReplaceQuickFix(
                         "Replace with $castTo",
                         FactoryService.createTypeCast(problemsHolder.project, castTo)

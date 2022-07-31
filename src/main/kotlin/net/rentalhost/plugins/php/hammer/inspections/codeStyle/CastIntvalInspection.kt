@@ -41,7 +41,7 @@ class CastIntvalInspection: PhpInspection() {
             return ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "This function cast can be replaced with null.",
+                "function cast can be replaced with null",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with null",
                     element.parent,
@@ -53,7 +53,7 @@ class CastIntvalInspection: PhpInspection() {
         ProblemsHolderService.registerProblem(
             problemsHolder,
             element,
-            "This function cast can be replaced with the type cast ($castTypeTo).",
+            "function cast can be replaced with the type cast ($castTypeTo)",
             LocalQuickFixService.SimpleReplaceQuickFix(
                 "Replace with type cast ($castTypeTo)",
                 element.parent,
@@ -77,7 +77,7 @@ class CastIntvalInspection: PhpInspection() {
         ProblemsHolderService.registerProblem(
             problemsHolder,
             element,
-            "This function cast can be replaced with the type cast ($castTypeTo).",
+            "function cast can be replaced with the type cast ($castTypeTo)",
             LocalQuickFixService.SimpleReplaceQuickFix(
                 "Replace with type cast ($castTypeTo)",
                 FactoryService.createTypeCastExpression(problemsHolder.project, castTypeTo, expressionText)

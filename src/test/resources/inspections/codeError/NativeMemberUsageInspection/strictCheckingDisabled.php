@@ -1,7 +1,7 @@
 <?php
 
 $dummy = function (string $x) {
-    <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>->dummy();
+    <error descr="🔨 PHP Hammer: native type must not be used as object.">$x</error>->dummy();
 };
 
 // Not applicable:

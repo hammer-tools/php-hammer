@@ -44,7 +44,7 @@ class FunctionAliasUsageInspection: PhpInspection() {
                 function,
                 function.firstChild,
                 functionIdentifier,
-                "Using function alias.",
+                "using function alias",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with target function", functionIdentifier,
                     FactoryService.createFunctionIdentifier(problemsHolder.project, functionTarget)

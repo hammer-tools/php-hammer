@@ -43,7 +43,7 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Class reference format must be \"$expectedFormat\".",
+                "class reference format must be \"$expectedFormat\"",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with \"$expectedFormat\"",
                     FactoryService.createClassReference(problemsHolder.project, expectedFormat)

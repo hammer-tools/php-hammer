@@ -1,13 +1,13 @@
 <?php
 
-$dummy = <weak_warning descr="🔨 PHP Hammer: Scalar type must be on the left side.">$x === ''</weak_warning>;
-$dummy = <weak_warning descr="🔨 PHP Hammer: Scalar type must be on the left side.">$y == true</weak_warning>;
-$dummy = <weak_warning descr="🔨 PHP Hammer: Scalar type must be on the left side.">$y == \true</weak_warning>;
-$dummy = <weak_warning descr="🔨 PHP Hammer: Scalar type must be on the left side.">$x == 9.9</weak_warning>;
-$dummy = <weak_warning descr="🔨 PHP Hammer: Scalar type must be on the left side.">$x == null</weak_warning>;
-$dummy = <weak_warning descr="🔨 PHP Hammer: Scalar type must be on the left side.">$x == -99</weak_warning>;
-$dummy = <weak_warning descr="🔨 PHP Hammer: Scalar type must be on the left side.">$x == -9.9</weak_warning>;
-$dummy = <weak_warning descr="🔨 PHP Hammer: Scalar type must be on the left side.">$x == static::class</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x === ''</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$y == true</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$y == \true</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x == 9.9</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x == null</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x == -99</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x == -9.9</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x == static::class</weak_warning>;
 
 // Not applicable (already on the left side):
 

@@ -1,27 +1,27 @@
 <?php
 
 $dummy = function (string $x) {
-    <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>->dummy();
+    <error descr="🔨 PHP Hammer: native type must not be used as object.">$x</error>->dummy();
 };
 
 $dummy = function (string|null $x) {
-    <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>->dummy();
+    <error descr="🔨 PHP Hammer: native type must not be used as object.">$x</error>->dummy();
 };
 
 $dummy = function (DateTime|string $x) {
-    <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>->dummy();
+    <error descr="🔨 PHP Hammer: native type must not be used as object.">$x</error>->dummy();
 };
 
 $dummy = function (int $x) {
-    <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>::dummy();
+    <error descr="🔨 PHP Hammer: native type must not be used as object.">$x</error>::dummy();
 };
 
 $dummy = function (int $x) {
-    <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>::DUMMY;
+    <error descr="🔨 PHP Hammer: native type must not be used as object.">$x</error>::DUMMY;
 };
 
 $dummy = function (DateTime|string|int $x) {
-    <error descr="🔨 PHP Hammer: Native type must not be used as object.">$x</error>::createFromFormat();
+    <error descr="🔨 PHP Hammer: native type must not be used as object.">$x</error>::createFromFormat();
 };
 
 // Not applicable:

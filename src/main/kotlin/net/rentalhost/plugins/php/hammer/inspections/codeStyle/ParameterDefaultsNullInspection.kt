@@ -78,7 +78,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                     ProblemsHolderService.registerProblem(
                         problemsHolder,
                         parameter,
-                        "Default value of the parameter must be \"null\".",
+                        "default value of the parameter must be \"null\"",
                         run {
                             if (isAbstractMethod ||
                                 parameter.isPassByRef)

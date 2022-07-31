@@ -31,7 +31,7 @@ class ClassnameLiteralInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 string,
-                "String can be replaced by ::class equivalent.",
+                "string can be replaced by ::class equivalent",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with ::class equivalent",
                     lazy { FactoryService.createClassConstantReference(problemsHolder.project, classReference.fqn) }

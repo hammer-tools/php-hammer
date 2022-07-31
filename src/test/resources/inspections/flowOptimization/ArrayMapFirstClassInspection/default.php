@@ -1,16 +1,16 @@
 <?php
 
-$dummy = array_map(<weak_warning descr="🔨 PHP Hammer: Call to array_map() can be replaced by first-class callback.">function ($dummy) {
+$dummy = array_map(<weak_warning descr="🔨 PHP Hammer: call to array_map() can be replaced by first-class callback.">function ($dummy) {
     return strlen($dummy);
 }</weak_warning>, []);
 
-$dummy = array_map(<weak_warning descr="🔨 PHP Hammer: Call to array_map() can be replaced by first-class callback.">static function ($dummy) {
+$dummy = array_map(<weak_warning descr="🔨 PHP Hammer: call to array_map() can be replaced by first-class callback.">static function ($dummy) {
     return strlen($dummy);
 }</weak_warning>, []);
 
-$dummy = array_map(<weak_warning descr="🔨 PHP Hammer: Call to array_map() can be replaced by first-class callback.">fn($dummy) => strlen($dummy)</weak_warning>, []);
+$dummy = array_map(<weak_warning descr="🔨 PHP Hammer: call to array_map() can be replaced by first-class callback.">fn($dummy) => strlen($dummy)</weak_warning>, []);
 
-$dummy = array_map(<weak_warning descr="🔨 PHP Hammer: Call to array_map() can be replaced by first-class callback.">static fn($dummy) => strlen($dummy)</weak_warning>, []);
+$dummy = array_map(<weak_warning descr="🔨 PHP Hammer: call to array_map() can be replaced by first-class callback.">static fn($dummy) => strlen($dummy)</weak_warning>, []);
 
 // Not applicable:
 

@@ -13,7 +13,7 @@ object LocalQuickFixService {
     abstract class SimpleQuickFix constructor(
         private val quickFixTitle: String
     ): LocalQuickFix {
-        override fun getFamilyName(): String = quickFixTitle
+        override fun getFamilyName(): String = "\uD83D\uDD28 $quickFixTitle"
     }
 
     class SimpleTypeReplaceQuickFix(

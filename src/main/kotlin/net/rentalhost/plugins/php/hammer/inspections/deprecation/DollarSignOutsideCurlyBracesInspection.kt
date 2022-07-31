@@ -28,7 +28,7 @@ class DollarSignOutsideCurlyBracesInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Deprecated: using \${var} in strings.",
+                "using \${var} in strings is deprecated",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with {\$$replaceWith}",
                     FactoryService.createCurlyVariable(problemsHolder.project, replaceWith)

@@ -41,7 +41,7 @@ class IfSimplificationOrInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element.firstChild,
-                "Subsequent condition can be merged with this.",
+                "subsequent condition can be merged with this",
                 LocalQuickFixService.SimpleInlineQuickFix("Simplify conditional with the subsequent") {
                     val elementCondition = element.condition ?: return@SimpleInlineQuickFix
                     val elementNextCondition = elementNext.condition ?: return@SimpleInlineQuickFix

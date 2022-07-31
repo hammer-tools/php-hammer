@@ -44,7 +44,7 @@ class ArrayPackableInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Packed array can be simplified.",
+                "packed array can be simplified",
                 DropArrayKeysQuickFix()
             )
         }

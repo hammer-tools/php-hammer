@@ -59,8 +59,8 @@ class UnaryOperatorFormatInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                if (unaryOperationPreferRight) "Unary expression must be written as ${unaryElement.text}${unaryOperator.text}"
-                else "Unary expression must be written as ${unaryOperator.text}${unaryElement.text}",
+                if (unaryOperationPreferRight) "unary expression must be written as ${unaryElement.text}${unaryOperator.text}"
+                else "unary expression must be written as ${unaryOperator.text}${unaryElement.text}",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Swap unary operation elements",
                     if (unaryOperationPreferRight) FactoryService.createUnaryRightOperation(

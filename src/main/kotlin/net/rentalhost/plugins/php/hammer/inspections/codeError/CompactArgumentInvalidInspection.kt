@@ -42,7 +42,7 @@ class CompactArgumentInvalidInspection: PhpInspection() {
 
                         ProblemsHolderService.registerProblem(
                             problemsHolder, it,
-                            "Invalid argument for compact() function.",
+                            "invalid argument for compact() function",
                             LocalQuickFixService.SimpleInlineQuickFix("Drop invalid term") {
                                 ElementService.dropCompactArgument(it)
                             }

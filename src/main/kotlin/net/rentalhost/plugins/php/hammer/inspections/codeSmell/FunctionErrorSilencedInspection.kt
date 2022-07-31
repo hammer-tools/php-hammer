@@ -14,7 +14,7 @@ class FunctionErrorSilencedInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element.getErrorControlOperator() ?: return,
-                "Function call is using error control operator.",
+                "function call is using error control operator",
                 LocalQuickFixService.SimpleReplaceQuickFix("Remove the \"@\" operator", element.parent, element)
             )
         }

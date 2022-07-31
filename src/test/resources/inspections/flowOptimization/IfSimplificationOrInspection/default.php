@@ -1,7 +1,7 @@
 <?php
 
 $dummy1000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
 
@@ -11,7 +11,7 @@ $dummy1000 = function ($dummy) {
 };
 
 $dummy1500 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy)
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy)
         return true;
 
     if ($dummy)
@@ -19,7 +19,7 @@ $dummy1500 = function ($dummy) {
 };
 
 $dummy2000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> (($dummy || $dummy) || $dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> (($dummy || $dummy) || $dummy) {
         return true;
     }
 
@@ -29,7 +29,7 @@ $dummy2000 = function ($dummy) {
 };
 
 $dummy3000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
 
@@ -41,7 +41,7 @@ $dummy3000 = function ($dummy) {
 };
 
 $dummy4000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
 
@@ -53,7 +53,7 @@ $dummy4000 = function ($dummy) {
 };
 
 $dummy5000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
 
@@ -67,7 +67,7 @@ $dummy5000 = function ($dummy) {
 };
 
 $dummy6000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
 
@@ -79,7 +79,7 @@ $dummy6000 = function ($dummy) {
 };
 
 $dummy7000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
 
@@ -93,7 +93,7 @@ $dummy7000 = function ($dummy) {
 };
 
 $dummy8000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     } else if ($dummy) {
         return true;
@@ -105,7 +105,7 @@ $dummy8000 = function ($dummy) {
 $dummy9000 = function ($dummy) {
     if ($dummy) {
         return false;
-    } else <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    } else <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     } else if ($dummy) {
         return true;
@@ -113,7 +113,7 @@ $dummy9000 = function ($dummy) {
 };
 
 $dummy10000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     } elseif ($dummy) {
         return true;
@@ -125,7 +125,7 @@ $dummy10000 = function ($dummy) {
 $dummy11000 = function ($dummy) {
     if ($dummy) {
         return false;
-    } <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">elseif</weak_warning> ($dummy) {
+    } <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">elseif</weak_warning> ($dummy) {
         return true;
     } else if ($dummy) {
         return true;
@@ -135,7 +135,7 @@ $dummy11000 = function ($dummy) {
 $dummy12000 = function ($dummy) {
     if ($dummy) {
         return false;
-    } <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">elseif</weak_warning> ($dummy) {
+    } <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">elseif</weak_warning> ($dummy) {
         return true;
     } elseif ($dummy) {
         return true;
@@ -145,7 +145,7 @@ $dummy12000 = function ($dummy) {
 $dummy12500 = function ($dummy) {
     if ($dummy) {
         return false;
-    } else <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    } else <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     } elseif ($dummy) {
         return true;
@@ -153,7 +153,7 @@ $dummy12500 = function ($dummy) {
 };
 
 $dummy13000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         // Comment (dropped).
         return true;
     }
@@ -166,7 +166,7 @@ $dummy13000 = function ($dummy) {
 };
 
 $dummy14000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> (((($dummy)) || ((($dummy))))) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> (((($dummy)) || ((($dummy))))) {
         return true;
     }
 
@@ -176,7 +176,7 @@ $dummy14000 = function ($dummy) {
 };
 
 $dummy15000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         return true;
     }
 
@@ -186,7 +186,7 @@ $dummy15000 = function ($dummy) {
 };
 
 $dummy16000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy instanceof DateTime) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy instanceof DateTime) {
         return true;
     }
 
@@ -196,7 +196,7 @@ $dummy16000 = function ($dummy) {
 };
 
 $dummy17000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         throw new Exception;
     }
 
@@ -206,7 +206,7 @@ $dummy17000 = function ($dummy) {
 };
 
 $dummy18000 = function ($dummy) {
-    <weak_warning descr="🔨 PHP Hammer: Subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
+    <weak_warning descr="🔨 PHP Hammer: subsequent condition can be merged with this.">if</weak_warning> ($dummy) {
         exit(0);
     }
 

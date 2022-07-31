@@ -54,7 +54,7 @@ class FileClassnameCaseInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element.nameIdentifier ?: return,
-                "Class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\").",
+                "class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\")",
                 if (fileIdentifierValid) LocalQuickFixService.SimpleReplaceQuickFix(
                     "Rename class to match filename",
                     FactoryService.createClassReference(problemsHolder.project, fileBasename)

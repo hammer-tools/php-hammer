@@ -26,7 +26,7 @@ class SenselessNumberFormatZeroDecimalInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Senseless number_format() using zero decimal point.",
+                "senseless number_format() using zero decimal point",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with type casting.",
                     FactoryService.createTypeCastDouble(

@@ -41,11 +41,7 @@ class NativeMemberUsageInspection: PhpInspection() {
                     return
             }
 
-            ProblemsHolderService.registerProblem(
-                problemsHolder,
-                elementBase,
-                "Native type must not be used as object."
-            )
+            ProblemsHolderService.registerProblem(problemsHolder, elementBase, "native type must not be used as object")
         }
 
         override fun visitPhpClassConstantReference(element: ClassConstantReference) = visit(element)

@@ -39,8 +39,8 @@ class ComparisonScalarOrderInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "Scalar type must be on the left side."
-                else "Scalar type must be on the right side.",
+                if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "scalar type must be on the left side"
+                else "scalar type must be on the right side",
                 LocalQuickFixService.SimpleInlineQuickFix("Flip comparison") {
                     (elementLeft ?: return@SimpleInlineQuickFix)
                         .swap(elementRight ?: return@SimpleInlineQuickFix)

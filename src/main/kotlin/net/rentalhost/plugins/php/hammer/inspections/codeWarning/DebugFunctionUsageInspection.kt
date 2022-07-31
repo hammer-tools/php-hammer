@@ -61,7 +61,7 @@ class DebugFunctionUsageInspection: PhpInspection() {
                 return
 
             ProblemsHolderService.registerProblem(
-                problemsHolder, function, "Debug-related function usage.",
+                problemsHolder, function, "debug function usage",
                 if (function.parent.isExactly<StatementImpl>()) LocalQuickFixService.SimpleDeleteQuickFix(
                     "Drop debug function", SmartPointerManager.createPointer(function.parent)
                 )

@@ -35,7 +35,7 @@ class NullCheckFormatInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 functionBase,
-                "Null check must be via comparison.",
+                "null check must be via comparison",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with comparison",
                     lazy {
@@ -86,7 +86,7 @@ class NullCheckFormatInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 comparison,
-                "Null check must be via is_null() function.",
+                "null check must be via is_null() function",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with is_null()",
                     FactoryService.createFunctionCall(

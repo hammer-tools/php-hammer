@@ -98,7 +98,7 @@ class BackslashFilenameUsageInspection: PhpInspection() {
 
                 ProblemsHolderService.registerProblem(
                     problemsHolder, parameterString,
-                    "Using backslash on filesystem-related name",
+                    "using backslash on filesystem-related name",
                     LocalQuickFixService.SimpleInlineQuickFix("Replace backslash") {
                         parameterString.updateText(stringContents.replace("\\", "/"))
                     }

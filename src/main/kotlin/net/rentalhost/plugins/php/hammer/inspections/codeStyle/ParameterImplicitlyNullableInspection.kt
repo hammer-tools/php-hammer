@@ -29,7 +29,7 @@ class ParameterImplicitlyNullableInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Parameter type is implicitly null.",
+                "parameter type is implicitly null",
                 LocalQuickFixService.SimpleInlineQuickFix("Add explicit \"null\" type") {
                     if (element.typeDeclaration != null) {
                         (element.typeDeclaration ?: return@SimpleInlineQuickFix)

@@ -45,7 +45,7 @@ class ArrayMapFirstClassInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 parameterFirst,
-                "Call to array_map() can be replaced by first-class callback.",
+                "call to array_map() can be replaced by first-class callback",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with first-class callable",
                     FactoryService.createFunctionCallable(problemsHolder.project, functionReturnCall.name ?: return)

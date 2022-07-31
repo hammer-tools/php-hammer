@@ -46,7 +46,7 @@ class IfSimplificationAndInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element.firstChild,
-                "Nested condition can be merged with this.",
+                "nested condition can be merged with this",
                 LocalQuickFixService.SimpleInlineQuickFix("Nested condition can be merged with this.") {
                     val elementCondition = element.condition ?: return@SimpleInlineQuickFix
                     val elementChildCondition = elementChild.condition ?: return@SimpleInlineQuickFix

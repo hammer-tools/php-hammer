@@ -48,7 +48,7 @@ class CaseSeparatorFormatInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 elementSeparator,
-                "Wrong switch() \"${element.firstChild.text}\" separator.",
+                "wrong switch() \"${element.firstChild.text}\" separator",
                 LocalQuickFixService.SimpleLeafReplaceQuickFix(
                     "Replace with ${elementSeparatorReplacement.elementType.toString()} separator",
                     SmartPointerManager.createPointer(elementSeparatorReplacement)

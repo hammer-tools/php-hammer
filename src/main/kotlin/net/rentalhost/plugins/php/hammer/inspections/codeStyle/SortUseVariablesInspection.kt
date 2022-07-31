@@ -42,7 +42,7 @@ class SortUseVariablesInspection: PhpInspection() {
                 problemsHolder,
                 element,
                 useVariables.declarationTextRange(element),
-                "Unorganized use() variables.",
+                "use() variables can be sorted",
                 SortByUsageQuickFix(useVariablesSorted)
             )
         }

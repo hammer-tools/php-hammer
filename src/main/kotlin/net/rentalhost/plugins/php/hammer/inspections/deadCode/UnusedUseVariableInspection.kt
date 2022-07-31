@@ -37,7 +37,7 @@ class UnusedUseVariableInspection: PhpInspection() {
                         problemsHolder,
                         element,
                         it.declarationTextRange(element),
-                        "Unused variable declared in use().",
+                        "unused variable declared in use()",
                         DeleteUnusedVariableDeclarationQuickFix(SmartPointerManager.createPointer(it)),
                         ProblemHighlightType.LIKE_UNUSED_SYMBOL
                     )

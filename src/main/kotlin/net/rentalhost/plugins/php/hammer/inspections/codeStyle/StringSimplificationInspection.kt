@@ -36,7 +36,7 @@ class StringSimplificationInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 parent,
-                "String can be simplified.",
+                "string can be simplified",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with type cast (string)",
                     if (isArrayKey) FactoryService.createExpression(problemsHolder.project, elementTextNormalized)

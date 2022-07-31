@@ -1,54 +1,54 @@
 <?php
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>);
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">'\\file.php'</warning>);
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\file.php"</warning>);
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\file.php"</warning>);
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\/file.php'</warning>); // Backslash is being used as literal here.
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">'\/file.php'</warning>); // Backslash is being used as literal here.
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\/file.php"</warning>); // Backslash is being used as literal here.
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\/file.php"</warning>); // Backslash is being used as literal here.
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"dir\\file.php"</warning>);
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"dir\\file.php"</warning>);
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\dir\\file.php"</warning>);
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\dir\\file.php"</warning>);
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"dir\\"</warning>);
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"dir\\"</warning>);
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\\\file.php'</warning>);
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">'\\\\file.php'</warning>);
 
-$dummy = basename(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\\\file.php"</warning>);
+$dummy = basename(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\\\file.php"</warning>);
 
-$dummy = copy(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\example.php"</warning>, <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\example.php"</warning>);
+$dummy = copy(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\example.php"</warning>, <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\example.php"</warning>);
 
-$dummy = RENAME(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\example.php"</warning>, <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\example.php"</warning>);
+$dummy = RENAME(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\example.php"</warning>, <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\example.php"</warning>);
 
-$dummy = glob(<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\example.*"</warning>);
+$dummy = glob(<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\example.*"</warning>);
 
-$dummy = basename(__DIR__ . <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>);
+$dummy = basename(__DIR__ . <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">'\\file.php'</warning>);
 
-$dummy = basename(__DIR__ . __DIR__ . <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning> . __DIR__);
+$dummy = basename(__DIR__ . __DIR__ . <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">'\\file.php'</warning> . __DIR__);
 
-$dummy = basename((__DIR__) . __DIR__ . <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning> . __DIR__);
+$dummy = basename((__DIR__) . __DIR__ . <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">'\\file.php'</warning> . __DIR__);
 
-$dummy = basename((__DIR__) . __DIR__ . (<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>) . __DIR__);
+$dummy = basename((__DIR__) . __DIR__ . (<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">'\\file.php'</warning>) . __DIR__);
 
-$dummy = basename((__DIR__ . __DIR__ . (<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">'\\file.php'</warning>) . __DIR__));
+$dummy = basename((__DIR__ . __DIR__ . (<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">'\\file.php'</warning>) . __DIR__));
 
-basename($dummy = <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>);
+basename($dummy = <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\test.php"</warning>);
 
-include <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+include <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\test.php"</warning>;
 
-include_once <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+include_once <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\test.php"</warning>;
 
-include __DIR__ . <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+include __DIR__ . <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\test.php"</warning>;
 
-include((__DIR__) . (<warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>));
+include((__DIR__) . (<warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\test.php"</warning>));
 
-require <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+require <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\test.php"</warning>;
 
-require_once <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+require_once <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\test.php"</warning>;
 
-include $dummy = <warning descr="🔨 PHP Hammer: Using backslash on filesystem-related name">"\\test.php"</warning>;
+include $dummy = <warning descr="🔨 PHP Hammer: using backslash on filesystem-related name.">"\\test.php"</warning>;
 
 // Not applicable:
 

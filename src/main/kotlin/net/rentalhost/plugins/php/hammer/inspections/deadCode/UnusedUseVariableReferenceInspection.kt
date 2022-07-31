@@ -53,7 +53,7 @@ class UnusedUseVariableReferenceInspection: PhpInspection() {
                         ProblemsHolderService.registerProblem(
                             problemsHolder,
                             this,
-                            "Unused reference for variable declared in use().",
+                            "unused reference for variable declared in use()",
                             LocalQuickFixService.SimpleDeleteQuickFix("Delete reference indicator (\"&\")"),
                             ProblemHighlightType.LIKE_UNUSED_SYMBOL
                         )

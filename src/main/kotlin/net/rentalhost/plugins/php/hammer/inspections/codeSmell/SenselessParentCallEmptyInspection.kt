@@ -49,7 +49,7 @@ class SenselessParentCallEmptyInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Senseless call to empty parent::${element.name}().",
+                "senseless call to empty parent::${element.name}()",
                 LocalQuickFixService.SimpleDeleteQuickFix(
                     "Delete call to parent::${element.name}()",
                     SmartPointerManager.createPointer(element.parent)

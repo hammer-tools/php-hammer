@@ -1,14 +1,14 @@
 <?php
 
-$dummy = function (<weak_warning descr="🔨 PHP Hammer: Parameter type is implicitly null.">int $a = null</weak_warning>) {
+$dummy = function (<weak_warning descr="🔨 PHP Hammer: parameter type is implicitly null.">int $a = null</weak_warning>) {
 };
 
-$dummy = function (<weak_warning descr="🔨 PHP Hammer: Parameter type is implicitly null.">int|string $a = null</weak_warning>) {
+$dummy = function (<weak_warning descr="🔨 PHP Hammer: parameter type is implicitly null.">int|string $a = null</weak_warning>) {
 };
 
 /**
- * @method dummyA(<weak_warning descr="🔨 PHP Hammer: Parameter type is implicitly null.">int $a = null</weak_warning>)
- * @method dummyB(<weak_warning descr="🔨 PHP Hammer: Parameter type is implicitly null.">int | string $a = null</weak_warning>)
+ * @method dummyA(<weak_warning descr="🔨 PHP Hammer: parameter type is implicitly null.">int $a = null</weak_warning>)
+ * @method dummyB(<weak_warning descr="🔨 PHP Hammer: parameter type is implicitly null.">int | string $a = null</weak_warning>)
  */
 class Dummy {
 }

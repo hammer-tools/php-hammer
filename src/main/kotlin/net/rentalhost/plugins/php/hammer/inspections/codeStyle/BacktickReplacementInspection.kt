@@ -28,7 +28,7 @@ class BacktickReplacementInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Backtick operator can be replaced by shell_exec().",
+                "backtick operator can be replaced by shell_exec()",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace by shell_exec()",
                     FactoryService.createFunctionCall(

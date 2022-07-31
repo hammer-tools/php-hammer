@@ -5,21 +5,21 @@ class Dummy
     const DUMMY = null;
 
     private self $a;
-    public <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"self\".">Dummy</weak_warning>|int|null $b;
+    public <weak_warning descr="🔨 PHP Hammer: class reference format must be \"self\".">Dummy</weak_warning>|int|null $b;
 
-    function dummy(<weak_warning descr="🔨 PHP Hammer: Class reference format must be \"self\".">Dummy</weak_warning> $b): self
+    function dummy(<weak_warning descr="🔨 PHP Hammer: class reference format must be \"self\".">Dummy</weak_warning> $b): self
     {
         return
             self::DUMMY ||
-            <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"self\".">Dummy</weak_warning>::DUMMY;
+            <weak_warning descr="🔨 PHP Hammer: class reference format must be \"self\".">Dummy</weak_warning>::DUMMY;
     }
 
-    function dummyB(self|int $a): <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"self\".">Dummy</weak_warning>|int|null
+    function dummyB(self|int $a): <weak_warning descr="🔨 PHP Hammer: class reference format must be \"self\".">Dummy</weak_warning>|int|null
     {
         if ($a instanceof self) {
         }
 
-        return new <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"self\".">Dummy</weak_warning>;
+        return new <weak_warning descr="🔨 PHP Hammer: class reference format must be \"self\".">Dummy</weak_warning>;
     }
 }
 

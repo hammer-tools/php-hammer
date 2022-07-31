@@ -4,19 +4,19 @@ class Dummy
 {
     const DUMMY = null;
 
-    private <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"Dummy\".">self</weak_warning> $a;
+    private <weak_warning descr="🔨 PHP Hammer: class reference format must be \"Dummy\".">self</weak_warning> $a;
     public Dummy|int|null $b;
 
-    function dummy(Dummy $b): <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"Dummy\".">self</weak_warning>
+    function dummy(Dummy $b): <weak_warning descr="🔨 PHP Hammer: class reference format must be \"Dummy\".">self</weak_warning>
     {
         return
-            <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"Dummy\".">self</weak_warning>::DUMMY ||
+            <weak_warning descr="🔨 PHP Hammer: class reference format must be \"Dummy\".">self</weak_warning>::DUMMY ||
             Dummy::DUMMY;
     }
 
-    function dummyB(<weak_warning descr="🔨 PHP Hammer: Class reference format must be \"Dummy\".">self</weak_warning>|int $a): Dummy|int|null
+    function dummyB(<weak_warning descr="🔨 PHP Hammer: class reference format must be \"Dummy\".">self</weak_warning>|int $a): Dummy|int|null
     {
-        if ($a instanceof <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"Dummy\".">self</weak_warning>) {
+        if ($a instanceof <weak_warning descr="🔨 PHP Hammer: class reference format must be \"Dummy\".">self</weak_warning>) {
         }
 
         return new Dummy;
@@ -25,9 +25,9 @@ class Dummy
 
 class DummyB extends Dummy
 {
-    function dummy(Dummy $b): <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"DummyB\".">self</weak_warning>
+    function dummy(Dummy $b): <weak_warning descr="🔨 PHP Hammer: class reference format must be \"DummyB\".">self</weak_warning>
     {
-        return <weak_warning descr="🔨 PHP Hammer: Class reference format must be \"DummyB\".">self</weak_warning>::DUMMY;
+        return <weak_warning descr="🔨 PHP Hammer: class reference format must be \"DummyB\".">self</weak_warning>::DUMMY;
     }
 }
 

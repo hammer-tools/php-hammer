@@ -9,9 +9,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 
-private fun applyTemplate(descriptionTemplate: String) =
-    "\uD83D\uDD28 PHP Hammer: $descriptionTemplate"
-
 private val inspectionsCountKeys =
     Key<Boolean>("inspectionsCountedKey")
 
@@ -35,7 +32,7 @@ object ProblemsHolderService {
         increaseInspections(element)
 
         problemsHolder.registerProblem(
-            element, applyTemplate(descriptionTemplate),
+            element, "\uD83D\uDD28 PHP Hammer: $descriptionTemplate.",
             problemHighlightType ?: ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
             textRange, localQuickFix
         )

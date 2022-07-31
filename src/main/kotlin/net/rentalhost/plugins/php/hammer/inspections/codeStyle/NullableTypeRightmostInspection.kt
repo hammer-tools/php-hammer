@@ -33,7 +33,7 @@ class NullableTypeRightmostInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Nullable type must be on rightmost side (\"$elementTypeReplacementSuggestion\").",
+                "nullable type must be on rightmost side (\"$elementTypeReplacementSuggestion\")",
                 SimpleTypeReplaceQuickFix(
                     "Move \"null\" type to rightmost side",
                     elementTypeReplacementSuggestion

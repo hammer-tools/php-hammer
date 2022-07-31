@@ -21,7 +21,7 @@ class StringCurlyInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Variable must have curly braces.",
+                "variable must have curly braces",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Wrap with curly braces",
                     FactoryService.createCurlyVariable(problemsHolder.project, element.name)

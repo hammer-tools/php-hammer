@@ -47,7 +47,7 @@ class CompactReplacementInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Array can be replaced by compact().",
+                "array can be replaced by compact()",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Replace with compact()",
                     FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables)

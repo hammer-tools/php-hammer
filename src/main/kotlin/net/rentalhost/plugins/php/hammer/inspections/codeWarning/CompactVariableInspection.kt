@@ -58,7 +58,7 @@ class CompactVariableInspection: PhpInspection() {
 
                         ProblemsHolderService.registerProblem(
                             problemsHolder, it,
-                            "Variables should be avoided in compact().",
+                            "variables should be avoided in compact()",
                             LocalQuickFixService.SimpleReplaceQuickFix(
                                 "Replace with string",
                                 FactoryService.createStringLiteral(problemsHolder.project, it.name)

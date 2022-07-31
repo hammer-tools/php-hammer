@@ -26,7 +26,7 @@ class SenselessArrayMergeUsageInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Senseless array_merge() usage.",
+                "senseless array_merge() usage",
                 LocalQuickFixService.SimpleReplaceQuickFix(
                     "Simplify useless array_merge()",
                     elementSimplified

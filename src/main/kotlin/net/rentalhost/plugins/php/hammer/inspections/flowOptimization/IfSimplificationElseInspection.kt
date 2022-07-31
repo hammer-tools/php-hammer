@@ -26,7 +26,7 @@ class IfSimplificationElseInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 elementReference.firstChild,
-                "Useless conditional can be safely dropped.",
+                "useless conditional can be safely dropped",
                 LocalQuickFixService.SimpleInlineQuickFix("Drop conditional") {
                     if (elementReference is If) {
                         val elementReferenceStatement = elementReference.statement

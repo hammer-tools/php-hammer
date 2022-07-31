@@ -38,7 +38,7 @@ class CompactDuplicatedTermsInspection: PhpInspection() {
 
                             ProblemsHolderService.registerProblem(
                                 problemsHolder, it,
-                                "Duplicated term in compact().",
+                                "duplicated term in compact()",
                                 LocalQuickFixService.SimpleInlineQuickFix("Drop duplicated term") {
                                     ElementService.dropCompactArgument(it)
                                 }

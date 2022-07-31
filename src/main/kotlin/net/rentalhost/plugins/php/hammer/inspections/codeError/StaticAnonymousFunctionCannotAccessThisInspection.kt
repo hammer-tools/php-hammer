@@ -22,7 +22,7 @@ class StaticAnonymousFunctionCannotAccessThisInspection: PhpInspection() {
                 ProblemsHolderService.registerProblem(
                     problemsHolder,
                     element.firstChild,
-                    "Static anonymous functions cannot access \$this.",
+                    "static anonymous functions cannot access \$this",
                     LocalQuickFixService.SimpleDeleteQuickFix("Delete this \"static\" declaration")
                 )
 

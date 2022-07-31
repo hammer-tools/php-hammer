@@ -34,7 +34,7 @@ class RedundantReturnPointInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 element,
-                "Redundant return point.",
+                "redundant return point",
                 LocalQuickFixService.SimpleDeleteQuickFix("Drop this return point")
             )
         }
