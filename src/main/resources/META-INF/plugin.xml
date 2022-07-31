@@ -369,7 +369,7 @@
                          groupPath="PHP,🔨 PHP Hammer"
                          groupName="Code Warning"
                          enabledByDefault="true"
-                         displayName="Debug-related function usage"
+                         displayName="Debug function usage"
                          level="WARNING"
                          shortName="DebugFunctionUsageInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeWarning.DebugFunctionUsageInspection" />

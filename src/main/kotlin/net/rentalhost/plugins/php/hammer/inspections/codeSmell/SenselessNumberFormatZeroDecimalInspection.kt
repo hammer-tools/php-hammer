@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.extensions.psi.isName
 import net.rentalhost.plugins.services.FactoryService
@@ -17,9 +18,16 @@ class SenselessNumberFormatZeroDecimalInspection: PhpInspection() {
                 element.parameters.isEmpty())
                 return
 
-            if (element.parameters.size != 1 &&
-                element.parameters[1].text != "0")
+            if (element.parameters.size < 4)
                 return
+
+            if (element.parameters[1].text != "0")
+                return
+
+            with(element.parameters[3] as? StringLiteralExpression ?: return) {
+                if (contents != "")
+                    return
+            }
 
             val elementParameter = element.parameters[0]
 
@@ -28,7 +36,7 @@ class SenselessNumberFormatZeroDecimalInspection: PhpInspection() {
                 element,
                 "senseless number_format() using zero decimal point",
                 LocalQuickFixService.SimpleReplaceQuickFix(
-                    "Replace with type casting.",
+                    "Replace with type casting",
                     FactoryService.createTypeCastDouble(
                         problemsHolder.project, "string", "int",
                         if (elementParameter is BinaryExpression) "(${elementParameter.text})"

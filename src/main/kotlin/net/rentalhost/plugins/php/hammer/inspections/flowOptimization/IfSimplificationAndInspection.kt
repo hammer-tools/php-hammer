@@ -47,7 +47,7 @@ class IfSimplificationAndInspection: PhpInspection() {
                 problemsHolder,
                 element.firstChild,
                 "nested condition can be merged with this",
-                LocalQuickFixService.SimpleInlineQuickFix("Nested condition can be merged with this.") {
+                LocalQuickFixService.SimpleInlineQuickFix("Merge nested conditional") {
                     val elementCondition = element.condition ?: return@SimpleInlineQuickFix
                     val elementChildCondition = elementChild.condition ?: return@SimpleInlineQuickFix
                     val elementChildStatement = elementChild.statement ?: return@SimpleInlineQuickFix
