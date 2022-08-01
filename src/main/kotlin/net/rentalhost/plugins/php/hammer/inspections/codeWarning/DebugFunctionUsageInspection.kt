@@ -43,9 +43,6 @@ class DebugFunctionUsageInspection: PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
         override fun visitPhpFunctionCall(function: FunctionReference) {
-            if (function.containingFile.isBlade())
-                return
-
             if (function.parameterList == null)
                 return
 
@@ -54,6 +51,10 @@ class DebugFunctionUsageInspection: PhpInspection() {
             val functionName =
                 if (functionResolve is Function) functionResolve.fqn
                 else function.fqn.toString()
+
+            if (functionName == "\\get_defined_vars" &&
+                function.containingFile.isBlade())
+                return
 
             val isNativeFunction by lazy { nativeFunctions.contains(functionName) || nativeRegex.containsMatchIn(functionName) }
             val isXdebugFunction by lazy { xdebugEnabled && xdebugRegex.containsMatchIn(functionName) }
