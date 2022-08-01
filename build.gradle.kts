@@ -43,6 +43,12 @@ tasks {
         }
     }
 
+    build {
+        dependsOn("generatePluginXML")
+        dependsOn("generateChangelog")
+        dependsOn("generateDocumentation")
+    }
+
     test {
         delete(file("$buildDir/classes"))
 
