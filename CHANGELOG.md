@@ -11,11 +11,19 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 - **[DebugFunctionUsageInspection]**: exclude only get_defined_vars() on Blade files;
 
+### Fixed
+
+- Including Sentry as a direct dependency in the built package;
+
 [0.12.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.12.1
 
 [DebugFunctionUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-debug-function-usage-inspection
 
 ## [0.12.0] - 2022-07-31
+
+### Important
+
+- This build may fail while throwing unhandled exceptions due to missing Sentry package as a direct dependency (fixed at [0.12.1]);
 
 ### Added
 
@@ -32,6 +40,8 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 [0.12.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.12.0
 
+[0.12.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.12.1
+
 [BackslashFilenameUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-backslash-filename-usage-inspection
 
 [FunctionAliasUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-function-alias-usage-inspection
@@ -42,11 +52,17 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 ## [0.11.1] - 2022-07-30
 
+### Important
+
+- This build may fail while throwing unhandled exceptions due to missing Sentry package as a direct dependency (fixed at [0.12.1]);
+
 ### Fixed
 
 - **[FileClassnameCaseInspection]**: namespaced files were not being inspected;
 
 [0.11.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.11.1
+
+[0.12.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.12.1
 
 [FileClassnameCaseInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-file-classname-case-inspection
 

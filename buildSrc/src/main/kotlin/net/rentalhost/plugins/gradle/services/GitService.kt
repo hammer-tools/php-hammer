@@ -8,6 +8,8 @@ import kotlin.random.Random
 object GitService {
     private val commitSeparator = Random.nextBytes(8).toString()
 
+    private val versionRegex = Regex("\\[(\\d+.\\d+.\\d+)]")
+
     fun getCommits(workingDirectory: File): List<GitCommit> {
         val processBuilder = ProcessBuilder(
             "git", "log", "--abbrev=8",
@@ -37,12 +39,16 @@ object GitService {
             }
     }
 
+    fun parseVersions(message: String): Sequence<String> =
+        versionRegex.findAll(message).map { it.groupValues[1] }
+
     class GitCommit(
         private val date: String,
         var tag: String,
         val box: String,
         val classReference: String,
-        private val message: String
+        val message: String,
+        val extraCommit: Boolean = false
     ) {
         companion object {
             fun createFrom(commit: String): GitCommit {
@@ -81,5 +87,11 @@ object GitService {
 
         fun getTagDescription(project: Project): String =
             "[${getTag(project)}] - $date"
+
+        fun versionInt(project: Project): Int = with(getTag(project)) {
+            val (versionMajor, versionMinor, versionPatch) = this.split(".")
+
+            return versionMajor.toInt() * 10000 + versionMinor.toInt() * 100 + versionPatch.toInt()
+        }
     }
 }
