@@ -16,6 +16,9 @@ fun PsiElement?.insertBeforeElse(addIt: PsiElement, orElse: Lazy<() -> PsiElemen
 fun PsiElement.insertBefore(addIt: PsiElement): PsiElement =
     this.parent.addBefore(addIt, this)
 
+fun PsiElement.insertAfter(addIt: PsiElement): PsiElement =
+    this.parent.addAfter(addIt, this)
+
 fun PsiElement.replaceWithGroupStatement(groupStatement: GroupStatement) {
     val elementReplacement = replace(groupStatement)
 

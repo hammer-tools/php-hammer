@@ -63,6 +63,9 @@ object FactoryService {
     fun createReturnType(project: Project, returnType: String): PhpReturnType =
         PhpPsiElementFactory.createReturnType(project, returnType)
 
+    fun createReturn(project: Project, argument: String): PhpReturn =
+        PhpPsiElementFactory.createPhpPsiFromText(project, PhpReturn::class.java, "return $argument;")
+
     fun createFunctionCall(project: Project, functionName: String, parameters: List<String>): PsiElement =
         PhpPsiElementFactory.createFromText(project, PsiElement::class.java, "$functionName(${parameters.joinToString(",")});", intArrayOf(0, 2, 0))
 
@@ -143,4 +146,7 @@ object FactoryService {
 
     fun createComparisonExpression(project: Project, leftOperand: String, operator: String, rightOperand: String): BinaryExpression =
         createBinaryExpression(project, "$leftOperand$operator$rightOperand")
+
+    fun createIfConditional(project: Project, condition: String, trueVariant: String): If =
+        PhpPsiElementFactory.createPhpPsiFromText(project, If::class.java, "if($condition){\nreturn $trueVariant;\n}")
 }

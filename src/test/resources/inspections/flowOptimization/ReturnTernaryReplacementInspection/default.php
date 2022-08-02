@@ -5,5 +5,5 @@ $dummy = function () {
 };
 
 $dummy = function () {
-    <weak_warning descr="🔨 PHP Hammer: return-ternary can be replaced by if().">return</weak_warning> (rand() && rand()) ? rand() : rand();
+    <weak_warning descr="🔨 PHP Hammer: return-ternary can be replaced by if().">return</weak_warning> (rand() && rand()) ? (rand()) : (rand());
 };
