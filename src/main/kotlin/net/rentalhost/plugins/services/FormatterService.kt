@@ -49,10 +49,10 @@ object FormatterService {
         }
     }
 
-    fun normalize(element: PsiElement, postfix: String = "|"): String {
+    fun normalize(element: PsiElement): String {
         var elementText = ""
 
-        ElementReassemble.visit(element) { s -> elementText += s + postfix }
+        ElementReassemble.visit(element) { s -> elementText += "$s\u0000" }
 
         return elementText
     }
