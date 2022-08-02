@@ -7,6 +7,7 @@ import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.TernaryExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.services.FormatterService
+import net.rentalhost.plugins.services.LocalQuickFixService
 import net.rentalhost.plugins.services.ProblemsHolderService
 
 class TernarySimplificationInspection: PhpInspection() {
@@ -45,7 +46,12 @@ class TernarySimplificationInspection: PhpInspection() {
             ProblemsHolderService.registerProblem(
                 problemsHolder,
                 expression,
-                "ternary can be simplified"
+                "ternary can be simplified",
+                LocalQuickFixService.SimpleReplaceQuickFix(
+                    "Simplify ternary",
+                    if (comparisonIdentical) expression.falseVariant ?: return
+                    else expression.trueVariant ?: return
+                )
             )
         }
     }
