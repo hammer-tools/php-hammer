@@ -1,0 +1,18 @@
+<html lang="en">
+    <body>
+        This inspection aims to avoid the use of return-ternary, suggesting the replacement with an <code>if()</code>.
+        Thus both reading and maintenance becomes simpler.
+
+        <strong>Example:</strong>
+
+        <pre><code>return expr() ? 123 : 456;</code></pre>
+
+        <strong>Becomes:</strong>
+
+        <pre><code>if (expr()) {
+    return 123;
+}
+
+return 456;</code></pre>
+    </body>
+</html>
