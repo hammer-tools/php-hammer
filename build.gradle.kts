@@ -4,7 +4,7 @@ fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.7.0"
+    id("org.jetbrains.intellij") version "1.8.0"
     id("org.jetbrains.kotlin.jvm") version "1.7.0"
 }
 
@@ -26,7 +26,7 @@ apply {
 intellij {
     pluginName.set(prop("pluginName"))
     version.set(prop("platformVersion"))
-    type.set("IU")
+    type.set("PS")
 
     plugins.set(listOf("com.jetbrains.php:${prop("platformPhpBuild")}"))
 }
@@ -51,8 +51,6 @@ tasks {
 
     test {
         delete(file("$buildDir/classes"))
-
-        jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
 
         isScanForTestClasses = false
 
@@ -107,14 +105,5 @@ tasks {
                 into(file("$buildDir/idea-sandbox/config"))
             }
         }
-    }
-
-    runIde {
-        jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
-        jvmArgs("-Xmx4096m")
-
-        jbrVersion.set("11_0_15b2043.56")
-
-        ideDir.set(file("${System.getProperty("user.home")}\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PhpStorm\\${prop("platformPhpToolbox")}"))
     }
 }
