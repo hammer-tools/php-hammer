@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.1] - 2022-08-04
+
+### Fixed
+
+- This version has been recompiled to ignore already removed files that were unintentionally packaged;
+
+[0.13.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.13.1
+
 ## [0.13.0] - 2022-08-02
+
+### Important
+
+- This version was compiled incorrectly, keeping some deleted files and may fail (fixed in [0.13.1]);
 
 ### Added
 
@@ -13,6 +25,8 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 - **[TernarySimplificationInspection]**: implemented ("simplify ternary operation");
 
 [0.13.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.13.0
+
+[0.13.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.13.1
 
 [ReturnTernaryReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-return-ternary-replacement-inspection
 

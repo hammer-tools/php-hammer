@@ -2,3 +2,5 @@
 0.11.1;important;This build may fail while throwing unhandled exceptions due to missing Sentry package as a direct dependency (fixed at [0.12.1]);
 0.12.0;important;This build may fail while throwing unhandled exceptions due to missing Sentry package as a direct dependency (fixed at [0.12.1]);
 0.12.1;fixed;Including Sentry as a direct dependency in the built package;
+0.13.0;important;This version was compiled incorrectly, keeping some deleted files and may fail (fixed in [0.13.1]);
+0.13.1;fixed;This version has been recompiled to ignore already removed files that were unintentionally packaged;
