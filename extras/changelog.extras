@@ -1,3 +1,4 @@
+0.1.0;important;First public release;
 0.11.0;added;**PhpStorm 2022.2** is now supported;
 0.11.1;important;This build may fail while throwing unhandled exceptions due to missing Sentry package as a direct dependency (fixed at [0.12.1]);
 0.12.0;important;This build may fail while throwing unhandled exceptions due to missing Sentry package as a direct dependency (fixed at [0.12.1]);
