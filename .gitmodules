@@ -1,0 +1,7 @@
+[submodule "wiki"]
+path = wiki
+url  = https://github.com/hammer-tools/php-hammer.wiki.git
+
+[submodule "buildSrc"]
+path = buildSrc
+url  = https://github.com/hammer-tools/hammer-build-src.git
