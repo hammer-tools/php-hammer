@@ -1,8 +1,8 @@
 package net.rentalhost.plugins.gradle.tasks
 
 import net.rentalhost.plugins.gradle.ProjectTools
+import net.rentalhost.plugins.gradle.services.FileService
 import net.rentalhost.plugins.gradle.services.InspectionService
-import net.rentalhost.plugins.gradle.services.ResourceService
 import org.gradle.api.Project
 import org.jsoup.parser.Parser
 import java.io.File
@@ -20,7 +20,7 @@ internal class GeneratePluginXMLTask: ProjectTools.ProjectTask() {
     }
 
     private fun generatePluginXML(project: Project) {
-        var pluginXMLContents = ResourceService.read("/plugin.stub")
+        var pluginXMLContents = FileService.read("${project.projectDir}/extras/plugin.stub")
         val pluginTitle = Parser.unescapeEntities(ProjectTools.prop(project, "pluginTitle"), false)
         val pluginInspections = InspectionService.getInspection(project)
 
@@ -30,7 +30,7 @@ internal class GeneratePluginXMLTask: ProjectTools.ProjectTask() {
 
         pluginXMLContents = pluginXMLContents.replace(
             "\$pluginDescription",
-            ResourceService.read("/pluginDescription.html")
+            FileService.read("${project.projectDir}/extras/pluginDescription.html")
                 .replace("\$inspectionsCount", pluginInspections.size.toString())
                 .trim()
         )

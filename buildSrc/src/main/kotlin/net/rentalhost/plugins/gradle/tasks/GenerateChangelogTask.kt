@@ -2,6 +2,7 @@ package net.rentalhost.plugins.gradle.tasks
 
 import net.rentalhost.plugins.gradle.ProjectTools
 import net.rentalhost.plugins.gradle.services.ChangelogService
+import net.rentalhost.plugins.gradle.services.FileService
 import net.rentalhost.plugins.gradle.services.GitService
 import net.rentalhost.plugins.gradle.services.GitService.GitCommit
 import org.gradle.api.Project
@@ -27,7 +28,7 @@ internal class GenerateChangelogTask: ProjectTools.ProjectTask() {
                               "and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).\n\n"
 
         val commits = GitService.getCommits(project.projectDir).toMutableList()
-        commits.addAll(ChangelogService.getExtraCommits(File("${project.projectDir}/buildSrc/changelog.extras")))
+        commits.addAll(ChangelogService.getExtraCommits(FileService.read("${project.projectDir}/extras/changelog.extras")))
         commits.sortByDescending { it.versionInt(project) }
 
         commits.groupBy { it.getTag(project) }.forEach {

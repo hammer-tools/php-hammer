@@ -1,13 +1,12 @@
 package net.rentalhost.plugins.gradle.services
 
-import java.io.File
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 object ChangelogService {
-    fun getExtraCommits(extrasFile: File): List<GitService.GitCommit> {
-        val extrasContents = extrasFile.readText().trim()
+    fun getExtraCommits(extras: String): List<GitService.GitCommit> {
+        val extrasContents = extras.trim()
 
         return extrasContents.split("\n")
             .map {
