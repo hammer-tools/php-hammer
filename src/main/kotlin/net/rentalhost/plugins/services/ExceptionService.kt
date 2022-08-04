@@ -44,7 +44,7 @@ class ExceptionService: ErrorReportSubmitter() {
 
             with(event.plugin as IdeaPluginDescriptor) {
                 sentryEvent.release = version
-                sentryEvent.environment = name
+                sentryEvent.environment = "production"
             }
 
             sentryEvent.setTag("IDE", ApplicationInfo.getInstance().build.asString())
