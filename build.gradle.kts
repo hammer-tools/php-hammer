@@ -50,6 +50,9 @@ tasks {
     }
 
     test {
+        // Fixes https://github.com/JetBrains/gradle-intellij-plugin/issues/1078.
+        intellij { type.set("IU") }
+
         delete(file("$buildDir/classes"))
 
         isScanForTestClasses = false
