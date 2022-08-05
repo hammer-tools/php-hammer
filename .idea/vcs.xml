@@ -3,6 +3,8 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/buildSrc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hammerTools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hammerTools/buildSrc" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/wiki" vcs="Git" />
   </component>
 </project>

@@ -4,6 +4,18 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/hammerTools" name="hammer-tools">
+                <projects>
+                  <project path="$PROJECT_DIR$/hammerTools" />
+                  <project path="$PROJECT_DIR$/hammerTools/lib" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="delegatedBuild" value="true" />
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
@@ -12,6 +24,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/hammerTools" />
+            <option value="$PROJECT_DIR$/hammerTools/buildSrc" />
+            <option value="$PROJECT_DIR$/hammerTools/lib" />
           </set>
         </option>
       </GradleProjectSettings>

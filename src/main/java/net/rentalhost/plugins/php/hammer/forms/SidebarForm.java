@@ -1,4 +1,4 @@
-package net.rentalhost.plugins.forms;
+package net.rentalhost.plugins.php.hammer.forms;
 
 import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.project.Project;

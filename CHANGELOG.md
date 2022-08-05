@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.2] - 2022-08-05
+
+### Important
+
+- The purpose of this release is to make it compatible with laravel-hammer;
+
+[0.13.2]: https://github.com/hammer-tools/php-hammer/releases/tag/0.13.2
+
 ## [0.13.1] - 2022-08-04
 
 ### Fixed
