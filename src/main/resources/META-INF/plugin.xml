@@ -413,9 +413,7 @@
         <!-- Plugin -->
         <applicationService serviceImplementation="net.rentalhost.plugins.php.hammer.services.SettingsService" />
 
-        <notificationGroup id="net.rentalhost.plugins.php.hammer.notification.INSTALLED" displayType="STICKY_BALLOON" />
-        <notificationGroup id="net.rentalhost.plugins.php.hammer.notification.UPDATED" displayType="STICKY_BALLOON" />
-        <notificationGroup id="net.rentalhost.plugins.php.hammer.notification.REVIEW" displayType="STICKY_BALLOON" />
+        <notificationGroup id="net.rentalhost.plugins.php.hammer.notifications.PLUGIN_RELATED" displayType="STICKY_BALLOON" />
 
         <errorHandler implementation="net.rentalhost.plugins.php.hammer.services.ExceptionService" />
 
