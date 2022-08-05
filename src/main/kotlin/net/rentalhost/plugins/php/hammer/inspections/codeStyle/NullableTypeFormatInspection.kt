@@ -7,12 +7,11 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.enums.OptionNullableTypeFormat
-import net.rentalhost.plugins.services.LocalQuickFixService.SimpleTypeReplaceQuickFix
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.OptionsPanelService.RadioComponent
-import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.TypeService
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.hammer.services.TypeService
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullableTypeFormat
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class NullableTypeFormatInspection: PhpInspection() {
@@ -46,11 +45,11 @@ class NullableTypeFormatInspection: PhpInspection() {
             if (elementTypeReplacementSuggestion == null)
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "nullable type must be written as \"$elementTypeReplacementSuggestion\"",
-                SimpleTypeReplaceQuickFix(
+                QuickFixService.instance.simpleTypeReplace(
                     if (nullableTypeFormat === OptionNullableTypeFormat.LONG) "Replace with the long format"
                     else "Replace with the short format",
                     elementTypeReplacementSuggestion
@@ -63,7 +62,7 @@ class NullableTypeFormatInspection: PhpInspection() {
 
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
-            component.delegateRadioCreation { radioComponent: RadioComponent ->
+            component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
                 radioComponent.addOption(
                     "Prefer short format", nullableTypeFormat === OptionNullableTypeFormat.SHORT,
                     "Your nullable types will look like: <code>?int</code>"

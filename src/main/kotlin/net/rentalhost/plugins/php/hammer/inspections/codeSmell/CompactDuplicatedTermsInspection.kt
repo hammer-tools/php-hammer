@@ -6,10 +6,10 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.isName
-import net.rentalhost.plugins.services.ElementService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.isName
+import net.rentalhost.plugins.hammer.services.ElementService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import kotlin.streams.toList
 
 class CompactDuplicatedTermsInspection: PhpInspection() {
@@ -36,10 +36,10 @@ class CompactDuplicatedTermsInspection: PhpInspection() {
                                 return@forEachValues
                             }
 
-                            ProblemsHolderService.registerProblem(
+                            ProblemsHolderService.instance.registerProblem(
                                 problemsHolder, it,
                                 "duplicated term in compact()",
-                                LocalQuickFixService.SimpleInlineQuickFix("Drop duplicated term") {
+                                QuickFixService.instance.simpleInline("Drop duplicated term") {
                                     ElementService.dropCompactArgument(it)
                                 }
                             )

@@ -11,10 +11,10 @@ import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpPsiElementImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.unpackValues
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.TypeService
+import net.rentalhost.plugins.hammer.extensions.psi.unpackValues
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.TypeService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 
 class ArrayPackableInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -41,7 +41,7 @@ class ArrayPackableInspection: PhpInspection() {
             if (!elementContainsIndex)
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "packed array can be simplified",

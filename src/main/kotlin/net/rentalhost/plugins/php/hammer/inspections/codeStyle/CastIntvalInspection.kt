@@ -8,10 +8,10 @@ import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.services.CastService
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.services.CastService
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class CastIntvalInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -38,11 +38,11 @@ class CastIntvalInspection: PhpInspection() {
         val castTypeTo = CastService.castSetType[castType.contents.lowercase()] ?: return
 
         if (castTypeTo == "null") {
-            return ProblemsHolderService.registerProblem(
+            return ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "function cast can be replaced with null",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Replace with null",
                     element.parent,
                     FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = null;")
@@ -50,11 +50,11 @@ class CastIntvalInspection: PhpInspection() {
             )
         }
 
-        ProblemsHolderService.registerProblem(
+        ProblemsHolderService.instance.registerProblem(
             problemsHolder,
             element,
             "function cast can be replaced with the type cast ($castTypeTo)",
-            LocalQuickFixService.SimpleReplaceQuickFix(
+            QuickFixService.instance.simpleReplace(
                 "Replace with type cast ($castTypeTo)",
                 element.parent,
                 FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = ($castTypeTo) \$${castElement.name};")
@@ -74,11 +74,11 @@ class CastIntvalInspection: PhpInspection() {
             if (expressionElement is BinaryExpression) "(${expressionElement.text})"
             else expressionElement.text
 
-        ProblemsHolderService.registerProblem(
+        ProblemsHolderService.instance.registerProblem(
             problemsHolder,
             element,
             "function cast can be replaced with the type cast ($castTypeTo)",
-            LocalQuickFixService.SimpleReplaceQuickFix(
+            QuickFixService.instance.simpleReplace(
                 "Replace with type cast ($castTypeTo)",
                 FactoryService.createTypeCastExpression(problemsHolder.project, castTypeTo, expressionText)
             )

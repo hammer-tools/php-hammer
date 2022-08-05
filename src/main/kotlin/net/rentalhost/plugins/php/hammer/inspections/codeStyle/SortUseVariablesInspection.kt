@@ -10,9 +10,9 @@ import com.jetbrains.php.lang.psi.elements.PhpUseList
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.*
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.*
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 
 class SortUseVariablesInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -38,7 +38,7 @@ class SortUseVariablesInspection: PhpInspection() {
             if (useVariablesNames.toString() == useVariablesSortedNames.toString())
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 useVariables.declarationTextRange(element),

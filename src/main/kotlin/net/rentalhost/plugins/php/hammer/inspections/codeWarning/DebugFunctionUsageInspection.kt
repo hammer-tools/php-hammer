@@ -9,11 +9,11 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.isBlade
-import net.rentalhost.plugins.extensions.psi.isExactly
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.isBlade
+import net.rentalhost.plugins.hammer.extensions.psi.isExactly
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class DebugFunctionUsageInspection: PhpInspection() {
@@ -65,9 +65,9 @@ class DebugFunctionUsageInspection: PhpInspection() {
                 !isFrameworksFunction)
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder, function, "debug function usage",
-                if (function.parent.isExactly<StatementImpl>()) LocalQuickFixService.SimpleDeleteQuickFix(
+                if (function.parent.isExactly<StatementImpl>()) QuickFixService.instance.simpleDelete(
                     "Drop debug function", SmartPointerManager.createPointer(function.parent)
                 )
                 else null

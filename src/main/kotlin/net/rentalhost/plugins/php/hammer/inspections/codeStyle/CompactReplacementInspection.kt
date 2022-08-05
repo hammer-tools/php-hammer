@@ -8,11 +8,11 @@ import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.isRef
-import net.rentalhost.plugins.extensions.psi.unpackValues
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.isRef
+import net.rentalhost.plugins.hammer.extensions.psi.unpackValues
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class CompactReplacementInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -44,11 +44,11 @@ class CompactReplacementInspection: PhpInspection() {
                 arrayVariables.add("'${arrayElementValue.name}'")
             }
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "array can be replaced by compact()",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Replace with compact()",
                     FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables)
                 )

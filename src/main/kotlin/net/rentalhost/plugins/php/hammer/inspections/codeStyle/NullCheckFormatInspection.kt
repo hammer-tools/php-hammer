@@ -9,14 +9,14 @@ import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.UnaryExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.enums.OptionNullCheckFormat
-import net.rentalhost.plugins.extensions.psi.isName
-import net.rentalhost.plugins.extensions.psi.unparenthesize
-import net.rentalhost.plugins.extensions.psi.withOptionalNotOperator
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.isName
+import net.rentalhost.plugins.hammer.extensions.psi.unparenthesize
+import net.rentalhost.plugins.hammer.extensions.psi.withOptionalNotOperator
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullCheckFormat
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class NullCheckFormatInspection: PhpInspection() {
@@ -32,27 +32,25 @@ class NullCheckFormatInspection: PhpInspection() {
 
             val functionBase = function.withOptionalNotOperator()
 
-            ProblemsHolderService.registerProblem(
+            val functionParameter = function.parameters[0]
+            val functionParameterText =
+                if (functionParameter is AssignmentExpression) "(${functionParameter.text})"
+                else functionParameter.text
+
+            val functionBaseNot = functionBase is UnaryExpression
+
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 functionBase,
                 "null check must be via comparison",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Replace with comparison",
-                    lazy {
-                        val functionParameter = function.parameters[0]
-                        val functionParameterText =
-                            if (functionParameter is AssignmentExpression) "(${functionParameter.text})"
-                            else functionParameter.text
-
-                        val functionBaseNot = functionBase is UnaryExpression
-
-                        FactoryService.createComparisonExpression(
-                            problemsHolder.project,
-                            functionParameterText,
-                            if (functionBaseNot) "!==" else "===",
-                            "null"
-                        )
-                    }
+                    FactoryService.createComparisonExpression(
+                        problemsHolder.project,
+                        functionParameterText,
+                        if (functionBaseNot) "!==" else "===",
+                        "null"
+                    )
                 )
             )
         }
@@ -83,11 +81,11 @@ class NullCheckFormatInspection: PhpInspection() {
                 else comparisonLeftOperand.text
             )
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 comparison,
                 "null check must be via is_null() function",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Replace with is_null()",
                     FactoryService.createFunctionCall(
                         problemsHolder.project, comparisonNotIdentical, "is_null",

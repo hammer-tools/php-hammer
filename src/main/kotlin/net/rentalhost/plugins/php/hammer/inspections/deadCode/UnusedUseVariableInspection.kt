@@ -13,8 +13,8 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpUseListImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.*
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 
 class UnusedUseVariableInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -33,7 +33,7 @@ class UnusedUseVariableInspection: PhpInspection() {
             useVariables
                 .filterNot { functionVariables.contains(it.name) }
                 .forEach {
-                    ProblemsHolderService.registerProblem(
+                    ProblemsHolderService.instance.registerProblem(
                         problemsHolder,
                         element,
                         it.declarationTextRange(element),

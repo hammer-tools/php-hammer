@@ -9,9 +9,9 @@ import com.jetbrains.php.lang.psi.elements.PhpUseList
 import com.jetbrains.php.lang.psi.elements.impl.AssignmentExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.*
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class UnusedUseVariableReferenceInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -50,11 +50,11 @@ class UnusedUseVariableReferenceInspection: PhpInspection() {
                     }
 
                     with(useVariable.getLeafRef() as PsiElement) {
-                        ProblemsHolderService.registerProblem(
+                        ProblemsHolderService.instance.registerProblem(
                             problemsHolder,
                             this,
                             "unused reference for variable declared in use()",
-                            LocalQuickFixService.SimpleDeleteQuickFix("Delete reference indicator (\"&\")"),
+                            QuickFixService.instance.simpleDelete("Delete reference indicator (\"&\")"),
                             ProblemHighlightType.LIKE_UNUSED_SYMBOL
                         )
                     }

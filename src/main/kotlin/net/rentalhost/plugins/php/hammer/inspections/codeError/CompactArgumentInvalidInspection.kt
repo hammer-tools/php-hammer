@@ -8,11 +8,11 @@ import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.getTypes
-import net.rentalhost.plugins.extensions.psi.isName
-import net.rentalhost.plugins.services.ElementService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.getTypes
+import net.rentalhost.plugins.hammer.extensions.psi.isName
+import net.rentalhost.plugins.hammer.services.ElementService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import kotlin.streams.toList
 
 class CompactArgumentInvalidInspection: PhpInspection() {
@@ -40,10 +40,10 @@ class CompactArgumentInvalidInspection: PhpInspection() {
                             }
                         }
 
-                        ProblemsHolderService.registerProblem(
+                        ProblemsHolderService.instance.registerProblem(
                             problemsHolder, it,
                             "invalid argument for compact() function",
-                            LocalQuickFixService.SimpleInlineQuickFix("Drop invalid term") {
+                            QuickFixService.instance.simpleInline("Drop invalid term") {
                                 ElementService.dropCompactArgument(it)
                             }
                         )

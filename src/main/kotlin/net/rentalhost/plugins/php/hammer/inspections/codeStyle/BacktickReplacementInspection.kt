@@ -7,10 +7,10 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.PhpShellCommandExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.StringService
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.StringService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class BacktickReplacementInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -25,11 +25,11 @@ class BacktickReplacementInspection: PhpInspection() {
                                        commandVariable[0].prevSibling.text == "`" &&
                                        commandVariable[0].nextSibling.text == "`"
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "backtick operator can be replaced by shell_exec()",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Replace by shell_exec()",
                     FactoryService.createFunctionCall(
                         problemsHolder.project, "shell_exec",

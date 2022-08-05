@@ -8,11 +8,11 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.Include
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.followContents
-import net.rentalhost.plugins.extensions.psi.getConcatenatedElements
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.StringService
+import net.rentalhost.plugins.hammer.extensions.psi.followContents
+import net.rentalhost.plugins.hammer.extensions.psi.getConcatenatedElements
+import net.rentalhost.plugins.hammer.services.StringService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class BackslashFilenameUsageInspection: PhpInspection() {
     @Suppress("SpellCheckingInspection")
@@ -96,10 +96,10 @@ class BackslashFilenameUsageInspection: PhpInspection() {
                 if (!stringContents.contains("\\"))
                     continue
 
-                ProblemsHolderService.registerProblem(
+                ProblemsHolderService.instance.registerProblem(
                     problemsHolder, parameterString,
                     "using backslash on filesystem-related name",
-                    LocalQuickFixService.SimpleInlineQuickFix("Replace backslash") {
+                    QuickFixService.instance.simpleInline("Replace backslash") {
                         parameterString.updateText(stringContents.replace("\\", "/"))
                     }
                 )

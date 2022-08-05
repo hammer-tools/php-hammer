@@ -9,12 +9,12 @@ import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.functionBody
-import net.rentalhost.plugins.extensions.psi.getMemberOverridden
-import net.rentalhost.plugins.extensions.psi.isStrictlyStatement
-import net.rentalhost.plugins.extensions.psi.isStub
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.functionBody
+import net.rentalhost.plugins.hammer.extensions.psi.getMemberOverridden
+import net.rentalhost.plugins.hammer.extensions.psi.isStrictlyStatement
+import net.rentalhost.plugins.hammer.extensions.psi.isStub
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class SenselessParentCallEmptyInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -46,11 +46,11 @@ class SenselessParentCallEmptyInspection: PhpInspection() {
             if (baseMethodChildren != "")
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "senseless call to empty parent::${element.name}()",
-                LocalQuickFixService.SimpleDeleteQuickFix(
+                QuickFixService.instance.simpleDelete(
                     "Delete call to parent::${element.name}()",
                     SmartPointerManager.createPointer(element.parent)
                 )

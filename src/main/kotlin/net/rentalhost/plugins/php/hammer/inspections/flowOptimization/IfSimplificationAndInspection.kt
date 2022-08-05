@@ -7,11 +7,11 @@ import com.jetbrains.php.lang.psi.elements.Else
 import com.jetbrains.php.lang.psi.elements.ElseIf
 import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.getSingleStatement
-import net.rentalhost.plugins.extensions.psi.isAndSimplified
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.getSingleStatement
+import net.rentalhost.plugins.hammer.extensions.psi.isAndSimplified
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class IfSimplificationAndInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -43,14 +43,14 @@ class IfSimplificationAndInspection: PhpInspection() {
                     return
             }
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element.firstChild,
                 "nested condition can be merged with this",
-                LocalQuickFixService.SimpleInlineQuickFix("Merge nested conditional") {
-                    val elementCondition = element.condition ?: return@SimpleInlineQuickFix
-                    val elementChildCondition = elementChild.condition ?: return@SimpleInlineQuickFix
-                    val elementChildStatement = elementChild.statement ?: return@SimpleInlineQuickFix
+                QuickFixService.instance.simpleInline("Merge nested conditional") {
+                    val elementCondition = element.condition ?: return@simpleInline
+                    val elementChildCondition = elementChild.condition ?: return@simpleInline
+                    val elementChildStatement = elementChild.statement ?: return@simpleInline
 
                     elementCondition.replace(
                         FactoryService.createBinaryExpression(

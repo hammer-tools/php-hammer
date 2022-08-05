@@ -15,11 +15,11 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.*
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LanguageService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.*
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.LanguageService
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import javax.swing.JComponent
 
 class ParameterDefaultsNullInspection: PhpInspection() {
@@ -75,7 +75,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                             continue
                     }
 
-                    ProblemsHolderService.registerProblem(
+                    ProblemsHolderService.instance.registerProblem(
                         problemsHolder,
                         parameter,
                         "default value of the parameter must be \"null\"",

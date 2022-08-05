@@ -1,4 +1,4 @@
-package net.rentalhost.plugins.enums
+package net.rentalhost.plugins.php.hammer.inspections.enums
 
 enum class OptionNullableTypeFormat {
     SHORT,

@@ -6,9 +6,9 @@ import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.TernaryExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.services.FormatterService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.services.FormatterService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class TernarySimplificationInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -43,11 +43,11 @@ class TernarySimplificationInspection: PhpInspection() {
                 return
             }
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 expression,
                 "ternary can be simplified",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Simplify ternary",
                     if (comparisonIdentical) expression.falseVariant ?: return
                     else expression.trueVariant ?: return

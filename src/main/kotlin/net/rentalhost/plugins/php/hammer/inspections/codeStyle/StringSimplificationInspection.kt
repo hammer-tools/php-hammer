@@ -9,9 +9,9 @@ import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class StringSimplificationInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -33,11 +33,11 @@ class StringSimplificationInspection: PhpInspection() {
                 if (parent.parent is PhpPsiElement) PsiTreeUtil.skipWhitespacesAndCommentsForward(parent.parent).elementType == PhpTokenTypes.opHASH_ARRAY
                 else false
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 parent,
                 "string can be simplified",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Replace with type cast (string)",
                     if (isArrayKey) FactoryService.createExpression(problemsHolder.project, elementTextNormalized)
                     else FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementTextNormalized)

@@ -5,14 +5,14 @@ import com.intellij.psi.PsiWhiteSpace
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.getNextSiblingConditional
-import net.rentalhost.plugins.extensions.psi.getSingleStatement
-import net.rentalhost.plugins.extensions.psi.isOrSimplified
-import net.rentalhost.plugins.extensions.psi.isTerminatingStatement
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.FormatterService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.getNextSiblingConditional
+import net.rentalhost.plugins.hammer.extensions.psi.getSingleStatement
+import net.rentalhost.plugins.hammer.extensions.psi.isOrSimplified
+import net.rentalhost.plugins.hammer.extensions.psi.isTerminatingStatement
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.FormatterService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class IfSimplificationOrInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -38,13 +38,13 @@ class IfSimplificationOrInspection: PhpInspection() {
                 FormatterService.normalize(elementNextNormalized) != FormatterService.normalize(elementNormalized))
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element.firstChild,
                 "subsequent condition can be merged with this",
-                LocalQuickFixService.SimpleInlineQuickFix("Simplify conditional with the subsequent") {
-                    val elementCondition = element.condition ?: return@SimpleInlineQuickFix
-                    val elementNextCondition = elementNext.condition ?: return@SimpleInlineQuickFix
+                QuickFixService.instance.simpleInline("Simplify conditional with the subsequent") {
+                    val elementCondition = element.condition ?: return@simpleInline
+                    val elementNextCondition = elementNext.condition ?: return@simpleInline
 
                     if (element is If &&
                         elementNext is If &&

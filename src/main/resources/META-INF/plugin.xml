@@ -1,9 +1,9 @@
 <idea-plugin>
     <id>net.rentalhost.plugins.php.hammer</id>
     <name>🔨 PHP Hammer</name>
-    <version>0.13.1</version>
+    <version>0.13.2</version>
 
-    <vendor email="david.rodrigues@rentalhost.net">Rentalhost.net</vendor>
+    <vendor email="david.rodrigues@rentalhost.net">Rentalhost</vendor>
 
     <idea-version since-build="221" until-build="222.*" />
 
@@ -411,25 +411,21 @@
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeWarning.CompactVariableInspection" />
 
         <!-- Plugin -->
-        <applicationService serviceImplementation="net.rentalhost.plugins.services.SettingsService" />
+        <applicationService serviceImplementation="net.rentalhost.plugins.php.hammer.services.SettingsService" />
 
-        <notificationGroup id="net.rentalhost.plugins.notification.INSTALLED"
-                           displayType="STICKY_BALLOON" />
-        <notificationGroup id="net.rentalhost.plugins.notification.UPDATED"
-                           displayType="STICKY_BALLOON" />
-        <notificationGroup id="net.rentalhost.plugins.notification.REVIEW"
-                           displayType="STICKY_BALLOON" />
+        <notificationGroup id="net.rentalhost.plugins.php.hammer.notification.INSTALLED" displayType="STICKY_BALLOON" />
+        <notificationGroup id="net.rentalhost.plugins.php.hammer.notification.UPDATED" displayType="STICKY_BALLOON" />
+        <notificationGroup id="net.rentalhost.plugins.php.hammer.notification.REVIEW" displayType="STICKY_BALLOON" />
 
-        <errorHandler implementation="net.rentalhost.plugins.services.ExceptionService" />
+        <errorHandler implementation="net.rentalhost.plugins.php.hammer.services.ExceptionService" />
 
         <toolWindow id="PHP Hammer" icon="/META-INF/pluginIcon.png" anchor="right"
-                    factoryClass="net.rentalhost.plugins.services.SidebarService" />
+                    factoryClass="net.rentalhost.plugins.php.hammer.services.SidebarService" />
     </extensions>
 
     <applicationListeners>
-        <listener
-            activeInHeadlessMode="false"
-            class="net.rentalhost.plugins.services.listeners.PluginUpdateListener"
-            topic="com.intellij.openapi.project.ProjectManagerListener" />
+        <listener activeInHeadlessMode="false"
+                  class="net.rentalhost.plugins.php.hammer.services.PluginUpdateService"
+                  topic="com.intellij.openapi.project.ProjectManagerListener" />
     </applicationListeners>
 </idea-plugin>

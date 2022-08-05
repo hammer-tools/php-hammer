@@ -332,6 +332,10 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 ## [0.1.0] - 2022-07-02
 
+### Important
+
+- First public release;
+
 ### Added
 
 - **[ArrayPackableInspection]**: implemented ("array can be packed");

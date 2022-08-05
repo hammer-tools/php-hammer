@@ -7,10 +7,10 @@ import com.jetbrains.php.lang.psi.elements.PhpReturn
 import com.jetbrains.php.lang.psi.elements.impl.ControlStatementImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpReturnImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.services.ElementService
-import net.rentalhost.plugins.services.FormatterService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.services.ElementService
+import net.rentalhost.plugins.hammer.services.FormatterService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class RedundantReturnPointInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -31,11 +31,11 @@ class RedundantReturnPointInspection: PhpInspection() {
             if (elementReturn != elementNextReturn)
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "redundant return point",
-                LocalQuickFixService.SimpleDeleteQuickFix("Drop this return point")
+                QuickFixService.instance.simpleDelete("Drop this return point")
             )
         }
     }

@@ -6,10 +6,10 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.getTypes
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.TypeService
+import net.rentalhost.plugins.hammer.extensions.psi.getTypes
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.hammer.services.TypeService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import javax.swing.JComponent
 
 class NativeMemberUsageInspection: PhpInspection() {
@@ -41,7 +41,7 @@ class NativeMemberUsageInspection: PhpInspection() {
                     return
             }
 
-            ProblemsHolderService.registerProblem(problemsHolder, elementBase, "native type must not be used as object")
+            ProblemsHolderService.instance.registerProblem(problemsHolder, elementBase, "native type must not be used as object")
         }
 
         override fun visitPhpClassConstantReference(element: ClassConstantReference) = visit(element)

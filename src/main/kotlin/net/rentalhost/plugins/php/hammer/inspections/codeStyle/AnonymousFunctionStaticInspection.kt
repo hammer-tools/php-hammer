@@ -6,11 +6,11 @@ import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.*
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.*
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class AnonymousFunctionStaticInspection: PhpInspection() {
@@ -32,11 +32,11 @@ class AnonymousFunctionStaticInspection: PhpInspection() {
                     return
             }
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element.firstChild,
                 "anonymous function can be static",
-                LocalQuickFixService.SimpleInlineQuickFix("Make this function static") {
+                QuickFixService.instance.simpleInline("Make this function static") {
                     element.insertBefore(FactoryService.createStaticKeyword(problemsHolder.project))
                 }
             )

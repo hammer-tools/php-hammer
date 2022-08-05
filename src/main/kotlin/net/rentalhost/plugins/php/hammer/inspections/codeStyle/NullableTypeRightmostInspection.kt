@@ -7,9 +7,9 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.services.LocalQuickFixService.SimpleTypeReplaceQuickFix
-import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.TypeService
+import net.rentalhost.plugins.hammer.services.TypeService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import kotlin.streams.toList
 
 class NullableTypeRightmostInspection: PhpInspection() {
@@ -30,11 +30,11 @@ class NullableTypeRightmostInspection: PhpInspection() {
 
             val elementTypeReplacementSuggestion = TypeService.joinTypes(TypeService.exceptNull(elementTypeText)) + "|null"
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "nullable type must be on rightmost side (\"$elementTypeReplacementSuggestion\")",
-                SimpleTypeReplaceQuickFix(
+                QuickFixService.instance.simpleTypeReplace(
                     "Move \"null\" type to rightmost side",
                     elementTypeReplacementSuggestion
                 )

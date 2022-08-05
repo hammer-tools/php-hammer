@@ -5,10 +5,10 @@ import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LanguageService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.LanguageService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class FunctionAliasUsageInspection: PhpInspection() {
     @Suppress("SpellCheckingInspection")
@@ -39,13 +39,13 @@ class FunctionAliasUsageInspection: PhpInspection() {
 
             val functionIdentifier = (function.nameNode ?: return).psi
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 function,
                 function.firstChild,
                 functionIdentifier,
                 "using function alias",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Replace with target function", functionIdentifier,
                     FactoryService.createFunctionIdentifier(problemsHolder.project, functionTarget)
                 )

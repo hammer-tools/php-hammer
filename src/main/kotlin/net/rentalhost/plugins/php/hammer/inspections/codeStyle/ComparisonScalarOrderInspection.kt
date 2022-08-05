@@ -5,13 +5,13 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.enums.OptionComparisonScalarSide
-import net.rentalhost.plugins.extensions.psi.isScalar
-import net.rentalhost.plugins.extensions.psi.swap
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
-import net.rentalhost.plugins.services.TypeService
+import net.rentalhost.plugins.hammer.extensions.psi.isScalar
+import net.rentalhost.plugins.hammer.extensions.psi.swap
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.hammer.services.TypeService
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionComparisonScalarSide
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class ComparisonScalarOrderInspection: PhpInspection() {
@@ -36,14 +36,14 @@ class ComparisonScalarOrderInspection: PhpInspection() {
             else if (rightScalar || !leftScalar)
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "scalar type must be on the left side"
                 else "scalar type must be on the right side",
-                LocalQuickFixService.SimpleInlineQuickFix("Flip comparison") {
-                    (elementLeft ?: return@SimpleInlineQuickFix)
-                        .swap(elementRight ?: return@SimpleInlineQuickFix)
+                QuickFixService.instance.simpleInline("Flip comparison") {
+                    (elementLeft ?: return@simpleInline)
+                        .swap(elementRight ?: return@simpleInline)
                 }
             )
         }

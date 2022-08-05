@@ -4,9 +4,9 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.*
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class StaticAnonymousFunctionCannotAccessThisInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -19,11 +19,11 @@ class StaticAnonymousFunctionCannotAccessThisInspection: PhpInspection() {
                 if (elementScope.accessVariables().find { it.variableName == "this" } == null)
                     continue
 
-                ProblemsHolderService.registerProblem(
+                ProblemsHolderService.instance.registerProblem(
                     problemsHolder,
                     element.firstChild,
                     "static anonymous functions cannot access \$this",
-                    LocalQuickFixService.SimpleDeleteQuickFix("Delete this \"static\" declaration")
+                    QuickFixService.instance.simpleDelete("Delete this \"static\" declaration")
                 )
 
                 return

@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
-import net.rentalhost.plugins.enums.OptionNullCheckFormat
-import net.rentalhost.plugins.services.TestCase
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullCheckFormat
+import net.rentalhost.plugins.hammer.services.TestCase
 
 class NullCheckFormatInspectionTestCase: TestCase() {
     fun testNullCheckFormatComparison(): Unit =

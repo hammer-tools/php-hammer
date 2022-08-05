@@ -6,10 +6,10 @@ import com.jetbrains.php.lang.psi.elements.Else
 import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.extensions.psi.replaceWithGroupStatement
-import net.rentalhost.plugins.services.FormatterService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.replaceWithGroupStatement
+import net.rentalhost.plugins.hammer.services.FormatterService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class IfSimplificationElseInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -23,19 +23,19 @@ class IfSimplificationElseInspection: PhpInspection() {
             if (elementNormalized != elementReferenceNormalized)
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 elementReference.firstChild,
                 "useless conditional can be safely dropped",
-                LocalQuickFixService.SimpleInlineQuickFix("Drop conditional") {
+                QuickFixService.instance.simpleInline("Drop conditional") {
                     if (elementReference is If) {
                         val elementReferenceStatement = elementReference.statement
 
                         if (elementReferenceStatement !is GroupStatement ||
                             elementReference.parent is Else) {
-                            elementReference.replace(elementReferenceStatement ?: return@SimpleInlineQuickFix)
+                            elementReference.replace(elementReferenceStatement ?: return@simpleInline)
 
-                            return@SimpleInlineQuickFix
+                            return@simpleInline
                         }
 
                         elementReference.replaceWithGroupStatement(elementReferenceStatement)

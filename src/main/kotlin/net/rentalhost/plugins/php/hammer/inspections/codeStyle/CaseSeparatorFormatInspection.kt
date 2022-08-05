@@ -2,7 +2,6 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
-import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
@@ -11,11 +10,11 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpCase
 import com.jetbrains.php.lang.psi.elements.impl.GroupStatementSimpleImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.enums.OptionCaseSeparatorFormat
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionCaseSeparatorFormat
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class CaseSeparatorFormatInspection: PhpInspection() {
@@ -45,13 +44,13 @@ class CaseSeparatorFormatInspection: PhpInspection() {
             if (elementSeparatorReplacement == null)
                 return
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 elementSeparator,
                 "wrong switch() \"${element.firstChild.text}\" separator",
-                LocalQuickFixService.SimpleLeafReplaceQuickFix(
+                QuickFixService.instance.simpleLeafReplace(
                     "Replace with ${elementSeparatorReplacement.elementType.toString()} separator",
-                    SmartPointerManager.createPointer(elementSeparatorReplacement)
+                    elementSeparatorReplacement
                 )
             )
         }

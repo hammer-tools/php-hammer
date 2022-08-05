@@ -8,12 +8,12 @@ import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.UnaryExpression
 import com.jetbrains.php.lang.psi.elements.impl.ForImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.enums.OptionUnaryOperatorSideFormat
-import net.rentalhost.plugins.extensions.psi.isStrictlyStatement
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.extensions.psi.isStrictlyStatement
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionUnaryOperatorSideFormat
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class UnaryOperatorFormatInspection: PhpInspection() {
@@ -56,12 +56,12 @@ class UnaryOperatorFormatInspection: PhpInspection() {
                 return
             }
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 if (unaryOperationPreferRight) "unary expression must be written as ${unaryElement.text}${unaryOperator.text}"
                 else "unary expression must be written as ${unaryOperator.text}${unaryElement.text}",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Swap unary operation elements",
                     if (unaryOperationPreferRight) FactoryService.createUnaryRightOperation(
                         problemsHolder.project,

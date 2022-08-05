@@ -5,8 +5,8 @@ import com.intellij.openapi.project.Project;
 
 import javax.swing.*;
 
-import net.rentalhost.plugins.services.SettingsService;
-import net.rentalhost.plugins.services.UrlService;
+import net.rentalhost.plugins.hammer.services.SettingsService;
+import net.rentalhost.plugins.php.hammer.services.ProjectService;
 
 public final class SidebarForm {
     private JPanel panel;
@@ -26,21 +26,23 @@ public final class SidebarForm {
     private final String labelFixesText;
 
     public SidebarForm(final Project project) {
-        final SettingsService.Companion.State state = SettingsService.Companion.getInstance().getState();
+        final var projectService = ProjectService.Companion.getInstance();
+        final var projectState   = projectService.getSettings().getServiceInstance().getState();
+        final var projectUrls    = projectService.getUrls();
 
-        labelVersion.setText(state.getPluginVersion());
+        labelVersion.setText(projectState.getPluginVersion());
 
-        buttonHome.addActionListener(e -> BrowserUtil.open(UrlService.homeUrl));
-        buttonInspections.addActionListener(e -> BrowserUtil.open(UrlService.inspectionsUrl));
-        buttonChangelog.addActionListener(e -> BrowserUtil.open(UrlService.changelogUrl));
-        buttonReview.addActionListener(e -> BrowserUtil.open(UrlService.reviewsUrl));
+        buttonHome.addActionListener(e -> BrowserUtil.open(projectUrls.getHomeUrl()));
+        buttonInspections.addActionListener(e -> BrowserUtil.open(projectUrls.getInspectionsUrl()));
+        buttonChangelog.addActionListener(e -> BrowserUtil.open(projectUrls.getChangelogUrl()));
+        buttonReview.addActionListener(e -> BrowserUtil.open(projectUrls.getReviewsUrl()));
 
         labelInspectionsText = labelInspections.getText();
         labelFixesText = labelFixes.getText();
 
-        updateCounters(state);
+        updateCounters(projectState);
 
-        final Timer timer = new Timer(5000, e -> updateCounters(state));
+        final Timer timer = new Timer(5000, e -> updateCounters(projectState));
         timer.start();
     }
 

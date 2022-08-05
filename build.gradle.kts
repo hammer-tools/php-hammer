@@ -10,6 +10,7 @@ plugins {
 
 dependencies {
     implementation("io.sentry:sentry:6.3.0")
+    implementation(files("${project.projectDir}/../hammer-tools/build/libs/hammer-tools-0.1.0.jar"))
 }
 
 group = prop("pluginId")
@@ -50,15 +51,11 @@ tasks {
     }
 
     test {
-        // Fixes https://github.com/JetBrains/gradle-intellij-plugin/issues/1078.
-        intellij { type.set("IU") }
-
         delete(file("$buildDir/classes"))
 
         isScanForTestClasses = false
 
         include("**/*TestCase.class")
-        exclude("net/rentalhost/plugins/services/TestCase.class")
 
         systemProperty("idea.split.test.logs", "true")
     }

@@ -7,11 +7,11 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.ClassReference
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.enums.OptionClassSelfReferenceFormat
-import net.rentalhost.plugins.services.FactoryService
-import net.rentalhost.plugins.services.LocalQuickFixService
-import net.rentalhost.plugins.services.OptionsPanelService
-import net.rentalhost.plugins.services.ProblemsHolderService
+import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionClassSelfReferenceFormat
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class ClassSelfReferenceFormatInspection: PhpInspection() {
@@ -40,11 +40,11 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
                 if (classSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) "self"
                 else elementClassName
 
-            ProblemsHolderService.registerProblem(
+            ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "class reference format must be \"$expectedFormat\"",
-                LocalQuickFixService.SimpleReplaceQuickFix(
+                QuickFixService.instance.simpleReplace(
                     "Replace with \"$expectedFormat\"",
                     FactoryService.createClassReference(problemsHolder.project, expectedFormat)
                 )
