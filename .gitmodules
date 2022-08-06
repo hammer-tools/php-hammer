@@ -6,6 +6,6 @@ url = ../php-hammer.wiki.git
 path = buildSrc
 url = ../hammer-build-src.git
 
-[submodule "hammerTools"]
-path = hammerTools
+[submodule "hammer-tools"]
+path = hammer-tools
 url = ../hammer-tools.git

@@ -7,10 +7,10 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/hammerTools" name="hammer-tools">
+              <build path="$PROJECT_DIR$/hammer-tools" name="hammer-tools">
                 <projects>
-                  <project path="$PROJECT_DIR$/hammerTools" />
-                  <project path="$PROJECT_DIR$/hammerTools/lib" />
+                  <project path="$PROJECT_DIR$/hammer-tools" />
+                  <project path="$PROJECT_DIR$/hammer-tools/lib" />
                 </projects>
               </build>
             </builds>
@@ -24,9 +24,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/hammerTools" />
-            <option value="$PROJECT_DIR$/hammerTools/buildSrc" />
-            <option value="$PROJECT_DIR$/hammerTools/lib" />
+            <option value="$PROJECT_DIR$/hammer-tools" />
+            <option value="$PROJECT_DIR$/hammer-tools/buildSrc" />
+            <option value="$PROJECT_DIR$/hammer-tools/lib" />
           </set>
         </option>
       </GradleProjectSettings>

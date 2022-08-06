@@ -1,3 +1,3 @@
 rootProject.name = "php-hammer"
 
-includeBuild("hammerTools")
+includeBuild("hammer-tools")

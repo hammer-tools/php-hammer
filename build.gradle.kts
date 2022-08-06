@@ -10,7 +10,7 @@ plugins {
 
 dependencies {
     implementation("io.sentry:sentry:6.3.0")
-    implementation(":hammer-tools-0.1.0")
+    implementation(fileTree("hammer-tools/build/libs").also { it.include("*.jar") })
 }
 
 group = prop("pluginId")
@@ -18,8 +18,6 @@ version = prop("pluginVersion")
 
 repositories {
     mavenCentral()
-
-    flatDir { dirs("hammerTools/build/libs") }
 }
 
 apply {
@@ -84,6 +82,8 @@ tasks {
     }
 
     setupDependencies {
+        dependsOn(gradle.includedBuild("hammer-tools").task(":jar"))
+
         doLast {
             // Fixes IDEA-298989.
             fileTree("$buildDir/instrumented/instrumentCode") { include("**/*Form.class") }.files.forEach { delete(it) }

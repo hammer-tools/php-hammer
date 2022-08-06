@@ -9,7 +9,7 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 ### Important
 
-- The purpose of this release is to make it compatible with laravel-hammer;
+- The purpose of this release is to make it compatible with **Laravel Hammer** plugin;
 
 [0.13.2]: https://github.com/hammer-tools/php-hammer/releases/tag/0.13.2
 
