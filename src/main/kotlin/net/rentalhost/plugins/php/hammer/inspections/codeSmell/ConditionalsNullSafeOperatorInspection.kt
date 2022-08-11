@@ -3,18 +3,19 @@ package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.tree.LeafPsiElement
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.nextLeaf
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
-import com.jetbrains.php.lang.psi.elements.BinaryExpression
-import com.jetbrains.php.lang.psi.elements.FieldReference
-import com.jetbrains.php.lang.psi.elements.MethodReference
-import com.jetbrains.php.lang.psi.elements.Variable
+import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.hammer.extensions.psi.insertAfter
 import net.rentalhost.plugins.hammer.extensions.psi.isExactly
 import net.rentalhost.plugins.hammer.extensions.psi.isOperatorAnd
+import net.rentalhost.plugins.hammer.services.FactoryService
 import net.rentalhost.plugins.hammer.services.FormatterService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class ConditionalsNullSafeOperatorInspection: PhpInspection() {
     private fun normalizeArrow(element: PsiElement) = FormatterService.normalize(element) { itElement, _ ->
@@ -53,10 +54,12 @@ class ConditionalsNullSafeOperatorInspection: PhpInspection() {
             if (!operandParent.isOperatorAnd())
                 return
 
-            val operandNormalized = "${normalizeArrow(operand)}->"
+            val operandNormalized = normalizeArrow(operand)
+            val operandNormalizedArrow = "$operandNormalized->"
+
             val operandMatches = getAllNextAnd(operandParent).filter {
                 (it is FieldReference || it is MethodReference) &&
-                normalizeArrow(it).startsWith(operandNormalized)
+                normalizeArrow(it).startsWith(operandNormalizedArrow)
             }
 
             if (operandMatches.isEmpty())
@@ -65,7 +68,56 @@ class ConditionalsNullSafeOperatorInspection: PhpInspection() {
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 operandParent.operation ?: return,
-                "this operator can be replaced by null-safe operator"
+                "this operator can be replaced by null-safe operator",
+                QuickFixService.instance.simpleInline("Replace with null-safe operator") {
+                    operandMatches.forEach {
+                        if (it !is FieldReference &&
+                            it !is MethodReference)
+                            return@forEach
+
+                        PsiTreeUtil.findChildrenOfType(it, operand::class.java).firstOrNull {
+                            val operandSimilarNormalized = normalizeArrow(it)
+
+                            if (operandNormalized == operandSimilarNormalized) {
+                                if ((it.nextLeaf() ?: return@firstOrNull true).text != "?") {
+                                    it.insertAfter(FactoryService.createTernary(problemsHolder.project))
+                                }
+
+                                it.replace(operand.copy())
+
+                                return@firstOrNull true
+                            }
+
+                            return@firstOrNull false
+                        }
+
+                        var itCurrent = it
+
+                        if (itCurrent.parent == operand.parent) {
+                            itCurrent = operand.parent.replace(itCurrent)
+                        }
+
+                        if (itCurrent.parent !is PhpElementWithCondition &&
+                            itCurrent.parent !is BinaryExpression) {
+                            itCurrent.replace(FactoryService.createTypeCastExpression(problemsHolder.project, "bool", itCurrent.text))
+                        }
+                    }
+
+                    val operandFixParent = operand.parent
+
+                    if (operandFixParent.isValid) {
+                        if (isRightOperand) {
+                            operandFixParent.replace(operandFixParent.firstChild)
+                        }
+                        else if (operandFixParent is BinaryExpression) {
+                            val operandFixParentRight = operandFixParent.rightOperand
+
+                            if (operandFixParentRight != null) {
+                                operandFixParent.replace(operandFixParentRight)
+                            }
+                        }
+                    }
+                }
             )
         }
 
