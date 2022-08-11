@@ -25,7 +25,7 @@ apply {
 intellij {
     pluginName.set(prop("pluginName"))
     version.set(prop("platformVersion"))
-    type.set("PS")
+    type.set("IU")
 
     plugins.set(listOf("com.jetbrains.php:${prop("platformPhpBuild")}"))
 }
