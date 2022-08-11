@@ -1,0 +1,15 @@
+<html lang="en">
+    <body>
+        This inspection finds the use of the <code>&&</code> operator which can be simplified
+        into the use of the null-safe operator, available since PHP 8.
+        A <code>(bool)</code> cast can be applied under certain conditions to maintain the expected behavior.<br /><br />
+
+        <strong>Example:</strong>
+
+        <pre><code>return $date && $date->isTomorrow();</code></pre>
+
+        <strong>Becomes:</strong>
+
+        <pre><code>return $date?->isTomorrow();</code></pre>
+    </body>
+</html>

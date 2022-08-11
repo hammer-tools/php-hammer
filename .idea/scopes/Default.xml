@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="Default" pattern="file[php-hammer.main]:kotlin//net//rentalhost//plugins//*||file[php-hammer.main]:resources/inspectionDescriptions//*||file[php-hammer.main]:resources/META-INF/plugin.xml||file[php-hammer.test]:kotlin//net//rentalhost//plugins//*||file[php-hammer.test]:resources//*||file[php-hammer]:wiki/Inspections.md||file[php-hammer.main]:java//*" />
+  <scope name="Default" pattern="file[php-hammer.test]:*/||file[php-hammer.main]:*/||file[php-hammer.hammer-tools.main]:kotlin//*" />
 </component>
