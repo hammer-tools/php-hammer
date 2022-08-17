@@ -152,6 +152,9 @@ $dummy21300 = ((bool)$example?->self) && $example ? true : false;
 
 $dummy21400 = $example && ((bool)$example?->self) ? true : false;
 
+$dummy22000 = $dummy === null &&
+              $example->self?->isTomorrow();
+
 // Not applicable:
 
 $notApplicable1000 = $example instanceof Example &&
@@ -183,3 +186,11 @@ $notApplicable4000 = $example || $example->self || $example->isTomorrow();
 
 if ($example || $example->self || $example->isTomorrow()) {
 }
+
+$notApplicable5000 = $example->self &&
+                     $example->self->self !== null &&
+                     $example->self->isTomorrow();
+
+$notApplicable6000 = $example->self &&
+                     dummy($example?->self) &&
+                     $example->self->isTomorrow();

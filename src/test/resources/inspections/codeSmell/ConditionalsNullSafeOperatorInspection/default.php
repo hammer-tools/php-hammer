@@ -199,6 +199,10 @@ $dummy21300 = ($example <weak_warning descr="🔨 PHP Hammer: this operator can 
 
 $dummy21400 = $example && ($example <weak_warning descr="🔨 PHP Hammer: this operator can be replaced by null-safe operator.">&&</weak_warning> $example->self) ? true : false;
 
+$dummy22000 = $example->self <weak_warning descr="🔨 PHP Hammer: this operator can be replaced by null-safe operator.">&&</weak_warning>
+              $dummy === null &&
+              $example->self->isTomorrow();
+
 // Not applicable:
 
 $notApplicable1000 = $example instanceof Example &&
@@ -230,3 +234,11 @@ $notApplicable4000 = $example || $example->self || $example->isTomorrow();
 
 if ($example || $example->self || $example->isTomorrow()) {
 }
+
+$notApplicable5000 = $example->self &&
+                     $example->self->self !== null &&
+                     $example->self->isTomorrow();
+
+$notApplicable6000 = $example->self &&
+                     dummy($example?->self) &&
+                     $example->self->isTomorrow();

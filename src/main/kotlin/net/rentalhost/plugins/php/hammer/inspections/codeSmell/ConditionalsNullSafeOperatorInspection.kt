@@ -17,6 +17,9 @@ import net.rentalhost.plugins.hammer.services.FormatterService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
+val matchClasses: Array<Class<out PhpReference>> =
+    arrayOf(Variable::class.java, FieldReference::class.java, MethodReference::class.java)
+
 class ConditionalsNullSafeOperatorInspection: PhpInspection() {
     private fun normalizeArrow(element: PsiElement) = FormatterService.normalize(element) { itElement, _ ->
         return@normalize !(itElement.isExactly<LeafPsiElement>() &&
@@ -57,10 +60,20 @@ class ConditionalsNullSafeOperatorInspection: PhpInspection() {
             val operandNormalized = normalizeArrow(operand)
             val operandNormalizedArrow = "$operandNormalized->"
 
-            val operandMatches = getAllNextAnd(operandParent).filter {
-                (it is FieldReference || it is MethodReference) &&
-                normalizeArrow(it).startsWith(operandNormalizedArrow)
-            }
+            val operandSiblings = getAllNextAnd(operandParent)
+            val operandSiblingsParent = PsiTreeUtil.findCommonParent(operand, *operandSiblings.toTypedArray())
+
+            PsiTreeUtil.findChildrenOfAnyType(operandSiblingsParent, *matchClasses)
+                .filter {
+                    val siblingNormalized = normalizeArrow(it)
+
+                    siblingNormalized == operandNormalized ||
+                    siblingNormalized.startsWith(operandNormalizedArrow)
+                }
+                .map { PsiTreeUtil.skipParentsOfType(it, *matchClasses) }
+                .forEach { if (it !is BinaryExpression || !it.isOperatorAnd()) return }
+
+            val operandMatches = operandSiblings.filter { normalizeArrow(it).startsWith(operandNormalizedArrow) }
 
             if (operandMatches.isEmpty())
                 return
