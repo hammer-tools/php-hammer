@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.ControlStatement
 import com.jetbrains.php.lang.psi.elements.Else
@@ -43,14 +44,18 @@ class IfSimplificationAndInspection: PhpInspection() {
                     return
             }
 
+            val elementConditionPointer = (element.condition ?: return).createSmartPointer()
+            val elementChildConditionPointer = (elementChild.condition ?: return).createSmartPointer()
+            val elementChildStatementPointer = (elementChild.statement ?: return).createSmartPointer()
+
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element.firstChild,
                 "nested condition can be merged with this",
                 QuickFixService.instance.simpleInline("Merge nested conditional") {
-                    val elementCondition = element.condition ?: return@simpleInline
-                    val elementChildCondition = elementChild.condition ?: return@simpleInline
-                    val elementChildStatement = elementChild.statement ?: return@simpleInline
+                    val elementCondition = elementConditionPointer.element ?: return@simpleInline
+                    val elementChildCondition = elementChildConditionPointer.element ?: return@simpleInline
+                    val elementChildStatement = elementChildStatementPointer.element ?: return@simpleInline
 
                     elementCondition.replace(
                         FactoryService.createBinaryExpression(

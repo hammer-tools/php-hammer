@@ -2,6 +2,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.util.elementType
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
@@ -67,12 +68,12 @@ class UnaryOperatorFormatInspection: PhpInspection() {
                         problemsHolder.project,
                         unaryElement.text,
                         unaryOperator.text
-                    )
+                    ).createSmartPointer()
                     else FactoryService.createUnaryLeftOperation(
                         problemsHolder.project,
                         unaryElement.text,
                         unaryOperator.text
-                    )
+                    ).createSmartPointer()
                 )
             )
         }

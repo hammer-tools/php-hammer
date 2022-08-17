@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.ArrayCreationExpression
 import com.jetbrains.php.lang.psi.elements.MultiassignmentExpression
@@ -50,7 +51,7 @@ class CompactReplacementInspection: PhpInspection() {
                 "array can be replaced by compact()",
                 QuickFixService.instance.simpleReplace(
                     "Replace with compact()",
-                    FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables)
+                    FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables).createSmartPointer()
                 )
             )
         }

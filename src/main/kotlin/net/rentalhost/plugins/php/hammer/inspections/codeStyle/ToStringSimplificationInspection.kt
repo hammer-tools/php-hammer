@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
@@ -28,7 +29,7 @@ class ToStringSimplificationInspection: PhpInspection() {
                 "call to __toString() can be simplified",
                 QuickFixService.instance.simpleReplace(
                     "Replace with type cast (string)",
-                    FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementBase.text)
+                    FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementBase.text).createSmartPointer()
                 )
             )
         }

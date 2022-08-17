@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.deprecation
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.StringLiteralExpressionImpl
@@ -31,7 +32,7 @@ class DollarSignOutsideCurlyBracesInspection: PhpInspection() {
                 "using \${var} in strings is deprecated",
                 QuickFixService.instance.simpleReplace(
                     "Replace with {\$$replaceWith}",
-                    FactoryService.createCurlyVariable(problemsHolder.project, replaceWith)
+                    FactoryService.createCurlyVariable(problemsHolder.project, replaceWith).createSmartPointer()
                 )
             )
         }

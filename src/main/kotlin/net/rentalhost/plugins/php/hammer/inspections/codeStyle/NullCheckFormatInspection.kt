@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
@@ -50,7 +51,7 @@ class NullCheckFormatInspection: PhpInspection() {
                         functionParameterText,
                         if (functionBaseNot) "!==" else "===",
                         "null"
-                    )
+                    ).createSmartPointer()
                 )
             )
         }
@@ -90,7 +91,7 @@ class NullCheckFormatInspection: PhpInspection() {
                     FactoryService.createFunctionCall(
                         problemsHolder.project, comparisonNotIdentical, "is_null",
                         listOf((functionParameter.unparenthesize() ?: return).text)
-                    )
+                    ).createSmartPointer()
                 )
             )
         }

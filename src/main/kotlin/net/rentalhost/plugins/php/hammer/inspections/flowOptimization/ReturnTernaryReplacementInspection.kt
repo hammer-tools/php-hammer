@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpReturn
 import com.jetbrains.php.lang.psi.elements.TernaryExpression
@@ -18,24 +19,30 @@ class ReturnTernaryReplacementInspection: PhpInspection() {
                 return
 
             val returnStatement = (ternary.unparenthesize() ?: return).parent as? PhpReturn ?: return
+            val returnStatementPointer = returnStatement.createSmartPointer()
+
+            val ternaryPointer = ternary.createSmartPointer()
 
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 returnStatement.firstChild,
                 "return-ternary can be replaced by if()",
                 QuickFixService.instance.simpleInline("Replace by if()") {
-                    returnStatement.insertAfter(
+                    val ternaryLocal = ternaryPointer.element ?: return@simpleInline
+                    val returnStatementLocal = returnStatementPointer.element ?: return@simpleInline
+
+                    returnStatementLocal.insertAfter(
                         FactoryService.createReturn(
                             problemsHolder.project,
-                            ((ternary.falseVariant ?: return@simpleInline).unparenthesize() ?: return@simpleInline).text
+                            ((ternaryLocal.falseVariant ?: return@simpleInline).unparenthesize() ?: return@simpleInline).text
                         )
                     )
 
-                    returnStatement.replace(
+                    returnStatementLocal.replace(
                         FactoryService.createIfConditional(
                             problemsHolder.project,
-                            (ternary.condition.unparenthesize() ?: return@simpleInline).text,
-                            ((ternary.trueVariant ?: return@simpleInline).unparenthesize() ?: return@simpleInline).text,
+                            (ternaryLocal.condition.unparenthesize() ?: return@simpleInline).text,
+                            ((ternaryLocal.trueVariant ?: return@simpleInline).unparenthesize() ?: return@simpleInline).text,
                         )
                     )
                 }

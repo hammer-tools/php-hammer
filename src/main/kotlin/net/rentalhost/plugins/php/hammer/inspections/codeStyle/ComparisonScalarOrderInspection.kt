@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
@@ -36,14 +37,17 @@ class ComparisonScalarOrderInspection: PhpInspection() {
             else if (rightScalar || !leftScalar)
                 return
 
+            val elementLeftPointer = elementLeft?.createSmartPointer() ?: return
+            val elementRightPointer = elementRight?.createSmartPointer() ?: return
+
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "scalar type must be on the left side"
                 else "scalar type must be on the right side",
                 QuickFixService.instance.simpleInline("Flip comparison") {
-                    (elementLeft ?: return@simpleInline)
-                        .swap(elementRight ?: return@simpleInline)
+                    (elementLeftPointer.element ?: return@simpleInline)
+                        .swap(elementRightPointer.element ?: return@simpleInline)
                 }
             )
         }

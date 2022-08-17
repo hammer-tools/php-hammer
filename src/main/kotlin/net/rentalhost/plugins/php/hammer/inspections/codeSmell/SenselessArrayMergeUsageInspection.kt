@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
@@ -29,7 +30,7 @@ class SenselessArrayMergeUsageInspection: PhpInspection() {
                 "senseless array_merge() usage",
                 QuickFixService.instance.simpleReplace(
                     "Simplify useless array_merge()",
-                    elementSimplified
+                    elementSimplified.createSmartPointer()
                 )
             )
         }

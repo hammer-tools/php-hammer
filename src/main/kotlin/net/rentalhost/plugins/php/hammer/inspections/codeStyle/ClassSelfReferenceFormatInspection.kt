@@ -2,6 +2,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.ClassReference
@@ -46,7 +47,7 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
                 "class reference format must be \"$expectedFormat\"",
                 QuickFixService.instance.simpleReplace(
                     "Replace with \"$expectedFormat\"",
-                    FactoryService.createClassReference(problemsHolder.project, expectedFormat)
+                    FactoryService.createClassReference(problemsHolder.project, expectedFormat).createSmartPointer()
                 )
             )
         }

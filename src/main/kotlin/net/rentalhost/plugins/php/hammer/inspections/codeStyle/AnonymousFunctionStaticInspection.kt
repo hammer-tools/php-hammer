@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
@@ -32,12 +33,16 @@ class AnonymousFunctionStaticInspection: PhpInspection() {
                     return
             }
 
+            val elementPointer = element.createSmartPointer()
+
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element.firstChild,
                 "anonymous function can be static",
                 QuickFixService.instance.simpleInline("Make this function static") {
-                    element.insertBefore(FactoryService.createStaticKeyword(problemsHolder.project))
+                    with(elementPointer.element ?: return@simpleInline) {
+                        insertBefore(FactoryService.createStaticKeyword(problemsHolder.project))
+                    }
                 }
             )
         }

@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
@@ -41,7 +42,7 @@ class SenselessNumberFormatZeroDecimalInspection: PhpInspection() {
                         problemsHolder.project, "string", "int",
                         if (elementParameter is BinaryExpression) "(${elementParameter.text})"
                         else elementParameter.text
-                    )
+                    ).createSmartPointer()
                 )
             )
         }

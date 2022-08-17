@@ -3,6 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
@@ -39,8 +40,8 @@ class StringSimplificationInspection: PhpInspection() {
                 "string can be simplified",
                 QuickFixService.instance.simpleReplace(
                     "Replace with type cast (string)",
-                    if (isArrayKey) FactoryService.createExpression(problemsHolder.project, elementTextNormalized)
-                    else FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementTextNormalized)
+                    if (isArrayKey) FactoryService.createExpression(problemsHolder.project, elementTextNormalized).createSmartPointer()
+                    else FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementTextNormalized).createSmartPointer()
                 )
             )
         }

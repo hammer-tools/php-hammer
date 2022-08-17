@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
@@ -40,11 +41,15 @@ class CompactArgumentInvalidInspection: PhpInspection() {
                             }
                         }
 
+                        val itPointer = it.createSmartPointer()
+
                         ProblemsHolderService.instance.registerProblem(
                             problemsHolder, it,
                             "invalid argument for compact() function",
                             QuickFixService.instance.simpleInline("Drop invalid term") {
-                                ElementService.dropCompactArgument(it)
+                                with(itPointer.element ?: return@simpleInline) {
+                                    ElementService.dropCompactArgument(this)
+                                }
                             }
                         )
                     }

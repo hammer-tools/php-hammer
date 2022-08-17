@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
@@ -44,8 +45,8 @@ class CastIntvalInspection: PhpInspection() {
                 "function cast can be replaced with null",
                 QuickFixService.instance.simpleReplace(
                     "Replace with null",
-                    element.parent,
-                    FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = null;")
+                    element.parent.createSmartPointer(),
+                    FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = null;").createSmartPointer()
                 )
             )
         }
@@ -56,8 +57,8 @@ class CastIntvalInspection: PhpInspection() {
             "function cast can be replaced with the type cast ($castTypeTo)",
             QuickFixService.instance.simpleReplace(
                 "Replace with type cast ($castTypeTo)",
-                element.parent,
-                FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = ($castTypeTo) \$${castElement.name};")
+                element.parent.createSmartPointer(),
+                FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = ($castTypeTo) \$${castElement.name};").createSmartPointer()
             )
         )
     }
@@ -80,7 +81,7 @@ class CastIntvalInspection: PhpInspection() {
             "function cast can be replaced with the type cast ($castTypeTo)",
             QuickFixService.instance.simpleReplace(
                 "Replace with type cast ($castTypeTo)",
-                FactoryService.createTypeCastExpression(problemsHolder.project, castTypeTo, expressionText)
+                FactoryService.createTypeCastExpression(problemsHolder.project, castTypeTo, expressionText).createSmartPointer()
             )
         )
     }

@@ -84,6 +84,9 @@ class ConditionalsNullSafeOperatorInspection: PhpInspection() {
                 "this operator can be replaced by null-safe operator",
                 QuickFixService.instance.simpleInline("Replace with null-safe operator") {
                     operandMatches.forEach {
+                        if (!it.isValid)
+                            return@forEach
+
                         if (it !is FieldReference &&
                             it !is MethodReference)
                             return@forEach

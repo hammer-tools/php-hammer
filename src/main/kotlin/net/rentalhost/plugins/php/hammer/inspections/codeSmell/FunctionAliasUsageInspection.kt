@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
@@ -46,8 +47,8 @@ class FunctionAliasUsageInspection: PhpInspection() {
                 functionIdentifier,
                 "using function alias",
                 QuickFixService.instance.simpleReplace(
-                    "Replace with target function", functionIdentifier,
-                    FactoryService.createFunctionIdentifier(problemsHolder.project, functionTarget)
+                    "Replace with target function", functionIdentifier.createSmartPointer(),
+                    FactoryService.createFunctionIdentifier(problemsHolder.project, functionTarget).createSmartPointer()
                 )
             )
         }

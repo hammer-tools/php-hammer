@@ -3,6 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.impl.PhpShellCommandExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
@@ -35,7 +36,7 @@ class BacktickReplacementInspection: PhpInspection() {
                         problemsHolder.project, "shell_exec",
                         if (containsVariableOnly) listOf("\$${commandVariable.first().name}")
                         else listOf(StringService.addQuotes(commandContents, commandVariable.isNotEmpty(), false))
-                    )
+                    ).createSmartPointer()
                 )
             )
         }

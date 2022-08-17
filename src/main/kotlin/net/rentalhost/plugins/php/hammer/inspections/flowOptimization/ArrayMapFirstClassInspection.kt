@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
@@ -48,7 +49,7 @@ class ArrayMapFirstClassInspection: PhpInspection() {
                 "call to array_map() can be replaced by first-class callback",
                 QuickFixService.instance.simpleReplace(
                     "Replace with first-class callable",
-                    FactoryService.createFunctionCallable(problemsHolder.project, functionReturnCall.name ?: return)
+                    FactoryService.createFunctionCallable(problemsHolder.project, functionReturnCall.name ?: return).createSmartPointer()
                 )
             )
         }

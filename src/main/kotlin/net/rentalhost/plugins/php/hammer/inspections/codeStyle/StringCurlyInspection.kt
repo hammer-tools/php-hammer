@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.Variable
@@ -24,7 +25,7 @@ class StringCurlyInspection: PhpInspection() {
                 "variable must have curly braces",
                 QuickFixService.instance.simpleReplace(
                     "Wrap with curly braces",
-                    FactoryService.createCurlyVariable(problemsHolder.project, element.name)
+                    FactoryService.createCurlyVariable(problemsHolder.project, element.name).createSmartPointer()
                 )
             )
         }

@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Else
 import com.jetbrains.php.lang.psi.elements.GroupStatement
@@ -23,25 +24,29 @@ class IfSimplificationElseInspection: PhpInspection() {
             if (elementNormalized != elementReferenceNormalized)
                 return
 
+            val elementReferencePointer = elementReference.createSmartPointer()
+
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 elementReference.firstChild,
                 "useless conditional can be safely dropped",
                 QuickFixService.instance.simpleInline("Drop conditional") {
-                    if (elementReference is If) {
-                        val elementReferenceStatement = elementReference.statement
+                    val elementReferenceLocal = elementReferencePointer.element ?: return@simpleInline
+
+                    if (elementReferenceLocal is If) {
+                        val elementReferenceStatement = elementReferenceLocal.statement
 
                         if (elementReferenceStatement !is GroupStatement ||
-                            elementReference.parent is Else) {
-                            elementReference.replace(elementReferenceStatement ?: return@simpleInline)
+                            elementReferenceLocal.parent is Else) {
+                            elementReferenceLocal.replace(elementReferenceStatement ?: return@simpleInline)
 
                             return@simpleInline
                         }
 
-                        elementReference.replaceWithGroupStatement(elementReferenceStatement)
+                        elementReferenceLocal.replaceWithGroupStatement(elementReferenceStatement)
                     }
 
-                    elementReference.delete()
+                    elementReferenceLocal.delete()
                 }
             )
         }

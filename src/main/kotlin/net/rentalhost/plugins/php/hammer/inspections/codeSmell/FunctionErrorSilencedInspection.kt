@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
@@ -15,7 +16,11 @@ class FunctionErrorSilencedInspection: PhpInspection() {
                 problemsHolder,
                 element.getErrorControlOperator() ?: return,
                 "function call is using error control operator",
-                QuickFixService.instance.simpleReplace("Remove the \"@\" operator", element.parent, element)
+                QuickFixService.instance.simpleReplace(
+                    "Remove the \"@\" operator",
+                    element.parent.createSmartPointer(),
+                    element.createSmartPointer()
+                )
             )
         }
     }

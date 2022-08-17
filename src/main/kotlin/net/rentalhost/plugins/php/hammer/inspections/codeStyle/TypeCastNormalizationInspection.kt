@@ -3,6 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.tree.LeafPsiElement
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
@@ -40,7 +41,7 @@ class TypeCastNormalizationInspection: PhpInspection() {
                     "type cast must be written as $castTo",
                     QuickFixService.instance.simpleReplace(
                         "Replace with $castTo",
-                        FactoryService.createTypeCast(problemsHolder.project, castTo)
+                        FactoryService.createTypeCast(problemsHolder.project, castTo).createSmartPointer()
                     )
                 )
             }

@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
@@ -36,11 +37,15 @@ class CompactDuplicatedTermsInspection: PhpInspection() {
                                 return@forEachValues
                             }
 
+                            val itPointer = it.createSmartPointer()
+
                             ProblemsHolderService.instance.registerProblem(
                                 problemsHolder, it,
                                 "duplicated term in compact()",
                                 QuickFixService.instance.simpleInline("Drop duplicated term") {
-                                    ElementService.dropCompactArgument(it)
+                                    with(itPointer.element ?: return@simpleInline) {
+                                        ElementService.dropCompactArgument(this)
+                                    }
                                 }
                             )
                         }

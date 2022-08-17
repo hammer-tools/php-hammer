@@ -1,8 +1,8 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.codeInsight.PhpScopeHolder
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.MethodReference
@@ -52,7 +52,7 @@ class SenselessParentCallEmptyInspection: PhpInspection() {
                 "senseless call to empty parent::${element.name}()",
                 QuickFixService.instance.simpleDelete(
                     "Delete call to parent::${element.name}()",
-                    SmartPointerManager.createPointer(element.parent)
+                    element.parent.createSmartPointer()
                 )
             )
         }

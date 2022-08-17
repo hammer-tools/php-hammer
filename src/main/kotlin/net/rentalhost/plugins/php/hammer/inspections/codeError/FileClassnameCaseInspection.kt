@@ -3,6 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeError
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.inspections.PhpInspection
@@ -57,7 +58,7 @@ class FileClassnameCaseInspection: PhpInspection() {
                 "class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\")",
                 if (fileIdentifierValid) QuickFixService.instance.simpleReplace(
                     "Rename class to match filename",
-                    FactoryService.createClassReference(problemsHolder.project, fileBasename)
+                    FactoryService.createClassReference(problemsHolder.project, fileBasename).createSmartPointer()
                 )
                 else null
             )

@@ -2,6 +2,7 @@ package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiWhiteSpace
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
@@ -38,41 +39,47 @@ class IfSimplificationOrInspection: PhpInspection() {
                 FormatterService.normalize(elementNextNormalized) != FormatterService.normalize(elementNormalized))
                 return
 
+            val elementPointer = element.createSmartPointer()
+            val elementNextPointer = elementNext.createSmartPointer()
+
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element.firstChild,
                 "subsequent condition can be merged with this",
                 QuickFixService.instance.simpleInline("Simplify conditional with the subsequent") {
-                    val elementCondition = element.condition ?: return@simpleInline
-                    val elementNextCondition = elementNext.condition ?: return@simpleInline
+                    val elementLocal = elementPointer.element ?: return@simpleInline
+                    val elementNextLocal = elementNextPointer.element ?: return@simpleInline
 
-                    if (element is If &&
-                        elementNext is If &&
-                        element.nextSibling is PsiWhiteSpace) {
-                        element.nextSibling.delete()
+                    val elementLocalCondition = elementLocal.condition ?: return@simpleInline
+                    val elementNextLocalCondition = elementNextLocal.condition ?: return@simpleInline
+
+                    if (elementLocal is If &&
+                        elementNextLocal is If &&
+                        elementLocal.nextSibling is PsiWhiteSpace) {
+                        elementLocal.nextSibling.delete()
                     }
 
                     val elementMergedCondition = FactoryService.createBinaryExpression(
                         problemsHolder.project,
-                        "${elementCondition.text}||${elementNextCondition.text}"
+                        "${elementLocalCondition.text}||${elementNextLocalCondition.text}"
                     )
 
-                    if (elementNext is ElseIf) {
+                    if (elementNextLocal is ElseIf) {
                         // Eg. <keep: if()> elseif()
-                        elementCondition.replace(elementMergedCondition)
-                        elementNext.delete()
+                        elementLocalCondition.replace(elementMergedCondition)
+                        elementNextLocal.delete()
                     }
-                    else if (element !is ElseIf &&
-                             elementNext.parent is Else) {
+                    else if (elementLocal !is ElseIf &&
+                             elementNextLocal.parent is Else) {
                         // Eg. if() else <keep: if()>
-                        elementNextCondition.replace(elementMergedCondition)
-                        element.replace(elementNext)
+                        elementNextLocalCondition.replace(elementMergedCondition)
+                        elementLocal.replace(elementNextLocal)
                     }
                     else {
                         // Eg. if() <keep: if()>
                         // Eg. elseif() <keep: elseif()>
-                        elementNextCondition.replace(elementMergedCondition)
-                        element.delete()
+                        elementNextLocalCondition.replace(elementMergedCondition)
+                        elementLocal.delete()
                     }
                 }
             )

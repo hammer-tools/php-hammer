@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Parameter
@@ -26,23 +27,27 @@ class ParameterImplicitlyNullableInspection: PhpInspection() {
                 declaredType.types.contains(PhpType._MIXED))
                 return
 
+            val elementPointer = element.createSmartPointer()
+
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 element,
                 "parameter type is implicitly null",
                 QuickFixService.instance.simpleInline("Add explicit \"null\" type") {
-                    if (element.typeDeclaration != null) {
-                        (element.typeDeclaration ?: return@simpleInline)
-                            .replace(FactoryService.createParameterType(problemsHolder.project, (element.typeDeclaration ?: return@simpleInline).text + "|null"))
+                    val elementLocal = elementPointer.element ?: return@simpleInline
+
+                    if (elementLocal.typeDeclaration != null) {
+                        (elementLocal.typeDeclaration ?: return@simpleInline)
+                            .replace(FactoryService.createParameterType(problemsHolder.project, (elementLocal.typeDeclaration ?: return@simpleInline).text + "|null"))
                     }
                     else {
-                        val parameterComplex = FactoryService.createComplexParameter(problemsHolder.project, element.text)
+                        val parameterComplex = FactoryService.createComplexParameter(problemsHolder.project, elementLocal.text)
 
                         with(parameterComplex.typeDeclaration as PhpTypeDeclarationImpl) {
                             replace(FactoryService.createParameterType(problemsHolder.project, "$text|null"))
                         }
 
-                        element.replace(FactoryService.createComplexParameterDoctypeCompatible(problemsHolder.project, parameterComplex.text))
+                        elementLocal.replace(FactoryService.createComplexParameterDoctypeCompatible(problemsHolder.project, parameterComplex.text))
                     }
                 }
             )

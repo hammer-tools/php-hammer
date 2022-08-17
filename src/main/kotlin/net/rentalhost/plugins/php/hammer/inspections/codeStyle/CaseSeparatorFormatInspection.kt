@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpCase
@@ -50,7 +51,7 @@ class CaseSeparatorFormatInspection: PhpInspection() {
                 "wrong switch() \"${element.firstChild.text}\" separator",
                 QuickFixService.instance.simpleLeafReplace(
                     "Replace with ${elementSeparatorReplacement.elementType.toString()} separator",
-                    elementSeparatorReplacement
+                    elementSeparatorReplacement.createSmartPointer()
                 )
             )
         }

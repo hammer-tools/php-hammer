@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
@@ -49,8 +50,8 @@ class TernarySimplificationInspection: PhpInspection() {
                 "ternary can be simplified",
                 QuickFixService.instance.simpleReplace(
                     "Simplify ternary",
-                    if (comparisonIdentical) expression.falseVariant ?: return
-                    else expression.trueVariant ?: return
+                    if (comparisonIdentical) (expression.falseVariant ?: return).createSmartPointer()
+                    else (expression.trueVariant ?: return).createSmartPointer()
                 )
             )
         }
