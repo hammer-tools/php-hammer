@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.0] - 2022-08-17
+
+### Added
+
+- **[SenselessArrayUnpackingInspection]**: implemented ("array unpacking can be simplified");
+
+### Changed
+
+- **[IfSimplificationAndInspection]**: disabled in Blade files (due WI-68279);
+
+### Fixed
+
+- **[ConditionalsNullSafeOperatorInspection]**: must skip if used as part of another expression (eg. comparisons);
+
+[0.15.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.15.0
+
+[SenselessArrayUnpackingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-senseless-array-unpacking-inspection
+
+[IfSimplificationAndInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-if-simplification-and-inspection
+
+[ConditionalsNullSafeOperatorInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-conditionals-null-safe-operator-inspection
+
 ## [0.14.0] - 2022-08-11
 
 ### Added
