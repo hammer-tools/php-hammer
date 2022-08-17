@@ -10,6 +10,7 @@ import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.hammer.extensions.psi.getSingleStatement
 import net.rentalhost.plugins.hammer.extensions.psi.isAndSimplified
+import net.rentalhost.plugins.hammer.extensions.psi.isBlade
 import net.rentalhost.plugins.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
@@ -17,6 +18,9 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 class IfSimplificationAndInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
         private fun visit(element: ControlStatement) {
+            if (element.containingFile.isBlade())
+                return
+
             if (element is If) {
                 if (element.elseBranch != null ||
                     element.elseIfBranches.isNotEmpty())

@@ -17,10 +17,10 @@ import net.rentalhost.plugins.hammer.services.FormatterService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
-val matchClasses: Array<Class<out PhpReference>> =
-    arrayOf(Variable::class.java, FieldReference::class.java, MethodReference::class.java)
-
 class ConditionalsNullSafeOperatorInspection: PhpInspection() {
+    private val matchClasses: Array<Class<out PhpReference>> =
+        arrayOf(Variable::class.java, FieldReference::class.java, MethodReference::class.java)
+
     private fun normalizeArrow(element: PsiElement) = FormatterService.normalize(element) { itElement, _ ->
         return@normalize !(itElement.isExactly<LeafPsiElement>() &&
                            itElement.text == "?" &&
