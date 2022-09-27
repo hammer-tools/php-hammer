@@ -6,3 +6,4 @@
 0.13.0;important;This version was compiled incorrectly, keeping some deleted files and may fail (fixed in [0.13.1]);
 0.13.1;fixed;This version has been recompiled to ignore already removed files that were unintentionally packaged;
 0.13.2;important;The purpose of this release is to make it compatible with **Laravel Hammer** plugin;
+0.16.0;changed;Minimum supported version raised to 2022.3 due to API changes (EAP 223);

@@ -1,11 +1,11 @@
 <idea-plugin>
     <id>net.rentalhost.plugins.php.hammer</id>
     <name>PHP Hammer</name>
-    <version>0.15.0</version>
+    <version>0.16.0</version>
 
     <vendor email="david.rodrigues@rentalhost.net">Rentalhost</vendor>
 
-    <idea-version since-build="221" until-build="222.*" />
+    <idea-version since-build="223" until-build="223.*" />
 
     <description><![CDATA[
         <strong>PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>45 new inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.<br /><br />
