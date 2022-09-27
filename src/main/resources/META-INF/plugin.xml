@@ -432,6 +432,8 @@ You can also try the <a href="https://plugins.jetbrains.com/plugin/19645--larave
         <!-- Plugin -->
         <applicationService serviceImplementation="net.rentalhost.plugins.php.hammer.services.SettingsService" />
 
+        <backgroundPostStartupActivity implementation="net.rentalhost.plugins.php.hammer.services.PluginUpdateService" />
+
         <notificationGroup id="net.rentalhost.plugins.php.hammer.notifications.PLUGIN_RELATED" displayType="STICKY_BALLOON" />
 
         <errorHandler implementation="net.rentalhost.plugins.php.hammer.services.ExceptionService" />
@@ -439,10 +441,4 @@ You can also try the <a href="https://plugins.jetbrains.com/plugin/19645--larave
         <toolWindow id="PHP Hammer" icon="/META-INF/pluginIcon.png" anchor="right"
                     factoryClass="net.rentalhost.plugins.php.hammer.services.SidebarService" />
     </extensions>
-
-    <applicationListeners>
-        <listener activeInHeadlessMode="false"
-                  class="net.rentalhost.plugins.php.hammer.services.PluginUpdateService"
-                  topic="com.intellij.openapi.project.ProjectManagerListener" />
-    </applicationListeners>
 </idea-plugin>
