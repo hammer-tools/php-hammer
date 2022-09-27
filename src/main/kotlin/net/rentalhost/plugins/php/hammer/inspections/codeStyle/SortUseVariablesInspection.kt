@@ -4,6 +4,8 @@ import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
+import com.intellij.psi.SmartPsiElementPointer
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.refactoring.suggested.startOffset
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpUseList
@@ -43,13 +45,13 @@ class SortUseVariablesInspection: PhpInspection() {
                 element,
                 useVariables.declarationTextRange(element),
                 "use() variables can be sorted",
-                SortByUsageQuickFix(useVariablesSorted)
+                SortByUsageQuickFix(useVariablesSorted.map { it.createSmartPointer() })
             )
         }
     }
 
     class SortByUsageQuickFix(
-        private val useVariablesSorted: Collection<VariableImpl>,
+        private val useVariablesSorted: Collection<SmartPsiElementPointer<VariableImpl>>,
     ): LocalQuickFix {
         override fun getFamilyName(): String = "Sort by usage"
 
@@ -57,7 +59,7 @@ class SortUseVariablesInspection: PhpInspection() {
             descriptor.psiElement.replace(
                 FactoryService.createFunctionUse(
                     project,
-                    useVariablesSorted.joinToString(", ") {
+                    useVariablesSorted.mapNotNull { it.element }.joinToString(", ") {
                         val useVariableName = "$${it.name}"
 
                         if (it.isRef()) "&$useVariableName"
