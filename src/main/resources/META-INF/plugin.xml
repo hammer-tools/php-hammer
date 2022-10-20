@@ -8,7 +8,7 @@
     <idea-version since-build="223" until-build="223.*" />
 
     <description><![CDATA[
-        <strong>PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>45 new inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.<br /><br />
+        <strong>PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>46 new inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.<br /><br />
 
 You can also try the <a href="https://plugins.jetbrains.com/plugin/19645--laravel-hammer/"><strong>Laravel Hammer</strong></a> sister plugin (<strong>important:</strong> this plugin is at a very early stage of development and therefore has very few of the intended features).
     ]]></description>
@@ -381,6 +381,15 @@ You can also try the <a href="https://plugins.jetbrains.com/plugin/19645--larave
                          level="ERROR"
                          shortName="StaticAnonymousFunctionCannotAccessThisInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.StaticAnonymousFunctionCannotAccessThisInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,🔨 PHP Hammer"
+                         groupName="Code Error"
+                         enabledByDefault="true"
+                         displayName="Usage of compact() inside short functions"
+                         level="ERROR"
+                         shortName="CompactInsideShortFunctionInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.CompactInsideShortFunctionInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
