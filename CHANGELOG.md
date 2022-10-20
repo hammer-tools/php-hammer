@@ -5,13 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
-## [0.16.1] - 2022-10-20
+## [0.17.0] - 2022-10-20
+
+### Added
+
+- **[CompactInsideShortFunctionInspection]**: implemented ("usage of compact() inside short functions");
 
 ### Changed
 
 - **[CompactReplacementInspection]**: ignore suggestion inside short arrow functions due to a PHP bug (#78970);
 
-[0.16.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.16.1
+[0.17.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.17.0
+
+[CompactInsideShortFunctionInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-compact-inside-short-function-inspection
 
 [CompactReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-compact-replacement-inspection
 
