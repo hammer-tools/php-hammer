@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.1] - 2022-10-20
+
+### Changed
+
+- **[CompactReplacementInspection]**: ignore suggestion inside short arrow functions due to a PHP bug (#78970);
+
+[0.16.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.16.1
+
+[CompactReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-compact-replacement-inspection
+
 ## [0.16.0] - 2022-09-26
 
 ### Changed

@@ -22,3 +22,10 @@ $dummy = function () {
 
     $dummy = ['x' => &$x];
 };
+
+// Inspection must not works when inside of a arrow function due to PHP bug #78970.
+$dummy = fn() => function () use ($dummy) {
+    $dummy = <weak_warning descr="🔨 PHP Hammer: array can be replaced by compact().">[ 'dummy' => $dummy ]</weak_warning>; // Must accept.
+
+    return fn() => [ 'dummy' => $dummy ]; // Must ignore.
+};
