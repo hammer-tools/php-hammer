@@ -52,16 +52,20 @@ class FileClassnameCaseInspection: PhpInspection() {
             if (fileBasename == element.name)
                 return
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element.nameIdentifier ?: return,
-                "class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\")",
-                if (fileIdentifierValid) QuickFixService.instance.simpleReplace(
-                    "Rename class to match filename",
-                    FactoryService.createClassReference(problemsHolder.project, fileBasename).createSmartPointer()
+            try {
+                ProblemsHolderService.instance.registerProblem(
+                    problemsHolder,
+                    element.nameIdentifier ?: return,
+                    "class name (\"${element.name}\") does not match the file that stores it (\"${file.name}\")",
+                    if (fileIdentifierValid) QuickFixService.instance.simpleReplace(
+                        "Rename class to match filename",
+                        FactoryService.createClassReference(problemsHolder.project, fileBasename).createSmartPointer()
+                    )
+                    else null
                 )
-                else null
-            )
+            }
+            catch (_: AssertionError) {
+            }
         }
     }
 
