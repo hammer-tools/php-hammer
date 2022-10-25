@@ -41,15 +41,19 @@ class ClassSelfReferenceFormatInspection: PhpInspection() {
                 if (classSelfReferenceFormat == OptionClassSelfReferenceFormat.SELF) "self"
                 else elementClassName
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element,
-                "class reference format must be \"$expectedFormat\"",
-                QuickFixService.instance.simpleReplace(
-                    "Replace with \"$expectedFormat\"",
-                    FactoryService.createClassReference(problemsHolder.project, expectedFormat).createSmartPointer()
+            try {
+                ProblemsHolderService.instance.registerProblem(
+                    problemsHolder,
+                    element,
+                    "class reference format must be \"$expectedFormat\"",
+                    QuickFixService.instance.simpleReplace(
+                        "Replace with \"$expectedFormat\"",
+                        FactoryService.createClassReference(problemsHolder.project, expectedFormat).createSmartPointer()
+                    )
                 )
-            )
+            }
+            catch (_: AssertionError) {
+            }
         }
     }
 
