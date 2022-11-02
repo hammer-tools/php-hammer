@@ -46,7 +46,12 @@ class DebugFunctionUsageInspection: PhpInspection() {
             if (function.parameterList == null)
                 return
 
-            val functionResolve = function.resolve()
+            val functionResolve = try {
+                function.resolve()
+            }
+            catch (_: StringIndexOutOfBoundsException) {
+                return
+            }
 
             val functionName =
                 if (functionResolve is Function) functionResolve.fqn

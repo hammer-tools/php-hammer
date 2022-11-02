@@ -14,6 +14,7 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 ### Fixed
 
 - **[ClassSelfReferenceFormatInspection]**: fix rare assertion exception;
+- **[DebugFunctionUsageInspection]**: fix rare exception;
 - **[FileClassnameCaseInspection]**: fix rare assertion exception;
 
 [0.18.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.18.0
@@ -21,6 +22,8 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 [FrameworkOptionalReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-framework-optional-replacement-inspection
 
 [ClassSelfReferenceFormatInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-class-self-reference-format-inspection
+
+[DebugFunctionUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-debug-function-usage-inspection
 
 [FileClassnameCaseInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-file-classname-case-inspection
 
