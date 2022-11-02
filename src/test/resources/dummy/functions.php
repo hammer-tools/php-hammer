@@ -3,3 +3,6 @@
 function dd()
 {
 }
+
+function optional() {
+}
