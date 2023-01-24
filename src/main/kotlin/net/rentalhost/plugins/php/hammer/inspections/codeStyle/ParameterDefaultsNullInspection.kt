@@ -35,6 +35,9 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     @OptionTag
     var includeParametersWithReference: Boolean = false
 
+    @OptionTag
+    var includeLatestParameter: Boolean = false
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
         override fun visitPhpParameterList(element: ParameterList) {
             val context = element.context
@@ -55,7 +58,13 @@ class ParameterDefaultsNullInspection: PhpInspection() {
             if (isAbstractMethod && !includeAbstractMethods)
                 return
 
+            val parameterLast = element.parameters.last()
+
             for (parameter in element.parameters) {
+                if (!includeLatestParameter && parameter === parameterLast) {
+                    continue
+                }
+
                 if (parameter is ParameterImpl &&
                     parameter.defaultValue != null) {
                     if (!includeParametersWithReference &&
@@ -116,6 +125,11 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 "Include parameters with reference", includeParametersWithReference,
                 "This option allows you to inspect parameters that are passed by reference."
             ) { includeParametersWithReference = it }
+
+            component.addCheckbox(
+                "Include last parameter", includeLatestParameter,
+                "This option will include the latest parameter in the analysis. This will not be necessary most of the time."
+            ) { includeLatestParameter = it }
         }
     }
 

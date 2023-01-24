@@ -1,6 +1,6 @@
 <?php
 
-$dummy = function(int|null $a = null) {
+$dummy = function(int|null $a = null, int $last = 0) {
     $a ??= 0;
 };
 

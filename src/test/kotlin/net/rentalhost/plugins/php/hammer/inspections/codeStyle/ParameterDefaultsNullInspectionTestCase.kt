@@ -33,4 +33,10 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
         "includeParametersWithReference",
         { it.includeParametersWithReference = true }
     )
+
+    fun testIncludeLastParameter(): Unit = testInspection(
+        ParameterDefaultsNullInspection::class.java,
+        "includeLastParameter",
+        { it.includeLatestParameter = true }
+    )
 }

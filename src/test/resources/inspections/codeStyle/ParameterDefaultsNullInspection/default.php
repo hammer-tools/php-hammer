@@ -1,6 +1,6 @@
 <?php
 
-$dummy = function(<weak_warning descr="🔨 PHP Hammer: default value of the parameter must be \"null\".">?int $a = 0</weak_warning>) {
+$dummy = function(<weak_warning descr="🔨 PHP Hammer: default value of the parameter must be \"null\".">?int $a = 0</weak_warning>, int $last = 0) {
 };
 
 // Not applicable because parameter is nullable/untyped:
