@@ -25,3 +25,5 @@ interface_exists(\Illuminate\Test::class);
 
 var_dump('Example');
 var_dump('Illuminate\\Test' . 'Exception');
+
+var_dump('\\NonExisting\\Example');

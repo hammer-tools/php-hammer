@@ -23,6 +23,9 @@ class ClassnameLiteralInspection: PhpInspection() {
     )
 
     @OptionTag
+    var includeNonexistentClasses: Boolean = false
+
+    @OptionTag
     var includeClassCheckers: Boolean = true
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -58,7 +61,11 @@ class ClassnameLiteralInspection: PhpInspection() {
                 return
 
             val classname = PhpLangUtil.toFQN(stringNormalized)
-            val classReference = ClassService.findFQN(classname, string.project) ?: return
+            val classReference = ClassService.findFQN(classname, string.project)
+
+            if (!includeNonexistentClasses && classReference == null) {
+                return
+            }
 
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
@@ -66,7 +73,7 @@ class ClassnameLiteralInspection: PhpInspection() {
                 "string can be replaced by ::class equivalent",
                 QuickFixService.instance.simpleReplace(
                     "Replace with ::class equivalent",
-                    FactoryService.createClassConstantReference(problemsHolder.project, classReference.fqn).createSmartPointer()
+                    FactoryService.createClassConstantReference(problemsHolder.project, classReference?.fqn ?: stringNormalized).createSmartPointer()
                 )
             )
         }
@@ -74,6 +81,11 @@ class ClassnameLiteralInspection: PhpInspection() {
 
     override fun createOptionsPanel(): JComponent {
         return OptionsPanelService.create { component: OptionsPanelService ->
+            component.addCheckbox(
+                "Include non-existing classes", includeNonexistentClasses,
+                "This option allows the analysis on nonexistent classes. PHP will work fine with <code>::class</code> even if the class doesn't exist though."
+            ) { includeNonexistentClasses = it }
+
             component.addCheckbox(
                 "Include class checkers", includeClassCheckers,
                 "This option allows the analysis in <code>class_exists()</code>, <code>class_alias()</code> and <code>interface_exists()</code> functions."

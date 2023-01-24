@@ -25,3 +25,5 @@ interface_exists(<weak_warning descr="🔨 PHP Hammer: string can be replaced by
 
 var_dump('Example');
 var_dump('Illuminate\\Test' . 'Exception');
+
+var_dump('\\NonExisting\\Example');

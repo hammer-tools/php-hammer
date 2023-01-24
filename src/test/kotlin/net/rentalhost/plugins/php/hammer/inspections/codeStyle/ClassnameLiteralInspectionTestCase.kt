@@ -10,4 +10,10 @@ class ClassnameLiteralInspectionTestCase: TestCase() {
         listOf("includeClassCheckersDisabled", "dummy/Root.php", "dummy/Illuminate.php"),
         { it.includeClassCheckers = false }
     )
+
+    fun testIncludeNonexistentClassesDisabled(): Unit = testInspection(
+        ClassnameLiteralInspection::class.java,
+        "includeNonexistentClasses",
+        { it.includeNonexistentClasses = true }
+    )
 }
