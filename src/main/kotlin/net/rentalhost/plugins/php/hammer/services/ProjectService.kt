@@ -21,8 +21,6 @@ class ProjectService: BaseProjectService() {
 
         override val changelogUrl: String = "https://github.com/hammer-tools/php-hammer/blob/master/CHANGELOG.md"
 
-        override val freemiumUrl: String = "https://github.com/hammer-tools/php-hammer/wiki/Freemium"
-
         override val inspectionsUrl: String = "https://github.com/hammer-tools/php-hammer/wiki/Inspections"
 
         override val reviewsUrl: String = "https://plugins.jetbrains.com/plugin/19515--php-hammer/reviews/new"
