@@ -34,6 +34,12 @@ class ParameterDefaultsNullInspectionTestCase: TestCase() {
         { it.includeParametersWithReference = true }
     )
 
+    fun testIncludeBooleansDisabled(): Unit = testInspection(
+        ParameterDefaultsNullInspection::class.java,
+        "includeBooleansDisabled",
+        { it.includeBooleans = false }
+    )
+
     fun testIncludeLastParameter(): Unit = testInspection(
         ParameterDefaultsNullInspection::class.java,
         "includeLastParameter",

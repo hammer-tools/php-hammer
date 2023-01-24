@@ -36,6 +36,9 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     var includeParametersWithReference: Boolean = false
 
     @OptionTag
+    var includeBooleans: Boolean = true
+
+    @OptionTag
     var includeLatestParameter: Boolean = false
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -75,6 +78,11 @@ class ParameterDefaultsNullInspection: PhpInspection() {
 
                     if (defaultValue.toString() == "null")
                         continue
+
+                    if (!includeBooleans &&
+                        parameter.declaredType.toString() == "bool") {
+                        continue
+                    }
 
                     if (!includeNullableParameters) {
                         if (parameter.declaredType.toString() == "")
@@ -125,6 +133,11 @@ class ParameterDefaultsNullInspection: PhpInspection() {
                 "Include parameters with reference", includeParametersWithReference,
                 "This option allows you to inspect parameters that are passed by reference."
             ) { includeParametersWithReference = it }
+
+            component.addCheckbox(
+                "Include booleans", includeBooleans,
+                "This option will include booleans in the analysis."
+            ) { includeBooleans = it }
 
             component.addCheckbox(
                 "Include last parameter", includeLatestParameter,

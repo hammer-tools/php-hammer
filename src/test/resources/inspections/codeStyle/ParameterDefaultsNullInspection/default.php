@@ -3,6 +3,12 @@
 $dummy = function(<weak_warning descr="🔨 PHP Hammer: default value of the parameter must be \"null\".">?int $a = 0</weak_warning>, int $last = 0) {
 };
 
+$dummy = function (<weak_warning descr="🔨 PHP Hammer: default value of the parameter must be \"null\".">bool $a = false</weak_warning>, int $last = 0) {
+};
+
+$dummy = function (<weak_warning descr="🔨 PHP Hammer: default value of the parameter must be \"null\".">boolean $a = false</weak_warning>, int $last = 0) {
+};
+
 // Not applicable because parameter is nullable/untyped:
 
 $dummy = function ($a, $b = 123) {

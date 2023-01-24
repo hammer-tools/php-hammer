@@ -4,6 +4,14 @@ $dummy = function(int|null $a = null, int $last = 0) {
     $a = $a === null ? 0 : $a;
 };
 
+$dummy = function (bool|null $a = null, int $last = 0) {
+    $a = $a === null ? false : $a;
+};
+
+$dummy = function (boolean|null $a = null, int $last = 0) {
+    $a = $a === null ? false : $a;
+};
+
 // Not applicable because parameter is nullable/untyped:
 
 $dummy = function ($a, $b = 123) {
