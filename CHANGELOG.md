@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.19.0] - 2023-01-24
+
+### Important
+
+- This plugin is now entirely free;
+
+### Added
+
+- **[ClassnameLiteralInspection]**: added an option to include functions like `class_exists()` and `class_alias()` (enabled by default);
+- **[ClassnameLiteralInspection]**: added an option to include non-existent classes to the analysis (disabled by default);
+- **[ParameterDefaultsNullInspection]**: added an option to include the latest parameter to the analysis (disabled by default);
+- **[ParameterDefaultsNullInspection]**: added an option to include booleans to the analysis (enabled by default);
+
+[0.19.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.19.0
+
+[ClassnameLiteralInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-classname-literal-inspection
+
+[ParameterDefaultsNullInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-defaults-null-inspection
+
 ## [0.18.0] - 2022-11-02
 
 ### Added
