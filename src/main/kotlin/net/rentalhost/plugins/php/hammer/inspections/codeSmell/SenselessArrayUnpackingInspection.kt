@@ -14,7 +14,6 @@ import net.rentalhost.plugins.hammer.extensions.psi.isVariadicPreceded
 import net.rentalhost.plugins.hammer.services.ClassService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import kotlin.streams.toList
 
 class SenselessArrayUnpackingInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {

@@ -10,7 +10,6 @@ import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.hammer.services.TypeService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import kotlin.streams.toList
 
 class NullableTypeRightmostInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {

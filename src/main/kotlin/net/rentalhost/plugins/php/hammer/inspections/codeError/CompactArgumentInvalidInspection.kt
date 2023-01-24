@@ -14,7 +14,6 @@ import net.rentalhost.plugins.hammer.extensions.psi.isName
 import net.rentalhost.plugins.hammer.services.ElementService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import kotlin.streams.toList
 
 class CompactArgumentInvalidInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {

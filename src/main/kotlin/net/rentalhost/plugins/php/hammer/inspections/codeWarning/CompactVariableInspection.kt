@@ -17,7 +17,6 @@ import net.rentalhost.plugins.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
-import kotlin.streams.toList
 
 class CompactVariableInspection: PhpInspection() {
     @OptionTag
