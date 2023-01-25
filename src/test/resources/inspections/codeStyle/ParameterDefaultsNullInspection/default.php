@@ -76,6 +76,9 @@ $dummy = function ($a) {
 $dummy = function ($a = null) {
 };
 
+$dummy = function () {
+};
+
 class DummyD
     extends DummyB
 {

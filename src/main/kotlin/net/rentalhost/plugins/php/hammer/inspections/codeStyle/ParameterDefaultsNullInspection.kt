@@ -61,7 +61,7 @@ class ParameterDefaultsNullInspection: PhpInspection() {
             if (isAbstractMethod && !includeAbstractMethods)
                 return
 
-            val parameterLast = element.parameters.last()
+            val parameterLast = element.parameters.lastOrNull()
 
             for (parameter in element.parameters) {
                 if (!includeLatestParameter && parameter === parameterLast) {
