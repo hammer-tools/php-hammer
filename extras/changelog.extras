@@ -8,3 +8,4 @@
 0.13.2;important;The purpose of this release is to make it compatible with **Laravel Hammer** plugin;
 0.16.0;changed;Minimum supported version raised to 2022.3 due to API changes (EAP 223);
 0.19.0;important;This plugin is now entirely free;
+0.19.2;added;**PhpStorm 2023.1** (EAP) is now supported;
