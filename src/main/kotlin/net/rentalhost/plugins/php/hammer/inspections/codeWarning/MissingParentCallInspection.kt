@@ -1,19 +1,20 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.codeInsight.controlFlow.instructions.impl.PhpCallInstructionImpl
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpModifier
 import com.jetbrains.php.lang.psi.elements.PhpReturn
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.functionBody
-import net.rentalhost.plugins.hammer.extensions.psi.getMemberOverridden
-import net.rentalhost.plugins.hammer.extensions.psi.getSingleStatement
-import net.rentalhost.plugins.hammer.extensions.psi.isAbstractMethod
+import net.rentalhost.plugins.hammer.extensions.psi.*
+import net.rentalhost.plugins.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class MissingParentCallInspection: PhpInspection() {
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
@@ -41,10 +42,35 @@ class MissingParentCallInspection: PhpInspection() {
 
             if (methodCall != null) return
 
+            val baseMethodPointer = baseMethod.createSmartPointer()
+
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 methodIdentifier,
-                "missing parent::${method.name}() call"
+                "missing parent::${method.name}() call",
+                QuickFixService.instance.simpleInline("Add call to parent::${method.name}()") {
+                    with(method.functionBody()) {
+                        val parentCall = FactoryService.createFunctionCall(
+                            method.project,
+                            "parent::${methodName}",
+                            (baseMethodPointer.element ?: return@simpleInline).parameters.mapIndexed { parameterIndex, parameter ->
+                                if (method.getParameter(parameterIndex) != null) {
+                                    if (parameter.isVariadic) "...\$${parameter.name}"
+                                    else "\$${parameter.name}"
+                                }
+                                else "null"
+                            }
+                        )
+
+                        val parentCallElement = (this ?: return@with).firstPsiChild.insertBeforeElse(parentCall, lazy {
+                            { replace(FactoryService.createFunctionBody(project, "${parentCall.text};")) }
+                        })
+
+                        if (parentCallElement !is GroupStatement) {
+                            parentCallElement.insertAfter(FactoryService.createSemicolon(method.project))
+                        }
+                    }
+                }
             )
         }
     }

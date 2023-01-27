@@ -16,7 +16,9 @@ class Dummy1000_B extends Dummy1000_A {
 
 class Dummy1000_C extends Dummy1000_B {
     /** parent call is required, because Dummy1000_B::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>() {
+    public function method()
+    {
+        parent::method();
     }
 }
 
@@ -36,7 +38,9 @@ abstract class Dummy1005_B extends Dummy1005_A {
 
 class Dummy1005_C extends Dummy1005_B {
     /** parent call is required, because Dummy1005_B::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>() {
+    public function method()
+    {
+        parent::method();
     }
 }
 
@@ -56,7 +60,9 @@ class Dummy1006_B extends Dummy1006_A {
 
 abstract class Dummy1006_C extends Dummy1006_B {
     /** parent call is required, because Dummy1006_B::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>() {
+    public function method()
+    {
+        parent::method();
     }
 }
 
@@ -76,7 +82,9 @@ abstract class Dummy1007_B extends Dummy1007_A {
 
 abstract class Dummy1007_C extends Dummy1007_B {
     /** parent call is required, because Dummy1007_B::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>() {
+    public function method()
+    {
+        parent::method();
     }
 }
 
@@ -96,7 +104,8 @@ class Dummy1010_B extends Dummy1010_A {
 
 class Dummy1010_C extends Dummy1010_B {
     /** parent call is required, because Dummy1010_B::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>() {
+    public function method() {
+        parent::method();
         doSomething();
         doSomething();
     }
@@ -118,7 +127,8 @@ class Dummy1020_B extends Dummy1020_A {
 
 class Dummy1020_C extends Dummy1020_B {
     /** parent call is required, because Dummy1020_B::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>($a, $b = 1, ...$c) {
+    public function method($a, $b = 1, ...$c) {
+        parent::method($a, $b, ...$c);
         doSomething();
         doSomething();
     }
@@ -140,7 +150,8 @@ class Dummy1021_B extends Dummy1021_A {
 
 class Dummy1021_C extends Dummy1021_B {
     /** parent call is required, because Dummy1021_B::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>($a, $b = 1, ...$c) {
+    public function method($a, $b = 1, ...$c) {
+        parent::method($a, $b);
         doSomething();
         doSomething();
     }
@@ -162,7 +173,8 @@ class Dummy1022_B extends Dummy1022_A {
 
 class Dummy1022_C extends Dummy1022_B {
     /** parent call is required, because Dummy1022_B::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>($a) {
+    public function method($a) {
+        parent::method($a, null);
         doSomething();
         doSomething();
     }
@@ -178,7 +190,9 @@ class Dummy1030_A {
 
 class Dummy1030_B extends Dummy1030_A {
     /** parent call is required, because Dummy1030_A::method() is not empty. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>() {
+    public function method()
+    {
+        parent::method();
     }
 }
 
@@ -205,7 +219,8 @@ class Dummy1040_B extends Dummy1040_A {
 class Dummy1040_C extends Dummy1040_B {
     /** parent call is required, because Dummy1040_B::method() is not empty. */
     /** parent::call() is called, but not from base scope. */
-    public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>() {
+    public function method() {
+        parent::method();
         return new class extends Dummy1040_B {
             public function method() {
                 parent::method();
@@ -235,7 +250,9 @@ class Dummy1050_C extends Dummy1050_B {
 
         return new class extends Dummy1050_B {
             /** parent::call() is not called, but need. */
-            public function <warning descr="🔨 PHP Hammer: missing parent::method() call.">method</warning>() {
+            public function method()
+            {
+                parent::method();
             }
         };
     }
