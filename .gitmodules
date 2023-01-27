@@ -1,11 +1,11 @@
 [submodule "wiki"]
 path = wiki
-url = ../php-hammer.wiki.git
+url = https://github.com/hammer-tools/php-hammer.wiki.git
 
 [submodule "buildSrc"]
 path = buildSrc
-url = ../hammer-build-src.git
+url = https://github.com/hammer-tools/hammer-build-src.git
 
 [submodule "hammer-tools"]
 path = hammer-tools
-url = ../hammer-tools.git
+url = https://github.com/hammer-tools/hammer-tools.git
