@@ -13,6 +13,7 @@ class B extends A
 
     public function exampleEmpty()
     {
+        // Comments must be ignored.
     }
 
     public function exampleFilled()

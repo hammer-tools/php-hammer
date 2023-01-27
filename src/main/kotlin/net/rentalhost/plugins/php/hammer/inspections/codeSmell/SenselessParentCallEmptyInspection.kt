@@ -9,7 +9,6 @@ import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.functionBody
 import net.rentalhost.plugins.hammer.extensions.psi.getMemberOverridden
 import net.rentalhost.plugins.hammer.extensions.psi.isStrictlyStatement
 import net.rentalhost.plugins.hammer.extensions.psi.isStub
@@ -40,10 +39,7 @@ class SenselessParentCallEmptyInspection: PhpInspection() {
             if (baseMethod.isStub())
                 return
 
-            val baseMethodChildren = (baseMethod.functionBody() ?: return)
-                .text.substringAfter("{").substringBeforeLast("}").trim()
-
-            if (baseMethodChildren != "")
+            if (baseMethod.scope.controlFlow.instructions.size > 2)
                 return
 
             ProblemsHolderService.instance.registerProblem(
