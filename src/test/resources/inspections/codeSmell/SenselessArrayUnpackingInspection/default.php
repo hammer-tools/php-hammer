@@ -17,7 +17,7 @@ $dummy3000 = <weak_warning descr="🔨 PHP Hammer: unnecessary array unpacking."
 
 /** @var int[]|ArrayObject */
 $dummy4000function = function () { return []; };
-$dummy4000 = <weak_warning descr="🔨 PHP Hammer: unnecessary array unpacking.">[ ... $dummy3000function() ]</weak_warning>;
+$dummy4000 = <weak_warning descr="🔨 PHP Hammer: unnecessary array unpacking.">[ ... $dummy4000function() ]</weak_warning>;
 
 // Not applicable:
 
@@ -37,3 +37,9 @@ $dummy = [ ... $unknown ];
 
 $dummy99000function = function (): array|ArrayObject|int { return []; };
 $dummy99000 = [ ... $dummy() ];
+
+$dummy99100function = function (): Generator { yield 1; };
+$dummy99100 = [ ... $dummy99100function() ];
+
+function dummy99200function(): Generator { yield 1; }
+$dummy99200 = [ ... dummy99200function() ];

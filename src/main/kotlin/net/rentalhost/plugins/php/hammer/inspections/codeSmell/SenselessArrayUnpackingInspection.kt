@@ -37,7 +37,7 @@ class SenselessArrayUnpackingInspection: PhpInspection() {
                     PhpType.isPluralType(it))
                     return@forEach
 
-                if (!it.startsWith("\\"))
+                if (it.equals("\\Generator") || !it.startsWith("\\"))
                     return
 
                 val expressionClass = ClassService.findFQN(it, expression.project) ?: return

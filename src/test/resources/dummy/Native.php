@@ -13,3 +13,7 @@ class ArrayObject
     implements IteratorAggregate
 {
 }
+
+class Generator implements Traversable
+{
+}
