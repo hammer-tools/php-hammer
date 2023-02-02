@@ -19,8 +19,6 @@ $dummy10100 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can b
 
 $dummy10200 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, [ 'x' => 1, 'y' => 2, 'z' => 3 ])</weak_warning>;
 
-$dummy10300 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, ...[ [ 'x' => 1, 'y' => 2, 'z' => 3 ] ])</weak_warning>;
-
 $dummy10400 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $arr3)</weak_warning>;
 
 $dummy10500 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $gen1())</weak_warning>;
@@ -54,3 +52,7 @@ $dummy90600 = array_merge($arr1, $arr2, $unknown());
 $dummy90700 = array_merge($arr1, $arr2, unknown());
 
 $dummy90800 = array_merge($arr1, $arr2, $fun1());
+
+$dummy90900 = array_merge([], ...$arr2);
+
+$dummy91000 = array_merge($arr1, $arr2, ...[ [ 'x' => 1, 'y' => 2, 'z' => 3 ] ]);

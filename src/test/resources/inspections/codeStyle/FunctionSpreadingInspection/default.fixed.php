@@ -19,8 +19,6 @@ $dummy10100 = [...$arr1, ...$arr2];
 
 $dummy10200 = [...$arr1, ...$arr2, 'x' => 1, 'y' => 2, 'z' => 3];
 
-$dummy10300 = [...$arr1, ...$arr2, ['x' => 1, 'y' => 2, 'z' => 3]];
-
 $dummy10400 = [...$arr1, ...$arr2, ...$arr3];
 
 $dummy10500 = [...$arr1, ...$arr2, ...$gen1()];
@@ -54,3 +52,7 @@ $dummy90600 = array_merge($arr1, $arr2, $unknown());
 $dummy90700 = array_merge($arr1, $arr2, unknown());
 
 $dummy90800 = array_merge($arr1, $arr2, $fun1());
+
+$dummy90900 = array_merge([], ...$arr2);
+
+$dummy91000 = array_merge($arr1, $arr2, ...[ [ 'x' => 1, 'y' => 2, 'z' => 3 ] ]);

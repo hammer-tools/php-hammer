@@ -14,6 +14,7 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.hammer.extensions.psi.isGeneratorComplex
 import net.rentalhost.plugins.hammer.extensions.psi.isName
+import net.rentalhost.plugins.hammer.extensions.psi.isVariadicPreceded
 import net.rentalhost.plugins.hammer.extensions.psi.unpackValues
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
@@ -40,6 +41,7 @@ class FunctionSpreadingInspection: PhpInspection() {
 
         private fun functionArrayMerge(function: FunctionReference) {
             function.parameters.forEach {
+                if (it.isVariadicPreceded()) return
                 if (it is FunctionReferenceImpl && it.isGeneratorComplex()) return
             }
 
