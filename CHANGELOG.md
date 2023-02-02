@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.21.0] - 2023-02-01
+
+### Added
+
+- **[FunctionSpreadingInspection]**: implemented ("function to spread");
+
+### Fixed
+
+- **[SenselessArrayUnpackingInspection]**: this inspection cannot be applied to Generator functions;
+
+[0.21.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.21.0
+
+[FunctionSpreadingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-function-spreading-inspection
+
+[SenselessArrayUnpackingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-senseless-array-unpacking-inspection
+
 ## [0.20.0] - 2023-01-27
 
 ### Added

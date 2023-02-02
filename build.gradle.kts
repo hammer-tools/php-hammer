@@ -43,6 +43,10 @@ tasks {
         dependsOn("generateDocumentation")
     }
 
+    buildSearchableOptions {
+        enabled = false
+    }
+
     test {
         delete(file("$buildDir/classes"))
 
