@@ -1,11 +1,15 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.PsiElement
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.codeInsight.controlFlow.instructions.impl.PhpYieldInstructionImpl
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
+import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.PhpPsiUtil
+import com.jetbrains.php.lang.psi.elements.ArrayCreationExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.impl.ConstantReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
@@ -14,8 +18,10 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.hammer.extensions.psi.hasInterface
 import net.rentalhost.plugins.hammer.extensions.psi.isName
+import net.rentalhost.plugins.hammer.extensions.psi.unpackValues
 import net.rentalhost.plugins.hammer.services.ClassService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 fun isBadGenerator(function: FunctionReference): Boolean {
     val functionDeclaration = function.resolve() as? FunctionImpl ?: return true
@@ -66,7 +72,7 @@ class FunctionSpreadingInspection: PhpInspection() {
             if (preserveKeys !is ConstantReferenceImpl ||
                 preserveKeys.type.types.any { !it.equals(PhpType._FALSE) }) return
 
-            registerProblem(function)
+            registerProblem(function, arrayOf(function.getParameter(0) ?: return))
         }
 
         private fun functionArrayMerge(function: FunctionReference) {
@@ -74,14 +80,26 @@ class FunctionSpreadingInspection: PhpInspection() {
                 if (it is FunctionReferenceImpl && isBadGenerator(it)) return
             }
 
-            registerProblem(function)
+            registerProblem(function, function.parameters)
         }
 
-        private fun registerProblem(function: FunctionReference) {
+        private fun registerProblem(function: FunctionReference, args: Array<PsiElement>) {
             ProblemsHolderService.instance.registerProblem(
                 problemsHolder,
                 function,
                 "function ${function.name}() can be replaced with spread",
+                QuickFixService.instance.simpleReplace(
+                    "Replace with spread",
+                    PhpPsiElementFactory.createPhpPsiFromText(
+                        function.project, ArrayCreationExpression::class.java, "[${
+                            PhpPsiElementFactory.createPhpPsiFromText(
+                                function.project,
+                                ArrayCreationExpression::class.java,
+                                "[${args.joinToString(",") { e -> "...${e.text}" }}]"
+                            ).unpackValues().joinToString(",") { e -> e.text }
+                        }]"
+                    ).createSmartPointer()
+                )
             )
         }
     }
