@@ -13,8 +13,6 @@ $gen5 = function () use($gen2): \Generator { yield from $gen2(); };
 $gen6 = function () use($gen5): \Generator { yield from $gen5(); };
 $fun1 = function (): int { return 123; };
 
-$dummy10000 = [...something()];
-
 $dummy10100 = [...$arr1, ...$arr2];
 
 $dummy10200 = [...$arr1, ...$arr2, 'x' => 1, 'y' => 2, 'z' => 3];
@@ -28,12 +26,6 @@ $dummy10510 = [...$arr1, ...$arr2, ...$gen4()];
 $dummy10600 = [...$arr1, ...$arr2, ...$arr3, ...$arr4];
 
 // Not applicable:
-
-$dummy90000 = iterator_to_array();
-
-$dummy90100 = iterator_to_array(something());
-
-$dummy90200 = iterator_to_array(something(), 0);
 
 $dummy90300 = array_merge();
 
