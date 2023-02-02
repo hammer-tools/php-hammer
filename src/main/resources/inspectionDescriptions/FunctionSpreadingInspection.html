@@ -1,0 +1,14 @@
+<html lang="en">
+    <body>
+        This inspection identifies functions that can be replaced by spread.
+        This includes functions like <code>iterator_to_array()</code> and <code>array_merge()</code>.<br /><br />
+
+        <strong>Example:</strong>
+
+        <pre><code>$example = iterator_to_array(functionReturningIterator());</code></pre>
+
+        <strong>Becomes:</strong>
+
+        <pre><code>$example = [ ... functionReturningIterator() ];</code></pre>
+    </body>
+</html>
