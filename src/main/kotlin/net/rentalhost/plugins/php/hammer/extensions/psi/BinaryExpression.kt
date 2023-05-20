@@ -9,3 +9,9 @@ fun BinaryExpression.isOperator(operator: IElementType): Boolean =
 
 fun BinaryExpression.isOperatorAnd(): Boolean =
   isOperator(PhpTokenTypes.opAND)
+
+fun BinaryExpression.isOperatorEqual(): Boolean =
+  isOperator(PhpTokenTypes.opEQUAL)
+
+fun BinaryExpression.isOperatorNotEqual(): Boolean =
+  isOperator(PhpTokenTypes.opNOT_EQUAL)
