@@ -15,57 +15,57 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import net.rentalhost.plugins.php.hammer.services.TypeService
 import javax.swing.JComponent
 
-class ComparisonScalarOrderInspection: PhpInspection() {
-    @OptionTag
-    var comparisonScalarSide: OptionComparisonScalarSide = OptionComparisonScalarSide.RIGHT
+class ComparisonScalarOrderInspection : PhpInspection() {
+  @OptionTag
+  var comparisonScalarSide: OptionComparisonScalarSide = OptionComparisonScalarSide.RIGHT
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
-        override fun visitPhpBinaryExpression(element: BinaryExpression) {
-            if (!TypeService.compareOperations.contains(element.operationType))
-                return
+  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+    override fun visitPhpBinaryExpression(element: BinaryExpression) {
+      if (!TypeService.compareOperations.contains(element.operationType))
+        return
 
-            val elementLeft = element.leftOperand
-            val elementRight = element.rightOperand
+      val elementLeft = element.leftOperand
+      val elementRight = element.rightOperand
 
-            val leftScalar = elementLeft.isScalar()
-            val rightScalar = elementRight.isScalar()
+      val leftScalar = elementLeft.isScalar()
+      val rightScalar = elementRight.isScalar()
 
-            if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) {
-                if (leftScalar || !rightScalar)
-                    return
-            }
-            else if (rightScalar || !leftScalar)
-                return
+      if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) {
+        if (leftScalar || !rightScalar)
+          return
+      }
+      else if (rightScalar || !leftScalar)
+        return
 
-            val elementLeftPointer = elementLeft?.createSmartPointer() ?: return
-            val elementRightPointer = elementRight?.createSmartPointer() ?: return
+      val elementLeftPointer = elementLeft?.createSmartPointer() ?: return
+      val elementRightPointer = elementRight?.createSmartPointer() ?: return
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element,
-                if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "scalar type must be on the left side"
-                else "scalar type must be on the right side",
-                QuickFixService.instance.simpleInline("Flip comparison") {
-                    (elementLeftPointer.element ?: return@simpleInline)
-                        .swap(elementRightPointer.element ?: return@simpleInline)
-                }
-            )
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder,
+        element,
+        if (comparisonScalarSide === OptionComparisonScalarSide.LEFT) "scalar type must be on the left side"
+        else "scalar type must be on the right side",
+        QuickFixService.instance.simpleInline("Flip comparison") {
+          (elementLeftPointer.element ?: return@simpleInline)
+            .swap(elementRightPointer.element ?: return@simpleInline)
         }
+      )
     }
+  }
 
-    override fun createOptionsPanel(): JComponent {
-        return OptionsPanelService.create { component: OptionsPanelService ->
-            component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-                radioComponent.addOption(
-                    "Prefer scalar at left", comparisonScalarSide === OptionComparisonScalarSide.LEFT,
-                    "Your conditionals will look like: <code>true === \$example</code>"
-                ) { comparisonScalarSide = OptionComparisonScalarSide.LEFT }
+  override fun createOptionsPanel(): JComponent {
+    return OptionsPanelService.create { component: OptionsPanelService ->
+      component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
+        radioComponent.addOption(
+          "Prefer scalar at left", comparisonScalarSide === OptionComparisonScalarSide.LEFT,
+          "Your conditionals will look like: <code>true === \$example</code>"
+        ) { comparisonScalarSide = OptionComparisonScalarSide.LEFT }
 
-                radioComponent.addOption(
-                    "Prefer scalar at right", comparisonScalarSide === OptionComparisonScalarSide.RIGHT,
-                    "Your conditionals will look like: <code>\$example === true</code>"
-                ) { comparisonScalarSide = OptionComparisonScalarSide.RIGHT }
-            }
-        }
+        radioComponent.addOption(
+          "Prefer scalar at right", comparisonScalarSide === OptionComparisonScalarSide.RIGHT,
+          "Your conditionals will look like: <code>\$example === true</code>"
+        ) { comparisonScalarSide = OptionComparisonScalarSide.RIGHT }
+      }
     }
+  }
 }

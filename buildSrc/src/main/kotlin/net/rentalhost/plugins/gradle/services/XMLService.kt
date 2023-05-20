@@ -5,12 +5,12 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 object XMLService {
-    fun parse(file: File): Document =
-        with(DocumentBuilderFactory.newInstance()) {
-            isIgnoringComments = true
-            isIgnoringElementContentWhitespace = true
-            isValidating = false
+  fun parse(file: File): Document =
+    with(DocumentBuilderFactory.newInstance()) {
+      isIgnoringComments = true
+      isIgnoringElementContentWhitespace = true
+      isValidating = false
 
-            return newDocumentBuilder().parse(file)
-        }
+      return newDocumentBuilder().parse(file)
+    }
 }

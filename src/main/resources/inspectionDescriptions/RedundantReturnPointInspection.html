@@ -1,10 +1,10 @@
 <html lang="en">
-    <body>
-        This inspection identifies redundant <code>return</code> points that can be safely removed.<br/><br/>
+  <body>
+    This inspection identifies redundant <code>return</code> points that can be safely removed.<br/><br/>
 
-        <strong>Example:</strong>
+    <strong>Example:</strong>
 
-        <pre><code>if ($conditional) {
+    <pre><code>if ($conditional) {
     doSomething();
 
     // Note: this return point is unnecessary since after this if() statement,
@@ -13,5 +13,5 @@
 }
 
 return true;</code></pre>
-    </body>
+  </body>
 </html>

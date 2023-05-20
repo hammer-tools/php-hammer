@@ -3,6 +3,6 @@ package net.rentalhost.plugins.gradle.services
 private val uppercaseRegex = Regex("[A-Z]")
 
 object StringService {
-    fun dashCase(string: String): String =
-        uppercaseRegex.replace(string) { "-" + it.value.lowercase() }.drop(1)
+  fun dashCase(string: String): String =
+    uppercaseRegex.replace(string) { "-" + it.value.lowercase() }.drop(1)
 }

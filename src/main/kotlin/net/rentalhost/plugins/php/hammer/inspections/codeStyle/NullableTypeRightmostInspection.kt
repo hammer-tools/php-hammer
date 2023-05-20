@@ -11,35 +11,35 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import net.rentalhost.plugins.php.hammer.services.TypeService
 
-class NullableTypeRightmostInspection: PhpInspection() {
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
-        override fun visitPhpTypeDeclaration(element: PhpTypeDeclaration) {
-            val elementTypeText = element.text
+class NullableTypeRightmostInspection : PhpInspection() {
+  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+    override fun visitPhpTypeDeclaration(element: PhpTypeDeclaration) {
+      val elementTypeText = element.text
 
-            if (elementTypeText.startsWith("?"))
-                return
+      if (elementTypeText.startsWith("?"))
+        return
 
-            val elementTypes = TypeService.splitTypes(elementTypeText)
-                .map { s: String? -> if (s == "null") PhpType._NULL else s }
-                .toList()
+      val elementTypes = TypeService.splitTypes(elementTypeText)
+        .map { s: String? -> if (s == "null") PhpType._NULL else s }
+        .toList()
 
-            if (!elementTypes.contains(PhpType._NULL) ||
-                Iterables.getLast(elementTypes) == PhpType._NULL)
-                return
+      if (!elementTypes.contains(PhpType._NULL) ||
+        Iterables.getLast(elementTypes) == PhpType._NULL)
+        return
 
-            val elementTypeReplacementSuggestion = TypeService.joinTypes(TypeService.exceptNull(elementTypeText)) + "|null"
+      val elementTypeReplacementSuggestion = TypeService.joinTypes(TypeService.exceptNull(elementTypeText)) + "|null"
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element,
-                "nullable type must be on rightmost side (\"$elementTypeReplacementSuggestion\")",
-                QuickFixService.instance.simpleTypeReplace(
-                    "Move \"null\" type to rightmost side",
-                    elementTypeReplacementSuggestion
-                )
-            )
-        }
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder,
+        element,
+        "nullable type must be on rightmost side (\"$elementTypeReplacementSuggestion\")",
+        QuickFixService.instance.simpleTypeReplace(
+          "Move \"null\" type to rightmost side",
+          elementTypeReplacementSuggestion
+        )
+      )
     }
+  }
 
-    override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP800
+  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP800
 }

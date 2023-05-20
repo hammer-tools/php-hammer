@@ -15,50 +15,50 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class AnonymousFunctionStaticInspection : PhpInspection() {
-    @OptionTag
-    var includeShortFunctions: Boolean = true
+  @OptionTag
+  var includeShortFunctions: Boolean = true
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-        override fun visitPhpFunction(element: Function) {
-            if (element.containingFile.isBlade())
-                return
+  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+    override fun visitPhpFunction(element: Function) {
+      if (element.containingFile.isBlade())
+        return
 
-            if (!element.isAnonymous() ||
-                element.isStatic())
-                return
+      if (!element.isAnonymous() ||
+        element.isStatic())
+        return
 
-            if (!includeShortFunctions &&
-                element.isShortFunction())
-                return
+      if (!includeShortFunctions &&
+        element.isShortFunction())
+        return
 
-            for (elementScope in element.scopes()) {
-                if (elementScope.accessVariables().find { it.variableName == "this" } != null)
-                    return
-            }
+      for (elementScope in element.scopes()) {
+        if (elementScope.accessVariables().find { it.variableName == "this" } != null)
+          return
+      }
 
-            val elementPointer = element.createSmartPointer()
+      val elementPointer = element.createSmartPointer()
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element.firstChild,
-                "anonymous function can be static",
-                QuickFixService.instance.simpleInline("Make this function static") {
-                    with(elementPointer.element ?: return@simpleInline) {
-                        insertBefore(FactoryService.createStaticKeyword(problemsHolder.project))
-                    }
-                }
-            )
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder,
+        element.firstChild,
+        "anonymous function can be static",
+        QuickFixService.instance.simpleInline("Make this function static") {
+          with(elementPointer.element ?: return@simpleInline) {
+            insertBefore(FactoryService.createStaticKeyword(problemsHolder.project))
+          }
         }
+      )
     }
+  }
 
-    override fun createOptionsPanel(): JComponent {
-        return OptionsPanelService.create { component: OptionsPanelService ->
-            component.addCheckbox(
-                "Include short functions", includeShortFunctions,
-                "This option allows the inspection to check arrow functions (<code>fn()</code>), in addition to regular functions (<code>function()</code>)."
-            ) { includeShortFunctions = it }
-        }
+  override fun createOptionsPanel(): JComponent {
+    return OptionsPanelService.create { component: OptionsPanelService ->
+      component.addCheckbox(
+        "Include short functions", includeShortFunctions,
+        "This option allows the inspection to check arrow functions (<code>fn()</code>), in addition to regular functions (<code>function()</code>)."
+      ) { includeShortFunctions = it }
     }
+  }
 
-    override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP540
+  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP540
 }

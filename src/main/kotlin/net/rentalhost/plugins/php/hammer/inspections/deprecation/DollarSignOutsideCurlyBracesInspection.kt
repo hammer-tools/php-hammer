@@ -10,31 +10,31 @@ import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
-class DollarSignOutsideCurlyBracesInspection: PhpInspection() {
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
-        override fun visitPhpVariable(element: Variable) {
-            val parent = element.parent
+class DollarSignOutsideCurlyBracesInspection : PhpInspection() {
+  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+    override fun visitPhpVariable(element: Variable) {
+      val parent = element.parent
 
-            if (parent !is StringLiteralExpressionImpl)
-                return
+      if (parent !is StringLiteralExpressionImpl)
+        return
 
-            val elementCurly = element.text
+      val elementCurly = element.text
 
-            if (!elementCurly.startsWith("\${") ||
-                !elementCurly.endsWith("}"))
-                return
+      if (!elementCurly.startsWith("\${") ||
+        !elementCurly.endsWith("}"))
+        return
 
-            val replaceWith = elementCurly.substring(2, elementCurly.length - 1)
+      val replaceWith = elementCurly.substring(2, elementCurly.length - 1)
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element,
-                "using \${var} in strings is deprecated",
-                QuickFixService.instance.simpleReplace(
-                    "Replace with {\$$replaceWith}",
-                    FactoryService.createCurlyVariable(problemsHolder.project, replaceWith).createSmartPointer()
-                )
-            )
-        }
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder,
+        element,
+        "using \${var} in strings is deprecated",
+        QuickFixService.instance.simpleReplace(
+          "Replace with {\$$replaceWith}",
+          FactoryService.createCurlyVariable(problemsHolder.project, replaceWith).createSmartPointer()
+        )
+      )
     }
+  }
 }

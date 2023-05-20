@@ -5,7 +5,7 @@ import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 
 fun BinaryExpression.isOperator(operator: IElementType): Boolean =
-    operationType == operator
+  operationType == operator
 
 fun BinaryExpression.isOperatorAnd(): Boolean =
-    isOperator(PhpTokenTypes.opAND)
+  isOperator(PhpTokenTypes.opAND)

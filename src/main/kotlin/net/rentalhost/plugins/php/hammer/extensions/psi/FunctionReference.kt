@@ -12,51 +12,51 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import net.rentalhost.plugins.php.hammer.services.ClassService
 
 fun FunctionReference.getErrorControlOperator(): PsiElement? =
-    with(this.parent) {
-        return if (this is UnaryExpressionImpl &&
-                   this.firstChild.text == "@") return this.firstChild
-        else null
-    }
+  with(this.parent) {
+    return if (this is UnaryExpressionImpl &&
+      this.firstChild.text == "@") return this.firstChild
+    else null
+  }
 
 fun FunctionReference.isName(expectedName: String): Boolean {
-    return (name ?: return false).lowercase() == expectedName
+  return (name ?: return false).lowercase() == expectedName
 }
 
 fun FunctionReference.isGeneratorComplex(): Boolean {
-    val functionDeclaration = this.resolve() as? FunctionImpl ?: return true
+  val functionDeclaration = this.resolve() as? FunctionImpl ?: return true
 
-    this.type.types.forEach { it ->
-        if (PhpType.isUnresolved(it)) {
-            return@forEach
-        }
-
-        if (it.equals("\\Generator")) {
-            val yieldInstructions = functionDeclaration.controlFlow.instructions
-                .filterIsInstance(PhpYieldInstructionImpl::class.java)
-
-            if (yieldInstructions.isEmpty()) return true
-
-            yieldInstructions.forEach {
-                if (PhpPsiUtil.isOfType(PhpPsiUtil.getNextSiblingIgnoreWhitespace(it.statement.argument, true), PhpTokenTypes.opHASH_ARRAY))
-                    return true
-
-                if (PhpYieldImpl.getFrom(it.statement) != null) {
-                    val fromStatement = it.statement.argument
-
-                    if (fromStatement is FunctionReference &&
-                        fromStatement.isGeneratorComplex()) return true
-                }
-            }
-        }
-        else {
-            val functionReturnType = ClassService.findFQN(it, this.project) ?: return true
-
-            if (!functionReturnType.hasInterface("\\Traversable") &&
-                !PhpType.isArray(it) &&
-                !PhpType.isPluralType(it))
-                return true
-        }
+  this.type.types.forEach { it ->
+    if (PhpType.isUnresolved(it)) {
+      return@forEach
     }
 
-    return false
+    if (it.equals("\\Generator")) {
+      val yieldInstructions = functionDeclaration.controlFlow.instructions
+        .filterIsInstance(PhpYieldInstructionImpl::class.java)
+
+      if (yieldInstructions.isEmpty()) return true
+
+      yieldInstructions.forEach {
+        if (PhpPsiUtil.isOfType(PhpPsiUtil.getNextSiblingIgnoreWhitespace(it.statement.argument, true), PhpTokenTypes.opHASH_ARRAY))
+          return true
+
+        if (PhpYieldImpl.getFrom(it.statement) != null) {
+          val fromStatement = it.statement.argument
+
+          if (fromStatement is FunctionReference &&
+            fromStatement.isGeneratorComplex()) return true
+        }
+      }
+    }
+    else {
+      val functionReturnType = ClassService.findFQN(it, this.project) ?: return true
+
+      if (!functionReturnType.hasInterface("\\Traversable") &&
+        !PhpType.isArray(it) &&
+        !PhpType.isPluralType(it))
+        return true
+    }
+  }
+
+  return false
 }

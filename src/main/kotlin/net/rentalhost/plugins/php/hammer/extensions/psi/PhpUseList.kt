@@ -7,8 +7,8 @@ import com.jetbrains.php.lang.psi.elements.impl.PhpUseListImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 
 fun PhpUseList.getVariables(): Collection<VariableImpl>? =
-    if (this.context is FunctionImpl) PsiTreeUtil.findChildrenOfType(this, VariableImpl::class.java)
-    else null
+  if (this.context is FunctionImpl) PsiTreeUtil.findChildrenOfType(this, VariableImpl::class.java)
+  else null
 
 fun PhpUseList.deleteTrailingComma(): Unit? =
-    PhpUseListImpl.getTrailingComma(this)?.delete()
+  PhpUseListImpl.getTrailingComma(this)?.delete()

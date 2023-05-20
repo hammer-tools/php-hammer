@@ -18,51 +18,51 @@ import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
-class CompactReplacementInspection: PhpInspection() {
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
-        override fun visitPhpArrayCreationExpression(element: ArrayCreationExpression) {
-            if (element.parent is MultiassignmentExpression)
-                return
+class CompactReplacementInspection : PhpInspection() {
+  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+    override fun visitPhpArrayCreationExpression(element: ArrayCreationExpression) {
+      if (element.parent is MultiassignmentExpression)
+        return
 
-            // Inspection must not works when inside of a arrow function due to PHP bug #78970.
-            with(PsiTreeUtil.getParentOfType(element, Function::class.java)) {
-                if (this != null && this.isShortFunction())
-                    return
-            }
+      // Inspection must not works when inside of a arrow function due to PHP bug #78970.
+      with(PsiTreeUtil.getParentOfType(element, Function::class.java)) {
+        if (this != null && this.isShortFunction())
+          return
+      }
 
-            val arrayElements = element.unpackValues()
+      val arrayElements = element.unpackValues()
 
-            if (arrayElements.isEmpty())
-                return
+      if (arrayElements.isEmpty())
+        return
 
-            val arrayVariables = mutableListOf<String>()
+      val arrayVariables = mutableListOf<String>()
 
-            for (arrayElement in arrayElements) {
-                if (arrayElement !is ArrayHashElementImpl)
-                    return
+      for (arrayElement in arrayElements) {
+        if (arrayElement !is ArrayHashElementImpl)
+          return
 
-                val arrayElementValue = arrayElement.value as? VariableImpl ?: return
+        val arrayElementValue = arrayElement.value as? VariableImpl ?: return
 
-                if (arrayElementValue.isRef())
-                    return
+        if (arrayElementValue.isRef())
+          return
 
-                val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
+        val arrayElementKey = arrayElement.key as? StringLiteralExpressionImpl ?: return
 
-                if (arrayElementKey.contents != arrayElementValue.name)
-                    return
+        if (arrayElementKey.contents != arrayElementValue.name)
+          return
 
-                arrayVariables.add("'${arrayElementValue.name}'")
-            }
+        arrayVariables.add("'${arrayElementValue.name}'")
+      }
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element,
-                "array can be replaced by compact()",
-                QuickFixService.instance.simpleReplace(
-                    "Replace with compact()",
-                    FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables).createSmartPointer()
-                )
-            )
-        }
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder,
+        element,
+        "array can be replaced by compact()",
+        QuickFixService.instance.simpleReplace(
+          "Replace with compact()",
+          FactoryService.createFunctionCall(problemsHolder.project, "compact", arrayVariables).createSmartPointer()
+        )
+      )
     }
+  }
 }

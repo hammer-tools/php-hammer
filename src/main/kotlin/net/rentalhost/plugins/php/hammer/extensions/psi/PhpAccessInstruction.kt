@@ -5,12 +5,12 @@ import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpAccessVariableI
 import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpArrayAccessInstruction
 
 val PhpAccessInstruction.variableName: CharSequence?
-    get() =
-        when (this) {
-            is PhpAccessVariableInstruction -> variableName
-            is PhpArrayAccessInstruction -> variableName
-            else -> null
-        }
+  get() =
+    when (this) {
+      is PhpAccessVariableInstruction -> variableName
+      is PhpArrayAccessInstruction -> variableName
+      else -> null
+    }
 
 fun List<PhpAccessInstruction>.names(): List<CharSequence> =
-    map { it.variableName!! }.distinct()
+  map { it.variableName!! }.distinct()

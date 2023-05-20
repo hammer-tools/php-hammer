@@ -17,57 +17,57 @@ import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 
-class SortUseVariablesInspection: PhpInspection() {
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
-        override fun visitPhpUseList(element: PhpUseList) {
-            val useVariables = element.getVariables()
+class SortUseVariablesInspection : PhpInspection() {
+  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+    override fun visitPhpUseList(element: PhpUseList) {
+      val useVariables = element.getVariables()
 
-            if (useVariables == null ||
-                useVariables.size < 2)
-                return
+      if (useVariables == null ||
+        useVariables.size < 2)
+        return
 
-            val useContext = element.context as FunctionImpl
+      val useContext = element.context as FunctionImpl
 
-            val functionVariablesSorted = useContext.accessVariables()
-                .sortedBy { it.anchor.startOffset }
-                .distinctBy { it.variableName }
+      val functionVariablesSorted = useContext.accessVariables()
+        .sortedBy { it.anchor.startOffset }
+        .distinctBy { it.variableName }
 
-            val useVariablesNames = useVariables.map { it.name }
+      val useVariablesNames = useVariables.map { it.name }
 
-            val useVariablesSorted = useVariables
-                .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
-            val useVariablesSortedNames = useVariablesSorted.map { it.name }
+      val useVariablesSorted = useVariables
+        .sortedWith(compareBy(nullsLast()) { useVariable -> functionVariablesSorted.firstOrNull { it.variableName == useVariable.name }?.anchor?.startOffset })
+      val useVariablesSortedNames = useVariablesSorted.map { it.name }
 
-            if (useVariablesNames.toString() == useVariablesSortedNames.toString())
-                return
+      if (useVariablesNames.toString() == useVariablesSortedNames.toString())
+        return
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element,
-                useVariables.declarationTextRange(element),
-                "use() variables can be sorted",
-                SortByUsageQuickFix(useVariablesSorted.map { it.createSmartPointer() })
-            )
-        }
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder,
+        element,
+        useVariables.declarationTextRange(element),
+        "use() variables can be sorted",
+        SortByUsageQuickFix(useVariablesSorted.map { it.createSmartPointer() })
+      )
     }
+  }
 
-    class SortByUsageQuickFix(
-        @FileModifier.SafeFieldForPreview private val useVariablesSorted: Collection<SmartPsiElementPointer<VariableImpl>>,
-    ): LocalQuickFix {
-        override fun getFamilyName(): String = "Sort by usage"
+  class SortByUsageQuickFix(
+    @FileModifier.SafeFieldForPreview private val useVariablesSorted: Collection<SmartPsiElementPointer<VariableImpl>>,
+  ) : LocalQuickFix {
+    override fun getFamilyName(): String = "Sort by usage"
 
-        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-            descriptor.psiElement.replace(
-                FactoryService.createFunctionUse(
-                    project,
-                    useVariablesSorted.mapNotNull { it.element }.joinToString(", ") {
-                        val useVariableName = "$${it.name}"
+    override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+      descriptor.psiElement.replace(
+        FactoryService.createFunctionUse(
+          project,
+          useVariablesSorted.mapNotNull { it.element }.joinToString(", ") {
+            val useVariableName = "$${it.name}"
 
-                        if (it.isRef()) "&$useVariableName"
-                        else useVariableName
-                    }
-                )
-            )
-        }
+            if (it.isRef()) "&$useVariableName"
+            else useVariableName
+          }
+        )
+      )
     }
+  }
 }

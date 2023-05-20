@@ -15,42 +15,42 @@ import net.rentalhost.plugins.php.hammer.extensions.psi.isStub
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
-class SenselessParentCallEmptyInspection: PhpInspection() {
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
-        override fun visitPhpMethodReference(element: MethodReference) {
-            if (!element.parent.isStrictlyStatement())
-                return
+class SenselessParentCallEmptyInspection : PhpInspection() {
+  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+    override fun visitPhpMethodReference(element: MethodReference) {
+      if (!element.parent.isStrictlyStatement())
+        return
 
-            val elementBase = element.firstPsiChild as? ClassReferenceImpl ?: return
+      val elementBase = element.firstPsiChild as? ClassReferenceImpl ?: return
 
-            if (elementBase.text.lowercase() != "parent")
-                return
+      if (elementBase.text.lowercase() != "parent")
+        return
 
-            val elementScope = PsiTreeUtil.getParentOfType(element, PhpScopeHolder::class.java) as? MethodImpl ?: return
-            val elementName = (element.name ?: return).lowercase()
+      val elementScope = PsiTreeUtil.getParentOfType(element, PhpScopeHolder::class.java) as? MethodImpl ?: return
+      val elementName = (element.name ?: return).lowercase()
 
-            if (elementName.startsWith("__") ||
-                elementName != elementScope.name.lowercase())
-                return
+      if (elementName.startsWith("__") ||
+        elementName != elementScope.name.lowercase())
+        return
 
-            val baseClass = elementScope.getMemberOverridden() ?: return
-            val baseMethod = baseClass.findMethodByName(elementScope.name) as? MethodImpl ?: return
+      val baseClass = elementScope.getMemberOverridden() ?: return
+      val baseMethod = baseClass.findMethodByName(elementScope.name) as? MethodImpl ?: return
 
-            if (baseMethod.isStub())
-                return
+      if (baseMethod.isStub())
+        return
 
-            if (baseMethod.scope.controlFlow.instructions.size > 2)
-                return
+      if (baseMethod.scope.controlFlow.instructions.size > 2)
+        return
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder,
-                element,
-                "senseless call to empty parent::${element.name}()",
-                QuickFixService.instance.simpleDelete(
-                    "Delete call to parent::${element.name}()",
-                    element.parent.createSmartPointer()
-                )
-            )
-        }
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder,
+        element,
+        "senseless call to empty parent::${element.name}()",
+        QuickFixService.instance.simpleDelete(
+          "Delete call to parent::${element.name}()",
+          element.parent.createSmartPointer()
+        )
+      )
     }
+  }
 }

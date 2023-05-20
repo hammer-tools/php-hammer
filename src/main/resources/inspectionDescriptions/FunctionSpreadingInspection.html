@@ -1,14 +1,14 @@
 <html lang="en">
-    <body>
-        This inspection identifies functions that can be replaced by spread.
-        This includes functions like <code>array_merge()</code>.<br/><br/>
+  <body>
+    This inspection identifies functions that can be replaced by spread.
+    This includes functions like <code>array_merge()</code>.<br/><br/>
 
-        <strong>Example:</strong>
+    <strong>Example:</strong>
 
-        <pre><code>$example = array_merge($a, $b);</code></pre>
+    <pre><code>$example = array_merge($a, $b);</code></pre>
 
-        <strong>Becomes:</strong>
+    <strong>Becomes:</strong>
 
-        <pre><code>$example = [ ...$a, ...$b ];</code></pre>
-    </body>
+    <pre><code>$example = [ ...$a, ...$b ];</code></pre>
+  </body>
 </html>

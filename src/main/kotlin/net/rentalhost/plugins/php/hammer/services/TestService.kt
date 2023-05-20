@@ -9,78 +9,78 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import java.io.File
 import java.util.function.Consumer
 
-abstract class TestCase: BasePlatformTestCase() {
-    @Throws(Exception::class)
-    override fun setUp() {
-        super.setUp()
+abstract class TestCase : BasePlatformTestCase() {
+  @Throws(Exception::class)
+  override fun setUp() {
+    super.setUp()
 
-        myFixture.testDataPath = File("src/test/resources").absolutePath
+    myFixture.testDataPath = File("src/test/resources").absolutePath
+  }
+
+  protected fun <T : PhpInspection?> testInspection(
+    inspectionClass: Class<T>,
+    phpSourceName: String,
+    phpSourceSubName: List<String>,
+    inspectionSetup: Consumer<T>? = null,
+    phpLanguageLevel: PhpLanguageLevel? = null,
+    quickFixesEnabled: Boolean? = null
+  ): Unit = testInspection(inspectionClass, listOf(phpSourceName, *phpSourceSubName.toTypedArray()), inspectionSetup, phpLanguageLevel, quickFixesEnabled)
+
+  protected fun <T : PhpInspection?> testInspection(
+    inspectionClass: Class<T>,
+    phpSourceSubName: String?,
+    inspectionSetup: Consumer<T>? = null,
+    phpLanguageLevel: PhpLanguageLevel? = null
+  ): Unit = testInspection(inspectionClass, listOf(phpSourceSubName), inspectionSetup, phpLanguageLevel)
+
+  protected fun <T : PhpInspection?> testInspection(
+    inspectionClass: Class<T>,
+    phpSourceSubNames: List<String?>? = null,
+    inspectionSetup: Consumer<T>? = null,
+    phpLanguageLevel: PhpLanguageLevel? = null,
+    quickFixesEnabled: Boolean? = null
+  ) {
+    val phpSourceBase = inspectionClass.name.substringAfter(".hammer.").replace(".", "/")
+    val phpSourceSub = phpSourceSubNames?.first() ?: "default"
+
+    val phpInspection: T = try {
+      inspectionClass.getDeclaredConstructor().newInstance()
+    }
+    catch (e: Exception) {
+      throw e
     }
 
-    protected fun <T: PhpInspection?> testInspection(
-        inspectionClass: Class<T>,
-        phpSourceName: String,
-        phpSourceSubName: List<String>,
-        inspectionSetup: Consumer<T>? = null,
-        phpLanguageLevel: PhpLanguageLevel? = null,
-        quickFixesEnabled: Boolean? = null
-    ): Unit = testInspection(inspectionClass, listOf(phpSourceName, *phpSourceSubName.toTypedArray()), inspectionSetup, phpLanguageLevel, quickFixesEnabled)
+    inspectionSetup?.accept(phpInspection)
 
-    protected fun <T: PhpInspection?> testInspection(
-        inspectionClass: Class<T>,
-        phpSourceSubName: String?,
-        inspectionSetup: Consumer<T>? = null,
-        phpLanguageLevel: PhpLanguageLevel? = null
-    ): Unit = testInspection(inspectionClass, listOf(phpSourceSubName), inspectionSetup, phpLanguageLevel)
+    val phpLanguageLevelDeclared = phpLanguageLevel ?: PhpLanguageLevel.PHP810
 
-    protected fun <T: PhpInspection?> testInspection(
-        inspectionClass: Class<T>,
-        phpSourceSubNames: List<String?>? = null,
-        inspectionSetup: Consumer<T>? = null,
-        phpLanguageLevel: PhpLanguageLevel? = null,
-        quickFixesEnabled: Boolean? = null
-    ) {
-        val phpSourceBase = inspectionClass.name.substringAfter(".hammer.").replace(".", "/")
-        val phpSourceSub = phpSourceSubNames?.first() ?: "default"
+    PhpProjectConfigurationFacade.getInstance(project).languageLevel = phpLanguageLevelDeclared
 
-        val phpInspection: T = try {
-            inspectionClass.getDeclaredConstructor().newInstance()
-        }
-        catch (e: Exception) {
-            throw e
-        }
+    myFixture.enableInspections(phpInspection)
 
-        inspectionSetup?.accept(phpInspection)
-
-        val phpLanguageLevelDeclared = phpLanguageLevel ?: PhpLanguageLevel.PHP810
-
-        PhpProjectConfigurationFacade.getInstance(project).languageLevel = phpLanguageLevelDeclared
-
-        myFixture.enableInspections(phpInspection)
-
-        if (phpSourceSubNames != null && phpSourceSubNames.size > 1) {
-            myFixture.configureByFiles(*phpSourceSubNames.drop(1).toTypedArray())
-        }
-
-        myFixture.testHighlighting(true, false, true, "$phpSourceBase/$phpSourceSub.php")
-
-        if (quickFixesEnabled != false) {
-            val phpLanguageLevelSuffix =
-                if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP810) ""
-                else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
-
-            val quickFixFile = "$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php"
-
-            if (File("src/test/resources/$quickFixFile").exists()) {
-                val inspectionQuickFixes = myFixture.getAllQuickFixes()
-                    .filter { it !is EmptyIntentionAction }
-
-                if (inspectionQuickFixes.isNotEmpty()) {
-                    inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix ?: return@Consumer) })
-
-                    myFixture.checkResultByFile(quickFixFile)
-                }
-            }
-        }
+    if (phpSourceSubNames != null && phpSourceSubNames.size > 1) {
+      myFixture.configureByFiles(*phpSourceSubNames.drop(1).toTypedArray())
     }
+
+    myFixture.testHighlighting(true, false, true, "$phpSourceBase/$phpSourceSub.php")
+
+    if (quickFixesEnabled != false) {
+      val phpLanguageLevelSuffix =
+        if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP810) ""
+        else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
+
+      val quickFixFile = "$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php"
+
+      if (File("src/test/resources/$quickFixFile").exists()) {
+        val inspectionQuickFixes = myFixture.getAllQuickFixes()
+          .filter { it !is EmptyIntentionAction }
+
+        if (inspectionQuickFixes.isNotEmpty()) {
+          inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix ?: return@Consumer) })
+
+          myFixture.checkResultByFile(quickFixFile)
+        }
+      }
+    }
+  }
 }

@@ -1,23 +1,23 @@
 <html lang="en">
-    <body>
-        This inspection enforces that function parameters that have a default value should never set a value other than <code>null</code>.
-        The default value should be defined by the function itself when the argument is <code>null</code>.<br/><br/>
+  <body>
+    This inspection enforces that function parameters that have a default value should never set a value other than <code>null</code>.
+    The default value should be defined by the function itself when the argument is <code>null</code>.<br/><br/>
 
-        This way, the user won't need to rewrite the function's default value when modifying the next parameter.
-        Additionally, if the function is eventually modified, the user won't need to update it.<br/><br/>
+    This way, the user won't need to rewrite the function's default value when modifying the next parameter.
+    Additionally, if the function is eventually modified, the user won't need to update it.<br/><br/>
 
-        <strong>Example:</strong>
+    <strong>Example:</strong>
 
-        <pre><code>function clue($items, $between = ", ", $last = " and ") {
+    <pre><code>function clue($items, $between = ", ", $last = " and ") {
     return /** ... */;
 }
 
 // Note that it is necessary to rewrite the function's 2nd default argument.
 echo clue([ "a", "b", "c" ], ", ", " or ");</code></pre>
 
-        <strong>Becomes:</strong>
+    <strong>Becomes:</strong>
 
-        <pre><code>function clue($items, $between = null, $last = null) {
+    <pre><code>function clue($items, $between = null, $last = null) {
     $between ??= ", ";
     $last    ??= " and ";
 
@@ -26,5 +26,5 @@ echo clue([ "a", "b", "c" ], ", ", " or ");</code></pre>
 
 // Now just use `null` and the function will decide the correct value.
 echo clue([ "a", "b", "c" ], null, " or ")</code></pre>
-    </body>
+  </body>
 </html>

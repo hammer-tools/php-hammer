@@ -9,15 +9,15 @@ import com.jetbrains.php.lang.psi.elements.impl.PhpThrowImpl
 import net.rentalhost.plugins.php.hammer.services.FactoryService
 
 fun Statement.getSingleStatement(): PsiElement? =
-    if (this !is GroupStatement) this
-    else if (this.statements.size == 1) this.statements.first()
-    else null
+  if (this !is GroupStatement) this
+  else if (this.statements.size == 1) this.statements.first()
+  else null
 
 fun Statement.isTerminatingStatement(): Boolean = with(this.unwrapStatement()) {
-    this is PhpReturn ||
+  this is PhpReturn ||
     this is PhpThrowImpl ||
     this is PhpExit
 }
 
 fun Statement.rebuild(): PsiElement =
-    replace(FactoryService.createStatement(this.project, text))
+  replace(FactoryService.createStatement(this.project, text))

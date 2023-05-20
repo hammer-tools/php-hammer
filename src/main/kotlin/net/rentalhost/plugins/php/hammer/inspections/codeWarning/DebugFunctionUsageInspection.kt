@@ -16,84 +16,84 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
-class DebugFunctionUsageInspection: PhpInspection() {
-    @OptionTag
-    private var xdebugEnabled = true
+class DebugFunctionUsageInspection : PhpInspection() {
+  @OptionTag
+  private var xdebugEnabled = true
 
-    @OptionTag
-    private var frameworksEnabled = true
+  @OptionTag
+  private var frameworksEnabled = true
 
-    private val nativeRegex = Regex("^\\\\debug_", RegexOption.IGNORE_CASE)
-    private val nativeFunctions = listOf(
-        "\\var_dump",
-        "\\var_export",
-        "\\print_r",
-        "\\get_defined_vars",
-        "\\phpinfo",
-        "\\error_log"
-    )
+  private val nativeRegex = Regex("^\\\\debug_", RegexOption.IGNORE_CASE)
+  private val nativeFunctions = listOf(
+    "\\var_dump",
+    "\\var_export",
+    "\\print_r",
+    "\\get_defined_vars",
+    "\\phpinfo",
+    "\\error_log"
+  )
 
-    private val xdebugRegex = Regex("^\\\\xdebug_", RegexOption.IGNORE_CASE)
+  private val xdebugRegex = Regex("^\\\\xdebug_", RegexOption.IGNORE_CASE)
 
-    private val frameworksRegex by lazy { Regex(frameworks.joinToString("|") { it.second.pattern }, RegexOption.IGNORE_CASE) }
-    private val frameworks = listOf(
-        Pair("Laravel", Regex("^\\\\(dd|dump)$")),
-        Pair("Laravel", Regex("^\\\\Illuminate\\\\[^\\\\]+\\\\(dd|dump)$")),
-    )
+  private val frameworksRegex by lazy { Regex(frameworks.joinToString("|") { it.second.pattern }, RegexOption.IGNORE_CASE) }
+  private val frameworks = listOf(
+    Pair("Laravel", Regex("^\\\\(dd|dump)$")),
+    Pair("Laravel", Regex("^\\\\Illuminate\\\\[^\\\\]+\\\\(dd|dump)$")),
+  )
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
-        override fun visitPhpFunctionCall(function: FunctionReference) {
-            if (function.parameterList == null)
-                return
+  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+    override fun visitPhpFunctionCall(function: FunctionReference) {
+      if (function.parameterList == null)
+        return
 
-            val functionResolve = try {
-                function.resolve()
-            }
-            catch (_: StringIndexOutOfBoundsException) {
-                return
-            }
+      val functionResolve = try {
+        function.resolve()
+      }
+      catch (_: StringIndexOutOfBoundsException) {
+        return
+      }
 
-            val functionName =
-                if (functionResolve is Function) functionResolve.fqn
-                else function.fqn.toString()
+      val functionName =
+        if (functionResolve is Function) functionResolve.fqn
+        else function.fqn.toString()
 
-            if (functionName == "\\get_defined_vars" &&
-                function.containingFile.isBlade())
-                return
+      if (functionName == "\\get_defined_vars" &&
+        function.containingFile.isBlade())
+        return
 
-            val isNativeFunction by lazy { nativeFunctions.contains(functionName) || nativeRegex.containsMatchIn(functionName) }
-            val isXdebugFunction by lazy { xdebugEnabled && xdebugRegex.containsMatchIn(functionName) }
-            val isFrameworksFunction by lazy { frameworksEnabled && frameworksRegex.containsMatchIn(functionName) }
+      val isNativeFunction by lazy { nativeFunctions.contains(functionName) || nativeRegex.containsMatchIn(functionName) }
+      val isXdebugFunction by lazy { xdebugEnabled && xdebugRegex.containsMatchIn(functionName) }
+      val isFrameworksFunction by lazy { frameworksEnabled && frameworksRegex.containsMatchIn(functionName) }
 
-            if (!isNativeFunction &&
-                !isXdebugFunction &&
-                !isFrameworksFunction)
-                return
+      if (!isNativeFunction &&
+        !isXdebugFunction &&
+        !isFrameworksFunction)
+        return
 
-            ProblemsHolderService.instance.registerProblem(
-                problemsHolder, function, "debug function usage",
-                if (function.parent.isExactly<StatementImpl>()) QuickFixService.instance.simpleDelete(
-                    "Drop debug function", SmartPointerManager.createPointer(function.parent)
-                )
-                else null
-            )
-        }
-
-        override fun visitPhpMethodReference(method: MethodReference) = visitPhpFunctionCall(method)
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder, function, "debug function usage",
+        if (function.parent.isExactly<StatementImpl>()) QuickFixService.instance.simpleDelete(
+          "Drop debug function", SmartPointerManager.createPointer(function.parent)
+        )
+        else null
+      )
     }
 
-    override fun createOptionsPanel(): JComponent {
-        return OptionsPanelService.create { component: OptionsPanelService ->
-            component.addCheckbox(
-                "Include xdebug functions", xdebugEnabled,
-                "This option will include the functions related to the <code>xdebug</code> extension."
-            ) { xdebugEnabled = it }
+    override fun visitPhpMethodReference(method: MethodReference) = visitPhpFunctionCall(method)
+  }
 
-            component.addCheckbox(
-                "Include frameworks functions", frameworksEnabled,
-                "This option includes functions related to PHP frameworks and other tools. " +
-                "Currently supported are: ${frameworks.map { it.first }.distinct().sorted().joinToString(", ")} and others."
-            ) { frameworksEnabled = it }
-        }
+  override fun createOptionsPanel(): JComponent {
+    return OptionsPanelService.create { component: OptionsPanelService ->
+      component.addCheckbox(
+        "Include xdebug functions", xdebugEnabled,
+        "This option will include the functions related to the <code>xdebug</code> extension."
+      ) { xdebugEnabled = it }
+
+      component.addCheckbox(
+        "Include frameworks functions", frameworksEnabled,
+        "This option includes functions related to PHP frameworks and other tools. " +
+          "Currently supported are: ${frameworks.map { it.first }.distinct().sorted().joinToString(", ")} and others."
+      ) { frameworksEnabled = it }
     }
+  }
 }
