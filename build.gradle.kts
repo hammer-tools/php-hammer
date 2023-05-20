@@ -1,14 +1,17 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.10.1"
-    id("org.jetbrains.kotlin.jvm") version "1.8.0"
+    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.kotlin.jvm") version "1.8.21"
 }
 
 dependencies {
-    implementation("io.sentry:sentry:6.12.1")
+    implementation("io.sentry:sentry:6.19.0")
     implementation(fileTree("hammer-tools/build/libs").also { it.include("*.jar") })
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 group = prop("pluginId")
@@ -25,7 +28,7 @@ apply {
 intellij {
     pluginName.set(prop("pluginName"))
     version.set(prop("platformVersion"))
-    type.set("IU")
+    type.set("PS")
 
     plugins.set(listOf("com.jetbrains.php:${prop("platformPhpBuild")}"))
 }
@@ -55,10 +58,6 @@ tasks {
         include("**/*TestCase.class")
 
         systemProperty("idea.split.test.logs", "true")
-    }
-
-    inspectClassesForKotlinIC {
-        dependsOn("instrumentTestCode")
     }
 
     jar {
@@ -105,4 +104,16 @@ tasks {
             }
         }
     }
+}
+
+val compileKotlin: KotlinCompile by tasks
+
+compileKotlin.kotlinOptions {
+    jvmTarget = "17"
+}
+
+val compileTestKotlin: KotlinCompile by tasks
+
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "17"
 }

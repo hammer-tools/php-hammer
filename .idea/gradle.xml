@@ -7,19 +7,27 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
+              <build path="$PROJECT_DIR$/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/buildSrc" />
+                </projects>
+              </build>
               <build path="$PROJECT_DIR$/hammer-tools" name="hammer-tools">
                 <projects>
                   <project path="$PROJECT_DIR$/hammer-tools" />
                   <project path="$PROJECT_DIR$/hammer-tools/lib" />
                 </projects>
               </build>
+              <build path="$PROJECT_DIR$/hammer-tools/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/hammer-tools/buildSrc" />
+                </projects>
+              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
-        <option name="delegatedBuild" value="true" />
-        <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="17" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
