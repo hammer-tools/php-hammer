@@ -11,9 +11,9 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpCase
 import com.jetbrains.php.lang.psi.elements.impl.GroupStatementSimpleImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.services.FactoryService
-import net.rentalhost.plugins.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.inspections.enums.OptionCaseSeparatorFormat
+import net.rentalhost.plugins.php.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent

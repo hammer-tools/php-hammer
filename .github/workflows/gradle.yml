@@ -2,9 +2,9 @@ name: Gradle
 
 on:
   push:
-    branches: master
+    branches: [master]
   pull_request:
-    branches: master
+    branches: [master]
 
 jobs:
   build:
@@ -36,9 +36,6 @@ jobs:
 
       - name: Grant execute permissions
         run: chmod +x ./gradlew
-
-      - name: Build hammer-tools
-        run: ./gradlew :hammer-tools:jar
 
       - name: Build plugin
         run: ./gradlew check verifyPlugin buildPlugin

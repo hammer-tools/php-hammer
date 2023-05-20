@@ -10,7 +10,6 @@ plugins {
 
 dependencies {
     implementation("io.sentry:sentry:6.19.0")
-    implementation(fileTree("hammer-tools/build/libs").also { it.include("*.jar") })
     implementation(kotlin("stdlib-jdk8"))
 }
 
@@ -78,8 +77,6 @@ tasks {
     }
 
     setupDependencies {
-        dependsOn(gradle.includedBuild("hammer-tools").task(":jar"))
-
         doLast {
             // Fixes IDEA-298989.
             fileTree("$buildDir/instrumented/instrumentCode") { include("**/*Form.class") }.files.forEach { delete(it) }

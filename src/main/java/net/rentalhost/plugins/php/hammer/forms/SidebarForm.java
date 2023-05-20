@@ -1,12 +1,11 @@
 package net.rentalhost.plugins.php.hammer.forms;
 
 import com.intellij.ide.BrowserUtil;
-import com.intellij.openapi.project.Project;
 
 import javax.swing.*;
 
-import net.rentalhost.plugins.hammer.services.SettingsService;
 import net.rentalhost.plugins.php.hammer.services.ProjectService;
+import net.rentalhost.plugins.php.hammer.services.SettingsService;
 
 public final class SidebarForm {
     private JPanel panel;
@@ -25,7 +24,7 @@ public final class SidebarForm {
     private final String labelInspectionsText;
     private final String labelFixesText;
 
-    public SidebarForm(final Project project) {
+    public SidebarForm() {
         final var projectService = ProjectService.Companion.getInstance();
         final var projectState   = projectService.getSettings().getServiceInstance().getState();
         final var projectUrls    = projectService.getUrls();

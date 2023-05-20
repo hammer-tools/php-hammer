@@ -10,10 +10,10 @@ import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.getTypes
-import net.rentalhost.plugins.hammer.extensions.psi.isName
-import net.rentalhost.plugins.hammer.services.FactoryService
-import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.extensions.psi.getTypes
+import net.rentalhost.plugins.php.hammer.extensions.psi.isName
+import net.rentalhost.plugins.php.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent

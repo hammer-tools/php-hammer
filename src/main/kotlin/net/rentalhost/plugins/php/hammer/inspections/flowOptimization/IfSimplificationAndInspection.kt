@@ -8,10 +8,10 @@ import com.jetbrains.php.lang.psi.elements.Else
 import com.jetbrains.php.lang.psi.elements.ElseIf
 import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.getSingleStatement
-import net.rentalhost.plugins.hammer.extensions.psi.isAndSimplified
-import net.rentalhost.plugins.hammer.extensions.psi.isBlade
-import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.extensions.psi.getSingleStatement
+import net.rentalhost.plugins.php.hammer.extensions.psi.isAndSimplified
+import net.rentalhost.plugins.php.hammer.extensions.psi.isBlade
+import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

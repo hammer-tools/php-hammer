@@ -10,9 +10,9 @@ import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.impl.MemberReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.insertBefore
-import net.rentalhost.plugins.hammer.extensions.psi.isName
-import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.extensions.psi.insertBefore
+import net.rentalhost.plugins.php.hammer.extensions.psi.isName
+import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

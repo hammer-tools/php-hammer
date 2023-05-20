@@ -11,9 +11,9 @@ import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.getBasename
-import net.rentalhost.plugins.hammer.services.FactoryService
-import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.extensions.psi.getBasename
+import net.rentalhost.plugins.php.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent

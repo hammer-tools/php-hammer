@@ -1,6 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
-import net.rentalhost.plugins.hammer.services.TestCase
+import net.rentalhost.plugins.php.hammer.services.TestCase
 
 class NativeMemberUsageInspectionTestCase: TestCase() {
     fun testAll(): Unit = testInspection(NativeMemberUsageInspection::class.java)

@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
+import com.intellij.codeInsight.intention.FileModifier
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
@@ -12,8 +13,8 @@ import com.jetbrains.php.lang.psi.elements.PhpUseList
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.*
-import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 
 class SortUseVariablesInspection: PhpInspection() {
@@ -51,7 +52,7 @@ class SortUseVariablesInspection: PhpInspection() {
     }
 
     class SortByUsageQuickFix(
-        private val useVariablesSorted: Collection<SmartPsiElementPointer<VariableImpl>>,
+        @FileModifier.SafeFieldForPreview private val useVariablesSorted: Collection<SmartPsiElementPointer<VariableImpl>>,
     ): LocalQuickFix {
         override fun getFamilyName(): String = "Sort by usage"
 

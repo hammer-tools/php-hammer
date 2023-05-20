@@ -5,7 +5,7 @@ import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.getErrorControlOperator
+import net.rentalhost.plugins.php.hammer.extensions.psi.getErrorControlOperator
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

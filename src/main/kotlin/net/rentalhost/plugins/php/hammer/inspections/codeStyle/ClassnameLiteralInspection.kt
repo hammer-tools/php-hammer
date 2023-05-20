@@ -9,10 +9,8 @@ import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.isName
-import net.rentalhost.plugins.hammer.services.*
-import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
-import net.rentalhost.plugins.php.hammer.services.QuickFixService
+import net.rentalhost.plugins.php.hammer.extensions.psi.isName
+import net.rentalhost.plugins.php.hammer.services.*
 import javax.swing.JComponent
 
 class ClassnameLiteralInspection: PhpInspection() {

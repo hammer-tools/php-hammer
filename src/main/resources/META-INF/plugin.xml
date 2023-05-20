@@ -8,17 +8,17 @@
     <idea-version since-build="232" until-build="232.*" />
 
     <description><![CDATA[
-        <strong>PHP Hammer</strong> is a plugin that adds <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>49 new inspections</strong></a> to the PHP language which are not available in PhpStorm natively, including support for quick-fixes.<br /><br />
+        <strong>PHP Hammer</strong> is a powerful plugin that enhances the PHP language in PhpStorm by adding <a href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>49 new inspections</strong></a> that are not available natively. These inspections provide advanced code analysis and come with convenient quick-fixes to streamline your development process.
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.php</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Code Style -->
+        <!-- Code style -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Anonymous function can be static"
                          level="WEAK WARNING"
@@ -27,7 +27,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Array can be packed"
                          level="WEAK WARNING"
@@ -36,7 +36,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Call to __toString() can be simplified"
                          level="WEAK WARNING"
@@ -45,7 +45,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Case separator format"
                          level="WEAK WARNING"
@@ -54,7 +54,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Class name as string can be replaced"
                          level="WEAK WARNING"
@@ -63,7 +63,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Class self-reference format normalization"
                          level="WEAK WARNING"
@@ -72,7 +72,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Comparison order with scalar normalization"
                          level="WEAK WARNING"
@@ -81,7 +81,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Function to spread"
                          level="WEAK WARNING"
@@ -90,7 +90,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Null check format"
                          level="WEAK WARNING"
@@ -99,7 +99,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Nullable type format"
                          level="WEAK WARNING"
@@ -108,7 +108,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Nullable type on the rightmost side"
                          level="WEAK WARNING"
@@ -117,7 +117,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Parameter defaults to null"
                          level="WEAK WARNING"
@@ -126,7 +126,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Parameter is implicitly nullable"
                          level="WEAK WARNING"
@@ -135,7 +135,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Replace backtick operator"
                          level="WEAK WARNING"
@@ -144,7 +144,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Replace function cast to type cast"
                          level="WEAK WARNING"
@@ -153,7 +153,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Replace with compact()"
                          level="WEAK WARNING"
@@ -162,7 +162,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Sort use() variables"
                          level="WEAK WARNING"
@@ -171,7 +171,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="String can be simplified"
                          level="WEAK WARNING"
@@ -180,7 +180,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Type cast normalization"
                          level="WEAK WARNING"
@@ -189,7 +189,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Unary increase/decrease format"
                          level="WEAK WARNING"
@@ -198,17 +198,17 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Style"
+                         groupName="Code style"
                          enabledByDefault="true"
                          displayName="Variable must have curly braces"
                          level="WEAK WARNING"
                          shortName="StringCurlyInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeStyle.StringCurlyInspection" />
 
-        <!-- Flow Optimization -->
+        <!-- Flow optimization -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Flow Optimization"
+                         groupName="Flow optimization"
                          enabledByDefault="true"
                          displayName="Drop useless conditional"
                          level="WEAK WARNING"
@@ -217,7 +217,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Flow Optimization"
+                         groupName="Flow optimization"
                          enabledByDefault="true"
                          displayName="First-class callable replacement for array_map()"
                          level="WEAK WARNING"
@@ -226,7 +226,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Flow Optimization"
+                         groupName="Flow optimization"
                          enabledByDefault="true"
                          displayName="Merge simple nested conditionals"
                          level="WEAK WARNING"
@@ -235,7 +235,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Flow Optimization"
+                         groupName="Flow optimization"
                          enabledByDefault="true"
                          displayName="Merge simple subsequent conditionals"
                          level="WEAK WARNING"
@@ -244,7 +244,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Flow Optimization"
+                         groupName="Flow optimization"
                          enabledByDefault="true"
                          displayName="Redundant return point"
                          level="WEAK WARNING"
@@ -253,7 +253,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Flow Optimization"
+                         groupName="Flow optimization"
                          enabledByDefault="true"
                          displayName="Return-ternary can be replaced by if()"
                          level="WEAK WARNING"
@@ -262,17 +262,17 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Flow Optimization"
+                         groupName="Flow optimization"
                          enabledByDefault="true"
                          displayName="Simplify ternary operation"
                          level="WEAK WARNING"
                          shortName="TernarySimplificationInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.flowOptimization.TernarySimplificationInspection" />
 
-        <!-- Code Smell -->
+        <!-- Code smell -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Array unpacking can be simplified"
                          level="WEAK WARNING"
@@ -281,7 +281,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Duplicated terms in compact()"
                          level="WEAK WARNING"
@@ -290,7 +290,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Function call using error control operator"
                          level="WEAK WARNING"
@@ -299,7 +299,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Replace optional() function"
                          level="WEAK WARNING"
@@ -308,7 +308,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Replace with null-safe operator"
                          level="WEAK WARNING"
@@ -317,7 +317,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Senseless array_merge() usage"
                          level="WEAK WARNING"
@@ -326,7 +326,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Senseless call to empty parent method"
                          level="WEAK WARNING"
@@ -335,7 +335,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Senseless number_format() with zero decimal point"
                          level="WEAK WARNING"
@@ -344,17 +344,17 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Smell"
+                         groupName="Code smell"
                          enabledByDefault="true"
                          displayName="Usage of alias function"
                          level="WEAK WARNING"
                          shortName="FunctionAliasUsageInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeSmell.FunctionAliasUsageInspection" />
 
-        <!-- Dead Code -->
+        <!-- Dead code -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Dead Code"
+                         groupName="Dead code"
                          enabledByDefault="true"
                          displayName="Unused use() reference for variable"
                          level="WEAK WARNING"
@@ -363,17 +363,17 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Dead Code"
+                         groupName="Dead code"
                          enabledByDefault="true"
                          displayName="Unused use() variable"
                          level="WEAK WARNING"
                          shortName="UnusedUseVariableInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.deadCode.UnusedUseVariableInspection" />
 
-        <!-- Code Error -->
+        <!-- Code error -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Error"
+                         groupName="Code error"
                          enabledByDefault="true"
                          displayName="Class name must match the file that stores it"
                          level="ERROR"
@@ -382,7 +382,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Error"
+                         groupName="Code error"
                          enabledByDefault="true"
                          displayName="Invalid compact() argument"
                          level="ERROR"
@@ -391,7 +391,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Error"
+                         groupName="Code error"
                          enabledByDefault="true"
                          displayName="Static anonymous function can't access $this"
                          level="ERROR"
@@ -400,7 +400,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Error"
+                         groupName="Code error"
                          enabledByDefault="true"
                          displayName="Usage of compact() inside short functions"
                          level="ERROR"
@@ -409,7 +409,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Error"
+                         groupName="Code error"
                          enabledByDefault="true"
                          displayName="Using native types as objects"
                          level="ERROR"
@@ -426,10 +426,10 @@
                          shortName="DollarSignOutsideCurlyBracesInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.deprecation.DollarSignOutsideCurlyBracesInspection" />
 
-        <!-- Code Warning -->
+        <!-- Code warning -->
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Warning"
+                         groupName="Code warning"
                          enabledByDefault="true"
                          displayName="Debug function usage"
                          level="WARNING"
@@ -438,7 +438,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Warning"
+                         groupName="Code warning"
                          enabledByDefault="true"
                          displayName="Missing parent::call()"
                          level="WARNING"
@@ -447,7 +447,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Warning"
+                         groupName="Code warning"
                          enabledByDefault="true"
                          displayName="Usage of backslash on filesystem-related names"
                          level="WARNING"
@@ -456,7 +456,7 @@
 
         <localInspection language="PHP"
                          groupPath="PHP,🔨 PHP Hammer"
-                         groupName="Code Warning"
+                         groupName="Code warning"
                          enabledByDefault="true"
                          displayName="Variable usage in compact()"
                          level="WARNING"

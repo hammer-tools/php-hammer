@@ -10,12 +10,12 @@ import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.UnaryExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.isName
-import net.rentalhost.plugins.hammer.extensions.psi.unparenthesize
-import net.rentalhost.plugins.hammer.extensions.psi.withOptionalNotOperator
-import net.rentalhost.plugins.hammer.services.FactoryService
-import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.extensions.psi.isName
+import net.rentalhost.plugins.php.hammer.extensions.psi.unparenthesize
+import net.rentalhost.plugins.php.hammer.extensions.psi.withOptionalNotOperator
 import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullCheckFormat
+import net.rentalhost.plugins.php.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent

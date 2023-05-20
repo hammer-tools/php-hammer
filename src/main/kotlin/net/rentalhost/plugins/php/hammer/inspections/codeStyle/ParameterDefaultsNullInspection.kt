@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
+import com.intellij.codeInsight.intention.FileModifier
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
@@ -15,10 +16,10 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.*
-import net.rentalhost.plugins.hammer.services.FactoryService
-import net.rentalhost.plugins.hammer.services.LanguageService
-import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.LanguageService
+import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import javax.swing.JComponent
 
@@ -147,8 +148,8 @@ class ParameterDefaultsNullInspection: PhpInspection() {
     }
 
     class ReplaceWithNullQuickFix(
-        private val function: SmartPsiElementPointer<FunctionImpl>,
-        private val parameter: SmartPsiElementPointer<ParameterImpl>
+        @FileModifier.SafeFieldForPreview private val function: SmartPsiElementPointer<FunctionImpl>,
+        @FileModifier.SafeFieldForPreview private val parameter: SmartPsiElementPointer<ParameterImpl>
     ): LocalQuickFix {
         override fun getFamilyName(): String = "Smart replace with \"null\""
 

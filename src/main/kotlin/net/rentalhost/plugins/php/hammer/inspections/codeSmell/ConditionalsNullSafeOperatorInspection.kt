@@ -9,11 +9,11 @@ import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.insertAfter
-import net.rentalhost.plugins.hammer.extensions.psi.isExactly
-import net.rentalhost.plugins.hammer.extensions.psi.isOperatorAnd
-import net.rentalhost.plugins.hammer.services.FactoryService
-import net.rentalhost.plugins.hammer.services.FormatterService
+import net.rentalhost.plugins.php.hammer.extensions.psi.insertAfter
+import net.rentalhost.plugins.php.hammer.extensions.psi.isExactly
+import net.rentalhost.plugins.php.hammer.extensions.psi.isOperatorAnd
+import net.rentalhost.plugins.php.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.FormatterService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
@@ -83,7 +83,7 @@ class ConditionalsNullSafeOperatorInspection: PhpInspection() {
                 operandParent.operation ?: return,
                 "this operator can be replaced by null-safe operator",
                 QuickFixService.instance.simpleInline("Replace with null-safe operator") {
-                    operandMatches.forEach {
+                    operandMatches.forEach { it ->
                         if (!it.isValid)
                             return@forEach
 

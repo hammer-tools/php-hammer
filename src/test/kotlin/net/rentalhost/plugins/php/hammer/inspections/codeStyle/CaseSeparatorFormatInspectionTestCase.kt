@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import net.rentalhost.plugins.php.hammer.inspections.enums.OptionCaseSeparatorFormat
-import net.rentalhost.plugins.hammer.services.TestCase
+import net.rentalhost.plugins.php.hammer.services.TestCase
 
 class CaseSeparatorFormatInspectionTestCase: TestCase() {
     fun testCaseSeparatorFormatColon(): Unit =

@@ -9,7 +9,7 @@ import com.jetbrains.php.lang.psi.elements.PhpUseList
 import com.jetbrains.php.lang.psi.elements.impl.AssignmentExpressionImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

@@ -1,6 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
-import net.rentalhost.plugins.hammer.services.TestCase
+import net.rentalhost.plugins.php.hammer.services.TestCase
 
 class FileClassnameCaseInspectionTestCase: TestCase() {
     fun testValid(): Unit = testInspection(FileClassnameCaseInspection::class.java, "Dummy")

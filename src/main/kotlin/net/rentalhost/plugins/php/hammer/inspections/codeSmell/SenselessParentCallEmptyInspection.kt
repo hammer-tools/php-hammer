@@ -9,9 +9,9 @@ import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.ClassReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.getMemberOverridden
-import net.rentalhost.plugins.hammer.extensions.psi.isStrictlyStatement
-import net.rentalhost.plugins.hammer.extensions.psi.isStub
+import net.rentalhost.plugins.php.hammer.extensions.psi.getMemberOverridden
+import net.rentalhost.plugins.php.hammer.extensions.psi.isStrictlyStatement
+import net.rentalhost.plugins.php.hammer.extensions.psi.isStub
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

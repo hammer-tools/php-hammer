@@ -9,9 +9,9 @@ import com.jetbrains.php.lang.psi.elements.PhpTypedElement
 import com.jetbrains.php.lang.psi.elements.impl.ArrayCreationExpressionImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.hasInterface
-import net.rentalhost.plugins.hammer.extensions.psi.isVariadicPreceded
-import net.rentalhost.plugins.hammer.services.ClassService
+import net.rentalhost.plugins.php.hammer.extensions.psi.hasInterface
+import net.rentalhost.plugins.php.hammer.extensions.psi.isVariadicPreceded
+import net.rentalhost.plugins.php.hammer.services.ClassService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

@@ -9,9 +9,9 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.isBlade
-import net.rentalhost.plugins.hammer.extensions.psi.isExactly
-import net.rentalhost.plugins.hammer.services.OptionsPanelService
+import net.rentalhost.plugins.php.hammer.extensions.psi.isBlade
+import net.rentalhost.plugins.php.hammer.extensions.psi.isExactly
+import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent

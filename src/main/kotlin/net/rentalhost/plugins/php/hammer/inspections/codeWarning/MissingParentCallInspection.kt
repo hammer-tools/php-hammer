@@ -11,8 +11,8 @@ import com.jetbrains.php.lang.psi.elements.PhpReturn
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.*
-import net.rentalhost.plugins.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

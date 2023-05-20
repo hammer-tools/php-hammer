@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -12,29 +11,14 @@
                   <project path="$PROJECT_DIR$/buildSrc" />
                 </projects>
               </build>
-              <build path="$PROJECT_DIR$/hammer-tools" name="hammer-tools">
-                <projects>
-                  <project path="$PROJECT_DIR$/hammer-tools" />
-                  <project path="$PROJECT_DIR$/hammer-tools/lib" />
-                </projects>
-              </build>
-              <build path="$PROJECT_DIR$/hammer-tools/buildSrc" name="buildSrc">
-                <projects>
-                  <project path="$PROJECT_DIR$/hammer-tools/buildSrc" />
-                </projects>
-              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="17" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/hammer-tools" />
-            <option value="$PROJECT_DIR$/hammer-tools/buildSrc" />
-            <option value="$PROJECT_DIR$/hammer-tools/lib" />
           </set>
         </option>
       </GradleProjectSettings>

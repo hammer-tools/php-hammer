@@ -9,10 +9,10 @@ import com.jetbrains.php.lang.psi.elements.ArrayCreationExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.isGeneratorComplex
-import net.rentalhost.plugins.hammer.extensions.psi.isName
-import net.rentalhost.plugins.hammer.extensions.psi.isVariadicPreceded
-import net.rentalhost.plugins.hammer.extensions.psi.unpackValues
+import net.rentalhost.plugins.php.hammer.extensions.psi.isGeneratorComplex
+import net.rentalhost.plugins.php.hammer.extensions.psi.isName
+import net.rentalhost.plugins.php.hammer.extensions.psi.isVariadicPreceded
+import net.rentalhost.plugins.php.hammer.extensions.psi.unpackValues
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

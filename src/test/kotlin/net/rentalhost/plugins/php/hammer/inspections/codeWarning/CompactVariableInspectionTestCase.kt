@@ -1,6 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
-import net.rentalhost.plugins.hammer.services.TestCase
+import net.rentalhost.plugins.php.hammer.services.TestCase
 
 class CompactVariableInspectionTestCase: TestCase() {
     fun testAll(): Unit = testInspection(CompactVariableInspection::class.java)

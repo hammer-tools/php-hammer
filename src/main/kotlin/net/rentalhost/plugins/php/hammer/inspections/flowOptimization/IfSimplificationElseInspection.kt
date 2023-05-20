@@ -7,8 +7,8 @@ import com.jetbrains.php.lang.psi.elements.Else
 import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.If
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.extensions.psi.replaceWithGroupStatement
-import net.rentalhost.plugins.hammer.services.FormatterService
+import net.rentalhost.plugins.php.hammer.extensions.psi.replaceWithGroupStatement
+import net.rentalhost.plugins.php.hammer.services.FormatterService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 

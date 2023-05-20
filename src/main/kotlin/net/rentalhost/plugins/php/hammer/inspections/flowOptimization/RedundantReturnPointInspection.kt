@@ -7,8 +7,8 @@ import com.jetbrains.php.lang.psi.elements.PhpReturn
 import com.jetbrains.php.lang.psi.elements.impl.ControlStatementImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpReturnImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.hammer.services.ElementService
-import net.rentalhost.plugins.hammer.services.FormatterService
+import net.rentalhost.plugins.php.hammer.services.ElementService
+import net.rentalhost.plugins.php.hammer.services.FormatterService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
