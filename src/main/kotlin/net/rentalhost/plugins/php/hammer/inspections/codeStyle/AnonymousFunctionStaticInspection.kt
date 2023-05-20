@@ -14,12 +14,15 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
-class AnonymousFunctionStaticInspection: PhpInspection() {
+class AnonymousFunctionStaticInspection : PhpInspection() {
     @OptionTag
     var includeShortFunctions: Boolean = true
 
-    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object: PhpElementVisitor() {
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
         override fun visitPhpFunction(element: Function) {
+            if (element.containingFile.isBlade())
+                return
+
             if (!element.isAnonymous() ||
                 element.isStatic())
                 return
