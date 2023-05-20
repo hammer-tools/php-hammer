@@ -1,14 +1,14 @@
 <html lang="en">
     <body>
-        This inspection identifies redundant <code>return</code> points that can be safely removed.<br /><br />
+        This inspection identifies redundant <code>return</code> points that can be safely removed.<br/><br/>
 
         <strong>Example:</strong>
 
         <pre><code>if ($conditional) {
     doSomething();
 
-    // Note: this return point is unnecessary, since that
-    // after this if() statement the same return will happen.
+    // Note: this return point is unnecessary since after this if() statement,
+    // the same return will happen.
     return true;
 }
 

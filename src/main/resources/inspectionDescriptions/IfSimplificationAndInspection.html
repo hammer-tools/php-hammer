@@ -1,7 +1,7 @@
 <html lang="en">
     <body>
         This inspection identifies nested <code>if()</code> conditions that can be merged into one.
-        However, complex conditions are ignored in order to maintain a better visual quality of the code.<br /><br />
+        However, complex conditions are ignored to maintain better code readability.<br/><br/>
 
         <strong>Example:</strong>
 
@@ -13,8 +13,7 @@
 
         <strong>Becomes:</strong>
 
-        <pre><code>if (condition() &&
-    anotherCondition()) {
+        <pre><code>if (condition() && anotherCondition()) {
     return true;
 }</code></pre>
     </body>

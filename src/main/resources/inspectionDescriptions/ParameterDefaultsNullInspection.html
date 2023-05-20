@@ -1,10 +1,10 @@
 <html lang="en">
     <body>
-        This inspection enforces that function parameters that set a default value never set a value other than <code>null</code>.
-        The default value must be defined by the function routine itself, whenever the argument is <code>null</code>.<br /><br />
+        This inspection enforces that function parameters that have a default value should never set a value other than <code>null</code>.
+        The default value should be defined by the function itself when the argument is <code>null</code>.<br/><br/>
 
-        In this way the user will not need to rewrite the function's default value when he needs to modify the next parameter.
-        In addition, in an eventual modification of the function, it will not need to be updated by the user.<br /><br />
+        This way, the user won't need to rewrite the function's default value when modifying the next parameter.
+        Additionally, if the function is eventually modified, the user won't need to update it.<br/><br/>
 
         <strong>Example:</strong>
 

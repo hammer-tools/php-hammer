@@ -1,11 +1,11 @@
 <html lang="en">
     <body>
-        This inspection analyzes the possibility of simplifying ternary operators with identical or non-identical comparisons.<br /><br />
+        This inspection analyzes the possibility of simplifying ternary operators with identical or non-identical comparisons.<br/><br/>
 
         For example, the code <code>$x === $y ? $y : $x</code> can be simplified to just <code>$x</code>,
-        since if the comparison is <code>true</code>, it means that the true side is the value of what is being compared (<code>$y</code>).
+        since if the comparison is <code>true</code>, it means that the true side is the value being compared (<code>$y</code>).
         And since the false side returns the expression itself as well,
-        then the ternary operator is unnecessary since the answer will always be the expression itself compared.<br /><br />
+        then the ternary operator is unnecessary since the result will always be the expression itself.<br/><br/>
 
         <strong>Example:</strong>
 
