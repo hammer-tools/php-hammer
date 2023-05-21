@@ -112,7 +112,7 @@
             </constraints>
             <properties>
               <enabled value="true"/>
-              <selected value="true"/>
+              <selected value="false"/>
               <text value="Add missing semicolon on save (experimental)"/>
               <toolTipText value="This feature automatically detects and inserts missing semicolons at the end of lines in PHP files during the save process. It helps ensure proper syntax and avoid common coding errors."/>
             </properties>

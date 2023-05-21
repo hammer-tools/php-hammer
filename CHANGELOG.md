@@ -5,12 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.22.1] - 2023-05-21
+
+### Fixed
+
+- **Additional feature**: add missing semicolon on save PHP documents (set as disabled for default);
+
+[0.22.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.22.1
+
 ## [0.22.0] - 2023-05-21
 
 ### Added
 
 - **Additional feature**: add missing semicolon on save PHP documents;
 - **PhpStorm 2023.2** (EAP) is now supported and minimum supported version due to API changes;
+
+[0.22.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.22.0
+
+## [0.21.1] - 2023-05-21
+
+### Added
+
+- **Exceptional release:** new features support for PhpStorm 2023.1;
 - **[ObsoleteFunctionInspection]**: implemented ("obsolete function usage") (fixes #9);
 - **[StrictComparisonInspection]**: implemented ("strict comparison usage") (fixes #8);
 
@@ -23,7 +39,7 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 - **[DebugFunctionUsageInspection]**: skip print_r() inside Blade to avoid issues with `@entangle()` directive (fixes #13);
 - **[NativeMemberUsageInspection]**: allow variables of type class-string to be used as object (fixes #12);
 
-[0.22.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.22.0
+[0.21.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.21.1
 
 [ObsoleteFunctionInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-obsolete-function-inspection
 
@@ -34,14 +50,6 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 [DebugFunctionUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-debug-function-usage-inspection
 
 [NativeMemberUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-native-member-usage-inspection
-
-## [0.21.1] - 2023-05-21
-
-### Added
-
-- **Exceptional release:** new features support for PhpStorm 2023.1;
-
-[0.21.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.21.1
 
 ## [0.21.0] - 2023-02-01
 
