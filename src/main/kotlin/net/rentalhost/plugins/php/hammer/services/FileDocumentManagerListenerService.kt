@@ -10,6 +10,9 @@ import com.intellij.openapi.project.guessProjectForFile
 
 class FileDocumentManagerListenerService : FileDocumentManagerListener {
   override fun beforeDocumentSaving(document: Document) {
+    if (!ProjectService.instance.settings.getServiceInstance().state.optionMissingSemicolon)
+      return
+
     val virtualFile = FileDocumentManager.getInstance().getFile(document) ?: return
 
     if (virtualFile.extension != "php")

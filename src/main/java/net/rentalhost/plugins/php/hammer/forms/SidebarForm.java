@@ -21,6 +21,8 @@ public final class SidebarForm {
   private JLabel labelInspections;
   private JLabel labelFixes;
 
+  private JCheckBox checkboxMissingSemicolon;
+
   private final String labelInspectionsText;
   private final String labelFixesText;
 
@@ -38,6 +40,11 @@ public final class SidebarForm {
 
     labelInspectionsText = labelInspections.getText();
     labelFixesText = labelFixes.getText();
+
+    checkboxMissingSemicolon.setEnabled(projectState.getOptionMissingSemicolon());
+    checkboxMissingSemicolon.addItemListener(
+      e -> projectState.setOptionMissingSemicolon(checkboxMissingSemicolon.isSelected())
+    );
 
     updateCounters(projectState);
 

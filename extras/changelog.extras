@@ -10,3 +10,4 @@
 0.19.0;important;This plugin is now entirely free;
 0.19.2;added;**PhpStorm 2023.1** (EAP) is now supported;
 0.22.0;added;**PhpStorm 2023.2** (EAP) is now supported and minimum supported version due to API changes;
+0.22.0;added;**Additional feature**: add missing semicolon on save PHP documents;

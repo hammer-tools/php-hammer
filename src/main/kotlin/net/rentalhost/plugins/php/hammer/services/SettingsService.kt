@@ -25,6 +25,8 @@ class SettingsService : PersistentStateComponent<SettingsState> {
       var countFixes: Long = 0
 
       var reviewAfter: Long = REVIEW_DISABLED
+
+      var optionMissingSemicolon: Boolean = true
     }
   }
 

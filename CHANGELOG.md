@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
-## [0.22.0] - 2023-05-20
+## [0.22.0] - 2023-05-21
 
 ### Added
 
+- **Additional feature**: add missing semicolon on save PHP documents;
 - **PhpStorm 2023.2** (EAP) is now supported and minimum supported version due to API changes;
 - **[ObsoleteFunctionInspection]**: implemented ("obsolete function usage") (fixes #9);
 - **[StrictComparisonInspection]**: implemented ("strict comparison usage") (fixes #8);
@@ -17,6 +18,11 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 - **[AnonymousFunctionStaticInspection]**: disable this inspection for Blade files (fixes #14);
 
+### Fixed
+
+- **[DebugFunctionUsageInspection]**: skip print_r() inside Blade to avoid issues with `@entangle()` directive (fixes #13);
+- **[NativeMemberUsageInspection]**: allow variables of type class-string to be used as object (fixes #12);
+
 [0.22.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.22.0
 
 [ObsoleteFunctionInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-obsolete-function-inspection
@@ -24,6 +30,10 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 [StrictComparisonInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-strict-comparison-inspection
 
 [AnonymousFunctionStaticInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-anonymous-function-static-inspection
+
+[DebugFunctionUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-debug-function-usage-inspection
+
+[NativeMemberUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-native-member-usage-inspection
 
 ## [0.21.0] - 2023-02-01
 
