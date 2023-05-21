@@ -35,6 +35,14 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 
 [NativeMemberUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-native-member-usage-inspection
 
+## [0.21.1] - 2023-05-21
+
+### Added
+
+- **Exceptional release:** new features support for PhpStorm 2023.1;
+
+[0.21.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.21.1
+
 ## [0.21.0] - 2023-02-01
 
 ### Added
