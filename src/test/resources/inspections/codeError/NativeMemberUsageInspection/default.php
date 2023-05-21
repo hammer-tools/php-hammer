@@ -53,3 +53,8 @@ $dummy = function (mixed $x) {
 $dummy = function (DateTime $x) {
     $x->dummy();
 };
+
+/** @param class-string<Bar> $className */
+$dummy = function (string $className) {
+  return $className::class;
+};

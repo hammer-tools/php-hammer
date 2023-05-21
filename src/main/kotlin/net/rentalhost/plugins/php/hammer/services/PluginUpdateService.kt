@@ -39,7 +39,11 @@ class PluginUpdateService : ProjectActivity {
   private fun notifyUpdate(versionBefore: String?, versionAfter: String) = NotificationService.notify(
     "${ProjectService.instance.notificationGroup}.PLUGIN_RELATED",
     ResourceService.read("/plugin/news.html")
-      .replace("\$beforeNote", if (versionBefore != null) ", replacing the previously installed version (was $versionBefore)" else "")
+      .replace(
+        "\$beforeNote",
+        if (versionBefore != null) ", replacing the previous installation (was $versionBefore)"
+        else ""
+      )
       .replace("\$pluginVersion", versionAfter),
     listOf(tripleChangelog)
   )

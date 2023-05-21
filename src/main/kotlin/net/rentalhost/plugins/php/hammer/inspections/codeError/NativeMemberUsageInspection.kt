@@ -27,6 +27,10 @@ class NativeMemberUsageInspection : PhpInspection() {
         return
 
       val elementTypes = elementBase.getTypes().filter { it != PhpType._NULL }
+
+      if (elementTypes.contains("\\class-string"))
+        return
+      
       val elementTypesNatives = elementTypes.filter { TypeService.nativeTypes.contains(it) }
 
       if (elementTypesNatives.isEmpty())
