@@ -33,6 +33,11 @@ class DebugFunctionUsageInspection : PhpInspection() {
     "\\error_log"
   )
 
+  private val bladeSkip = listOf(
+    "\\print_r",
+    "\\get_defined_vars",
+  )
+
   private val xdebugRegex = Regex("^\\\\xdebug_", RegexOption.IGNORE_CASE)
 
   private val frameworksRegex by lazy { Regex(frameworks.joinToString("|") { it.second.pattern }, RegexOption.IGNORE_CASE) }
@@ -57,8 +62,7 @@ class DebugFunctionUsageInspection : PhpInspection() {
         if (functionResolve is Function) functionResolve.fqn
         else function.fqn.toString()
 
-      if (functionName == "\\get_defined_vars" &&
-        function.containingFile.isBlade())
+      if (function.containingFile.isBlade() && bladeSkip.contains(functionName))
         return
 
       val isNativeFunction by lazy { nativeFunctions.contains(functionName) || nativeRegex.containsMatchIn(functionName) }
