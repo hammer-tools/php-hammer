@@ -60,6 +60,12 @@ object FactoryService {
   fun createStaticKeyword(project: Project): PsiElement =
     PhpPsiElementFactory.createFromText(project, PhpTokenTypes.kwSTATIC, "static")
 
+  fun createOperatorStrictEqual(project: Project): PsiElement =
+    PhpPsiElementFactory.createFromText(project, PhpTokenTypes.opIDENTICAL, "===")
+
+  fun createOperatorStrictNotEqual(project: Project): PsiElement =
+    PhpPsiElementFactory.createFromText(project, PhpTokenTypes.opNOT_IDENTICAL, "!==")
+
   fun createExpression(project: Project, expression: String): PhpExpression =
     PhpPsiElementFactory.createPhpPsiFromText(project, PhpExpression::class.java, "$expression;")
 
