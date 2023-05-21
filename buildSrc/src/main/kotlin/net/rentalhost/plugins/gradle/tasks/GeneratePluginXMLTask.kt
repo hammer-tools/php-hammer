@@ -54,16 +54,16 @@ internal class GeneratePluginXMLTask : ProjectTools.ProjectTask() {
             .forEach {
               response +=
                 "<localInspection language=\"PHP\"\n" +
-                  "                 groupPath=\"PHP,$pluginTitleFull\"\n" +
-                  "                 groupName=\"${it.groupName}\"\n" +
-                  "                 enabledByDefault=\"true\"\n" +
-                  "                 displayName=\"${it.displayName}\"\n" +
-                  "                 level=\"${it.level}\"\n" +
-                  "                 shortName=\"${it.shortName}\"\n" +
-                  "                 implementationClass=\"${it.implementationClass}\" />\n\n"
+                  "         groupPath=\"PHP,$pluginTitleFull\"\n" +
+                  "         groupName=\"${it.groupName}\"\n" +
+                  "         enabledByDefault=\"true\"\n" +
+                  "         displayName=\"${it.displayName}\"\n" +
+                  "         level=\"${it.level}\"\n" +
+                  "         shortName=\"${it.shortName}\"\n" +
+                  "         implementationClass=\"${it.implementationClass}\" />\n\n"
             }
 
-          return@map response.prependIndent("        ").trimStart()
+          return@map response.prependIndent("    ").trimStart()
         }
         .joinToString("")
         .trimEnd()
