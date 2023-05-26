@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.22.2] - 2023-05-26
+
+### Fixed
+
+- **Additional feature**: fix checkbox control to not be disabled, but unselected;
+
+[0.22.2]: https://github.com/hammer-tools/php-hammer/releases/tag/0.22.2
+
 ## [0.22.1] - 2023-05-21
 
 ### Fixed

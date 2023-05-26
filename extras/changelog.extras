@@ -13,3 +13,4 @@
 0.22.0;added;**PhpStorm 2023.2** (EAP) is now supported and minimum supported version due to API changes;
 0.22.0;added;**Additional feature**: add missing semicolon on save PHP documents;
 0.22.1;fixed;**Additional feature**: add missing semicolon on save PHP documents (set as disabled for default);
+0.22.2;fixed;**Additional feature**: fix checkbox control to not be disabled, but unselected;

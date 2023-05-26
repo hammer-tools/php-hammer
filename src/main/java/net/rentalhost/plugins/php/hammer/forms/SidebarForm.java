@@ -41,7 +41,7 @@ public final class SidebarForm {
     labelInspectionsText = labelInspections.getText();
     labelFixesText = labelFixes.getText();
 
-    checkboxMissingSemicolon.setEnabled(projectState.getOptionMissingSemicolon());
+    checkboxMissingSemicolon.setSelected(projectState.getOptionMissingSemicolon());
     checkboxMissingSemicolon.addItemListener(
       e -> projectState.setOptionMissingSemicolon(checkboxMissingSemicolon.isSelected())
     );
