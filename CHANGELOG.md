@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.23.0] - 2023-08-10
+
+### Added
+
+- **[ParameterImplicitlyNullableInspection]**: added option to specify the replacement nullable format between short and long (as default) (fixes #19);
+
+### Changed
+
+- **[ParameterImplicitlyNullableInspection]**: fallback nullable type format to short format automatically for PHP version lower than 8.0 (fixes #19);
+
+### Fixed
+
+- **[ClassSelfReferenceFormatInspection]**: ignore inspection on traits (fixes #20);
+
+[0.23.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.23.0
+
+[ParameterImplicitlyNullableInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-implicitly-nullable-inspection
+
+[ClassSelfReferenceFormatInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-class-self-reference-format-inspection
+
 ## [0.22.2] - 2023-05-26
 
 ### Fixed
