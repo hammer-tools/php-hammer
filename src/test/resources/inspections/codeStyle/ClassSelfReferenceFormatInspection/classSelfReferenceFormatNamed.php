@@ -42,3 +42,19 @@ class DummyC extends Dummy
         return Dummy::DUMMY;
     }
 }
+
+trait DummyATrait
+{
+    function dummy(self $b): self
+    {
+      return self::class;
+    }
+}
+
+trait DummyBTrait
+{
+    function dummy(DummyTrait $b): DummyTrait
+    {
+      return DummyTrait::class;
+    }
+}

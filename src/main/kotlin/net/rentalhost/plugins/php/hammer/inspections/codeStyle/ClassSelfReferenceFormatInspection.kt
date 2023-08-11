@@ -22,6 +22,9 @@ class ClassSelfReferenceFormatInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpClassReference(element: ClassReference) {
       val elementClass = PsiTreeUtil.getParentOfType(element, PhpClassImpl::class.java) ?: return
+
+      if (elementClass.isTrait) return;
+
       val elementClassName = elementClass.name
 
       val referenceName = element.text.lowercase()
