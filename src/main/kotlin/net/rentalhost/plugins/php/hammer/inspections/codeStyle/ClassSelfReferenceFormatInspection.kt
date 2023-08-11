@@ -23,7 +23,7 @@ class ClassSelfReferenceFormatInspection : PhpInspection() {
     override fun visitPhpClassReference(element: ClassReference) {
       val elementClass = PsiTreeUtil.getParentOfType(element, PhpClassImpl::class.java) ?: return
 
-      if (elementClass.isTrait) return;
+      if (elementClass.isTrait) return
 
       val elementClassName = elementClass.name
 

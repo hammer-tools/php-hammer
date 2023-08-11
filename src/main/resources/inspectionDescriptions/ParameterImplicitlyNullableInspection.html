@@ -1,6 +1,10 @@
 <html lang="en">
   <body>
     This inspection enforces that a typed parameter with a
-    default value of <code>null</code> explicitly defines <code>null</code> as the type.
+    default value of <code>null</code> explicitly defines <code>null</code> as the type.<br/><br/>
+
+    You can specify the format of the auto-fix as either short (<code>?int</code>) or long (<code>int|null</code>).
+    Please note that the long format is only supported in PHP projects version 8.0 onwards,
+    so the short format will be used for older PHP versions automatically.
   </body>
 </html>

@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
+import com.jetbrains.php.config.PhpLanguageLevel
 import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullableTypeFormat
 import net.rentalhost.plugins.php.hammer.services.TestCase
 
@@ -11,5 +12,14 @@ class ParameterImplicitlyNullableInspectionTestCase : TestCase() {
       ParameterImplicitlyNullableInspection::class.java,
       "nullableTypeFormatShort",
       { it.nullableTypeFormat = OptionNullableTypeFormat.SHORT }
+    )
+
+  // It will force use short format automatically.
+  fun testFormatLongBefore800(): Unit =
+    testInspection(
+      ParameterImplicitlyNullableInspection::class.java,
+      "nullableTypeFormatLongBefore800",
+      { },
+      PhpLanguageLevel.PHP710
     )
 }

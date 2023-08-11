@@ -11,10 +11,7 @@ import com.jetbrains.php.lang.psi.elements.impl.PhpTypeDeclarationImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullableTypeFormat
-import net.rentalhost.plugins.php.hammer.services.FactoryService
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
-import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
-import net.rentalhost.plugins.php.hammer.services.QuickFixService
+import net.rentalhost.plugins.php.hammer.services.*
 import javax.swing.JComponent
 
 class ParameterImplicitlyNullableInspection : PhpInspection() {
@@ -34,7 +31,11 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
         declaredType.types.contains(PhpType._MIXED))
         return
 
-      if (nullableTypeFormat == OptionNullableTypeFormat.SHORT &&
+      val localNullableTypeFormat =
+        if (LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP800)) nullableTypeFormat
+        else OptionNullableTypeFormat.SHORT
+
+      if (localNullableTypeFormat == OptionNullableTypeFormat.SHORT &&
         declaredType.types.size >= 2)
         return
 
@@ -52,7 +53,7 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
               .replace(
                 FactoryService.createParameterType(
                   problemsHolder.project,
-                  getParameterReplacement((elementLocal.typeDeclaration ?: return@simpleInline).text)
+                  getParameterReplacement(localNullableTypeFormat, (elementLocal.typeDeclaration ?: return@simpleInline).text)
                 )
               )
           }
@@ -63,7 +64,7 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
               replace(
                 FactoryService.createParameterType(
                   problemsHolder.project,
-                  getParameterReplacement(text)
+                  getParameterReplacement(localNullableTypeFormat, text)
                 )
               )
             }
@@ -75,7 +76,7 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
     }
   }
 
-  private fun getParameterReplacement(text: String?): String {
+  private fun getParameterReplacement(nullableTypeFormat: OptionNullableTypeFormat, text: String?): String {
     if (nullableTypeFormat == OptionNullableTypeFormat.LONG)
       return "$text|null"
 
@@ -93,8 +94,9 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
         ) { nullableTypeFormat = OptionNullableTypeFormat.SHORT }
 
         radioComponent.addOption(
-          "Prefer long format", nullableTypeFormat === OptionNullableTypeFormat.LONG,
-          "Your nullable types will look like: <code>int|null</code>"
+          "Prefer long format (PHP 8.0+)", nullableTypeFormat === OptionNullableTypeFormat.LONG,
+          "Your nullable types will look like: <code>int|null</code>.<br/>" +
+            "Will default to the short format for projects with a PHP version lower than 8.0 automatically."
         ) { nullableTypeFormat = OptionNullableTypeFormat.LONG }
       }
     }
