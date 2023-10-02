@@ -12,3 +12,14 @@ class Dummy1
 {
     private ?int $dummy;
 }
+
+// Not applicable:
+
+function dummy3(A&B $dummy)
+{}
+
+function dummy3b((A&B) $dummy)
+{}
+
+function dummy4((A&B)|null $dummy)
+{}

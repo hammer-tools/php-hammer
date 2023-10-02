@@ -21,6 +21,9 @@ class NullableTypeFormatInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpTypeDeclaration(element: PhpTypeDeclaration) {
       val elementType = element.type
+
+      if (elementType.hasIntersectionType()) return
+
       val elementTypes = elementType.types
 
       if (elementTypes.size != 2 ||
