@@ -183,7 +183,7 @@ class Dummy1030_B extends Dummy1030_A {
 }
 
 class Dummy1030_C extends Dummy1030_B {
-    /** parent call is not required, because Dummy1030_B::method() is empty. */
+    /** parent call is required, because Dummy1030_B::method() is not empty (after the previous quick-fix). */
     public function method() {
     }
 }

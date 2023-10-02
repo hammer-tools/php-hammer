@@ -19,11 +19,9 @@ if ($dummy &&
     $example?->isTomorrow()) {
 }
 
-$dummy4000 = $example?->self &&
-             $example?->self?->isTomorrow();
+$dummy4000 = (bool)$example?->self?->isTomorrow();
 
-if ($example?->self &&
-    $example?->self?->isTomorrow()) {
+if ($example?->self?->isTomorrow()) {
 }
 
 $dummy4100 = (bool)$example?->self?->isTomorrow();

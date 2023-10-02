@@ -72,12 +72,29 @@ abstract class TestCase : BasePlatformTestCase() {
       val quickFixFile = "$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php"
 
       if (File("src/test/resources/$quickFixFile").exists()) {
-        val inspectionQuickFixes = myFixture.getAllQuickFixes()
-          .filter { it !is EmptyIntentionAction }
+        var inspectionQuickFixed = 0
 
-        if (inspectionQuickFixes.isNotEmpty()) {
-          inspectionQuickFixes.forEach(Consumer { fix: IntentionAction? -> myFixture.launchAction(fix ?: return@Consumer) })
+        while (true) {
+          val inspectionQuickFixedBefore = inspectionQuickFixed
 
+          myFixture.getAllQuickFixes()
+            .filter { it !is EmptyIntentionAction }
+            .forEach(Consumer { fix: IntentionAction? ->
+              try {
+                myFixture.launchAction(fix ?: return@Consumer)
+                inspectionQuickFixed++
+              }
+              catch (error: AssertionError) {
+                if (error.message?.contains("hasn't executed") == false) {
+                  throw error
+                }
+              }
+            })
+          
+          if (inspectionQuickFixedBefore == inspectionQuickFixed) break
+        }
+
+        if (inspectionQuickFixed > 0) {
           myFixture.checkResultByFile(quickFixFile)
         }
       }

@@ -44,7 +44,7 @@ $user->id?->id()?->id();
 
 $user->id?->id()?->id();
 
-optional($user)->id?->id;
+$user?->id?->id;
 
 // Not applicable:
 
