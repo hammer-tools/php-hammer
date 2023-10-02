@@ -1,5 +1,6 @@
 package net.rentalhost.plugins.php.hammer.services
 
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.TokenSet
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
@@ -7,8 +8,6 @@ import com.jetbrains.php.lang.psi.elements.PhpReference
 import com.jetbrains.php.lang.psi.elements.PhpTypedElement
 import com.jetbrains.php.lang.psi.elements.impl.PhpPsiElementImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
-import org.apache.commons.lang.StringUtils
-import java.util.*
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
@@ -26,8 +25,9 @@ object TypeService {
   var compareOperations: TokenSet =
     TokenSet.create(*arrayOf(PhpTokenTypes.opEQUAL, PhpTokenTypes.opNOT_EQUAL, PhpTokenTypes.opIDENTICAL, PhpTokenTypes.opNOT_IDENTICAL))
 
-  fun splitTypes(types: String?): Stream<String?> =
-    Arrays.stream(StringUtils.split(types, "|"))
+  fun splitTypes(types: String?): Stream<String> =
+    if (types.isNullOrEmpty()) Stream.empty()
+    else Stream.of(*StringUtil.split(types, "|").toTypedArray())
 
   fun exceptNull(types: String?): Stream<String?> =
     splitTypes(types).filter { s: String? -> !nullType.contains(s) }
