@@ -14,11 +14,17 @@ and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2
 ### Fixed
 
 - **[FunctionSpreadingInspection]**: correctly validate the spread of functions - they need to be executed (`$ex()`), and not just "mentioned" (`$ex`);
+- **[NullableTypeFormatInspection]**: intersecting types should be ignored, as they do not support short format (eg. `?(A&B)`); fixes #28;
+- **[ParameterImplicitlyNullableInspection]**: intersecting types are more restrictive and will only work for the "long" format (eg. `(A&B)|null`); fixes/related to #28;
 - **[StaticAnonymousFunctionCannotAccessThisInspection]**: check that the `function` that uses `$this` is `static` up to one level, so that nested structures can work as expected. Fixes #21;
 
 [0.24.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.24.0
 
 [FunctionSpreadingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-function-spreading-inspection
+
+[NullableTypeFormatInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-nullable-type-format-inspection
+
+[ParameterImplicitlyNullableInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-implicitly-nullable-inspection
 
 [StaticAnonymousFunctionCannotAccessThisInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-static-anonymous-function-cannot-access-this-inspection
 

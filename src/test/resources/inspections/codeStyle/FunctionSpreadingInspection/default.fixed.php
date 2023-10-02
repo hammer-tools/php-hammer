@@ -2,9 +2,9 @@
 
 $arr1 = [ 1, 2, 3 ];
 $arr2 = [ 'a' => 1, 'b' => 2, 'c' => 3 ];
-$arr3 = function (): array { return [ 1, 2, 3 ]; };
+$arr3_Invalid = function (): array { return [ 1, 2, 3 ]; };
 /** @return int[] */
-$arr4 = function () { return [ 1, 2, 3 ]; };
+$arr4_Invalid = function () { return [ 1, 2, 3 ]; };
 $gen1 = function (): \Generator { yield 1; };
 $gen2 = function (): \Generator { yield 'a' => 1; };
 $gen3 = function (): \Generator {};
