@@ -5,11 +5,11 @@ fun prop(key: String) = project.findProperty(key).toString()
 plugins {
   id("java")
   id("org.jetbrains.intellij") version "1.15.0"
-  id("org.jetbrains.kotlin.jvm") version "1.9.0"
+  id("org.jetbrains.kotlin.jvm") version "1.9.20-Beta2"
 }
 
 dependencies {
-  implementation("io.sentry:sentry:6.28.0")
+  implementation("io.sentry:sentry:6.30.0")
   implementation(kotlin("stdlib-jdk8"))
 }
 
