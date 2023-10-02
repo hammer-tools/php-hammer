@@ -10,7 +10,7 @@ plugins {
 
 dependencies {
   implementation("io.sentry:sentry:6.30.0")
-  implementation(kotlin("stdlib-jdk8"))
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20-Beta2")
 }
 
 group = prop("pluginId")
@@ -50,7 +50,7 @@ tasks {
   }
 
   test {
-    delete(file("$buildDir/classes"))
+    delete(file("${layout.buildDirectory}/classes"))
 
     isScanForTestClasses = false
 
@@ -79,7 +79,7 @@ tasks {
   setupDependencies {
     doLast {
       // Fixes IDEA-298989.
-      fileTree("$buildDir/instrumented/instrumentCode") { include("**/*Form.class") }.files.forEach { delete(it) }
+      fileTree("${layout.buildDirectory}/instrumented/instrumentCode") { include("**/*Form.class") }.files.forEach { delete(it) }
     }
   }
 
@@ -97,7 +97,7 @@ tasks {
     doLast {
       copy {
         from(file("$projectDir/sandbox/disabled_plugins.txt"))
-        into(file("$buildDir/idea-sandbox/config"))
+        into(file("${layout.buildDirectory}/idea-sandbox/config"))
       }
     }
   }
