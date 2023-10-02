@@ -74,7 +74,7 @@ abstract class TestCase : BasePlatformTestCase() {
       if (File("src/test/resources/$quickFixFile").exists()) {
         var inspectionQuickFixed = 0
 
-        while (true) {
+        while (inspectionQuickFixed < 100) {
           val inspectionQuickFixedBefore = inspectionQuickFixed
 
           myFixture.getAllQuickFixes()
@@ -90,7 +90,7 @@ abstract class TestCase : BasePlatformTestCase() {
                 }
               }
             })
-          
+
           if (inspectionQuickFixedBefore == inspectionQuickFixed) break
         }
 

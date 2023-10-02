@@ -25,6 +25,7 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
         return
 
       val declaredType = element.declaredType
+      val declaredTypeIntersected = declaredType.hasIntersectionType()
 
       if (declaredType.isEmpty ||
         declaredType.isNullable ||
@@ -35,9 +36,10 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
         if (LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP800)) nullableTypeFormat
         else OptionNullableTypeFormat.SHORT
 
-      if (localNullableTypeFormat == OptionNullableTypeFormat.SHORT &&
-        declaredType.types.size >= 2)
-        return
+      if (localNullableTypeFormat == OptionNullableTypeFormat.SHORT) {
+        if (declaredTypeIntersected) return
+        if (declaredType.types.size >= 2) return
+      }
 
       val elementPointer = element.createSmartPointer()
 
@@ -53,7 +55,11 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
               .replace(
                 FactoryService.createParameterType(
                   problemsHolder.project,
-                  getParameterReplacement(localNullableTypeFormat, (elementLocal.typeDeclaration ?: return@simpleInline).text)
+                  getParameterReplacement(
+                    localNullableTypeFormat,
+                    (elementLocal.typeDeclaration ?: return@simpleInline).text,
+                    declaredTypeIntersected
+                  )
                 )
               )
           }
@@ -64,7 +70,11 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
               replace(
                 FactoryService.createParameterType(
                   problemsHolder.project,
-                  getParameterReplacement(localNullableTypeFormat, text)
+                  getParameterReplacement(
+                    localNullableTypeFormat,
+                    text,
+                    false
+                  )
                 )
               )
             }
@@ -76,7 +86,14 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
     }
   }
 
-  private fun getParameterReplacement(nullableTypeFormat: OptionNullableTypeFormat, text: String?): String {
+  private fun getParameterReplacement(
+    nullableTypeFormat: OptionNullableTypeFormat,
+    text: String?,
+    hasIntersection: Boolean
+  ): String {
+    if (hasIntersection && text?.contains("(") != true)
+      return "($text)|null"
+
     if (nullableTypeFormat == OptionNullableTypeFormat.LONG)
       return "$text|null"
 

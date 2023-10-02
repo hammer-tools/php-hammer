@@ -12,3 +12,18 @@ $dummy = function (int|string $a = null) { // not applicable
  */
 class Dummy {
 }
+
+$dummy = function (A&B $a = null) {
+};
+
+$dummy = function ((A&B) $a = null) {
+};
+
+$dummy = function ((A&B)|C $a = null) {
+};
+
+$dummy = function (C|(A&B) $a = null) {
+};
+
+$dummy = function ((A&B)|C|(D&E) $a = null) {
+};
