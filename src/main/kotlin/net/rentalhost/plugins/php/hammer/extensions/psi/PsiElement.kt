@@ -125,5 +125,8 @@ fun PsiElement?.isScalar(): Boolean {
   return false
 }
 
+fun PsiElement?.isArrayCreation(): Boolean =
+  this is ArrayCreationExpression
+
 fun Pair<PsiElement, PsiElement>.delete(): Unit =
   first.parent.deleteChildRange(first, second)

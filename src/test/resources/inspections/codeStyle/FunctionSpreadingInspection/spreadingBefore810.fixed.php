@@ -15,8 +15,6 @@ $fun1 = function (): int { return 123; };
 
 $dummy10100 = [...$arr1, ...$arr2];
 
-$dummy10110 = [...$arr1, ...$arr1];
-
 $dummy10200 = [...$arr1, ...$arr2, 'x' => 1, 'y' => 2, 'z' => 3];
 
 $dummy10400 = [...$arr1, ...$arr2, ...$arr3];

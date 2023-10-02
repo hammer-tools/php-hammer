@@ -36,3 +36,13 @@ fun ArrayCreationExpression.unpackValues(): MutableList<PsiElement> {
 
   return arrayElements
 }
+
+fun ArrayCreationExpression.isHashed(): Boolean {
+  for (arrayElement in children) {
+    if (arrayElement is ArrayHashElementImpl) {
+      return true
+    }
+  }
+
+  return false
+}

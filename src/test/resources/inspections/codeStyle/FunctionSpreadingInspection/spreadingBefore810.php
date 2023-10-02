@@ -13,25 +13,25 @@ $gen5 = function () use($gen2): \Generator { yield from $gen2(); };
 $gen6 = function () use($gen5): \Generator { yield from $gen5(); };
 $fun1 = function (): int { return 123; };
 
-$dummy10100 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2)</weak_warning>;
+$dummy10100 = array_merge($arr1, $arr2);
 
 $dummy10110 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr1)</weak_warning>;
 
-$dummy10200 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, [ 'x' => 1, 'y' => 2, 'z' => 3 ])</weak_warning>;
+$dummy10200 = array_merge($arr1, $arr2, [ 'x' => 1, 'y' => 2, 'z' => 3 ]);
 
-$dummy10400 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $arr3)</weak_warning>;
+$dummy10400 = array_merge($arr1, $arr2, $arr3);
 
-$dummy10500 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $gen1())</weak_warning>;
+$dummy10500 = array_merge($arr1, $arr2, $gen1());
 
-$dummy10510 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $gen4())</weak_warning>;
+$dummy10510 = array_merge($arr1, $arr2, $gen4());
 
-$dummy10600 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $arr3, $arr4)</weak_warning>;
+$dummy10600 = array_merge($arr1, $arr2, $arr3, $arr4);
 
 $dummy10700 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge([ 1 ], [ 2, 3 ])</weak_warning>;
 
-$dummy10800 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge([ 0 => 1 ], [ 1 => 2, 2 => 3 ])</weak_warning>;
+$dummy10800 = array_merge([ 0 => 1 ], [ 1 => 2, 2 => 3 ]);
 
-$dummy10900 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge([ 'a' => 1 ], [ 'b' => 2, 'c' => 3 ])</weak_warning>;
+$dummy10900 = array_merge([ 'a' => 1 ], [ 'b' => 2, 'c' => 3 ]);
 
 // Not applicable:
 
