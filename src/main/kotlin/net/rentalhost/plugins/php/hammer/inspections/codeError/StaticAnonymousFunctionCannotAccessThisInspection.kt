@@ -1,33 +1,31 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.util.parentOfTypes
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Function
+import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.php.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.extensions.psi.isAnonymous
+import net.rentalhost.plugins.php.hammer.extensions.psi.isStatic
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class StaticAnonymousFunctionCannotAccessThisInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpFunction(element: Function) {
-      if (!element.isAnonymous() ||
-        !element.isStatic())
-        return
+    override fun visitPhpVariable(variable: Variable?) {
+      if (variable?.name?.lowercase() != "this") return
 
-      for (elementScope in element.scopes()) {
-        if (elementScope.accessVariables().find { it.variableName == "this" } == null)
-          continue
+      val functionScope = variable.parentOfTypes(Function::class) ?: return
 
-        ProblemsHolderService.instance.registerProblem(
-          problemsHolder,
-          element.firstChild,
-          "static anonymous functions cannot access \$this",
-          QuickFixService.instance.simpleDelete("Delete this \"static\" declaration")
-        )
+      if (!functionScope.isAnonymous() || !functionScope.isStatic()) return
 
-        return
-      }
+      ProblemsHolderService.instance.registerProblem(
+        problemsHolder,
+        functionScope.firstChild,
+        "static anonymous functions cannot access \$this",
+        QuickFixService.instance.simpleDelete("Delete this \"static\" declaration")
+      )
     }
   }
 }
