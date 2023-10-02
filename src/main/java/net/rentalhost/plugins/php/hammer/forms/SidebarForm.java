@@ -21,8 +21,6 @@ public final class SidebarForm {
   private JLabel labelInspections;
   private JLabel labelFixes;
 
-  private JCheckBox checkboxMissingSemicolon;
-
   private final String labelInspectionsText;
   private final String labelFixesText;
 
@@ -41,11 +39,6 @@ public final class SidebarForm {
     labelInspectionsText = labelInspections.getText();
     labelFixesText = labelFixes.getText();
 
-    checkboxMissingSemicolon.setSelected(projectState.getOptionMissingSemicolon());
-    checkboxMissingSemicolon.addItemListener(
-      e -> projectState.setOptionMissingSemicolon(checkboxMissingSemicolon.isSelected())
-    );
-
     updateCounters(projectState);
 
     final Timer timer = new Timer(5000, e -> updateCounters(projectState));
@@ -57,7 +50,7 @@ public final class SidebarForm {
   }
 
   private void updateCounters(final SettingsService.Companion.State state) {
-    labelInspections.setText(labelInspectionsText + state.getCountInspections());
-    labelFixes.setText(labelFixesText + state.getCountFixes());
+    labelInspections.setText(labelInspectionsText.replace("0", Long.toString(state.getCountInspections())));
+    labelFixes.setText(labelFixesText.replace("0", Long.toString(state.getCountFixes())));
   }
 }

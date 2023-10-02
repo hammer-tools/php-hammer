@@ -50,7 +50,7 @@ tasks {
   }
 
   test {
-    delete(file("${layout.buildDirectory}/classes"))
+    delete(file("build/classes"))
 
     isScanForTestClasses = false
 
@@ -79,7 +79,7 @@ tasks {
   setupDependencies {
     doLast {
       // Fixes IDEA-298989.
-      fileTree("${layout.buildDirectory}/instrumented/instrumentCode") { include("**/*Form.class") }.files.forEach { delete(it) }
+      fileTree("build/instrumented/instrumentCode") { include("**/*Form.class") }.files.forEach { delete(it) }
     }
   }
 
@@ -96,8 +96,8 @@ tasks {
   prepareSandbox {
     doLast {
       copy {
-        from(file("$projectDir/sandbox/disabled_plugins.txt"))
-        into(file("${layout.buildDirectory}/idea-sandbox/config"))
+        from(file("sandbox/disabled_plugins.txt"))
+        into(file("build/idea-sandbox/config"))
       }
     }
   }

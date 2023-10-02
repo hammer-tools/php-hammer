@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.24.0] - 2023-10-02
+
+### Changed
+
+- **[FunctionSpreadingInspection]**: PHP spread works best for PHP 8.1+, so this inspection will work in a limited way to avoid false positives; fixes #24;
+
+### Fixed
+
+- **[FunctionSpreadingInspection]**: correctly validate the spread of functions - they need to be executed (`$ex()`), and not just "mentioned" (`$ex`);
+- **[StaticAnonymousFunctionCannotAccessThisInspection]**: check that the `function` that uses `$this` is `static` up to one level, so that nested structures can work as expected. Fixes #21;
+
+[0.24.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.24.0
+
+[FunctionSpreadingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-function-spreading-inspection
+
+[StaticAnonymousFunctionCannotAccessThisInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-static-anonymous-function-cannot-access-this-inspection
+
 ## [0.23.0] - 2023-08-10
 
 ### Added

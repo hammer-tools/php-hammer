@@ -28,7 +28,5 @@
 
         <toolWindow id="PHP Hammer" icon="/META-INF/pluginIcon.png" anchor="right"
                     factoryClass="net.rentalhost.plugins.php.hammer.services.SidebarService" />
-
-        <fileDocumentManagerListener implementation="net.rentalhost.plugins.php.hammer.services.FileDocumentManagerListenerService" />
     </extensions>
 </idea-plugin>
