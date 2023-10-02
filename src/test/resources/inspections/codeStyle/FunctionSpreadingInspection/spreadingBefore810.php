@@ -2,9 +2,9 @@
 
 $arr1 = [ 1, 2, 3 ];
 $arr2 = [ 'a' => 1, 'b' => 2, 'c' => 3 ];
-$arr3 = function (): array { return [ 1, 2, 3 ]; };
+$arr3_Invalid = function (): array { return [ 1, 2, 3 ]; };
 /** @return int[] */
-$arr4 = function () { return [ 1, 2, 3 ]; };
+$arr4_Invalid = function () { return [ 1, 2, 3 ]; };
 $gen1 = function (): \Generator { yield 1; };
 $gen2 = function (): \Generator { yield 'a' => 1; };
 $gen3 = function (): \Generator {};
@@ -12,6 +12,9 @@ $gen4 = function () use($gen1): \Generator { yield from $gen1(); };
 $gen5 = function () use($gen2): \Generator { yield from $gen2(); };
 $gen6 = function () use($gen5): \Generator { yield from $gen5(); };
 $fun1 = function (): int { return 123; };
+$fun2 = function (): array { return [ 1, 2, 3 ]; };
+/** @return int[] */
+$fun3 = function () { return [ 1, 2, 3 ]; };
 
 $dummy10100 = array_merge($arr1, $arr2);
 
@@ -19,13 +22,17 @@ $dummy10110 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can b
 
 $dummy10200 = array_merge($arr1, $arr2, [ 'x' => 1, 'y' => 2, 'z' => 3 ]);
 
-$dummy10400 = array_merge($arr1, $arr2, $arr3);
+$dummy10400 = array_merge($arr1, $arr2, $fun2());
+
+$dummy10400_Invalid = array_merge($arr1, $arr2, $arr3_Invalid);
 
 $dummy10500 = array_merge($arr1, $arr2, $gen1());
 
 $dummy10510 = array_merge($arr1, $arr2, $gen4());
 
-$dummy10600 = array_merge($arr1, $arr2, $arr3, $arr4);
+$dummy10600 = array_merge($arr1, $arr2, $fun2(), $fun3());
+
+$dummy10600_Invalid = array_merge($arr1, $arr2, $arr3_Invalid, $arr4_Invalid);
 
 $dummy10700 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge([ 1 ], [ 2, 3 ])</weak_warning>;
 

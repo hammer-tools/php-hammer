@@ -49,9 +49,9 @@ fun FunctionReference.isGeneratorComplex(): Boolean {
       }
     }
     else {
-      val functionReturnType = ClassService.findFQN(it, this.project) ?: return true
+      val functionReturnType = ClassService.findFQN(it, this.project)
 
-      if (!functionReturnType.hasInterface("\\Traversable") &&
+      if (functionReturnType?.hasInterface("\\Traversable") != true &&
         !PhpType.isArray(it) &&
         !PhpType.isPluralType(it))
         return true

@@ -12,6 +12,11 @@ $gen4 = function () use($gen1): \Generator { yield from $gen1(); };
 $gen5 = function () use($gen2): \Generator { yield from $gen2(); };
 $gen6 = function () use($gen5): \Generator { yield from $gen5(); };
 $fun1 = function (): int { return 123; };
+$fun2 = function (): array { return [ 1, 2, 3 ]; };
+/** @return int[] */
+$fun3 = function () { return [ 1, 2, 3 ]; };
+
+$dummy10400 = [...$arr1, ...$arr2, ...$fun2()];
 
 $dummy10100 = [...$arr1, ...$arr2];
 
@@ -19,13 +24,15 @@ $dummy10110 = [...$arr1, ...$arr1];
 
 $dummy10200 = [...$arr1, ...$arr2, 'x' => 1, 'y' => 2, 'z' => 3];
 
-$dummy10400 = [...$arr1, ...$arr2, ...$arr3];
+$dummy10400_Invalid = array_merge($arr1, $arr2, $arr3_Invalid);
 
 $dummy10500 = [...$arr1, ...$arr2, ...$gen1()];
 
 $dummy10510 = [...$arr1, ...$arr2, ...$gen4()];
 
-$dummy10600 = [...$arr1, ...$arr2, ...$arr3, ...$arr4];
+$dummy10600 = [...$arr1, ...$arr2, ...$fun2(), ...$fun3()];
+
+$dummy10600_Invalid = array_merge($arr1, $arr2, $arr3_Invalid, $arr4_Invalid);
 
 $dummy10700 = [1, 2, 3];
 

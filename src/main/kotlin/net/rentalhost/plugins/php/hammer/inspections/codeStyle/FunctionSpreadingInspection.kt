@@ -24,15 +24,18 @@ class FunctionSpreadingInspection : PhpInspection() {
 
       function.parameters.forEach {
         if (it.isVariadicPreceded()) return
-        if (it is FunctionReferenceImpl && it.isGeneratorComplex()) return
 
-        if (isBefore810) {
+        if (it is FunctionReferenceImpl) {
+          if (isBefore810) return
+          if (it.isGeneratorComplex()) return
+        }
+        else {
           val variableResolved =
             if (it is VariableImpl) (it.resolve() ?: return).parent.followContents()
             else it
 
           if (!variableResolved.isArrayCreation()) return
-          if ((variableResolved as ArrayCreationExpression).isHashed()) return
+          if (isBefore810 && (variableResolved as ArrayCreationExpression).isHashed()) return
         }
       }
 

@@ -2,9 +2,9 @@
 
 $arr1 = [ 1, 2, 3 ];
 $arr2 = [ 'a' => 1, 'b' => 2, 'c' => 3 ];
-$arr3 = function (): array { return [ 1, 2, 3 ]; };
+$arr3_Invalid = function (): array { return [ 1, 2, 3 ]; };
 /** @return int[] */
-$arr4 = function () { return [ 1, 2, 3 ]; };
+$arr4_Invalid = function () { return [ 1, 2, 3 ]; };
 $gen1 = function (): \Generator { yield 1; };
 $gen2 = function (): \Generator { yield 'a' => 1; };
 $gen3 = function (): \Generator {};
@@ -12,26 +12,33 @@ $gen4 = function () use($gen1): \Generator { yield from $gen1(); };
 $gen5 = function () use($gen2): \Generator { yield from $gen2(); };
 $gen6 = function () use($gen5): \Generator { yield from $gen5(); };
 $fun1 = function (): int { return 123; };
+$fun2 = function (): array { return [ 1, 2, 3 ]; };
+/** @return int[] */
+$fun3 = function () { return [ 1, 2, 3 ]; };
 
-$dummy10100 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2)</weak_warning>;
+$dummy10400 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $fun2())</weak_warning>;
 
-$dummy10110 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr1)</weak_warning>;
+$dummy10100 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread." textAttributesKey="INFO_ATTRIBUTES">array_merge($arr1, $arr2)</weak_warning>;
 
-$dummy10200 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, [ 'x' => 1, 'y' => 2, 'z' => 3 ])</weak_warning>;
+$dummy10110 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread." textAttributesKey="INFO_ATTRIBUTES">array_merge($arr1, $arr1)</weak_warning>;
 
-$dummy10400 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $arr3)</weak_warning>;
+$dummy10200 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread." textAttributesKey="INFO_ATTRIBUTES">array_merge($arr1, $arr2, [ 'x' => 1, 'y' => 2, 'z' => 3 ])</weak_warning>;
 
-$dummy10500 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $gen1())</weak_warning>;
+$dummy10400_Invalid = array_merge($arr1, $arr2, $arr3_Invalid);
 
-$dummy10510 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $gen4())</weak_warning>;
+$dummy10500 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread." textAttributesKey="INFO_ATTRIBUTES">array_merge($arr1, $arr2, $gen1())</weak_warning>;
 
-$dummy10600 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $arr3, $arr4)</weak_warning>;
+$dummy10510 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread." textAttributesKey="INFO_ATTRIBUTES">array_merge($arr1, $arr2, $gen4())</weak_warning>;
 
-$dummy10700 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge([ 1 ], [ 2, 3 ])</weak_warning>;
+$dummy10600 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge($arr1, $arr2, $fun2(), $fun3())</weak_warning>;
 
-$dummy10800 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge([ 0 => 1 ], [ 1 => 2, 2 => 3 ])</weak_warning>;
+$dummy10600_Invalid = array_merge($arr1, $arr2, $arr3_Invalid, $arr4_Invalid);
 
-$dummy10900 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread.">array_merge([ 'a' => 1 ], [ 'b' => 2, 'c' => 3 ])</weak_warning>;
+$dummy10700 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread." textAttributesKey="INFO_ATTRIBUTES">array_merge([ 1 ], [ 2, 3 ])</weak_warning>;
+
+$dummy10800 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread." textAttributesKey="INFO_ATTRIBUTES">array_merge([ 0 => 1 ], [ 1 => 2, 2 => 3 ])</weak_warning>;
+
+$dummy10900 = <weak_warning descr="🔨 PHP Hammer: function array_merge() can be replaced with spread." textAttributesKey="INFO_ATTRIBUTES">array_merge([ 'a' => 1 ], [ 'b' => 2, 'c' => 3 ])</weak_warning>;
 
 // Not applicable:
 
