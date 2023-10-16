@@ -42,6 +42,13 @@ class DummyF
     }
 }
 
+class DummyG
+{
+    function __construct(<weak_warning descr="🔨 PHP Hammer: default value of the parameter must be \"null\".">private int $a = 123</weak_warning>, $b = null)
+    {
+    }
+}
+
 // Not applicable, abstract methods:
 
 abstract class DummyB

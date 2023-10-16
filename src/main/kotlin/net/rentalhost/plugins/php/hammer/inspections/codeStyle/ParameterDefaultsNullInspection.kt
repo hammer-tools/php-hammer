@@ -183,11 +183,16 @@ class ParameterDefaultsNullInspection : PhpInspection() {
     }
 
     private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
-      val variableAssignment = FactoryService.createAssignmentStatement(project, with((parameter.element ?: return).name) {
+      val parameterName = parameter.element?.name ?: return
+      val parameterAssignment =
+        if (parameter.element is PhpPromotedFieldParameterImpl) "this->$parameterName"
+        else parameterName
+
+      val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameterAssignment) {
         when {
           LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "\$$this ??= ${parameterDefaultValue.text};"
-          LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_OPERATOR) -> "\$$this = \$$this ?? ${parameterDefaultValue.text};"
-          else -> "\$$this = \$$this === null ? ${parameterDefaultValue.text} : \$$this;"
+          LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_OPERATOR) -> "\$$this = \$$parameterName ?? ${parameterDefaultValue.text};"
+          else -> "\$$this = \$$parameterName === null ? ${parameterDefaultValue.text} : \$$parameterName;"
         }
       })
 

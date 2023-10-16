@@ -46,6 +46,14 @@ class DummyF
     }
 }
 
+class DummyG
+{
+    function __construct(private int|null $a = null, $b = null)
+    {
+        $this->a ??= 123;
+    }
+}
+
 // Not applicable, abstract methods:
 
 abstract class DummyB
