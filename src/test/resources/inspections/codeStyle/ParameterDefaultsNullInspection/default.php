@@ -35,6 +35,12 @@ abstract class DummyA
 $dummy = function (&$a = 123) {
 };
 
+class DummyF
+{
+    function __construct(private readonly int $a = 123, <weak_warning descr="🔨 PHP Hammer: default value of the parameter must be \"null\".">int $b = 123</weak_warning>, $c = null)
+    {
+    }
+}
 
 // Not applicable, abstract methods:
 
@@ -121,3 +127,10 @@ $dummy = new class
     {
     }
 };
+
+class DummyF2
+{
+    function __construct(private readonly int $a = 123, int|null $b = null, $c = null)
+    {
+    }
+}

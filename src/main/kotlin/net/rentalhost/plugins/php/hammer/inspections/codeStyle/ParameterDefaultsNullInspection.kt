@@ -15,6 +15,7 @@ import com.jetbrains.php.lang.psi.elements.ParameterList
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
+import com.jetbrains.php.lang.psi.elements.impl.PhpPromotedFieldParameterImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.FactoryService
@@ -69,45 +70,49 @@ class ParameterDefaultsNullInspection : PhpInspection() {
           continue
         }
 
-        if (parameter is ParameterImpl &&
-          parameter.defaultValue != null) {
-          if (!includeParametersWithReference &&
-            parameter.isPassByRef)
-            return
-
-          val defaultValue = parameter.defaultValueType
-
-          if (defaultValue.toString() == "null")
+        if (parameter is ParameterImpl) {
+          if (parameter is PhpPromotedFieldParameterImpl && parameter.isReadonly)
             continue
 
-          if (!includeBooleans &&
-            parameter.declaredType.toString() == "bool") {
-            continue
-          }
+          if (parameter.defaultValue != null) {
+            if (!includeParametersWithReference &&
+              parameter.isPassByRef)
+              return
 
-          if (!includeNullableParameters) {
-            if (parameter.declaredType.toString() == "")
+            val defaultValue = parameter.defaultValueType
+
+            if (defaultValue.toString() == "null")
               continue
 
-            if (parameter.typeDeclaration?.isNullableEx() == true)
+            if (!includeBooleans &&
+              parameter.declaredType.toString() == "bool") {
               continue
-          }
-
-          ProblemsHolderService.instance.registerProblem(
-            problemsHolder,
-            parameter,
-            "default value of the parameter must be \"null\"",
-            run {
-              if (isAbstractMethod ||
-                parameter.isPassByRef)
-                return@run null
-
-              ReplaceWithNullQuickFix(
-                SmartPointerManager.createPointer(context),
-                SmartPointerManager.createPointer(parameter)
-              )
             }
-          )
+
+            if (!includeNullableParameters) {
+              if (parameter.declaredType.toString() == "")
+                continue
+
+              if (parameter.typeDeclaration?.isNullableEx() == true)
+                continue
+            }
+
+            ProblemsHolderService.instance.registerProblem(
+              problemsHolder,
+              parameter,
+              "default value of the parameter must be \"null\"",
+              run {
+                if (isAbstractMethod ||
+                  parameter.isPassByRef)
+                  return@run null
+
+                ReplaceWithNullQuickFix(
+                  SmartPointerManager.createPointer(context),
+                  SmartPointerManager.createPointer(parameter)
+                )
+              }
+            )
+          }
         }
       }
     }

@@ -38,6 +38,13 @@ abstract class DummyA
 $dummy = function (&$a = 123) {
 };
 
+class DummyF
+{
+    function __construct(private readonly int $a = 123, int|null $b = null, $c = null)
+    {
+        $b = $b ?? 123;
+    }
+}
 
 // Not applicable, abstract methods:
 
@@ -124,3 +131,10 @@ $dummy = new class
     {
     }
 };
+
+class DummyF2
+{
+    function __construct(private readonly int $a = 123, int|null $b = null, $c = null)
+    {
+    }
+}

@@ -4,11 +4,11 @@ import com.jetbrains.php.config.PhpLanguageLevel
 import net.rentalhost.plugins.php.hammer.services.TestCase
 
 class ParameterDefaultsNullInspectionTestCase : TestCase() {
-  fun testPhp530(): Unit = testInspection(ParameterDefaultsNullInspection::class.java, phpLanguageLevel = PhpLanguageLevel.PHP530)
+  fun testAllPhp530(): Unit = testInspection(ParameterDefaultsNullInspection::class.java, phpLanguageLevel = PhpLanguageLevel.PHP530)
 
-  fun testPhp700(): Unit = testInspection(ParameterDefaultsNullInspection::class.java, phpLanguageLevel = PhpLanguageLevel.PHP700)
+  fun testAllPhp700(): Unit = testInspection(ParameterDefaultsNullInspection::class.java, phpLanguageLevel = PhpLanguageLevel.PHP700)
 
-  fun testElse(): Unit = testInspection(ParameterDefaultsNullInspection::class.java)
+  fun testAll(): Unit = testInspection(ParameterDefaultsNullInspection::class.java)
 
   fun testIncludeAbstractMethods(): Unit = testInspection(
     ParameterDefaultsNullInspection::class.java,
