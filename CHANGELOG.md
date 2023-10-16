@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.25.0] - 2023-10-16
+
+### Added
+
+- **[MissingParentCallInspection]**: will now consider renamed methods from traits as well;
+
+### Fixed
+
+- **[AnonymousFunctionStaticInspection]**: scope function cannot be set as `static` if it accesses non-static methods in a static way. Fixes #25;
+- **[AnonymousFunctionStaticInspection]**: when making a function static under specific conditions, the code formatting didn't create a space between `static` and `function`, as expected, resulting in a code error. Fixes #29;
+- **[ParameterDefaultsNullInspection]**: ignore promoted properties that use `readonly` modifier since it's impossible to modify them within the function body, even inside the constructor. Fixes #33;
+- **[ParameterDefaultsNullInspection]**: assign to `$this->{property name}` when it's a promoted property - otherwise, there will be incorrect behavior after applying the quick-fix. Fixes #32;
+
+[0.25.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.25.0
+
+[MissingParentCallInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-missing-parent-call-inspection
+
+[AnonymousFunctionStaticInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-anonymous-function-static-inspection
+
+[ParameterDefaultsNullInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-defaults-null-inspection
+
 ## [0.24.0] - 2023-10-02
 
 ### Changed
