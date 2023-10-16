@@ -6,6 +6,7 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Function
+import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.FactoryService
@@ -23,17 +24,22 @@ class AnonymousFunctionStaticInspection : PhpInspection() {
       if (element.containingFile.isBlade())
         return
 
-      if (!element.isAnonymous() ||
-        element.isStatic())
+      if (!element.isAnonymous() || element.isStatic())
         return
 
-      if (!includeShortFunctions &&
-        element.isShortFunction())
+      if (!includeShortFunctions && element.isShortFunction())
         return
 
       for (elementScope in element.scopes()) {
         if (elementScope.accessVariables().find { it.variableName == "this" } != null)
           return
+
+        for (flowInstruction in elementScope.controlFlow.instructions) {
+          val flowInstructionMethod = flowInstruction.anchor?.reference?.resolve()
+
+          if (flowInstructionMethod is Method && !flowInstructionMethod.isStatic)
+            return
+        }
       }
 
       val elementPointer = element.createSmartPointer()

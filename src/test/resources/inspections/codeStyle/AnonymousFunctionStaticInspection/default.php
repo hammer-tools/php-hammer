@@ -3,7 +3,18 @@
 $dummy = <weak_warning descr="🔨 PHP Hammer: anonymous function can be static.">function</weak_warning> () {
 };
 
-class DummyA
+class DummyParent
+{
+    static function staticFunction()
+    {
+    }
+
+    function nonStaticFunction()
+    {
+    }
+}
+
+class DummyA extends DummyParent
 {
     function dummy()
     {
@@ -17,6 +28,14 @@ class DummyA
         };
 
         $dummy = <weak_warning descr="🔨 PHP Hammer: anonymous function can be static.">fn</weak_warning>() => true;
+
+        (<weak_warning descr="🔨 PHP Hammer: anonymous function can be static.">function</weak_warning> () {
+            parent::staticFunction();
+            self::staticFunction();
+            static::staticFunction();
+            DummyParent::staticFunction();
+            DummyA::staticFunction();
+        })();
     }
 }
 
@@ -29,7 +48,7 @@ $dummy = <weak_warning descr="🔨 PHP Hammer: anonymous function can be static.
 $dummy = static function () {
 };
 
-class DummyB
+class DummyB extends DummyParent
 {
     function dummy()
     {
@@ -51,5 +70,29 @@ class DummyB
         $dummy = static fn() => true;
 
         $dummy = fn() => fn() => $this;
+
+        (function () {
+            parent::nonStaticFunction();
+            self::nonStaticFunction();
+            static::nonStaticFunction();
+            DummyParent::nonStaticFunction();
+            DummyB::nonStaticFunction();
+        })();
+
+        (function () {
+            parent::staticFunction();
+            self::staticFunction();
+            static::staticFunction();
+            DummyParent::staticFunction();
+            DummyB::staticFunction();
+
+            (function () {
+                parent::nonStaticFunction();
+                self::nonStaticFunction();
+                static::nonStaticFunction();
+                DummyParent::nonStaticFunction();
+                DummyB::nonStaticFunction();
+            })();
+        })();
     }
 }
