@@ -10,6 +10,7 @@ import com.jetbrains.php.lang.psi.elements.PhpModifier
 import com.jetbrains.php.lang.psi.elements.PhpReturn
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
+import com.jetbrains.php.lang.psi.elements.impl.PhpTraitUseRuleImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.FactoryService
@@ -25,11 +26,14 @@ class MissingParentCallInspection : PhpInspection() {
       val methodIdentifier = method.nameIdentifier ?: return
 
       val baseClass = method.getMemberOverridden() ?: return
-      val baseMethod = baseClass.findMethodByName(method.name) as? MethodImpl ?: return
+      val baseMethod = baseClass.findMethodByName(method.name)
+      val baseMethodOriginal =
+        if (baseMethod is PhpTraitUseRuleImpl.NonAbsoluteTraitUseRuleRenameableFakePsiElement) baseMethod.original ?: return
+        else (baseMethod as? MethodImpl) ?: return
 
-      if (baseMethod.isAbstractMethod()) return
-      if ((baseMethod.functionBody() ?: return).getSingleStatement() is PhpReturn) return
-      if (baseMethod.scope.controlFlow.instructions.size == 2) return
+      if (baseMethodOriginal.isAbstractMethod()) return
+      if ((baseMethodOriginal.functionBody() ?: return).getSingleStatement() is PhpReturn) return
+      if (baseMethodOriginal.scope.controlFlow.instructions.size == 2) return
 
       val methodName = method.name.lowercase()
       val methodCall = method.scope.controlFlow.instructions.find {
@@ -42,7 +46,7 @@ class MissingParentCallInspection : PhpInspection() {
 
       if (methodCall != null) return
 
-      val baseMethodPointer = baseMethod.createSmartPointer()
+      val baseMethodPointer = baseMethodOriginal.createSmartPointer()
 
       ProblemsHolderService.instance.registerProblem(
         problemsHolder,
@@ -52,7 +56,7 @@ class MissingParentCallInspection : PhpInspection() {
           with(method.functionBody()) {
             val parentCall = FactoryService.createFunctionCall(
               method.project,
-              "parent::${methodName}",
+              "parent::${method.name}",
               (baseMethodPointer.element ?: return@simpleInline).parameters.mapIndexed { parameterIndex, parameter ->
                 if (method.getParameter(parameterIndex) != null) {
                   if (parameter.isVariadic) "...\$${parameter.name}"

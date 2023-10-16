@@ -260,6 +260,70 @@ class Dummy1050_C extends Dummy1050_B {
     }
 }
 
+// Case 1060:
+
+trait Dummy1060_Trait
+{
+    public function testOriginalA()
+    {
+        doSomething();
+    }
+
+    public function testOriginalB()
+    {
+        doSomething();
+    }
+
+    public function testOriginalC()
+    {
+    }
+}
+
+class Dummy1060_A
+{
+    use Dummy1060_Trait {
+        testOriginalA as testCopiedA;
+        testOriginalB as testCopiedB;
+        testOriginalC as testCopiedC;
+    }
+}
+
+class Dummy1060_B extends Dummy1060_A
+{
+    public function testOriginalA()
+    {
+        parent::testOriginalA();
+    }
+
+    // Empty from trait, so don't need parent call.
+    public function testOriginalC()
+    {
+    }
+
+    public function testCopiedA()
+    {
+        parent::testCopiedA();
+    }
+
+    // Empty from trait, so don't need parent call.
+    public function testCopiedC()
+    {
+    }
+}
+
+class Dummy1060_C extends Dummy1060_B
+{
+    public function testOriginalB()
+    {
+        parent::testOriginalB();
+    }
+
+    public function testCopiedB()
+    {
+        parent::testCopiedB();
+    }
+}
+
 // Not applicable:
 // Case 9000:
 

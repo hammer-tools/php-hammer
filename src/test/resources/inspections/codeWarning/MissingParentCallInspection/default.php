@@ -241,6 +241,66 @@ class Dummy1050_C extends Dummy1050_B {
     }
 }
 
+// Case 1060:
+
+trait Dummy1060_Trait
+{
+    public function testOriginalA()
+    {
+        doSomething();
+    }
+
+    public function testOriginalB()
+    {
+        doSomething();
+    }
+
+    public function testOriginalC()
+    {
+    }
+}
+
+class Dummy1060_A
+{
+    use Dummy1060_Trait {
+        testOriginalA as testCopiedA;
+        testOriginalB as testCopiedB;
+        testOriginalC as testCopiedC;
+    }
+}
+
+class Dummy1060_B extends Dummy1060_A
+{
+    public function <warning descr="🔨 PHP Hammer: missing parent::testOriginalA() call.">testOriginalA</warning>()
+    {
+    }
+
+    // Empty from trait, so don't need parent call.
+    public function testOriginalC()
+    {
+    }
+
+    public function <warning descr="🔨 PHP Hammer: missing parent::testCopiedA() call.">testCopiedA</warning>()
+    {
+    }
+
+    // Empty from trait, so don't need parent call.
+    public function testCopiedC()
+    {
+    }
+}
+
+class Dummy1060_C extends Dummy1060_B
+{
+    public function <warning descr="🔨 PHP Hammer: missing parent::testOriginalB() call.">testOriginalB</warning>()
+    {
+    }
+
+    public function <warning descr="🔨 PHP Hammer: missing parent::testCopiedB() call.">testCopiedB</warning>()
+    {
+    }
+}
+
 // Not applicable:
 // Case 9000:
 
