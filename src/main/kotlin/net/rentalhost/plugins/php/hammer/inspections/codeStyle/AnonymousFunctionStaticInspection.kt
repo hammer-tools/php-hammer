@@ -42,7 +42,7 @@ class AnonymousFunctionStaticInspection : PhpInspection() {
         }
       }
 
-      val elementPointer = element.createSmartPointer()
+      val elementPointer = element.firstChild.createSmartPointer()
 
       ProblemsHolderService.instance.registerProblem(
         problemsHolder,
