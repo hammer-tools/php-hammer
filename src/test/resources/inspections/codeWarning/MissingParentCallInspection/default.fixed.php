@@ -324,6 +324,63 @@ class Dummy1060_C extends Dummy1060_B
     }
 }
 
+trait Dummy1070_Trait_A
+{
+    public function testA()
+    {
+        doSomething();
+    }
+}
+
+trait Dummy1070_Trait_B
+{
+    public function testB()
+    {
+        doSomething();
+    }
+}
+
+class Dummy1070_A
+{
+    public function testA()
+    {
+        doSomething();
+    }
+
+    public function testB()
+    {
+        doSomething();
+    }
+}
+
+class Dummy1070_B extends Dummy1070_A
+{
+    use Dummy1070_Trait_A {
+        testA as testA_Aliased;
+    }
+
+    use Dummy1070_Trait_B;
+
+    // Parent is required here, once that `testA` as aliased to `testA_Aliased`.
+    // So `Dummy1070_A::testA` still works and parent must be called.
+    public function testA()
+    {
+        parent::testA();
+    }
+
+    // Works as expected (no parent is required).
+    public function testA_Aliased()
+    {
+    }
+
+    // Parent is required here, once that `Dummy1070_Trait_B` is just ignored.
+    // So, it comes from `Dummy1070_A::testB`.
+    public function testB()
+    {
+        parent::testB();
+    }
+}
+
 // Not applicable:
 // Case 9000:
 
@@ -561,4 +618,32 @@ class Dummy9130_A {
 abstract class Dummy9130_B extends Dummy9130_A {
     /** parent call is not supported to abstract methods. */
     abstract public function method();
+}
+
+// Case 9140 (issue #18):
+
+trait Dummy9140_Trait
+{
+    public function testOriginal()
+    {
+        doSomething();
+    }
+}
+
+class Dummy9140_A
+{
+    use Dummy9140_Trait {
+        testOriginal as testCopied;
+    }
+
+    // Before-fix buggy (reporting parent is required).
+    // Note that, in this case, there is no parent anyway.
+    public function testOriginal()
+    {
+    }
+
+    // Works as expected (no reporting missing parent).
+    public function testCopied()
+    {
+    }
 }

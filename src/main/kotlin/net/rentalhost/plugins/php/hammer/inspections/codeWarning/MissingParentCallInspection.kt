@@ -23,9 +23,11 @@ class MissingParentCallInspection : PhpInspection() {
       if (method.isAbstract) return
       if ((method.containingClass ?: return).isTrait) return
 
-      val methodIdentifier = method.nameIdentifier ?: return
-
       val baseClass = method.getMemberOverridden() ?: return
+
+      if (method.containingClass?.superClass?.findMethodByName(method.name) == null)
+        return
+
       val baseMethod = baseClass.findMethodByName(method.name)
       val baseMethodOriginal =
         if (baseMethod is PhpTraitUseRuleImpl.NonAbsoluteTraitUseRuleRenameableFakePsiElement) baseMethod.original ?: return
@@ -35,12 +37,12 @@ class MissingParentCallInspection : PhpInspection() {
       if ((baseMethodOriginal.functionBody() ?: return).getSingleStatement() is PhpReturn) return
       if (baseMethodOriginal.scope.controlFlow.instructions.size == 2) return
 
-      val methodName = method.name.lowercase()
+      val methodName = lazy { method.name.lowercase() }
       val methodCall = method.scope.controlFlow.instructions.find {
         it is PhpCallInstructionImpl &&
           with(it.functionReference as? MethodReferenceImpl ?: return@find false) {
             referenceType == PhpModifier.State.PARENT &&
-              (name ?: return@find false).lowercase() == methodName
+              (name ?: return@find false).lowercase() == methodName.value
           }
       }
 
@@ -50,7 +52,7 @@ class MissingParentCallInspection : PhpInspection() {
 
       ProblemsHolderService.instance.registerProblem(
         problemsHolder,
-        methodIdentifier,
+        method.nameIdentifier ?: return,
         "missing parent::${method.name}() call",
         QuickFixService.instance.simpleInline("Add call to parent::${method.name}()") {
           with(method.functionBody()) {
