@@ -4,13 +4,13 @@ fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
   id("java")
-  id("org.jetbrains.intellij") version "1.15.0"
-  id("org.jetbrains.kotlin.jvm") version "1.9.20-Beta2"
+  id("org.jetbrains.intellij") version "1.16.0"
+  id("org.jetbrains.kotlin.jvm") version "1.9.20-RC"
 }
 
 dependencies {
-  implementation("io.sentry:sentry:6.30.0")
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20-Beta2")
+  implementation("io.sentry:sentry:6.31.0")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20-RC")
 }
 
 group = prop("pluginId")
@@ -25,16 +25,16 @@ apply {
 }
 
 intellij {
-  pluginName.set(prop("pluginName"))
-  version.set(prop("platformVersion"))
-  type.set("PS")
+  pluginName = prop("pluginName")
+  version = prop("platformVersion")
+  type = "PS"
 
-  plugins.set(listOf("com.jetbrains.php:${prop("platformPhpBuild")}"))
+  plugins = listOf("com.jetbrains.php:${prop("platformPhpBuild")}")
 }
 
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(17))
+    languageVersion = JavaLanguageVersion.of(17)
   }
 }
 
@@ -70,10 +70,10 @@ tasks {
   patchPluginXml {
     dependsOn("generatePluginXML")
 
-    pluginId.set(prop("pluginId"))
-    version.set(prop("pluginVersion"))
-    sinceBuild.set(prop("pluginBuildSince"))
-    untilBuild.set(prop("pluginBuildUntil"))
+    pluginId = prop("pluginId")
+    version = prop("pluginVersion")
+    sinceBuild = prop("pluginBuildSince")
+    untilBuild = prop("pluginBuildUntil")
   }
 
   setupDependencies {
@@ -84,13 +84,13 @@ tasks {
   }
 
   signPlugin {
-    certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-    privateKey.set(System.getenv("PRIVATE_KEY"))
-    password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+    certificateChain = System.getenv("CERTIFICATE_CHAIN")
+    privateKey = System.getenv("PRIVATE_KEY")
+    password = System.getenv("PRIVATE_KEY_PASSWORD")
   }
 
   publishPlugin {
-    token.set(System.getenv("PUBLISH_TOKEN"))
+    token = System.getenv("PUBLISH_TOKEN")
   }
 
   prepareSandbox {

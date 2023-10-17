@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.25.1] - 2023-10-17
+
+### Fixed
+
+- **[MissingParentCallInspection]**: do not suggest `parent` call if there is no method with the same name in the parent classes. Fixes #18;
+
+[0.25.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.25.1
+
+[MissingParentCallInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-missing-parent-call-inspection
+
 ## [0.25.0] - 2023-10-16
 
 ### Added
