@@ -92,7 +92,11 @@ internal class GenerateChangelogTask : ProjectTools.ProjectTask() {
             .sortedByDescending { it.isRecentlyImplemented() }
             .also { it ->
               it.filter { it.classReference != "" }
-                .forEach { urlReferences[it.classReference] = it.getClassReferenceUrl(pluginName) }
+                .forEach {
+                  it.classReference.split(Regex(",\\s*")).forEach { classReference ->
+                    urlReferences[classReference] = GitCommit.getClassReferenceUrl(pluginName, classReference)
+                  }
+                }
             }
             .sortedBy { it.classReference != "" }
             .forEach { it ->

@@ -62,6 +62,12 @@ object GitService {
           with(commitSplit[3]) { substringAfter(": ", "").trim().trimEnd(';') }
         )
       }
+
+      private fun getClassReferenceDashed(classReference: String): String =
+        StringService.dashCase(classReference)
+
+      fun getClassReferenceUrl(pluginName: String, classReference: String): String =
+        "https://github.com/hammer-tools/${pluginName}/wiki/Inspections#user-content-${getClassReferenceDashed(classReference)}"
     }
 
     fun isRecentlyImplemented(): Boolean =
@@ -71,15 +77,9 @@ object GitService {
     fun isInspectionRelated(): Boolean =
       classReference.endsWith("Inspection")
 
-    private fun getClassReferenceDashed(): String =
-      StringService.dashCase(classReference)
-
-    fun getClassReferenceUrl(pluginName: String): String =
-      "https://github.com/hammer-tools/${pluginName}/wiki/Inspections#user-content-${getClassReferenceDashed()}"
-
     fun getMessagePrintable(): String =
       if (classReference == "") "$message;"
-      else "**[$classReference]**: $message;"
+      else "**[${classReference.split(Regex(",\\s*")).toList().joinToString("]**, **[")}]**: $message;"
 
     fun getTag(project: Project): String =
       if (tag == "") ProjectTools.prop(project, "pluginVersion")

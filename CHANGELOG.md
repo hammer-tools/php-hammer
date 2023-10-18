@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.26.0] - 2023-10-18
+
+### Added
+
+- **[CompactReplacementInspection]**: added a new option that allows to choose the format of the arguments generated for the `compact()` function, either _positional_ or _named_. Fixes #36;
+
+### Fixed
+
+- **[Inspection]**: added hammer emoji to all quick-fixes;
+- **[ParameterDefaultsNullInspection]**, **[SortUseVariablesInspection]**, **[UnusedUseVariableInspection]**: when a quick-fix preview was generated, an exception was thrown. Fixes #37;
+
+[0.26.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.26.0
+
+[CompactReplacementInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-compact-replacement-inspection
+
+[Inspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-inspection
+
+[ParameterDefaultsNullInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-defaults-null-inspection
+
+[SortUseVariablesInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-sort-use-variables-inspection
+
+[UnusedUseVariableInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-unused-use-variable-inspection
+
 ## [0.25.1] - 2023-10-17
 
 ### Fixed
