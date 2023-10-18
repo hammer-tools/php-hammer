@@ -81,6 +81,12 @@ object FactoryService {
   fun createFunctionCall(project: Project, not: Boolean, functionName: String, parameters: List<String>): PsiElement =
     createFunctionCall(project, if (not) "!$functionName" else functionName, parameters)
 
+  fun createFunctionCallNamed(project: Project, functionName: String, parameters: Map<String, String>): PsiElement =
+    PhpPsiElementFactory.createFromText(
+      project, PsiElement::class.java,
+      "$functionName(${parameters.map { e -> "${e.key}: ${e.value}" }.joinToString(",")});", intArrayOf(0, 2, 0)
+    )
+
   fun createFunctionCallable(project: Project, functionName: String): PhpCallableFunction =
     PhpPsiElementFactory.createPhpPsiFromText(project, PhpCallableFunction::class.java, "$functionName(...);")
 
