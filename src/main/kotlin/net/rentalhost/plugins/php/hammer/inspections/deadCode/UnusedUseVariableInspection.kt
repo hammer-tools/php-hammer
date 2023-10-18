@@ -1,12 +1,16 @@
 package net.rentalhost.plugins.php.hammer.inspections.deadCode
 
 import com.intellij.codeInsight.intention.FileModifier
+import com.intellij.codeInsight.intention.FileModifier.SafeFieldForPreview
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiFile
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.SmartPsiElementPointer
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpUseList
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
@@ -47,7 +51,7 @@ class UnusedUseVariableInspection : PhpInspection() {
   }
 
   class DeleteUnusedVariableDeclarationQuickFix(
-    @FileModifier.SafeFieldForPreview private val useVariable: SmartPsiElementPointer<VariableImpl>,
+    @SafeFieldForPreview private val useVariable: SmartPsiElementPointer<VariableImpl>,
   ) : QuickFixService.SimpleQuickFix("Delete unused variable") {
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
       val useElement = descriptor.psiElement as PhpUseListImpl
@@ -62,6 +66,12 @@ class UnusedUseVariableInspection : PhpInspection() {
       (useVariable.element ?: return).declarationChildRange(true).delete()
 
       useElement.deleteTrailingComma()
+    }
+
+    override fun getFileModifierForPreview(target: PsiFile): FileModifier {
+      return DeleteUnusedVariableDeclarationQuickFix(
+        PsiTreeUtil.findSameElementInCopy(useVariable.element, target).createSmartPointer(),
+      )
     }
   }
 }

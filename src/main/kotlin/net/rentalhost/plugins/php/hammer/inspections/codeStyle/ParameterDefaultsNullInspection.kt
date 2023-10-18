@@ -1,12 +1,16 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInsight.intention.FileModifier
+import com.intellij.codeInsight.intention.FileModifier.SafeFieldForPreview
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.SmartPointerManager
 import com.intellij.psi.SmartPsiElementPointer
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageFeature
 import com.jetbrains.php.lang.inspections.PhpInspection
@@ -149,8 +153,8 @@ class ParameterDefaultsNullInspection : PhpInspection() {
   }
 
   class ReplaceWithNullQuickFix(
-    @FileModifier.SafeFieldForPreview private val function: SmartPsiElementPointer<FunctionImpl>,
-    @FileModifier.SafeFieldForPreview private val parameter: SmartPsiElementPointer<ParameterImpl>
+    @SafeFieldForPreview private var function: SmartPsiElementPointer<FunctionImpl>,
+    @SafeFieldForPreview private var parameter: SmartPsiElementPointer<ParameterImpl>
   ) : QuickFixService.SimpleQuickFix("Smart replace with \"null\"") {
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
       val parameterDefaultValue = replaceDefaultValueWithNull(project)
@@ -158,6 +162,13 @@ class ParameterDefaultsNullInspection : PhpInspection() {
       enforcesNullableType(project)
 
       createAssignment(project, parameterDefaultValue)
+    }
+
+    override fun getFileModifierForPreview(target: PsiFile): FileModifier {
+      return ReplaceWithNullQuickFix(
+        PsiTreeUtil.findSameElementInCopy(function.element, target).createSmartPointer(),
+        PsiTreeUtil.findSameElementInCopy(parameter.element, target).createSmartPointer()
+      )
     }
 
     private fun replaceDefaultValueWithNull(project: Project): PsiElement {

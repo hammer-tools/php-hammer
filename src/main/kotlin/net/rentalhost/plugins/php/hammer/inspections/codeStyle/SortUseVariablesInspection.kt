@@ -1,6 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
-import com.intellij.codeInsight.intention.FileModifier
+import com.intellij.codeInsight.intention.FileModifier.SafeFieldForPreview
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
@@ -52,7 +52,7 @@ class SortUseVariablesInspection : PhpInspection() {
   }
 
   class SortByUsageQuickFix(
-    @FileModifier.SafeFieldForPreview private val useVariablesSorted: Collection<SmartPsiElementPointer<VariableImpl>>,
+    @SafeFieldForPreview private val useVariablesSorted: Collection<SmartPsiElementPointer<VariableImpl>>,
   ) : QuickFixService.SimpleQuickFix("Sort by usage") {
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
       descriptor.psiElement.replace(
