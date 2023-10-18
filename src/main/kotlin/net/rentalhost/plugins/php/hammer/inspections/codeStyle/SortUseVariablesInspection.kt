@@ -1,7 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInsight.intention.FileModifier
-import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
@@ -16,6 +15,7 @@ import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class SortUseVariablesInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
@@ -53,9 +53,7 @@ class SortUseVariablesInspection : PhpInspection() {
 
   class SortByUsageQuickFix(
     @FileModifier.SafeFieldForPreview private val useVariablesSorted: Collection<SmartPsiElementPointer<VariableImpl>>,
-  ) : LocalQuickFix {
-    override fun getFamilyName(): String = "Sort by usage"
-
+  ) : QuickFixService.SimpleQuickFix("Sort by usage") {
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
       descriptor.psiElement.replace(
         FactoryService.createFunctionUse(

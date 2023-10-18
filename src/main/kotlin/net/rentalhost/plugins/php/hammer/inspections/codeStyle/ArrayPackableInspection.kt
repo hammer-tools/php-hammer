@@ -1,6 +1,5 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
-import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
@@ -14,6 +13,7 @@ import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.unpackValues
 import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import net.rentalhost.plugins.php.hammer.services.TypeService
 
 class ArrayPackableInspection : PhpInspection() {
@@ -50,9 +50,7 @@ class ArrayPackableInspection : PhpInspection() {
     }
   }
 
-  class DropArrayKeysQuickFix : LocalQuickFix {
-    override fun getFamilyName(): String = "Drop the array keys"
-
+  class DropArrayKeysQuickFix : QuickFixService.SimpleQuickFix("Drop the array keys") {
     private fun dropArrayKeys(project: Project, array: PsiElement) {
       for (arrayElement in array.children) {
         if (arrayElement is ArrayHashElementImpl) {

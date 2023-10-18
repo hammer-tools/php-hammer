@@ -1,7 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.deadCode
 
 import com.intellij.codeInsight.intention.FileModifier
-import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
@@ -16,6 +15,7 @@ import com.jetbrains.php.lang.psi.elements.impl.VariableImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class UnusedUseVariableInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
@@ -48,10 +48,7 @@ class UnusedUseVariableInspection : PhpInspection() {
 
   class DeleteUnusedVariableDeclarationQuickFix(
     @FileModifier.SafeFieldForPreview private val useVariable: SmartPsiElementPointer<VariableImpl>,
-  ) : LocalQuickFix {
-    override fun getFamilyName(): String =
-      "Delete unused variable"
-
+  ) : QuickFixService.SimpleQuickFix("Delete unused variable") {
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
       val useElement = descriptor.psiElement as PhpUseListImpl
       val useVariables = useElement.getVariables() ?: return

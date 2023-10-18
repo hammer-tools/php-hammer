@@ -1,7 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInsight.intention.FileModifier
-import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
@@ -18,10 +17,7 @@ import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpPromotedFieldParameterImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
-import net.rentalhost.plugins.php.hammer.services.FactoryService
-import net.rentalhost.plugins.php.hammer.services.LanguageService
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
-import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.*
 import javax.swing.JComponent
 
 class ParameterDefaultsNullInspection : PhpInspection() {
@@ -155,9 +151,7 @@ class ParameterDefaultsNullInspection : PhpInspection() {
   class ReplaceWithNullQuickFix(
     @FileModifier.SafeFieldForPreview private val function: SmartPsiElementPointer<FunctionImpl>,
     @FileModifier.SafeFieldForPreview private val parameter: SmartPsiElementPointer<ParameterImpl>
-  ) : LocalQuickFix {
-    override fun getFamilyName(): String = "Smart replace with \"null\""
-
+  ) : QuickFixService.SimpleQuickFix("Smart replace with \"null\"") {
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
       val parameterDefaultValue = replaceDefaultValueWithNull(project)
 
@@ -168,6 +162,7 @@ class ParameterDefaultsNullInspection : PhpInspection() {
 
     private fun replaceDefaultValueWithNull(project: Project): PsiElement {
       val parameterDefaultValue = parameter.element!!.defaultValue!!
+
       parameterDefaultValue.replace(FactoryService.createConstantReference(project, "null"))
 
       return parameterDefaultValue
