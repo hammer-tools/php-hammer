@@ -8,6 +8,8 @@ $dummy = null == $x;
 $dummy = -99 == $x;
 $dummy = -9.9 == $x;
 $dummy = static::class == $x;
+$dummy = 123 === ($dummy = 123);
+$dummy = 123 === ($dummy += 123);
 
 // Not applicable (already on the left side):
 

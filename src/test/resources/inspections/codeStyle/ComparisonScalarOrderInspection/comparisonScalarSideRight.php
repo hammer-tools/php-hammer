@@ -8,6 +8,7 @@ $dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the right 
 $dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the right side.">-99 === $x</weak_warning>;
 $dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the right side.">-9.9 === $x</weak_warning>;
 $dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the right side.">static::class === $x</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the right side.">123 === ($dummy = 123)</weak_warning>;
 
 // Not applicable (already on the right side):
 
@@ -21,6 +22,12 @@ $dummy = $x == null;
 $dummy = 99 === '99';
 $dummy = __FILE__ == __DIR__;
 $dummy = static::class == self::class;
+
+// Not applicable (contains assignment on right side):
+
+$dummy = 123 === $dummy = 123;
+$dummy = 123 === $dummy += 123;
+$dummy = 123 === $dummy ??= 123;
 
 // Not applicable:
 

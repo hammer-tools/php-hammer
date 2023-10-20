@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.elements.AssignmentExpression
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.isScalar
@@ -24,8 +25,12 @@ class ComparisonScalarOrderInspection : PhpInspection() {
       if (!TypeService.compareOperations.contains(element.operationType))
         return
 
-      val elementLeft = element.leftOperand
       val elementRight = element.rightOperand
+
+      if (comparisonScalarSide === OptionComparisonScalarSide.RIGHT && elementRight is AssignmentExpression)
+        return
+
+      val elementLeft = element.leftOperand
 
       val leftScalar = elementLeft.isScalar()
       val rightScalar = elementRight.isScalar()

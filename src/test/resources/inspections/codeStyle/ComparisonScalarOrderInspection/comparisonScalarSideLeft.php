@@ -8,6 +8,8 @@ $dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left s
 $dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x == -99</weak_warning>;
 $dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x == -9.9</weak_warning>;
 $dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">$x == static::class</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">($dummy = 123) === 123</weak_warning>;
+$dummy = <weak_warning descr="🔨 PHP Hammer: scalar type must be on the left side.">($dummy += 123) === 123</weak_warning>;
 
 // Not applicable (already on the left side):
 

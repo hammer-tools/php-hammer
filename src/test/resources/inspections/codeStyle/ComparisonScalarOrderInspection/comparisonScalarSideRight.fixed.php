@@ -8,6 +8,7 @@ $dummy = $x === __FILE__;
 $dummy = $x === -99;
 $dummy = $x === -9.9;
 $dummy = $x === static::class;
+$dummy = ($dummy = 123) === 123;
 
 // Not applicable (already on the right side):
 
@@ -21,6 +22,12 @@ $dummy = $x == null;
 $dummy = 99 === '99';
 $dummy = __FILE__ == __DIR__;
 $dummy = static::class == self::class;
+
+// Not applicable (contains assignment on right side):
+
+$dummy = 123 === $dummy = 123;
+$dummy = 123 === $dummy += 123;
+$dummy = 123 === $dummy ??= 123;
 
 // Not applicable:
 
