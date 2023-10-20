@@ -381,6 +381,22 @@ class Dummy1070_B extends Dummy1070_A
     }
 }
 
+// Case 1080:
+
+class Dummy1080_A {
+    public function method() {
+        doSomething();
+    }
+}
+
+class Dummy1080_B extends Dummy1080_A {
+    #[\Override]
+    public function method() {
+        parent::method();
+        doSomething();
+    }
+}
+
 // Not applicable:
 // Case 9000:
 

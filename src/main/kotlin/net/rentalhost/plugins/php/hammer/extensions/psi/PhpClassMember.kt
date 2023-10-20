@@ -53,6 +53,7 @@ fun PhpClassMember.isMemberOverrided(): Boolean {
     isOverrided = true
     false
   }
+
   return isOverrided
 }
 

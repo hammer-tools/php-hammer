@@ -2,6 +2,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.refactoring.suggested.createSmartPointer
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.codeInsight.controlFlow.instructions.impl.PhpCallInstructionImpl
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.GroupStatement
@@ -14,14 +15,22 @@ import com.jetbrains.php.lang.psi.elements.impl.PhpTraitUseRuleImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
+import javax.swing.JComponent
 
 class MissingParentCallInspection : PhpInspection() {
+  @OptionTag
+  var checkOverrideAttribute = true
+
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpMethod(method: Method) {
       if (method.isAbstract) return
       if ((method.containingClass ?: return).isTrait) return
+
+      if (!checkOverrideAttribute && method.attributes.any { it.fqn == "\\Override" })
+        return
 
       val baseClass = method.getMemberOverridden() ?: return
 
@@ -78,6 +87,15 @@ class MissingParentCallInspection : PhpInspection() {
           }
         }
       )
+    }
+  }
+
+  override fun createOptionsPanel(): JComponent {
+    return OptionsPanelService.create { component: OptionsPanelService ->
+      component.addCheckbox(
+        "Check even with the <code>#[Override]</code> attribute", checkOverrideAttribute,
+        "When this option is enabled, the inspection will run even if the <code>#[Override]</code> attribute is applied to the method."
+      ) { checkOverrideAttribute = it }
     }
   }
 }
