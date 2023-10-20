@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.27.0] - 2023-10-20
+
+### Added
+
+- **[MissingParentCallInspection]**: added a new option that makes the inspection work even if the `#[Override]` attribute is declared on the method. Fixes #39;
+- **[OverrideIllegalInspection]**: new inspection that checks for the illegal use of the `#[Override]` attribute and recommends its removal to prevent fatal errors in PHP 8.3+. Fixes #39;
+- **[OverrideMissingInspection]**: new inspection that checks if the `#[Override]` attribute has been declared in methods overriding parent methods. Fixes #39;
+
+### Fixed
+
+- **[ComparisonScalarOrderInspection]**: ignores the condition where the right side of the operation is an assignment that, when swapped with the left side, changes the code's behavior;
+
+[0.27.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.27.0
+
+[MissingParentCallInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-missing-parent-call-inspection
+
+[OverrideIllegalInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-illegal-inspection
+
+[OverrideMissingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-missing-inspection
+
+[ComparisonScalarOrderInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-comparison-scalar-order-inspection
+
 ## [0.26.0] - 2023-10-18
 
 ### Added
