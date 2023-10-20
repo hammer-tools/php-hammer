@@ -9,7 +9,7 @@
 
     <description><![CDATA[
         <strong>PHP Hammer</strong> is a powerful plugin that enhances the PHP language in PhpStorm by adding <a
-  href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>52 new
+  href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>53 new
   inspections</strong></a> that are not available natively. These inspections provide advanced code analysis and come with convenient quick-fixes to streamline your development process.
     ]]></description>
 
@@ -390,6 +390,15 @@
                          level="ERROR"
                          shortName="FileClassnameCaseInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.FileClassnameCaseInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,PHP Hammer"
+                         groupName="Code error"
+                         enabledByDefault="true"
+                         displayName="Illegal #[Override] attribute"
+                         level="ERROR"
+                         shortName="OverrideIllegalInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.OverrideIllegalInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,PHP Hammer"
