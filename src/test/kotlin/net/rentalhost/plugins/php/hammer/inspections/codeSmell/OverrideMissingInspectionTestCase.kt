@@ -17,4 +17,11 @@ class OverrideMissingInspectionTestCase : TestCase() {
     OverrideMissingInspection::class.java,
     "aliasExists"
   )
+
+  fun testConsiderParentCallReplacement(): Unit = testInspection(
+    OverrideMissingInspection::class.java,
+    "considerParentCallReplacement", {
+      it.considerParentCallReplacement = true
+    }
+  )
 }

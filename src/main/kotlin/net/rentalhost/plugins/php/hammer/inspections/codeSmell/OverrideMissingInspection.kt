@@ -1,15 +1,25 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.findParentOfType
 import com.intellij.refactoring.suggested.createSmartPointer
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Method
+import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.addAttribute
+import net.rentalhost.plugins.php.hammer.extensions.psi.functionBody
+import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
+import javax.swing.JComponent
 
 class OverrideMissingInspection : PhpInspection() {
+  @OptionTag
+  var considerParentCallReplacement = false
+
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpMethod(method: Method) {
       // Considers only methods that can be found in parent classes.
@@ -23,6 +33,15 @@ class OverrideMissingInspection : PhpInspection() {
           return
       }
 
+      if (considerParentCallReplacement) {
+        PsiTreeUtil.findChildrenOfType(method.functionBody(), MethodReference::class.java).forEach {
+          if (it.classReference?.name?.lowercase() == "parent" &&
+            it.name?.lowercase() == method.name.lowercase() &&
+            it.findParentOfType<Method>() == method)
+            return
+        }
+      }
+
       val methodPointer = method.createSmartPointer()
 
       // Otherwise, we have found a problem compatible with this inspection.
@@ -34,6 +53,16 @@ class OverrideMissingInspection : PhpInspection() {
           methodPointer.element?.addAttribute("Override")
         }
       )
+    }
+  }
+
+  override fun createOptionsPanel(): JComponent {
+    return OptionsPanelService.create { component: OptionsPanelService ->
+      component.addCheckbox(
+        "Consider <code>parent::call()</code> as a replacement", considerParentCallReplacement,
+        "When this option is enabled, you can omit <code>#[Override]</code> if you perform a <code>parent::call()</code> for the suggested method. " +
+          "In such cases, <code>#[Override]</code> becomes redundant for the code."
+      ) { considerParentCallReplacement = it }
     }
   }
 }

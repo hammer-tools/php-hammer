@@ -20,18 +20,21 @@ $dummy = new class extends Base {
     // Must fails: requires #[\Override] attribute.
     function <weak_warning descr="🔨 PHP Hammer: this method performs an override; consider using the #[Override] attribute.">requiresOverrideAttribute</weak_warning>() {
         doSomething();
+        parent::requiresOverrideAttribute();
     }
 
     // Must fails: incorrect #[\Override] attribute class used (eg. wrong import).
     #[Override]
     public function <weak_warning descr="🔨 PHP Hammer: this method performs an override; consider using the #[Override] attribute.">incorrectOverrideAttribute</weak_warning>() {
         doSomething();
+        parent::incorrectOverrideAttribute();
     }
 
     // Skip: already correctly contains #[\Override] attribute.
     #[\Override]
     function overrideAttributeAlreadyApplied() {
         doSomething();
+        parent::overrideAttributeAlreadyApplied();
     }
 
     // Skip: #[\Override] attribute is not required here, parent classes don't contains this method declaration.
