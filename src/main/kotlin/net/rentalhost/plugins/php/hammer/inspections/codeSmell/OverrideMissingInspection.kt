@@ -59,7 +59,7 @@ class OverrideMissingInspection : PhpInspection() {
   override fun createOptionsPanel(): JComponent {
     return OptionsPanelService.create { component: OptionsPanelService ->
       component.addCheckbox(
-        "Consider <code>parent::call()</code> as a replacement", considerParentCallReplacement,
+        "Consider parent::call() as a replacement", considerParentCallReplacement,
         "When this option is enabled, you can omit <code>#[Override]</code> if you perform a <code>parent::call()</code> for the suggested method. " +
           "In such cases, <code>#[Override]</code> becomes redundant for the code."
       ) { considerParentCallReplacement = it }

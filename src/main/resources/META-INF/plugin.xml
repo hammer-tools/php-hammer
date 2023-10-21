@@ -9,7 +9,7 @@
 
     <description><![CDATA[
         <strong>PHP Hammer</strong> is a powerful plugin that enhances the PHP language in PhpStorm by adding <a
-  href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>53 new
+  href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>54 new
   inspections</strong></a> that are not available natively. These inspections provide advanced code analysis and come with convenient quick-fixes to streamline your development process.
     ]]></description>
 
@@ -473,6 +473,15 @@
                          level="WARNING"
                          shortName="ObsoleteFunctionInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeWarning.ObsoleteFunctionInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,PHP Hammer"
+                         groupName="Code warning"
+                         enabledByDefault="true"
+                         displayName="Sensitive parameter usage"
+                         level="WARNING"
+                         shortName="SensitiveParameterInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeWarning.SensitiveParameterInspection" />
 
         <localInspection language="PHP"
                          groupPath="PHP,PHP Hammer"

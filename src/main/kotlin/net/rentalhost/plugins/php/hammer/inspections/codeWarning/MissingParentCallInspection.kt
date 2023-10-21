@@ -93,7 +93,7 @@ class MissingParentCallInspection : PhpInspection() {
   override fun createOptionsPanel(): JComponent {
     return OptionsPanelService.create { component: OptionsPanelService ->
       component.addCheckbox(
-        "Check even with the <code>#[Override]</code> attribute", checkOverrideAttribute,
+        "Check even with the #[Override] attribute", checkOverrideAttribute,
         "When this option is enabled, the inspection will run even if the <code>#[Override]</code> attribute is applied to the method."
       ) { checkOverrideAttribute = it }
     }
