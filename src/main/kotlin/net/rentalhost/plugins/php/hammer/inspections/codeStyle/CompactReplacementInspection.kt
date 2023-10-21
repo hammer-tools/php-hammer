@@ -91,12 +91,14 @@ class CompactReplacementInspection : PhpInspection() {
       component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
         radioComponent.addOption(
           "Prefer positional arguments", compactArgumentsFormat === OptionCompactArgumentsFormat.POSITIONAL,
-          "The fix will suggest positional arguments (eg., <code>compact(\"a\", \"b\", \"c\")</code>). For lower PHP versions, this option will be automatically used."
+          "The fix will suggest positional arguments (e.g., <code>compact(\"a\", \"b\", \"c\")</code>). " +
+            "For lower PHP versions, this option will be automatically used."
         ) { compactArgumentsFormat = OptionCompactArgumentsFormat.POSITIONAL }
 
         radioComponent.addOption(
           "Prefer named arguments", compactArgumentsFormat === OptionCompactArgumentsFormat.NAMED,
-          "The fix will suggest named arguments (eg., <code>compact(var_name: [\"a\", \"b\", \"c\"])</code>). For PHP 8.0+ only. For lower PHP versions, positional option will be automatically used."
+          "The fix will suggest named arguments (e.g., <code>compact(var_name: [\"a\", \"b\", \"c\"])</code>). " +
+            "For PHP 8.0+ only. For lower PHP versions, positional option will be automatically used."
         ) { compactArgumentsFormat = OptionCompactArgumentsFormat.NAMED }
       }
     }

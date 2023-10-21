@@ -10,6 +10,15 @@ class ComparisonScalarOrderInspectionTestCase : TestCase() {
     { it.comparisonScalarSide = OptionComparisonScalarSide.RIGHT }
   )
 
+  fun testSwapRightAssignments(): Unit = testInspection(
+    ComparisonScalarOrderInspection::class.java,
+    "swapRightAssignments",
+    {
+      it.comparisonScalarSide = OptionComparisonScalarSide.RIGHT
+      it.swapRightAssignments = true
+    }
+  )
+
   fun testComparisonScalarLeft(): Unit = testInspection(
     ComparisonScalarOrderInspection::class.java,
     "comparisonScalarSideLeft",

@@ -167,4 +167,7 @@ object FactoryService {
 
   fun createIfConditional(project: Project, condition: String, trueVariant: String): If =
     PhpPsiElementFactory.createPhpPsiFromText(project, If::class.java, "if($condition){\nreturn $trueVariant;\n}")
+
+  fun createParenthesizedExpression(project: Project, expression: String): ParenthesizedExpression =
+    PhpPsiElementFactory.createPhpPsiFromText(project, ParenthesizedExpression::class.java, "($expression)")
 }

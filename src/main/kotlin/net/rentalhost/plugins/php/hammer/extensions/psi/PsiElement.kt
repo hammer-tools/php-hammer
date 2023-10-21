@@ -7,6 +7,7 @@ import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.parser.PhpElementTypes
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
+import net.rentalhost.plugins.php.hammer.services.FactoryService
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -65,6 +66,9 @@ fun PsiElement.withOptionalNotOperator(): PsiElement {
 fun PsiElement?.unparenthesize(): PsiElement? =
   if (this is ParenthesizedExpression) this.argument.unparenthesize()
   else this
+
+fun PsiElement.parenthesize(): ParenthesizedExpression =
+  FactoryService.createParenthesizedExpression(this.project, this.unparenthesize()!!.text)
 
 fun PsiElement.unwrapStatement(): PsiElement {
   return if (isExactly<StatementImpl>()) (this.firstPsiChild ?: return this).unwrapStatement()
