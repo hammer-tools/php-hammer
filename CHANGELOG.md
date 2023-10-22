@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.28.0] - 2023-10-21
+
+### Added
+
+- **[ComparisonScalarOrderInspection]**: added a new option that allows moving assignments to the left when scalars on the right are preferred (disabled by default). Fixes #40;
+- **[OverrideMissingInspection]**: added an option that allows a `parent::call()` to be a replacement for the `#[Override]` attribute. Disabled by default. Fixes #39;
+- **[SensitiveParameterInspection]**: check the use of sensitive words as function and method parameter names, suggesting the use of the `#[SensitiveParameter]` attribute. Fixes #41;
+
+[0.28.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.28.0
+
+[ComparisonScalarOrderInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-comparison-scalar-order-inspection
+
+[OverrideMissingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-missing-inspection
+
+[SensitiveParameterInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-sensitive-parameter-inspection
+
 ## [0.27.0] - 2023-10-20
 
 ### Added
