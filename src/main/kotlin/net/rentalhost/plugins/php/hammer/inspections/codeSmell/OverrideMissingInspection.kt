@@ -5,6 +5,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.findParentOfType
 import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
+import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.MethodReference
@@ -65,4 +66,6 @@ class OverrideMissingInspection : PhpInspection() {
       ) { considerParentCallReplacement = it }
     }
   }
+
+  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP830
 }
