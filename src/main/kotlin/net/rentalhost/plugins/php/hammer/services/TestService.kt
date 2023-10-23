@@ -52,7 +52,7 @@ abstract class TestCase : BasePlatformTestCase() {
 
     inspectionSetup?.accept(phpInspection)
 
-    val phpLanguageLevelDeclared = phpLanguageLevel ?: PhpLanguageLevel.PHP810
+    val phpLanguageLevelDeclared = phpLanguageLevel ?: PhpLanguageLevel.PHP830
 
     PhpProjectConfigurationFacade.getInstance(project).languageLevel = phpLanguageLevelDeclared
 
@@ -66,7 +66,7 @@ abstract class TestCase : BasePlatformTestCase() {
 
     if (quickFixesEnabled != false) {
       val phpLanguageLevelSuffix =
-        if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP810) ""
+        if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP830) ""
         else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
 
       val quickFixFile = "$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php"

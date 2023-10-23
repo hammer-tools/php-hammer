@@ -16,9 +16,6 @@ class Dummy {
 $dummy = function (<weak_warning descr="🔨 PHP Hammer: parameter type is implicitly null.">A&B $a = <error descr="Argument passed must be of the type \B&\A, null given">null</error></weak_warning>) {
 };
 
-$dummy = function (<weak_warning descr="🔨 PHP Hammer: parameter type is implicitly null.">(A&B) $a = <error descr="Argument passed must be of the type \B&\A, null given">null</error></weak_warning>) {
-};
-
 $dummy = function (<weak_warning descr="🔨 PHP Hammer: parameter type is implicitly null.">(A&B)|C $a = null</weak_warning>) {
 };
 

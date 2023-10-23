@@ -10,6 +10,7 @@ import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.psi.util.findParentOfType
 import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
+import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.documentation.phpdoc.psi.PhpDocComment
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Method
@@ -67,6 +68,7 @@ class SensitiveParameterInspection : PhpInspection() {
     "midname",
     "oauth",
     "pass",
+    "passphrase",
     "passcode",
     "passwd",
     "password",
@@ -205,4 +207,6 @@ class SensitiveParameterInspection : PhpInspection() {
       )
     )
   }
+
+  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP820
 }

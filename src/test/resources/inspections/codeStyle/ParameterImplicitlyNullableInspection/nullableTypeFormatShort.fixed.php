@@ -16,9 +16,6 @@ class Dummy {
 $dummy = function (A&B $a = null) {
 };
 
-$dummy = function ((A&B) $a = null) {
-};
-
 $dummy = function ((A&B)|C $a = null) {
 };
 

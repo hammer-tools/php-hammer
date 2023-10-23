@@ -15,8 +15,5 @@ class Dummy1 {
 function dummy3(A&B $dummy)
 {}
 
-function dummy3b((A&B) $dummy)
-{}
-
 function dummy4((A&B)|null $dummy)
 {}
