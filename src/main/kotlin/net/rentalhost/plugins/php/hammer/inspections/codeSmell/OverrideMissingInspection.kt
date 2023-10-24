@@ -12,6 +12,7 @@ import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.addAttribute
 import net.rentalhost.plugins.php.hammer.extensions.psi.functionBody
+import net.rentalhost.plugins.php.hammer.services.LanguageService
 import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
@@ -21,8 +22,14 @@ class OverrideMissingInspection : PhpInspection() {
   @OptionTag
   var considerParentCallReplacement = false
 
+  @OptionTag
+  var supportOlderVersions = false
+
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpMethod(method: Method) {
+      if (!supportOlderVersions && !LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP830))
+        return
+
       // Considers only methods that can be found in parent classes.
       // This will exclude methods declared in traits, which can be a problem.
       if (method.containingClass?.superClass?.findMethodByName(method.name) == null)
@@ -64,8 +71,14 @@ class OverrideMissingInspection : PhpInspection() {
         "When this option is enabled, you can omit <code>#[Override]</code> if you perform a <code>parent::call()</code> for the suggested method. " +
           "In such cases, <code>#[Override]</code> becomes redundant for the code."
       ) { considerParentCallReplacement = it }
+
+      component.addCheckbox(
+        "Support for older versions", supportOlderVersions,
+        "Allow this inspection when the PHP version is less than 8.3. " +
+          "The feature itself will be inoperative, but it prepares for a code update in the future."
+      ) { supportOlderVersions = it }
     }
   }
 
-  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP830
+  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP800
 }
