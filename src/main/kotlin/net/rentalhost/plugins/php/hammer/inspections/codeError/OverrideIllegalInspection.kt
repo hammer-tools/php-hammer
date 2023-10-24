@@ -1,6 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.inspections.attributes.PhpRemoveAttributeQuickFix
 import com.jetbrains.php.lang.psi.elements.Method
@@ -16,10 +17,20 @@ class OverrideIllegalInspection : PhpInspection() {
         return
 
       val method = attribute.owner as? Method ?: return
+      val methodClass = method.containingClass ?: return
 
-      // Considers only methods that do not perform overrides.
-      if (method.containingClass?.superClass?.findMethodByName(method.name) != null)
+      if (methodClass.isTrait) {
+        // Traits should be considered here as well.
+        // But to be considered an override, it needs to be an override for all methods that use the trait.
+        with(PhpIndex.getInstance(method.project).getTraitUsages(methodClass)) {
+          if (isNotEmpty() && all { it.superClass?.findMethodByName(method.name) != null })
+            return
+        }
+      }
+      else if (methodClass.superClass?.findMethodByName(method.name) != null) {
+        // Considers only methods that do not perform overrides.
         return
+      }
 
       // Otherwise, we have found a problem compatible with this inspection.
       ProblemsHolderService.instance.registerProblem(
