@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.28.2] - 2023-10-23
+
+### Changed
+
+- **[OverrideMissingInspection]**: added an option to allow this inspection to work before version 8.3; Fixes #39;
+- **[SensitiveParameterInspection]**: added an option to allow this inspection to work before version 8.2; Fixes #39;
+
+[0.28.2]: https://github.com/hammer-tools/php-hammer/releases/tag/0.28.2
+
+[OverrideMissingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-missing-inspection
+
+[SensitiveParameterInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-sensitive-parameter-inspection
+
 ## [0.28.1] - 2023-10-23
 
 ### Changed
