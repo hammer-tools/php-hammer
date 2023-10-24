@@ -25,15 +25,6 @@ import net.rentalhost.plugins.php.hammer.services.LanguageService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
-val wordExpression = Regex("(\\p{Lu}\\p{Ll}+|\\p{Lu}+|\\p{Ll}+|\\p{L}+)")
-
-val ignorableTypes = listOf(
-  PhpType._NULL,
-  PhpType._INT, PhpType._INTEGER,
-  PhpType._BOOL, PhpType._BOOLEAN,
-  PhpType._FLOAT, PhpType._DOUBLE,
-)
-
 class SensitiveParameterInspection : PhpInspection() {
   @OptionTag
   private val sensitiveWords = mutableListOf(
@@ -91,6 +82,15 @@ class SensitiveParameterInspection : PhpInspection() {
 
   @OptionTag
   var supportOlderVersions = false
+
+  private val wordExpression = Regex("(\\p{Lu}\\p{Ll}+|\\p{Lu}+|\\p{Ll}+|\\p{L}+)")
+
+  private val ignorableTypes = listOf(
+    PhpType._NULL,
+    PhpType._INT, PhpType._INTEGER,
+    PhpType._BOOL, PhpType._BOOLEAN,
+    PhpType._FLOAT, PhpType._DOUBLE,
+  )
 
   // The tilde (~) is intentionally added at the end of each word to ensure that the entire word is matched, not just part of it.
   // For example, "auth" becomes "Auth~", so in "Authenticated~," it won't be found.
