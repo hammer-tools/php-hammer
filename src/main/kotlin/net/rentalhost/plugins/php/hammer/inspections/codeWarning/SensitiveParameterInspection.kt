@@ -21,6 +21,7 @@ import net.rentalhost.plugins.php.hammer.extensions.kotlin.joinToStringEx
 import net.rentalhost.plugins.php.hammer.extensions.psi.addAttribute
 import net.rentalhost.plugins.php.hammer.extensions.psi.getTypes
 import net.rentalhost.plugins.php.hammer.services.CacheService
+import net.rentalhost.plugins.php.hammer.services.LanguageService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
@@ -88,6 +89,9 @@ class SensitiveParameterInspection : PhpInspection() {
   @OptionTag
   var ignoreTypes = true
 
+  @OptionTag
+  var supportOlderVersions = false
+
   // The tilde (~) is intentionally added at the end of each word to ensure that the entire word is matched, not just part of it.
   // For example, "auth" becomes "Auth~", so in "Authenticated~," it won't be found.
   private fun wordsCapitalize(words: String): String =
@@ -114,6 +118,9 @@ class SensitiveParameterInspection : PhpInspection() {
 
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpParameter(parameter: Parameter) {
+      if (!supportOlderVersions && !LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP820))
+        return
+
       // If the #[\SensitiveParameter] attribute is found, then everything is fine here.
       for (attribute in parameter.attributes) {
         if (attribute.fqn == "\\SensitiveParameter")
@@ -204,9 +211,19 @@ class SensitiveParameterInspection : PhpInspection() {
           "When you activate this option, sensitive words will be allowed for <code>bool</code>, <code>int</code>, <code>float</code>, and/or <code>null</code> parameters. " +
             "This significantly reduces the noise that this inspection causes on its own."
         )
+      ),
+
+      OptCheckbox(
+        "supportOlderVersions",
+        PlainMessage("Support for older versions"),
+        emptyList(),
+        HtmlChunk.raw(
+          "Allow this inspection when the PHP version is less than 8.2. " +
+            "The feature itself will be inoperative, but it prepares for a code update in the future."
+        )
       )
     )
   }
 
-  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP820
+  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP800
 }
