@@ -28,6 +28,14 @@ abstract class Dummy1000
     }
 }
 
+// Must report all: true and false.
+/**
+ * @param true $secret
+ * @param false $code
+ */
+function test(#[SensitiveParameter] $secret, #[SensitiveParameter] $code) {
+}
+
 // Skip all: not using sensitive words.
 $dummy = function (
     $notReport,

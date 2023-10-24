@@ -10,3 +10,11 @@ $dummy = function (
           <warning descr="🔨 PHP Hammer: the sensitive word \"code\" was used.">$firstCode</warning> = 0
 ) {
 };
+
+// Must report all: true and false.
+/**
+ * @param true $secret
+ * @param false $code
+ */
+function test(<warning descr="🔨 PHP Hammer: the sensitive word \"secret\" was used.">$secret</warning>, <warning descr="🔨 PHP Hammer: the sensitive word \"code\" was used.">$code</warning>) {
+}

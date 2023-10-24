@@ -28,6 +28,14 @@ abstract class Dummy1000
     }
 }
 
+// Must report all: true and false.
+/**
+ * @param true $secret
+ * @param false $code
+ */
+function test(<warning descr="🔨 PHP Hammer: the sensitive word \"secret\" was used.">$secret</warning>, <warning descr="🔨 PHP Hammer: the sensitive word \"code\" was used.">$code</warning>) {
+}
+
 // Skip all: not using sensitive words.
 $dummy = function (
     $notReport,

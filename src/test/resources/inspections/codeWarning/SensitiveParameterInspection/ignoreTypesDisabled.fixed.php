@@ -10,3 +10,11 @@ $dummy = function (
     #[SensitiveParameter] $firstCode = 0
 ) {
 };
+
+// Must report all: true and false.
+/**
+ * @param true $secret
+ * @param false $code
+ */
+function test(#[SensitiveParameter] $secret, #[SensitiveParameter] $code) {
+}
