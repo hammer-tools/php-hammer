@@ -1,5 +1,8 @@
 <?php
 
+function assert() {
+}
+
 function dd() {
 }
 
@@ -70,4 +73,29 @@ function is_object() {
 }
 
 function is_scalar() {
+}
+
+// User-land functions:
+
+function getInteger(): int
+{
+}
+
+function getVoid()
+{
+}
+
+#[NoReturn]
+function getNever()
+{
+}
+
+/** @return resource */
+function getResource()
+{
+}
+
+/** @return resource|false */
+function getResourceOrFalse()
+{
 }

@@ -4,6 +4,10 @@ interface Traversable
 {
 }
 
+interface Countable
+{
+}
+
 interface IteratorAggregate
     extends Traversable
 {
@@ -15,5 +19,9 @@ class ArrayObject
 }
 
 class Generator implements Traversable
+{
+}
+
+class SplFileInfo
 {
 }

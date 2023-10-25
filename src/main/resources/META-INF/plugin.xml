@@ -9,7 +9,7 @@
 
     <description><![CDATA[
         <strong>PHP Hammer</strong> is a powerful plugin that enhances the PHP language in PhpStorm by adding <a
-  href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>54 new
+  href="https://github.com/hammer-tools/php-hammer/wiki/Inspections"><strong>55 new
   inspections</strong></a> that are not available natively. These inspections provide advanced code analysis and come with convenient quick-fixes to streamline your development process.
     ]]></description>
 
@@ -361,6 +361,15 @@
                          level="WEAK WARNING"
                          shortName="FunctionAliasUsageInspection"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeSmell.FunctionAliasUsageInspection" />
+
+        <localInspection language="PHP"
+                         groupPath="PHP,PHP Hammer"
+                         groupName="Code smell"
+                         enabledByDefault="true"
+                         displayName="Useless comparison"
+                         level="WEAK WARNING"
+                         shortName="UselessComparisonInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeSmell.UselessComparisonInspection" />
 
         <!-- Dead code -->
         <localInspection language="PHP"
