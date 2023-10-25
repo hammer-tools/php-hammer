@@ -18,7 +18,7 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 class CompactArgumentInvalidInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpFunctionCall(element: FunctionReference) {
-      if (!element.isName("compact"))
+      if (!element.isName("\\compact"))
         return
 
       for (parameter in element.parameters) {

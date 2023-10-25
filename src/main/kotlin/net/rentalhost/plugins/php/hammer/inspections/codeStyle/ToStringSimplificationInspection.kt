@@ -14,7 +14,7 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 class ToStringSimplificationInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpMethodReference(element: MethodReference) {
-      if (!element.isName("__tostring"))
+      if (!element.isName("\\__tostring"))
         return
 
       val elementBase = element.firstPsiChild ?: return

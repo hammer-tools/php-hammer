@@ -18,7 +18,7 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 class FunctionSpreadingInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpFunctionCall(function: FunctionReference) {
-      if (!function.isName("array_merge") || function.parameters.size < 2) return
+      if (!function.isName("\\array_merge") || function.parameters.size < 2) return
 
       val isBefore810 = !LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP810)
 

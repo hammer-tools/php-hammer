@@ -27,7 +27,7 @@ class NullCheckFormatInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpFunctionCall(function: FunctionReference) {
       if (nullCheckFormat != OptionNullCheckFormat.COMPARISON ||
-        !function.isName("is_null") ||
+        !function.isName("\\is_null") ||
         function.parameters.size != 1)
         return
 

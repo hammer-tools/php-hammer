@@ -15,9 +15,9 @@ import javax.swing.JComponent
 
 class ClassnameLiteralInspection : PhpInspection() {
   private val classCheckers = mapOf(
-    Pair("class_exists", listOf(0)),
-    Pair("class_alias", listOf(1)),
-    Pair("interface_exists", listOf(0)),
+    Pair("\\class_exists", listOf(0)),
+    Pair("\\class_alias", listOf(1)),
+    Pair("\\interface_exists", listOf(0)),
   )
 
   @OptionTag

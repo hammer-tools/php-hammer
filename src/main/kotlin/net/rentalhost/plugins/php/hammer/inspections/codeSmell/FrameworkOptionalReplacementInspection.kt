@@ -19,7 +19,7 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 class FrameworkOptionalReplacementInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpFunctionCall(element: FunctionReference) {
-      if (!element.isName("optional") ||
+      if (!element.isName("\\optional") ||
         element.parameters.size != 1)
         return
 

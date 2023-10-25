@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement
 import com.jetbrains.php.codeInsight.controlFlow.instructions.impl.PhpYieldInstructionImpl
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiUtil
+import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpYieldImpl
@@ -19,7 +20,9 @@ fun FunctionReference.getErrorControlOperator(): PsiElement? =
   }
 
 fun FunctionReference.isName(expectedName: String): Boolean {
-  return (name ?: return false).lowercase() == expectedName
+  with(resolve() as? Function ?: return false) {
+    return fqn.equals(expectedName, true)
+  }
 }
 
 fun FunctionReference.isGeneratorComplex(): Boolean {

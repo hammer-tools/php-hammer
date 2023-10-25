@@ -15,7 +15,7 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 class SenselessNumberFormatZeroDecimalInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpFunctionCall(element: FunctionReference) {
-      if (!element.isName("number_format") ||
+      if (!element.isName("\\number_format") ||
         element.parameters.isEmpty())
         return
 

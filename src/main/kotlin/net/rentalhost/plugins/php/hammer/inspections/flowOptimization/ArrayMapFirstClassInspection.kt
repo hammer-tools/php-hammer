@@ -18,7 +18,7 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 class ArrayMapFirstClassInspection : PhpInspection() {
   override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
     override fun visitPhpFunctionCall(element: FunctionReference) {
-      if (!element.isName("array_map") ||
+      if (!element.isName("\\array_map") ||
         element.parameters.size != 2)
         return
 
