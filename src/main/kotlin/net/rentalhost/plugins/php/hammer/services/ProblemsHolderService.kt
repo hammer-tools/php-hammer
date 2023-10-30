@@ -32,23 +32,35 @@ class ProblemsHolderService(private val projectService: ProjectService) {
     descriptionTemplate: String,
     localQuickFix: LocalQuickFix? = null,
     problemHighlightType: ProblemHighlightType? = null
+  ) = registerProblem(
+    problemsHolder,
+    element,
+    textRange,
+    descriptionTemplate,
+    if (localQuickFix == null) emptyList()
+    else listOf(localQuickFix),
+    problemHighlightType
+  )
+
+  fun registerProblem(
+    problemsHolder: ProblemsHolder,
+    element: PsiElement,
+    textRange: TextRange?,
+    descriptionTemplate: String,
+    localQuickFixes: List<LocalQuickFix>,
+    problemHighlightType: ProblemHighlightType? = null
   ) {
     increaseInspections(element)
 
-    if (localQuickFix == null) {
-      problemsHolder.registerProblem(
-        element, "\uD83D\uDD28 ${projectService.name}: $descriptionTemplate.",
-        problemHighlightType ?: ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-        textRange
-      )
+    val description = "\uD83D\uDD28 ${projectService.name}: $descriptionTemplate."
+    val highlightType = problemHighlightType ?: ProblemHighlightType.GENERIC_ERROR_OR_WARNING
+
+    if (localQuickFixes.isEmpty()) {
+      problemsHolder.registerProblem(element, description, highlightType, textRange)
       return
     }
 
-    problemsHolder.registerProblem(
-      element, "\uD83D\uDD28 ${projectService.name}: $descriptionTemplate.",
-      problemHighlightType ?: ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-      textRange, localQuickFix
-    )
+    problemsHolder.registerProblem(element, description, highlightType, textRange, *localQuickFixes.toTypedArray())
   }
 
   fun registerProblem(
@@ -58,6 +70,14 @@ class ProblemsHolderService(private val projectService: ProjectService) {
     localQuickFix: LocalQuickFix? = null,
     problemHighlightType: ProblemHighlightType? = null
   ): Unit = registerProblem(problemsHolder, element, null, descriptionTemplate, localQuickFix, problemHighlightType)
+
+  fun registerProblem(
+    problemsHolder: ProblemsHolder,
+    element: PsiElement,
+    descriptionTemplate: String,
+    localQuickFixes: List<LocalQuickFix>,
+    problemHighlightType: ProblemHighlightType? = null
+  ): Unit = registerProblem(problemsHolder, element, null, descriptionTemplate, localQuickFixes, problemHighlightType)
 
   fun registerProblem(
     problemsHolder: ProblemsHolder,

@@ -3,12 +3,14 @@ package net.rentalhost.plugins.php.hammer.services
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Iconable
 import com.intellij.psi.PsiElement
 import com.intellij.psi.SmartPsiElementPointer
 import com.jetbrains.php.lang.psi.elements.PhpTypeDeclaration
 import net.rentalhost.plugins.php.hammer.extensions.psi.replaceWith
+import net.rentalhost.plugins.php.hammer.interfaces.QuickIntentionAction
+import javax.swing.Icon
 
-@Suppress("PublicApiImplicitType")
 class QuickFixService(private val projectService: ProjectService) {
   companion object {
     val instance: QuickFixService = QuickFixService(ProjectService.instance)
@@ -87,4 +89,25 @@ class QuickFixService(private val projectService: ProjectService) {
       applyFix.invoke()
     }
   }
+
+  abstract class SimpleAction(
+    private val intentionTitle: String,
+    private val action: () -> Unit
+  ) : LocalQuickFix, QuickIntentionAction {
+    override fun getName(): String = intentionTitle
+    override fun getFamilyName(): String = intentionTitle
+    override fun startInWriteAction(): Boolean = false
+
+    override fun applyFix(project: Project, descriptor: ProblemDescriptor) =
+      action.invoke()
+  }
+
+  fun simpleAction(
+    intentionTitle: String,
+    icon: Icon,
+    action: () -> Unit
+  ): SimpleAction =
+    object : SimpleAction(intentionTitle, action), Iconable {
+      override fun getIcon(ignoredFlags: Int): Icon = icon
+    }
 }

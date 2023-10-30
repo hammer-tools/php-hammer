@@ -60,6 +60,8 @@ internal class GeneratePluginXMLTask : ProjectTools.ProjectTask() {
                   "                 displayName=\"${it.displayName}\"\n" +
                   "                 level=\"${it.level}\"\n" +
                   "                 shortName=\"${it.shortName}\"\n" +
+                  (if (it.presentationClass == null) ""
+                  else "                 presentation=\"${it.presentationClass}\"\n") +
                   "                 implementationClass=\"${it.implementationClass}\" />\n\n"
             }
 

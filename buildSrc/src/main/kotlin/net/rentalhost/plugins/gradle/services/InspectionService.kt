@@ -20,6 +20,7 @@ object InspectionService {
             getNamedItem("displayName").textContent,
             getNamedItem("shortName").textContent,
             getNamedItem("implementationClass").textContent,
+            getNamedItem("presentation")?.textContent,
             getNamedItem("level").textContent
           )
         )
@@ -35,6 +36,7 @@ object InspectionService {
     val displayName: String,
     val shortName: String,
     val implementationClass: String,
+    val presentationClass: String?,
     val level: String
   ) {
     fun readDescription(): String =
