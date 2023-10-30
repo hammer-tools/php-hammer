@@ -18,6 +18,14 @@ class Base {
     function overrideAttributeAlreadyApplied() {
         doSomething();
     }
+
+    protected function protectedRequiresOverrideAttribute() {
+        doSomething();
+    }
+
+    private function privateIncorrectOverrideAttribute() {
+        doSomething();
+    }
 }
 
 class Child extends Base {
@@ -33,6 +41,11 @@ trait ExampleTrait {
 
     // Skip: doesn't requires #[\Override] attribute.
     function notRequiresOverridden() {
+        doSomething();
+    }
+
+    // Skip: doesn't requires #[\Override] attribute, because it doesn't overrides Base::privateIncorrectOverrideAttribute() actually.
+    function privateIncorrectOverrideAttribute() {
         doSomething();
     }
 }
@@ -63,6 +76,12 @@ $dummy = new class extends Base {
         parent::incorrectOverrideAttribute();
     }
 
+    // Must fails: requires #[\Override] attribute for protected method.
+    #[\Override] public function protectedRequiresOverrideAttribute() {
+        doSomething();
+        parent::protectedRequiresOverrideAttribute();
+    }
+
     // Skip: already correctly contains #[\Override] attribute.
     #[\Override]
     function overrideAttributeAlreadyApplied() {
@@ -72,6 +91,11 @@ $dummy = new class extends Base {
 
     // Skip: #[\Override] attribute is not required here, parent classes don't contains this method declaration.
     function notRequiresOverridden() {
+        doSomething();
+    }
+
+    // Skip: #[\Override] attribute is not required here, parent method is private.
+    function privateIncorrectOverrideAttribute() {
         doSomething();
     }
 };

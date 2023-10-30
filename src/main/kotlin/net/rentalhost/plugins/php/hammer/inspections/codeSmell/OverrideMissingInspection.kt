@@ -13,6 +13,7 @@ import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.addAttribute
 import net.rentalhost.plugins.php.hammer.extensions.psi.functionBody
+import net.rentalhost.plugins.php.hammer.extensions.psi.isOverridable
 import net.rentalhost.plugins.php.hammer.services.LanguageService
 import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
@@ -40,14 +41,12 @@ class OverrideMissingInspection : PhpInspection() {
       if (supportTraits && methodClass?.isTrait == true) {
         // If this method is connected to any `use` that doesn't define this method itself, then it cannot be an overridden.
         PhpIndex.getInstance(method.project).getTraitUsages(methodClass).forEach {
-          if (it.superClass?.findMethodByName(method.name) == null)
-            return
+          if (!method.isOverridable(it)) return
         }
       }
       // Considers only methods that can be found in parent classes.
       // This will exclude methods declared in traits, which is expected here.
-      else if (methodClass?.superClass?.findMethodByName(method.name) == null)
-        return
+      else if (!method.isOverridable(methodClass)) return
 
       // If the #[\Override] attribute is found, then everything is fine here.
       for (attribute in method.attributes) {
