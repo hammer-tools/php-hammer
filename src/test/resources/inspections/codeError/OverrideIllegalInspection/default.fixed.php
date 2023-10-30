@@ -3,6 +3,29 @@
 use Namespaced\Override as Override;
 use Override as OverrideAlias;
 
+trait ChildPrivateOverride
+{
+    // Must be an error: trait indirectly override Base::privateNotAcceptsOverride() that is private.
+    function privateNotAcceptsOverride()
+    {
+        doSomething();
+    }
+
+    // Must be an error: trait indirectly override Base::publicPrivateAcceptsOverride() that is public and BaseB::publicPrivateAcceptsOverride() is private.
+    // Note: in that case, private methods will be ignored, so #[Override] is required here.
+    function publicPrivateAcceptsOverride()
+    {
+        doSomething();
+    }
+
+    // Skip: trait indirectly override Base::protectedAcceptsOverride().
+    #[\Override]
+    function protectedAcceptsOverride()
+    {
+        doSomething();
+    }
+}
+
 trait ChildOverride
 {
     // Skip: trait indirectly override Base::existsOnParentClass().
@@ -56,16 +79,51 @@ class Base
     {
         doSomething();
     }
+
+    function publicPrivateAcceptsOverride()
+    {
+        doSomething();
+    }
+
+    protected function protectedAcceptsOverride()
+    {
+        doSomething();
+    }
+
+    private function privateNotAcceptsOverride()
+    {
+        doSomething();
+    }
 }
 
 class Child
     extends Base
 {
+    use ChildPrivateOverride;
     use ChildNotOverride;
     use ChildOverride;
     use ChildRenamedOverride {
         renamedOnTrait as willBeRenamedOnTrait;
     }
+}
+
+class BaseB
+{
+    private function publicPrivateAcceptsOverride()
+    {
+        doSomething();
+    }
+
+    protected function protectedAcceptsOverride()
+    {
+        doSomething();
+    }
+}
+
+class ChildB
+    extends BaseB
+{
+    use ChildPrivateOverride;
 }
 
 $dummy = new class
@@ -80,6 +138,12 @@ $dummy = new class
     // Must be an error: dontExistsOnParentClassesUsingAlias() doesn't exists on parent classes.
     #[\stdClass]
     function dontExistsOnParentClassesUsingAlias()
+    {
+        doSomething();
+    }
+
+    // Must be an error: overridden privateNotAcceptsOverride() that is private.
+    function privateNotAcceptsOverride()
     {
         doSomething();
     }
@@ -101,6 +165,13 @@ $dummy = new class
     // Skip: not really an #[\Override] attribute.
     #[Override]
     function dontReallyOverrideAttribute()
+    {
+        doSomething();
+    }
+
+    // Skip: overridden Base::protectedAcceptsOverride() and BaseB::protectedAcceptsOverride().
+    #[\Override]
+    function protectedAcceptsOverride()
     {
         doSomething();
     }

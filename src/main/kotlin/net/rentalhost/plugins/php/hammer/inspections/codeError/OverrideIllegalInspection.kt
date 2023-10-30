@@ -7,6 +7,7 @@ import com.jetbrains.php.lang.inspections.attributes.PhpRemoveAttributeQuickFix
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpAttribute
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.php.hammer.extensions.psi.isOverridable
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
@@ -23,12 +24,12 @@ class OverrideIllegalInspection : PhpInspection() {
         // Traits should be considered here as well.
         // But to be considered an override, it needs to be an override for all methods that use the trait.
         with(PhpIndex.getInstance(method.project).getTraitUsages(methodClass)) {
-          if (isNotEmpty() && all { it.superClass?.findMethodByName(method.name) != null })
+          if (isNotEmpty() && all { method.isOverridable(it) })
             return
         }
       }
-      else if (methodClass.superClass?.findMethodByName(method.name) != null) {
-        // Considers only methods that do not perform overrides.
+      // Considers only methods that do not perform overrides.
+      else if (method.isOverridable(methodClass)) {
         return
       }
 
