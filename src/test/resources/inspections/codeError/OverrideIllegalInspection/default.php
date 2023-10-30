@@ -3,6 +3,22 @@
 use Namespaced\Override as Override;
 use Override as OverrideAlias;
 
+trait NotChildOverride
+{
+    // Skip: trait is not used by no place, so we can just ignore if it is #[Override] or not.
+    #[\Override]
+    function traitNotUsedWithOverride()
+    {
+        doSomething();
+    }
+
+    // Skip: same here, without #[Override].
+    function traitNotUsedWithoutOverride()
+    {
+        doSomething();
+    }
+}
+
 trait ChildPrivateOverride
 {
     // Must be an error: trait indirectly override Base::privateNotAcceptsOverride() that is private.
@@ -32,16 +48,6 @@ trait ChildOverride
 {
     // Skip: trait indirectly override Base::existsOnParentClass().
     #[\Override]
-    function existsOnParentClass()
-    {
-        doSomething();
-    }
-}
-
-trait NotChildOverride
-{
-    // Must be an error: existsOnParentClass() doesn't exists on parent classes indirectly (Child doesn't uses this trait).
-    #[<error descr="🔨 PHP Hammer: this method doesn't actually perform an override; remove this illegal #[Override] attribute.">\Override</error>]
     function existsOnParentClass()
     {
         doSomething();

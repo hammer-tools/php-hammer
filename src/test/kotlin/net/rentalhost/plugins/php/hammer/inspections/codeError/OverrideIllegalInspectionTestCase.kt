@@ -7,4 +7,11 @@ class OverrideIllegalInspectionTestCase : TestCase() {
     OverrideIllegalInspection::class.java,
     listOf("default", "dummy/Namespaced.php")
   )
+
+  fun testConsiderUnusedTraits(): Unit = testInspection(
+    OverrideIllegalInspection::class.java,
+    listOf("considerUnusedTraits", "dummy/Namespaced.php"), {
+      it.considerUnusedTraits = true
+    }
+  )
 }
