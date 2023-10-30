@@ -30,7 +30,7 @@ trait ChildPrivateOverride
 
     // Must be an error: trait indirectly override Base::publicPrivateAcceptsOverride() that is public and BaseB::publicPrivateAcceptsOverride() is private.
     // Note: in that case, private methods will be ignored, so #[Override] is required here.
-    #[<error descr="🔨 PHP Hammer: this method doesn't actually perform an override; remove this illegal #[Override] attribute.">\Override</error>]
+    #[<error descr="🔨 PHP Hammer: this method has an #[Override] on at least one method, but this method is not present in all classes that use this trait.">\Override</error>]
     function publicPrivateAcceptsOverride()
     {
         doSomething();
@@ -208,7 +208,7 @@ class Dummy1000C {
 
 trait Dummy1000D {
     // Must be an error: test() is implemented by Dummy1000B::test() (via Dummy1000A) but not via Dummy1000C.
-    #[<error descr="🔨 PHP Hammer: this method doesn't actually perform an override; remove this illegal #[Override] attribute.">\Override</error>]
+    #[<error descr="🔨 PHP Hammer: this method has an #[Override] on at least one method, but this method is not present in all classes that use this trait.">\Override</error>]
     function test()
     {
         doSomething();

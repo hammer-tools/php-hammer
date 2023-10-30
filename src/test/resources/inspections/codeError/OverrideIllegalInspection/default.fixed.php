@@ -29,6 +29,7 @@ trait ChildPrivateOverride
 
     // Must be an error: trait indirectly override Base::publicPrivateAcceptsOverride() that is public and BaseB::publicPrivateAcceptsOverride() is private.
     // Note: in that case, private methods will be ignored, so #[Override] is required here.
+    #[\Override]
     function publicPrivateAcceptsOverride()
     {
         doSomething();
@@ -202,6 +203,7 @@ class Dummy1000C {
 
 trait Dummy1000D {
     // Must be an error: test() is implemented by Dummy1000B::test() (via Dummy1000A) but not via Dummy1000C.
+    #[\Override]
     function test()
     {
         doSomething();

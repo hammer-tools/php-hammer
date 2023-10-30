@@ -37,6 +37,16 @@ class OverrideIllegalInspection : PhpInspection() {
 
           if (isNotEmpty() && all { method.isOverridable(it) })
             return
+
+          if (any { method.isOverridable(it) }) {
+            ProblemsHolderService.instance.registerProblem(
+              problemsHolder,
+              attribute,
+              "this method has an #[Override] on at least one method, but this method is not present in all classes that use this trait",
+            )
+
+            return
+          }
         }
       }
       // Considers only methods that do not perform overrides.
