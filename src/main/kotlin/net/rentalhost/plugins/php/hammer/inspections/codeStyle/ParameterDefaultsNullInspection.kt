@@ -25,6 +25,7 @@ import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpPromotedFieldParameterImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullableTypeFormat
 import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.LanguageService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
@@ -45,6 +46,9 @@ class ParameterDefaultsNullInspection : PhpInspection() {
 
   @OptionTag
   var includeBooleans: Boolean = true
+
+  @OptionTag
+  var includeReadonly: Boolean = false
 
   @OptionTag
   var includeLatestParameter: Boolean = false
@@ -77,7 +81,7 @@ class ParameterDefaultsNullInspection : PhpInspection() {
         }
 
         if (parameter is ParameterImpl) {
-          if (parameter is PhpPromotedFieldParameterImpl && parameter.isReadonly)
+          if (parameter is PhpPromotedFieldParameterImpl && !includeReadonly && parameter.isReadonly)
             continue
 
           if (parameter.defaultValue != null) {
@@ -175,6 +179,15 @@ class ParameterDefaultsNullInspection : PhpInspection() {
       ),
 
       OptCheckbox(
+        "includeReadonly",
+        PlainMessage("Include readonly"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option will include readonly properties at constructor, moving their implementation location if necessary."
+        )
+      ),
+
+      OptCheckbox(
         "includeLatestParameter",
         PlainMessage("Include last parameter"),
         emptyList(),
@@ -222,10 +235,27 @@ class ParameterDefaultsNullInspection : PhpInspection() {
     }
 
     private fun createAssignment(project: Project, parameterDefaultValue: PsiElement) {
-      val parameterName = parameter.element?.name ?: return
+      val parameter = parameter.element ?: return
+      val parameterName = parameter.name
       val parameterAssignment =
-        if (parameter.element is PhpPromotedFieldParameterImpl) "this->$parameterName"
+        if (parameter is PhpPromotedFieldParameterImpl) "this->$parameterName"
         else parameterName
+
+      if (parameter is PhpPromotedFieldParameterImpl && parameter.isReadonly) {
+        val parameterClass = parameter.containingClass ?: return
+        val parameterDoc = parameter.docComment
+
+        parameterClass.addField(parameter, parameterDoc)
+        parameterDoc?.delete()
+
+        with(parameter.asParameter()) {
+          with(typeDeclaration!!) {
+            this.replace(withNull(OptionNullableTypeFormat.LONG))
+          }
+
+          parameter.replace(this)
+        }
+      }
 
       val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameterAssignment) {
         when {

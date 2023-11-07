@@ -45,4 +45,10 @@ class ParameterDefaultsNullInspectionTestCase : TestCase() {
     "includeLastParameter",
     { it.includeLatestParameter = true }
   )
+
+  fun testIncludeReadonly(): Unit = testInspection(
+    ParameterDefaultsNullInspection::class.java,
+    "includeReadonly",
+    { it.includeReadonly = true }
+  )
 }

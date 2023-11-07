@@ -10,6 +10,7 @@ import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpTypeDeclarationImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import net.rentalhost.plugins.php.hammer.extensions.psi.withNull
 import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullableTypeFormat
 import net.rentalhost.plugins.php.hammer.services.*
 import javax.swing.JComponent
@@ -25,7 +26,6 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
         return
 
       val declaredType = element.declaredType
-      val declaredTypeIntersected = declaredType.hasIntersectionType()
 
       if (declaredType.isEmpty ||
         declaredType.isNullable ||
@@ -37,7 +37,7 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
         else OptionNullableTypeFormat.SHORT
 
       if (localNullableTypeFormat == OptionNullableTypeFormat.SHORT) {
-        if (declaredTypeIntersected) return
+        if (declaredType.hasIntersectionType()) return
         if (declaredType.types.size >= 2) return
       }
 
@@ -51,32 +51,15 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
           val elementLocal = elementPointer.element ?: return@simpleInline
 
           if (elementLocal.typeDeclaration != null) {
-            (elementLocal.typeDeclaration ?: return@simpleInline)
-              .replace(
-                FactoryService.createParameterType(
-                  problemsHolder.project,
-                  getParameterReplacement(
-                    localNullableTypeFormat,
-                    (elementLocal.typeDeclaration ?: return@simpleInline).text,
-                    declaredTypeIntersected
-                  )
-                )
-              )
+            with(elementLocal.typeDeclaration ?: return@simpleInline) {
+              replace(withNull(localNullableTypeFormat))
+            }
           }
           else {
             val parameterComplex = FactoryService.createComplexParameter(problemsHolder.project, elementLocal.text)
 
             with(parameterComplex.typeDeclaration as PhpTypeDeclarationImpl) {
-              replace(
-                FactoryService.createParameterType(
-                  problemsHolder.project,
-                  getParameterReplacement(
-                    localNullableTypeFormat,
-                    text,
-                    false
-                  )
-                )
-              )
+              replace(withNull(nullableTypeFormat))
             }
 
             elementLocal.replace(FactoryService.createComplexParameterDoctypeCompatible(problemsHolder.project, parameterComplex.text))
@@ -84,20 +67,6 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
         }
       )
     }
-  }
-
-  private fun getParameterReplacement(
-    nullableTypeFormat: OptionNullableTypeFormat,
-    text: String?,
-    hasIntersection: Boolean
-  ): String {
-    if (hasIntersection && text?.contains("(") != true)
-      return "($text)|null"
-
-    if (nullableTypeFormat == OptionNullableTypeFormat.LONG)
-      return "$text|null"
-
-    return "?$text"
   }
 
   override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP710
