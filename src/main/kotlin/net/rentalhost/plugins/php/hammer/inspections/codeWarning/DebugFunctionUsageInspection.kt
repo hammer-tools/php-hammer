@@ -1,6 +1,10 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.psi.SmartPointerManager
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
@@ -11,10 +15,8 @@ import com.jetbrains.php.lang.psi.elements.impl.StatementImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.isBlade
 import net.rentalhost.plugins.php.hammer.extensions.psi.isExactly
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import javax.swing.JComponent
 
 class DebugFunctionUsageInspection : PhpInspection() {
   @OptionTag
@@ -86,18 +88,26 @@ class DebugFunctionUsageInspection : PhpInspection() {
     override fun visitPhpMethodReference(method: MethodReference) = visitPhpFunctionCall(method)
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Include xdebug functions", xdebugEnabled,
-        "This option will include the functions related to the <code>xdebug</code> extension."
-      ) { xdebugEnabled = it }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "xdebugEnabled",
+        PlainMessage("Include xdebug functions"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option will include the functions related to the <code>xdebug</code> extension."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include frameworks functions", frameworksEnabled,
-        "This option includes functions related to PHP frameworks and other tools. " +
-          "Currently supported are: ${frameworks.map { it.first }.distinct().sorted().joinToString(", ")} and others."
-      ) { frameworksEnabled = it }
-    }
+      OptCheckbox(
+        "frameworksEnabled",
+        PlainMessage("Include frameworks functions"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option includes functions related to PHP frameworks and other tools. " +
+            "Currently supported are: ${frameworks.map { it.first }.distinct().sorted().joinToString(", ")} and others."
+        )
+      )
+    )
   }
 }

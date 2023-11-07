@@ -1,6 +1,10 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.PhpLangUtil
@@ -11,7 +15,6 @@ import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.isName
 import net.rentalhost.plugins.php.hammer.services.*
-import javax.swing.JComponent
 
 class ClassnameLiteralInspection : PhpInspection() {
   private val classCheckers = mapOf(
@@ -77,17 +80,25 @@ class ClassnameLiteralInspection : PhpInspection() {
     }
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Include non-existing classes", includeNonexistentClasses,
-        "This option allows the analysis on nonexistent classes. PHP will work fine with <code>::class</code> even if the class doesn't exist though."
-      ) { includeNonexistentClasses = it }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "includeNonexistentClasses",
+        PlainMessage("Include non-existing classes"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows the analysis on nonexistent classes. PHP will work fine with <code>::class</code> even if the class doesn't exist though."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include class checkers", includeClassCheckers,
-        "This option allows the analysis in <code>class_exists()</code>, <code>class_alias()</code> and <code>interface_exists()</code> functions."
-      ) { includeClassCheckers = it }
-    }
+      OptCheckbox(
+        "includeClassCheckers",
+        PlainMessage("Include class checkers"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows the analysis in <code>class_exists()</code>, <code>class_alias()</code> and <code>interface_exists()</code> functions."
+        )
+      )
+    )
   }
 }

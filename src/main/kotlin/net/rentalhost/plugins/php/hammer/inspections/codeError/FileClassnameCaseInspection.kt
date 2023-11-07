@@ -1,6 +1,10 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.createSmartPointer
@@ -13,10 +17,8 @@ import com.jetbrains.php.lang.psi.elements.impl.PhpClassImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.getBasename
 import net.rentalhost.plugins.php.hammer.services.FactoryService
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import javax.swing.JComponent
 
 class FileClassnameCaseInspection : PhpInspection() {
   @OptionTag
@@ -69,23 +71,37 @@ class FileClassnameCaseInspection : PhpInspection() {
     }
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Include non-rooted classes", includeNonRootedClasses,
-        "This option will allow this inspection to check all classes present in the file. By default, only classes defined at the root of the file are analyzed."
-      ) { includeNonRootedClasses = it }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "includeNonRootedClasses",
+        PlainMessage("Include non-rooted classes"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option will allow this inspection to check all classes present in the file. " +
+            "By default, only classes defined at the root of the file are analyzed."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include files with multiple classes", includeFilesWithMultipleClasses,
-        "This option will allow the inspection to analyze files that define multiple classes. By default, only classes with a single class definition are inspected."
-      ) { includeFilesWithMultipleClasses = it }
+      OptCheckbox(
+        "includeFilesWithMultipleClasses",
+        PlainMessage("Include files with multiple classes"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option will allow the inspection to analyze files that define multiple classes. " +
+            "By default, only classes with a single class definition are inspected."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include files with incompatible identifiers", includeFilesWithInvalidIdentifier,
-        "This option will allow this inspection to analyze files even if their names cannot be used as class identifiers. Regardless, quick-fix will not be available in " +
-          "these cases naturally."
-      ) { includeFilesWithInvalidIdentifier = it }
-    }
+      OptCheckbox(
+        "includeFilesWithInvalidIdentifier",
+        PlainMessage("Include files with incompatible identifiers"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option will allow this inspection to analyze files even if their names cannot be used as class identifiers. " +
+            "Regardless, quick-fix will not be available in these cases naturally."
+        )
+      )
+    )
   }
 }

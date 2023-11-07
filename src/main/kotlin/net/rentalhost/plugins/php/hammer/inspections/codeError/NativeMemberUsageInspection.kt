@@ -1,16 +1,18 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.getTypes
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.TypeService
-import javax.swing.JComponent
 
 class NativeMemberUsageInspection : PhpInspection() {
   @OptionTag
@@ -53,20 +55,28 @@ class NativeMemberUsageInspection : PhpInspection() {
     override fun visitPhpMethodReference(element: MethodReference) = visit(element)
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Strict check", strictChecking,
-        "This option makes this checking strict, meaning that variables that mix native types with object types will also be inspected."
-      ) { strictChecking = it }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "strictChecking",
+        PlainMessage("Strict check"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option makes this checking strict, meaning that variables that mix native types with object types will also be inspected."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include static call", includeStaticCall,
-        "This option includes calls to static methods or properties access on <code>string</code> type. " +
-          "This condition is sometimes valid when the string contains the name of a class. " +
-          "Try keeping this option enabled, and alternatively use a <code>@var</code> phpdoc " +
-          "declaring the type of class that must be present in the string."
-      ) { includeStaticCall = it }
-    }
+      OptCheckbox(
+        "includeStaticCall",
+        PlainMessage("Include static call"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option includes calls to static methods or properties access on <code>string</code> type. " +
+            "This condition is sometimes valid when the string contains the name of a class. " +
+            "Try keeping this option enabled, and alternatively use a <code>@var</code> phpdoc " +
+            "declaring the type of class that must be present in the string."
+        )
+      )
+    )
   }
 }

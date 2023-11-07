@@ -1,6 +1,10 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.codeInsight.controlFlow.instructions.impl.PhpCallInstructionImpl
@@ -15,10 +19,8 @@ import com.jetbrains.php.lang.psi.elements.impl.PhpTraitUseRuleImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.FactoryService
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import javax.swing.JComponent
 
 class MissingParentCallInspection : PhpInspection() {
   @OptionTag
@@ -90,12 +92,16 @@ class MissingParentCallInspection : PhpInspection() {
     }
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Check even with the #[Override] attribute", checkOverrideAttribute,
-        "When this option is enabled, the inspection will run even if the <code>#[Override]</code> attribute is applied to the method."
-      ) { checkOverrideAttribute = it }
-    }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "checkOverrideAttribute",
+        PlainMessage("Check even with the #[Override] attribute"),
+        emptyList(),
+        HtmlChunk.raw(
+          "When this option is enabled, the inspection will run even if the <code>#[Override]</code> attribute is applied to the method."
+        )
+      )
+    )
   }
 }

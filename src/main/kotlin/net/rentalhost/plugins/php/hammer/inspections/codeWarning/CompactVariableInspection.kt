@@ -1,6 +1,10 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.inspections.PhpInspection
@@ -13,10 +17,8 @@ import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.getTypes
 import net.rentalhost.plugins.php.hammer.extensions.psi.isName
 import net.rentalhost.plugins.php.hammer.services.FactoryService
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import javax.swing.JComponent
 
 class CompactVariableInspection : PhpInspection() {
   @OptionTag
@@ -69,21 +71,29 @@ class CompactVariableInspection : PhpInspection() {
     }
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Include string-type", includeStrings,
-        "This option allows this inspection to consider variables that stores a value of type string, " +
-          "which can represent the name of a variable that will be packed by <code>compact()</code>. " +
-          "However, how is this not very common this option is enabled by default."
-      ) { includeStrings = it }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "includeStrings",
+        PlainMessage("Include string-type"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows this inspection to consider variables that store a value of type string, " +
+            "which can represent the name of a variable that will be packed by <code>compact()</code>. " +
+            "However, as this is not very common, this option is enabled by default."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include array-type", includeArrays,
-        "This option allows this inspection to consider variables that stores a value of type array, " +
-          "which can represent the names of variables that will be packed by <code>compact()</code>. " +
-          "However, how is this not very common this option is enabled by default."
-      ) { includeArrays = it }
-    }
+      OptCheckbox(
+        "includeArrays",
+        PlainMessage("Include array-type"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows this inspection to consider variables that store a value of type array, " +
+            "which can represent the names of variables that will be packed by <code>compact()</code>. " +
+            "However, as this is not very common, this option is enabled by default."
+        )
+      )
+    )
   }
 }

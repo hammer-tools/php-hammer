@@ -4,7 +4,11 @@ import com.intellij.codeInsight.intention.FileModifier
 import com.intellij.codeInsight.intention.FileModifier.SafeFieldForPreview
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.SmartPointerManager
@@ -21,8 +25,10 @@ import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpPromotedFieldParameterImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
-import net.rentalhost.plugins.php.hammer.services.*
-import javax.swing.JComponent
+import net.rentalhost.plugins.php.hammer.services.FactoryService
+import net.rentalhost.plugins.php.hammer.services.LanguageService
+import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class ParameterDefaultsNullInspection : PhpInspection() {
   @OptionTag
@@ -118,38 +124,65 @@ class ParameterDefaultsNullInspection : PhpInspection() {
     }
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Include abstract methods", includeAbstractMethods,
-        "This option allows inspecting abstract methods, however, a quick-fix will not be available and any action to correct this inspection will have to be done manually."
-      ) { includeAbstractMethods = it }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "includeAbstractMethods",
+        PlainMessage("Include abstract methods"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows inspecting abstract methods, however, " +
+            "a quick-fix will not be available and any action to correct this inspection will have to be done manually."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include methods that are overridden", includeOverriddenMethods,
-        "This option allows inspecting methods that have been overridden by other methods of child classes. Although a quick-fix is available, refactoring may be required."
-      ) { includeOverriddenMethods = it }
+      OptCheckbox(
+        "includeOverriddenMethods",
+        PlainMessage("Include methods that are overridden"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows inspecting methods that have been overridden by other methods of child classes. " +
+            "Although a quick-fix is available, refactoring may be required."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include nullable parameters", includeNullableParameters,
-        "This option allows inspecting nullable parameters, which implicitly include untyped parameters. Although a quick-fix is available, it can affect the behavior of code."
-      ) { includeNullableParameters = it }
+      OptCheckbox(
+        "includeNullableParameters",
+        PlainMessage("Include nullable parameters"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows inspecting nullable parameters, which implicitly include untyped parameters. " +
+            "Although a quick-fix is available, it can affect the behavior of code."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include parameters with reference", includeParametersWithReference,
-        "This option allows you to inspect parameters that are passed by reference."
-      ) { includeParametersWithReference = it }
+      OptCheckbox(
+        "includeParametersWithReference",
+        PlainMessage("Include parameters with reference"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows you to inspect parameters that are passed by reference."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include booleans", includeBooleans,
-        "This option will include booleans in the analysis."
-      ) { includeBooleans = it }
+      OptCheckbox(
+        "includeBooleans",
+        PlainMessage("Include booleans"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option will include booleans in the analysis."
+        )
+      ),
 
-      component.addCheckbox(
-        "Include last parameter", includeLatestParameter,
-        "This option will include the latest parameter in the analysis. This will not be necessary most of the time."
-      ) { includeLatestParameter = it }
-    }
+      OptCheckbox(
+        "includeLatestParameter",
+        PlainMessage("Include last parameter"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option will include the latest parameter in the analysis. This will not be necessary most of the time."
+        )
+      )
+    )
   }
 
   class ReplaceWithNullQuickFix(

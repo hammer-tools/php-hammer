@@ -1,6 +1,10 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageLevel
@@ -10,10 +14,8 @@ import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
 import net.rentalhost.plugins.php.hammer.services.FactoryService
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import javax.swing.JComponent
 
 class AnonymousFunctionStaticInspection : PhpInspection() {
   @OptionTag
@@ -57,13 +59,18 @@ class AnonymousFunctionStaticInspection : PhpInspection() {
     }
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Include short functions", includeShortFunctions,
-        "This option allows the inspection to check arrow functions (<code>fn()</code>), in addition to regular functions (<code>function()</code>)."
-      ) { includeShortFunctions = it }
-    }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "includeShortFunctions",
+        PlainMessage("Include short functions"),
+        emptyList(),
+        HtmlChunk.raw(
+          "This option allows the inspection to check arrow functions (<code>fn()</code>), " +
+            "in addition to regular functions (<code>function()</code>)."
+        )
+      )
+    )
   }
 
   override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP540

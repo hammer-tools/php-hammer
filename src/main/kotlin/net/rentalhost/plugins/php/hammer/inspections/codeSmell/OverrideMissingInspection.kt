@@ -1,6 +1,10 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.codeInspection.options.OptCheckbox
+import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.PlainMessage
+import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.findParentOfType
 import com.intellij.refactoring.suggested.createSmartPointer
@@ -15,10 +19,8 @@ import net.rentalhost.plugins.php.hammer.extensions.psi.addAttribute
 import net.rentalhost.plugins.php.hammer.extensions.psi.functionBody
 import net.rentalhost.plugins.php.hammer.extensions.psi.isOverridable
 import net.rentalhost.plugins.php.hammer.services.LanguageService
-import net.rentalhost.plugins.php.hammer.services.OptionsPanelService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import javax.swing.JComponent
 
 class OverrideMissingInspection : PhpInspection() {
   @OptionTag
@@ -77,25 +79,37 @@ class OverrideMissingInspection : PhpInspection() {
     }
   }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.addCheckbox(
-        "Consider parent::call() as a replacement", considerParentCallReplacement,
-        "When this option is enabled, you can omit <code>#[Override]</code> if you perform a <code>parent::call()</code> for the suggested method. " +
-          "In such cases, <code>#[Override]</code> becomes redundant for the code."
-      ) { considerParentCallReplacement = it }
+  override fun getOptionsPane(): OptPane {
+    return OptPane.pane(
+      OptCheckbox(
+        "considerParentCallReplacement",
+        PlainMessage("Consider parent::call() as a replacement"),
+        emptyList(),
+        HtmlChunk.raw(
+          "When this option is enabled, you can omit <code>#[Override]</code> if you perform a <code>parent::call()</code> for the suggested method. " +
+            "In such cases, <code>#[Override]</code> becomes redundant for the code."
+        )
+      ),
 
-      component.addCheckbox(
-        "Support traits", supportTraits,
-        "Allows this inspection to identify methods declared in traits as well."
-      ) { supportTraits = it }
+      OptCheckbox(
+        "supportTraits",
+        PlainMessage("Support traits"),
+        emptyList(),
+        HtmlChunk.raw(
+          "Allows this inspection to identify methods declared in traits as well."
+        )
+      ),
 
-      component.addCheckbox(
-        "Support for older versions", supportOlderVersions,
-        "Allow this inspection when the PHP version is less than 8.3. " +
-          "The feature itself will be inoperative, but it prepares for a code update in the future."
-      ) { supportOlderVersions = it }
-    }
+      OptCheckbox(
+        "supportOlderVersions",
+        PlainMessage("Support for older versions"),
+        emptyList(),
+        HtmlChunk.raw(
+          "Allow this inspection when the PHP version is less than 8.3. " +
+            "The feature itself will be inoperative, but it prepares for a code update in the future."
+        )
+      )
+    )
   }
 
   override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP800
