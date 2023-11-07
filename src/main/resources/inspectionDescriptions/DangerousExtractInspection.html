@@ -1,0 +1,20 @@
+<html lang="en">
+  <body>
+    This inspection checks for a dangerous call to the <code>extract()</code> function.
+    This function allows extracting an <code>array</code> where the keys represent the variable names to be extracted.
+    If an extraction occurs without proper validation, a malicious actor could modify variables and alter the expected behavior of the application.<br/><br/>
+
+    <strong>Consider the following code:</strong>
+
+    <pre><code>$isAdministrator = $user->isAdministrator(); // A true check.
+extract(Request::post()); // You shouldn't be doing this...</code></pre>
+
+    In the above case, if <code>Request::post()</code> contains something like <code>[ "isAdministrator" => true ]</code>,
+    the previous variable will be overwritten with the value <code>true</code>.<br/><br/>
+
+    To protect against this, you can use the second parameter <code>EXTR_SKIP</code>,
+    which allows variables to be created only if they don't already exist.
+    Alternatively, you can keep using explicitly <code>EXTR_OVERWRITE</code>,
+    which is the default, but only when you are certain about what you're doing.
+  </body>
+</html>

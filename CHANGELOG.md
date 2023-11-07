@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.29.0] - 2023-11-07
+
+### Added
+
+- **[DangerousExtractInspection]**: this inspection checks for the dangerous usage of the extract() function. Fixes #47;
+- **[OverrideIllegalInspection]**: included two searches related to the issue of potentially illegal use of `#[Override]` in traits. Related to #44;
+- **[OverrideMissingInspection]**: reintroduced the possibility of suggesting the `#[Override]` attribute for `trait`, as long as the method is overridden in all classes that use this trait itself. Related to #39 and #44;
+- **[ParameterDefaultsNullInspection]**: added support for de-promoting `readonly` parameters, allowing this inspection to do the complete job (disabled by default). Fixes #35;
+- **[UselessIsComparisonInspection]**: new inspection that will check for the use of useless comparison methods, such as `is_int($x = 5)`. Fixes #43;
+- **[UselessIsComparisonInspection]**: added quick-fix;
+
+### Changed
+
+- **[OverrideIllegalInspection]**: if an unused `trait` defines the `#[Override]` attribute for a method, for now, the issue will be ignored until its first use (configurable via options). Fixes #44;
+- **[OverrideIllegalInspection]**: if a method from a `trait` is indeed overriding another method, but in another class that uses the trait this method doesn't exist, then that is an error. Fixes #44;
+
+### Fixed
+
+- **[OverrideIllegalInspection]**: methods using `#[Override]` in `trait` classes were falsely reporting issues, even when the classes that used them indeed had the methods specified as overridden. Fixes #44;
+- **[OverrideIllegalInspection]**: ignore `private` methods when determining whether `#[Override]` should be applied. Fixes #44;
+- **[OverrideMissingInspection]**: don't suggest the `#[Override]` attribute when the parent method is `private`. Fixes #44;
+
+[0.29.0]: https://github.com/hammer-tools/php-hammer/releases/tag/0.29.0
+
+[DangerousExtractInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-dangerous-extract-inspection
+
+[OverrideIllegalInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-illegal-inspection
+
+[OverrideMissingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-missing-inspection
+
+[ParameterDefaultsNullInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-defaults-null-inspection
+
+[UselessIsComparisonInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-useless-is-comparison-inspection
+
 ## [0.28.2] - 2023-10-23
 
 ### Changed

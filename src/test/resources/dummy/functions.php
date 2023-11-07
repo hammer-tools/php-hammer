@@ -12,6 +12,9 @@ function optional() {
 function compact() {
 }
 
+function extract(array &$array, int $flags = EXTR_OVERWRITE, string $prefix = ""): int {
+}
+
 function array_merge() {
 }
 
