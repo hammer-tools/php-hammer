@@ -368,8 +368,8 @@
                          enabledByDefault="true"
                          displayName="Useless comparison"
                          level="WEAK WARNING"
-                         shortName="UselessComparisonInspection"
-                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeSmell.UselessComparisonInspection" />
+                         shortName="UselessIsComparisonInspection"
+                         implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeSmell.UselessIsComparisonInspection" />
 
         <!-- Dead code -->
         <localInspection language="PHP"

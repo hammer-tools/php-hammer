@@ -8,10 +8,14 @@ import com.jetbrains.php.lang.psi.elements.impl.FieldImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.isName
-import net.rentalhost.plugins.php.hammer.services.ClassService
-import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
+import net.rentalhost.plugins.php.hammer.services.*
 
-class UselessComparisonInspection : PhpInspection() {
+enum class UselessReason(val value: String) {
+  ALWAYS("always"),
+  NEVER("never")
+}
+
+class UselessIsComparisonInspection : PhpInspection() {
   object Util {
     val typesSchemas = listOf(
       TypeSchema(
@@ -125,22 +129,29 @@ class UselessComparisonInspection : PhpInspection() {
       val reason = when {
         // Eg. int $x, $x is always int. Unique type: we could determine precisely incorrect usage of is_*().
         parameterTypes.size == 1 -> when {
-          typeSchema.allowedTypes.contains(parameterTypes.first().type) -> "always"
-          else -> "never"
+          typeSchema.allowedTypes.contains(parameterTypes.first().type) -> UselessReason.ALWAYS
+          else -> UselessReason.NEVER
         }
 
         // Eg. int|null $x. Multiple types: we could determine only `never` cases, like `is_string()`,
         // but we should skip `is_int()` because it depends of context.
         else -> when {
           typeSchema.allowedTypes.any { schemaType -> parameterTypes.any { it.type == schemaType } } -> return
-          else -> "never"
+          else -> UselessReason.NEVER
         }
       }
 
       ProblemsHolderService.instance.registerProblem(
         problemsHolder,
         functionReference,
-        "useless ${functionReference.name}(): $parameterName is $reason ${typeSchema.referenceType}"
+        "useless ${functionReference.name}(): $parameterName is ${reason.value} ${typeSchema.referenceType}",
+        QuickFixService.instance.simpleInline("Drop call to ${functionReference.name}()") {
+          val safeDeleteOptions =
+            if (reason == UselessReason.ALWAYS) SafeDeleteOptions.TREAT_AS_TRUE
+            else SafeDeleteOptions.TREAT_AS_FALSE
+
+          SafeDeleteService(functionReference, safeDeleteOptions).delete()
+        }
       )
     }
   }
