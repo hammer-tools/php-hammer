@@ -2,6 +2,10 @@
 
 use Namespaced\Override as Override;
 
+/**
+ * @method void phpdocMethodOnly()
+ * @method void methodExistsTogetherPhpdoc()
+ */
 class Base {
     function requiresOverrideAttribute() {
         doSomething();
@@ -26,8 +30,19 @@ class Base {
     private function privateIncorrectOverrideAttribute() {
         doSomething();
     }
+
+    public function methodExistsTogetherPhpdoc() {
+        doSomething();
+    }
+
+    public function methodExistsPhpDocRedeclaration() {
+        doSomething();
+    }
 }
 
+/**
+ * @method void methodExistsPhpDocRedeclaration()
+ */
 class Child extends Base {
     use ExampleTrait;
     use PartiallyOverrideTrait;
@@ -39,6 +54,10 @@ trait ExampleTrait {
         doSomething();
     }
 
+    // Must fails: method declared, but phpdoc exists (it is a fail).
+    #[\Override] public function methodExistsTogetherPhpdoc() {
+    }
+
     // Skip: doesn't requires #[\Override] attribute.
     function notRequiresOverridden() {
         doSomething();
@@ -47,6 +66,10 @@ trait ExampleTrait {
     // Skip: doesn't requires #[\Override] attribute, because it doesn't overrides Base::privateIncorrectOverrideAttribute() actually.
     function privateIncorrectOverrideAttribute() {
         doSomething();
+    }
+
+    // Skip: method is declared at phpdoc only.
+    public function phpdocMethodOnly(): void {
     }
 }
 
@@ -82,6 +105,10 @@ $dummy = new class extends Base {
         parent::protectedRequiresOverrideAttribute();
     }
 
+    // Must fails: method declared, but phpdoc exists (it is a fail).
+    #[\Override] public function methodExistsTogetherPhpdoc() {
+    }
+
     // Skip: already correctly contains #[\Override] attribute.
     #[\Override]
     function overrideAttributeAlreadyApplied() {
@@ -96,6 +123,17 @@ $dummy = new class extends Base {
 
     // Skip: #[\Override] attribute is not required here, parent method is private.
     function privateIncorrectOverrideAttribute() {
+        doSomething();
+    }
+
+    // Skip: method is declared at phpdoc only.
+    public function phpdocMethodOnly(): void {
+    }
+};
+
+$dummy = new class extends Child {
+    // Must fails: requires #[\Override] attribute, it is really declared at Base class, but exists a phpdoc redeclaration that must be ignored.
+    #[\Override] function methodExistsPhpDocRedeclaration() {
         doSomething();
     }
 };

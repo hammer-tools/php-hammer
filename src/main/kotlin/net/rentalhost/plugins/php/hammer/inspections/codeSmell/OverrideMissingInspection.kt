@@ -37,18 +37,16 @@ class OverrideMissingInspection : PhpInspection() {
       if (!supportOlderVersions && !LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP830))
         return
 
-      val methodClass = method.containingClass
-
       // If this method is from a trait, it checks the connections to it.
-      if (supportTraits && methodClass?.isTrait == true) {
+      if (supportTraits && method.containingClass?.isTrait == true) {
         // If this method is connected to any `use` that doesn't define this method itself, then it cannot be an overridden.
-        PhpIndex.getInstance(method.project).getTraitUsages(methodClass).forEach {
+        PhpIndex.getInstance(method.project).getTraitUsages(method.containingClass).forEach {
           if (!method.isOverridable(it)) return
         }
       }
       // Considers only methods that can be found in parent classes.
       // This will exclude methods declared in traits, which is expected here.
-      else if (!method.isOverridable(methodClass)) return
+      else if (!method.isOverridable()) return
 
       // If the #[\Override] attribute is found, then everything is fine here.
       for (attribute in method.attributes) {

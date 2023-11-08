@@ -80,7 +80,7 @@ class OverrideIllegalInspection : PhpInspection() {
         }
       }
       // Considers only methods that do not perform overrides.
-      else if (method.isOverridable(methodClass)) {
+      else if (method.isOverridable()) {
         return
       }
 

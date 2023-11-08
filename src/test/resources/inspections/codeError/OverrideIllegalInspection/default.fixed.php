@@ -71,6 +71,9 @@ trait ChildRenamedOverride
     }
 }
 
+/**
+ * @method void methodExistsAtPhpdocOnly()
+ */
 class Base
 {
     function existsOnParentClass()
@@ -112,6 +115,12 @@ class Child
     use ChildOverride;
     use ChildRenamedOverride {
         renamedOnTrait as willBeRenamedOnTrait;
+    }
+
+    // Must be an error: methodExistsAtPhpdocOnly() doesn't exists on parent classes in fact (it is just a phpdoc annotation).
+    public function methodExistsAtPhpdocOnly()
+    {
+        doSomething();
     }
 }
 
@@ -197,12 +206,15 @@ class Dummy1000B extends Dummy1000A {
     use Dummy1000D;
 }
 
+/**
+ * @method void test()
+ */
 class Dummy1000C {
     use Dummy1000D;
 }
 
 trait Dummy1000D {
-    // Must be an error: test() is implemented by Dummy1000B::test() (via Dummy1000A) but not via Dummy1000C.
+    // Must be an error: test() is implemented by Dummy1000B::test() (via Dummy1000A) but not via Dummy1000C (phpdoc is not valid as implementation).
     #[\Override]
     function test()
     {
