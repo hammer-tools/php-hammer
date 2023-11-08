@@ -407,7 +407,6 @@
                          displayName="Illegal #[Override] attribute"
                          level="ERROR"
                          shortName="OverrideIllegalInspection"
-                         presentation="net.rentalhost.plugins.php.hammer.services.PresentationService"
                          implementationClass="net.rentalhost.plugins.php.hammer.inspections.codeError.OverrideIllegalInspection" />
 
         <localInspection language="PHP"
