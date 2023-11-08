@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.29.1] - 2023-11-08
+
+### Fixed
+
+- **[MissingParentCallInspection]**: the call to `parent::call()` will not be required if the parent method has only an exception (`throw`). Fixes #50;
+- **[OverrideMissingInspection]**: methods defined by unused `trait` should not expect `#[Override]`. Related to #44;
+- **[OverrideMissingInspection]**, **[OverrideIllegalInspection]**: methods specifically defined by phpdoc should be ignored since they are not real overrides. Related to #50;
+
+[0.29.1]: https://github.com/hammer-tools/php-hammer/releases/tag/0.29.1
+
+[MissingParentCallInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-missing-parent-call-inspection
+
+[OverrideMissingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-missing-inspection
+
+[OverrideIllegalInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-illegal-inspection
+
 ## [0.29.0] - 2023-11-07
 
 ### Added
