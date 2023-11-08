@@ -137,3 +137,19 @@ $dummy = new class extends Child {
         doSomething();
     }
 };
+
+/**
+ * @mixin MixinBase
+ */
+trait MixinTrait {
+    // Skip: method doesn't perform override.
+    public function returnMixinMethod() {
+        return $this->mixinMethod();
+    }
+}
+
+class MixinBase {
+    public function mixinMethod() {
+        return true;
+    }
+}

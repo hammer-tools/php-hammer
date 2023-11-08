@@ -39,8 +39,13 @@ class OverrideMissingInspection : PhpInspection() {
 
       // If this method is from a trait, it checks the connections to it.
       if (supportTraits && method.containingClass?.isTrait == true) {
+        val traitUsages = PhpIndex.getInstance(method.project).getTraitUsages(method.containingClass)
+
+        if (traitUsages.isEmpty())
+          return
+
         // If this method is connected to any `use` that doesn't define this method itself, then it cannot be an overridden.
-        PhpIndex.getInstance(method.project).getTraitUsages(method.containingClass).forEach {
+        traitUsages.forEach {
           if (!method.isOverridable(it)) return
         }
       }
