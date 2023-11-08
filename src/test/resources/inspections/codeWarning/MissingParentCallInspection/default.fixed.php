@@ -663,3 +663,23 @@ class Dummy9140_A
     {
     }
 }
+
+// Case 9150 (issue #50):
+
+class Dummy9150_A
+{
+    protected static function throwExceptionIfNotOverridden()
+    {
+        throw new Exception();
+    }
+}
+
+class Dummy9150_B
+    extends Dummy9150_A
+{
+    // Skip: parent method just thrown an exception, so we can skip parent call here.
+    protected static function throwExceptionIfNotOverridden(): string
+    {
+        doSomething();
+    }
+}

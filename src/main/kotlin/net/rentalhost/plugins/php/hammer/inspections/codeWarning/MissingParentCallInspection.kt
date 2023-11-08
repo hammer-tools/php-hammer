@@ -15,6 +15,7 @@ import com.jetbrains.php.lang.psi.elements.PhpModifier
 import com.jetbrains.php.lang.psi.elements.PhpReturn
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
+import com.jetbrains.php.lang.psi.elements.impl.PhpThrowImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpTraitUseRuleImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.*
@@ -45,7 +46,12 @@ class MissingParentCallInspection : PhpInspection() {
         else (baseMethod as? MethodImpl) ?: return
 
       if (baseMethodOriginal.isAbstractMethod()) return
-      if ((baseMethodOriginal.functionBody() ?: return).getSingleStatement() is PhpReturn) return
+
+      with((baseMethodOriginal.functionBody() ?: return).getSingleStatement()) {
+        if (this is PhpReturn || this is PhpThrowImpl)
+          return
+      }
+
       if (baseMethodOriginal.scope.controlFlow.instructions.size == 2) return
 
       val methodName = lazy { method.name.lowercase() }
