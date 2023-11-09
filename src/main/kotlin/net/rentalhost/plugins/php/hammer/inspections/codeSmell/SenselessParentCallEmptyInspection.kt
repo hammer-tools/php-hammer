@@ -29,8 +29,7 @@ class SenselessParentCallEmptyInspection : PhpInspection() {
       val elementScope = PsiTreeUtil.getParentOfType(element, PhpScopeHolder::class.java) as? MethodImpl ?: return
       val elementName = (element.name ?: return).lowercase()
 
-      if (elementName.startsWith("__") ||
-        elementName != elementScope.name.lowercase())
+      if (elementName.startsWith("__") || elementName != elementScope.name.lowercase())
         return
 
       val baseClass = elementScope.getMemberOverridden() ?: return

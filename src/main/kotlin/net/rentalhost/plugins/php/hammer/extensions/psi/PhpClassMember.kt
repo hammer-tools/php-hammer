@@ -36,14 +36,16 @@ fun PhpClassMember.isMemberOverridden(): Boolean {
 }
 
 fun PhpClassMember.getMemberOverridden(): PhpClass? {
-  var element: PhpClass? = null
+  var classBase = containingClass
 
-  PhpClassHierarchyUtils.processSuperMembers(this) { _, _, phpClass ->
-    element = phpClass
-    false
+  while (classBase != null) {
+    classBase = classBase.superClass
+
+    if (classBase?.findMethodByName(name) != null)
+      return classBase
   }
 
-  return element
+  return null
 }
 
 fun PhpClassMember.isMemberOverrided(): Boolean {
