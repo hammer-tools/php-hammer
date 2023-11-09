@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [0.29.2] - 2023-11-09
+
+### Fixed
+
+- **[SenselessParentCallEmptyInspection]**: in certain cases, using `trait` with `@mixin` could trick the analysis into believing that the method declared in the mixin was closer than the actually related method. Fixes #49;
+
+[0.29.2]: https://github.com/hammer-tools/php-hammer/releases/tag/0.29.2
+
+[SenselessParentCallEmptyInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-senseless-parent-call-empty-inspection
+
 ## [0.29.1] - 2023-11-08
 
 ### Fixed
