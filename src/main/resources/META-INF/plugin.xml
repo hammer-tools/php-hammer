@@ -1,11 +1,11 @@
 <idea-plugin>
     <id>net.rentalhost.plugins.php.hammer</id>
     <name>PHP Hammer</name>
-    <version>0.29.2</version>
+    <version>0.30.0</version>
 
     <vendor email="david.rodrigues@rentalhost.net">Rentalhost</vendor>
 
-    <idea-version since-build="233" until-build="233.*" />
+    <idea-version since-build="241" until-build="241.*" />
 
     <description><![CDATA[
         <strong>PHP Hammer</strong> is a powerful plugin that enhances the PHP language in PhpStorm by adding <a
