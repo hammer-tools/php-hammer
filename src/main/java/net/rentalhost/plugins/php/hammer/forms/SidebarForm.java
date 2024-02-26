@@ -1,56 +1,51 @@
 package net.rentalhost.plugins.php.hammer.forms;
 
 import com.intellij.ide.BrowserUtil;
-
-import javax.swing.*;
-
 import net.rentalhost.plugins.php.hammer.services.ProjectService;
 import net.rentalhost.plugins.php.hammer.services.SettingsService;
 
+import javax.swing.*;
+
 public final class SidebarForm {
-  private JPanel panel;
+    private final String  labelInspectionsText;
+    private final String  labelFixesText;
+    private       JPanel  panel;
+    private       JLabel  labelTitle;
+    private       JLabel  labelVersion;
+    private       JButton buttonHome;
+    private       JButton buttonInspections;
+    private       JButton buttonChangelog;
+    private       JButton buttonReview;
+    private       JLabel  labelInspections;
+    private       JLabel  labelFixes;
 
-  private JLabel labelTitle;
-  private JLabel labelVersion;
+    public SidebarForm() {
+        var projectService = ProjectService.Companion.getInstance();
+        var projectState   = projectService.getSettings().getServiceInstance().getState();
+        var projectUrls    = projectService.getUrls();
 
-  private JButton buttonHome;
-  private JButton buttonInspections;
-  private JButton buttonChangelog;
-  private JButton buttonReview;
+        labelVersion.setText(projectState.getPluginVersion());
 
-  private JLabel labelInspections;
-  private JLabel labelFixes;
+        buttonHome.addActionListener(e -> BrowserUtil.open(projectUrls.getHomeUrl()));
+        buttonInspections.addActionListener(e -> BrowserUtil.open(projectUrls.getInspectionsUrl()));
+        buttonChangelog.addActionListener(e -> BrowserUtil.open(projectUrls.getChangelogUrl()));
+        buttonReview.addActionListener(e -> BrowserUtil.open(projectUrls.getReviewsUrl()));
 
-  private final String labelInspectionsText;
-  private final String labelFixesText;
+        labelInspectionsText = labelInspections.getText();
+        labelFixesText = labelFixes.getText();
 
-  public SidebarForm() {
-    final var projectService = ProjectService.Companion.getInstance();
-    final var projectState   = projectService.getSettings().getServiceInstance().getState();
-    final var projectUrls    = projectService.getUrls();
+        updateCounters(projectState);
 
-    labelVersion.setText(projectState.getPluginVersion());
+        Timer timer = new Timer(5000, e -> updateCounters(projectState));
+        timer.start();
+    }
 
-    buttonHome.addActionListener(e -> BrowserUtil.open(projectUrls.getHomeUrl()));
-    buttonInspections.addActionListener(e -> BrowserUtil.open(projectUrls.getInspectionsUrl()));
-    buttonChangelog.addActionListener(e -> BrowserUtil.open(projectUrls.getChangelogUrl()));
-    buttonReview.addActionListener(e -> BrowserUtil.open(projectUrls.getReviewsUrl()));
+    public JPanel getPanel() {
+        return panel;
+    }
 
-    labelInspectionsText = labelInspections.getText();
-    labelFixesText = labelFixes.getText();
-
-    updateCounters(projectState);
-
-    final Timer timer = new Timer(5000, e -> updateCounters(projectState));
-    timer.start();
-  }
-
-  public JPanel getPanel() {
-    return panel;
-  }
-
-  private void updateCounters(final SettingsService.Companion.State state) {
-    labelInspections.setText(labelInspectionsText.replace("0", Long.toString(state.getCountInspections())));
-    labelFixes.setText(labelFixesText.replace("0", Long.toString(state.getCountFixes())));
-  }
+    private void updateCounters(final SettingsService.Companion.State state) {
+        labelInspections.setText(labelInspectionsText.replace("0", Long.toString(state.getCountInspections())));
+        labelFixes.setText(labelFixesText.replace("0", Long.toString(state.getCountFixes())));
+    }
 }

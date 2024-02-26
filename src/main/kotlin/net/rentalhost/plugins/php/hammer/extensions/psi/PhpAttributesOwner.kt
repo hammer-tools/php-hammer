@@ -6,8 +6,8 @@ import com.jetbrains.php.lang.psi.elements.PhpAttributesOwner
 import net.rentalhost.plugins.php.hammer.services.ClassService
 
 fun PhpAttributesOwner.addAttribute(attributeClass: String) {
-  val attributesList = PhpPsiElementFactory.createAttributesList(this.project, "\\${attributeClass}")
-  val attributeNew = this.firstChild.insertBefore(attributesList) as PhpAttributesList
+    val attributesList = PhpPsiElementFactory.createAttributesList(this.project, "\\${attributeClass}")
+    val attributeNew = this.firstChild.insertBefore(attributesList) as PhpAttributesList
 
-  ClassService.import(attributeNew.attributes.firstOrNull()?.classReference)
+    ClassService.import(attributeNew.attributes.firstOrNull()?.classReference)
 }

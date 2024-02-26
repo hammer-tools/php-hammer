@@ -17,55 +17,65 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class CompactInsideShortFunctionInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpFunctionCall(element: FunctionReference) {
-      if (!element.isName("\\compact"))
-        return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpFunctionCall(element: FunctionReference) {
+            if (!element.isName("\\compact"))
+                return
 
-      val elementScopeFunction = PsiTreeUtil.getParentOfType(element, Function::class.java) ?: return
+            val elementScopeFunction = PsiTreeUtil.getParentOfType(element, Function::class.java) ?: return
 
-      if (!elementScopeFunction.isShortFunction())
-        return
+            if (!elementScopeFunction.isShortFunction())
+                return
 
-      val allowedNames = elementScopeFunction.parameters.map { parameter -> parameter.name }
+            val allowedNames = elementScopeFunction.parameters.map { parameter -> parameter.name }
 
-      element.parameters.forEach { parameter ->
-        if (parameter !is StringLiteralExpressionImpl ||
-          !allowedNames.contains(parameter.contents)) {
-          val arrayElements = mutableListOf<ArrayHashElement>()
+            element.parameters.forEach { parameter ->
+                if (parameter !is StringLiteralExpressionImpl ||
+                    !allowedNames.contains(parameter.contents)
+                ) {
+                    val arrayElements = mutableListOf<ArrayHashElement>()
 
-          element.parameters.forEach rebuild@{ eParameter ->
-            arrayElements.add(
-              when (eParameter) {
-                is StringLiteralExpressionImpl -> FactoryService.createArrayKeyValue(problemsHolder.project, eParameter.text, "\$${eParameter.contents}")
-                is VariableImpl -> FactoryService.createArrayKeyValue(problemsHolder.project, "'${eParameter.name}'", eParameter.text)
+                    element.parameters.forEach rebuild@{ eParameter ->
+                        arrayElements.add(
+                            when (eParameter) {
+                                is StringLiteralExpressionImpl -> FactoryService.createArrayKeyValue(
+                                    problemsHolder.project,
+                                    eParameter.text,
+                                    "\$${eParameter.contents}"
+                                )
 
-                else -> {
-                  arrayElements.clear()
+                                is VariableImpl -> FactoryService.createArrayKeyValue(
+                                    problemsHolder.project,
+                                    "'${eParameter.name}'",
+                                    eParameter.text
+                                )
 
-                  return@rebuild
+                                else -> {
+                                    arrayElements.clear()
+
+                                    return@rebuild
+                                }
+                            }
+                        )
+                    }
+
+                    val problemQuickFix = if (arrayElements.isNotEmpty())
+                        QuickFixService.instance.simpleReplace(
+                            "Replace with array",
+                            FactoryService.createArrayCreationExpression(problemsHolder.project, arrayElements).createSmartPointer()
+                        )
+                    else null
+
+                    ProblemsHolderService.instance.registerProblem(
+                        problemsHolder,
+                        element,
+                        "usage of compact() inside a short function",
+                        problemQuickFix
+                    )
+
+                    return
                 }
-              }
-            )
-          }
-
-          val problemQuickFix = if (arrayElements.isNotEmpty())
-            QuickFixService.instance.simpleReplace(
-              "Replace with array",
-              FactoryService.createArrayCreationExpression(problemsHolder.project, arrayElements).createSmartPointer()
-            )
-          else null
-
-          ProblemsHolderService.instance.registerProblem(
-            problemsHolder,
-            element,
-            "usage of compact() inside a short function",
-            problemQuickFix
-          )
-
-          return
+            }
         }
-      }
     }
-  }
 }

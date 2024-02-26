@@ -9,40 +9,41 @@ import net.rentalhost.plugins.php.hammer.services.FactoryService
 import net.rentalhost.plugins.php.hammer.services.TypeService
 
 fun ArrayCreationExpression.unpackValues(): MutableList<PsiElement> {
-  val arrayElements = mutableListOf<PsiElement>()
+    val arrayElements = mutableListOf<PsiElement>()
 
-  for (arrayElement in children) {
-    if (arrayElement is PhpPsiElementImpl<*> &&
-      TypeService.isVariadic(arrayElement, ArrayCreationExpression::class.java)) {
-      arrayElements.addAll((arrayElement.firstPsiChild as ArrayCreationExpression).unpackValues())
+    for (arrayElement in children) {
+        if (arrayElement is PhpPsiElementImpl<*> &&
+            TypeService.isVariadic(arrayElement, ArrayCreationExpression::class.java)
+        ) {
+            arrayElements.addAll((arrayElement.firstPsiChild as ArrayCreationExpression).unpackValues())
+        } else if (arrayElement is PhpPsiElementImpl<*> &&
+            TypeService.isVariadic(arrayElement)
+        ) {
+            val compactNames = ElementService.getCompactNames(arrayElement.firstPsiChild as PsiElement)
+
+            if (compactNames != null) {
+                arrayElements.addAll(compactNames.map { FactoryService.createArrayKeyValue(arrayElement.project, "'$it'", "\$$it") })
+
+                continue
+            }
+
+            arrayElements.add(arrayElement)
+        } else if (arrayElement is ArrayHashElementImpl ||
+            arrayElement is PhpPsiElementImpl<*>
+        ) {
+            arrayElements.add(arrayElement)
+        }
     }
-    else if (arrayElement is PhpPsiElementImpl<*> &&
-      TypeService.isVariadic(arrayElement)) {
-      val compactNames = ElementService.getCompactNames(arrayElement.firstPsiChild as PsiElement)
 
-      if (compactNames != null) {
-        arrayElements.addAll(compactNames.map { FactoryService.createArrayKeyValue(arrayElement.project, "'$it'", "\$$it") })
-
-        continue
-      }
-
-      arrayElements.add(arrayElement)
-    }
-    else if (arrayElement is ArrayHashElementImpl ||
-      arrayElement is PhpPsiElementImpl<*>) {
-      arrayElements.add(arrayElement)
-    }
-  }
-
-  return arrayElements
+    return arrayElements
 }
 
 fun ArrayCreationExpression.isHashed(): Boolean {
-  for (arrayElement in children) {
-    if (arrayElement is ArrayHashElementImpl) {
-      return true
+    for (arrayElement in children) {
+        if (arrayElement is ArrayHashElementImpl) {
+            return true
+        }
     }
-  }
 
-  return false
+    return false
 }

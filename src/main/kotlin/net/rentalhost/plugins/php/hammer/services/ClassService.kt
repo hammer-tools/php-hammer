@@ -13,29 +13,30 @@ import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.jetbrains.php.refactoring.move.member.PhpMoveMemberProcessor
 
 object ClassService {
-  fun findFQN(namespacedClassname: String, project: Project): PhpClass? =
-    PhpIndex.getInstance(project).getClassesByFQN(namespacedClassname.lowercase()).firstOrNull()
+    fun findFQN(namespacedClassname: String, project: Project): PhpClass? =
+        PhpIndex.getInstance(project).getClassesByFQN(namespacedClassname.lowercase()).firstOrNull()
 
-  fun import(classReference: ClassReference?, allowAliasing: Boolean = false) {
-    val classReferenceFQN = PhpLangUtil.toFQN(classReference?.text ?: return)
+    fun import(classReference: ClassReference?, allowAliasing: Boolean = false) {
+        val classReferenceFQN = PhpLangUtil.toFQN(classReference?.text ?: return)
 
-    // If an `use` declaration with the same name already exists, it prevents the creation of an alias and retains it with absolute class name.
-    if (!allowAliasing) {
-      PhpCodeInsightUtil.collectImports(PhpCodeInsightUtil.findScopeForUseOperator(classReference)!!).forEach {
-        for (declaration in it.declarations) {
-          if (!PhpLangUtil.equalsClassNames(declaration.fqn, classReferenceFQN) &&
-            StringUtil.equals(PhpGroupUseElement.getKeyword(declaration, null), PhpUseKeyword.CLASS.value))
-            return
+        // If an `use` declaration with the same name already exists, it prevents the creation of an alias and retains it with absolute class name.
+        if (!allowAliasing) {
+            PhpCodeInsightUtil.collectImports(PhpCodeInsightUtil.findScopeForUseOperator(classReference) ?: return).forEach {
+                for (declaration in it.declarations) {
+                    if (!PhpLangUtil.equalsClassNames(declaration.fqn, classReferenceFQN) &&
+                        StringUtil.equals(PhpGroupUseElement.getKeyword(declaration, null), PhpUseKeyword.CLASS.value)
+                    )
+                        return
+                }
+            }
         }
-      }
+
+        val classQualifiedName = PhpMoveMemberProcessor.importClassAndGetName(
+            classReference, emptyList(), classReferenceFQN
+        )
+
+        classReference.replace(
+            PhpPsiElementFactory.createClassReference(classReference.project, classQualifiedName)
+        )
     }
-
-    val classQualifiedName = PhpMoveMemberProcessor.importClassAndGetName(
-      classReference, emptyList(), classReferenceFQN
-    )
-
-    classReference.replace(
-      PhpPsiElementFactory.createClassReference(classReference.project, classQualifiedName)
-    )
-  }
 }

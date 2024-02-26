@@ -13,30 +13,30 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class RedundantReturnPointInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpReturn(element: PhpReturn) {
-      val elementConditionalStarter = ElementService.conditionalStarter(element.parent.parent as PhpPsiElement)
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpReturn(element: PhpReturn) {
+            val elementConditionalStarter = ElementService.conditionalStarter(element.parent.parent as PhpPsiElement)
 
-      if (elementConditionalStarter !is ControlStatementImpl)
-        return
+            if (elementConditionalStarter !is ControlStatementImpl)
+                return
 
-      val elementNext = elementConditionalStarter.nextPsiSibling
+            val elementNext = elementConditionalStarter.nextPsiSibling
 
-      if (elementNext !is PhpReturnImpl)
-        return
+            if (elementNext !is PhpReturnImpl)
+                return
 
-      val elementReturn = FormatterService.normalize(element)
-      val elementNextReturn = FormatterService.normalize(elementNext)
+            val elementReturn = FormatterService.normalize(element)
+            val elementNextReturn = FormatterService.normalize(elementNext)
 
-      if (elementReturn != elementNextReturn)
-        return
+            if (elementReturn != elementNextReturn)
+                return
 
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        element,
-        "redundant return point",
-        QuickFixService.instance.simpleDelete("Drop this return point")
-      )
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                element,
+                "redundant return point",
+                QuickFixService.instance.simpleDelete("Drop this return point")
+            )
+        }
     }
-  }
 }

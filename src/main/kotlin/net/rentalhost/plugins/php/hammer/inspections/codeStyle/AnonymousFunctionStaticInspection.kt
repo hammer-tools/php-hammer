@@ -18,60 +18,60 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class AnonymousFunctionStaticInspection : PhpInspection() {
-  @OptionTag
-  var includeShortFunctions: Boolean = true
+    @OptionTag
+    var includeShortFunctions: Boolean = true
 
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpFunction(element: Function) {
-      if (element.containingFile.isBlade())
-        return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpFunction(element: Function) {
+            if (element.containingFile.isBlade())
+                return
 
-      if (!element.isAnonymous() || element.isStatic())
-        return
+            if (!element.isAnonymous() || element.isStatic())
+                return
 
-      if (!includeShortFunctions && element.isShortFunction())
-        return
+            if (!includeShortFunctions && element.isShortFunction())
+                return
 
-      for (elementScope in element.scopes()) {
-        if (elementScope.accessVariables().find { it.variableName == "this" } != null)
-          return
+            for (elementScope in element.scopes()) {
+                if (elementScope.accessVariables().find { it.variableName == "this" } != null)
+                    return
 
-        for (flowInstruction in elementScope.controlFlow.instructions) {
-          val flowInstructionMethod = flowInstruction.anchor?.reference?.resolve()
+                for (flowInstruction in elementScope.controlFlow.instructions) {
+                    val flowInstructionMethod = flowInstruction.anchor?.reference?.resolve()
 
-          if (flowInstructionMethod is Method && !flowInstructionMethod.isStatic)
-            return
+                    if (flowInstructionMethod is Method && !flowInstructionMethod.isStatic)
+                        return
+                }
+            }
+
+            val elementPointer = element.firstChild.createSmartPointer()
+
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                element.firstChild,
+                "anonymous function can be static",
+                QuickFixService.instance.simpleInline("Make this function static") {
+                    with(elementPointer.element ?: return@simpleInline) {
+                        insertBefore(FactoryService.createStaticKeyword(problemsHolder.project))
+                    }
+                }
+            )
         }
-      }
-
-      val elementPointer = element.firstChild.createSmartPointer()
-
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        element.firstChild,
-        "anonymous function can be static",
-        QuickFixService.instance.simpleInline("Make this function static") {
-          with(elementPointer.element ?: return@simpleInline) {
-            insertBefore(FactoryService.createStaticKeyword(problemsHolder.project))
-          }
-        }
-      )
     }
-  }
 
-  override fun getOptionsPane(): OptPane {
-    return OptPane.pane(
-      OptCheckbox(
-        "includeShortFunctions",
-        PlainMessage("Include short functions"),
-        emptyList(),
-        HtmlChunk.raw(
-          "This option allows the inspection to check arrow functions (<code>fn()</code>), " +
-            "in addition to regular functions (<code>function()</code>)."
+    override fun getOptionsPane(): OptPane {
+        return OptPane.pane(
+            OptCheckbox(
+                "includeShortFunctions",
+                PlainMessage("Include short functions"),
+                emptyList(),
+                HtmlChunk.raw(
+                    "This option allows the inspection to check arrow functions (<code>fn()</code>), " +
+                            "in addition to regular functions (<code>function()</code>)."
+                )
+            )
         )
-      )
-    )
-  }
+    }
 
-  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP540
+    override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP540
 }

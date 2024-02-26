@@ -12,29 +12,29 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class DangerousExtractInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpFunctionCall(functionReference: FunctionReference) {
-      if (!functionReference.isName("\\extract"))
-        return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpFunctionCall(functionReference: FunctionReference) {
+            if (!functionReference.isName("\\extract"))
+                return
 
-      val parameters = functionReference.parameters
+            val parameters = functionReference.parameters
 
-      parameters.forEach {
-        if (ParameterListImpl.getNameIdentifier(it)?.text.equals("flags", true))
-          return
-      }
+            parameters.forEach {
+                if (ParameterListImpl.getNameIdentifier(it)?.text.equals("flags", true))
+                    return
+            }
 
-      if (parameters.size >= 2 && ParameterListImpl.getNameIdentifier(parameters[1]) == null)
-        return
+            if (parameters.size >= 2 && ParameterListImpl.getNameIdentifier(parameters[1]) == null)
+                return
 
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder, functionReference, "dangerous extract() call",
-        QuickFixService.instance.simpleInline("Add EXTR_SKIP flag argument (may affect behavior)") {
-          with(parameters[0].insertAfter(PhpPsiElementFactory.createComma(functionReference.project))) {
-            insertAfter(PhpPsiElementFactory.createClassReference(functionReference.project, "\\EXTR_SKIP"))
-          }
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder, functionReference, "dangerous extract() call",
+                QuickFixService.instance.simpleInline("Add EXTR_SKIP flag argument (may affect behavior)") {
+                    with(parameters[0].insertAfter(PhpPsiElementFactory.createComma(functionReference.project))) {
+                        insertAfter(PhpPsiElementFactory.createClassReference(functionReference.project, "\\EXTR_SKIP"))
+                    }
+                }
+            )
         }
-      )
     }
-  }
 }

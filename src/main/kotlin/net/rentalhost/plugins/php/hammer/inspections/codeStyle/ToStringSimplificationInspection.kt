@@ -12,26 +12,27 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class ToStringSimplificationInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpMethodReference(element: MethodReference) {
-      if (!element.isName("__tostring"))
-        return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpMethodReference(element: MethodReference) {
+            if (!element.isName("__tostring"))
+                return
 
-      val elementBase = element.firstPsiChild ?: return
+            val elementBase = element.firstPsiChild ?: return
 
-      if (elementBase is ClassReferenceImpl &&
-        elementBase.text.lowercase() == "parent")
-        return
+            if (elementBase is ClassReferenceImpl &&
+                elementBase.text.lowercase() == "parent"
+            )
+                return
 
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        element,
-        "call to __toString() can be simplified",
-        QuickFixService.instance.simpleReplace(
-          "Replace with type cast (string)",
-          FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementBase.text).createSmartPointer()
-        )
-      )
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                element,
+                "call to __toString() can be simplified",
+                QuickFixService.instance.simpleReplace(
+                    "Replace with type cast (string)",
+                    FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementBase.text).createSmartPointer()
+                )
+            )
+        }
     }
-  }
 }

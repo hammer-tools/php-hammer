@@ -12,48 +12,50 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class TernarySimplificationInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpTernaryExpression(expression: TernaryExpression) {
-      if (expression.isShort)
-        return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpTernaryExpression(expression: TernaryExpression) {
+            if (expression.isShort)
+                return
 
-      val comparison = expression.condition
+            val comparison = expression.condition
 
-      if (comparison !is BinaryExpression)
-        return
+            if (comparison !is BinaryExpression)
+                return
 
-      val comparisonIdentical = comparison.operationType == PhpTokenTypes.opIDENTICAL
-      val comparisonNotIdentical = comparison.operationType == PhpTokenTypes.opNOT_IDENTICAL
+            val comparisonIdentical = comparison.operationType == PhpTokenTypes.opIDENTICAL
+            val comparisonNotIdentical = comparison.operationType == PhpTokenTypes.opNOT_IDENTICAL
 
-      if (!comparisonIdentical &&
-        !comparisonNotIdentical)
-        return
+            if (!comparisonIdentical &&
+                !comparisonNotIdentical
+            )
+                return
 
-      val normalizedLeft = FormatterService.normalize(comparison.leftOperand ?: return)
-      val normalizedRight = FormatterService.normalize(comparison.rightOperand ?: return)
-      val normalizedTrue = FormatterService.normalize(expression.trueVariant ?: return)
-      val normalizedFalse = FormatterService.normalize(expression.falseVariant ?: return)
+            val normalizedLeft = FormatterService.normalize(comparison.leftOperand ?: return)
+            val normalizedRight = FormatterService.normalize(comparison.rightOperand ?: return)
+            val normalizedTrue = FormatterService.normalize(expression.trueVariant ?: return)
+            val normalizedFalse = FormatterService.normalize(expression.falseVariant ?: return)
 
-      if (comparisonIdentical) {
-        if (normalizedLeft != normalizedFalse ||
-          normalizedRight != normalizedTrue)
-          return
-      }
-      else if (normalizedLeft != normalizedTrue ||
-        normalizedRight != normalizedFalse) {
-        return
-      }
+            if (comparisonIdentical) {
+                if (normalizedLeft != normalizedFalse ||
+                    normalizedRight != normalizedTrue
+                )
+                    return
+            } else if (normalizedLeft != normalizedTrue ||
+                normalizedRight != normalizedFalse
+            ) {
+                return
+            }
 
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        expression,
-        "ternary can be simplified",
-        QuickFixService.instance.simpleReplace(
-          "Simplify ternary",
-          if (comparisonIdentical) (expression.falseVariant ?: return).createSmartPointer()
-          else (expression.trueVariant ?: return).createSmartPointer()
-        )
-      )
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                expression,
+                "ternary can be simplified",
+                QuickFixService.instance.simpleReplace(
+                    "Simplify ternary",
+                    if (comparisonIdentical) (expression.falseVariant ?: return).createSmartPointer()
+                    else (expression.trueVariant ?: return).createSmartPointer()
+                )
+            )
+        }
     }
-  }
 }

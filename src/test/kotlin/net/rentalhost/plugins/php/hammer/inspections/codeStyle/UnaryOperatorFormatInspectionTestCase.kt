@@ -4,21 +4,21 @@ import net.rentalhost.plugins.php.hammer.inspections.enums.OptionUnaryOperatorSi
 import net.rentalhost.plugins.php.hammer.services.TestCase
 
 class UnaryOperatorFormatInspectionTestCase : TestCase() {
-  fun testUnaryOperatorSideLeft(): Unit = testInspection(
-    UnaryOperatorFormatInspection::class.java,
-    "unaryOperatorSideLeft",
-    { it.unaryOperatorSide = OptionUnaryOperatorSideFormat.LEFT }
-  )
+    fun testUnaryOperatorSideLeft(): Unit = testInspection(
+        UnaryOperatorFormatInspection::class.java,
+        "unaryOperatorSideLeft",
+        { it.unaryOperatorSide = OptionUnaryOperatorSideFormat.LEFT }
+    )
 
-  fun testUnaryOperatorSideRight(): Unit = testInspection(
-    UnaryOperatorFormatInspection::class.java,
-    "unaryOperatorSideRight",
-    { it.unaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
-  )
+    fun testUnaryOperatorSideRight(): Unit = testInspection(
+        UnaryOperatorFormatInspection::class.java,
+        "unaryOperatorSideRight",
+        { it.unaryOperatorSide = OptionUnaryOperatorSideFormat.RIGHT }
+    )
 
-  fun testIncludeForRepeatedExpressionsDisabled(): Unit = testInspection(
-    UnaryOperatorFormatInspection::class.java,
-    "includeForRepeatedExpressionsDisabled",
-    { it.includeForRepeatedExpressions = false }
-  )
+    fun testIncludeForRepeatedExpressionsDisabled(): Unit = testInspection(
+        UnaryOperatorFormatInspection::class.java,
+        "includeForRepeatedExpressionsDisabled",
+        { it.includeForRepeatedExpressions = false }
+    )
 }

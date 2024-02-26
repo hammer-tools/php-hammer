@@ -1,11 +1,11 @@
 <html lang="en">
-  <body>
-    This inspection identifies <code>if()</code> conditions that can be merged with subsequent ones.
-    However, complex conditions are ignored to maintain better code readability.<br/><br/>
+<body>
+This inspection identifies <code>if()</code> conditions that can be merged with subsequent ones.
+However, complex conditions are ignored to maintain better code readability.<br/><br/>
 
-    <strong>Example:</strong>
+<strong>Example:</strong>
 
-    <pre><code>if (condition()) {
+<pre><code>if (condition()) {
     return true;
 }
 
@@ -13,10 +13,10 @@ if (anotherCondition()) {
     return true;
 }</code></pre>
 
-    <strong>Becomes:</strong>
+<strong>Becomes:</strong>
 
-    <pre><code>if (condition() || anotherCondition()) {
+<pre><code>if (condition() || anotherCondition()) {
     return true;
 }</code></pre>
-  </body>
+</body>
 </html>

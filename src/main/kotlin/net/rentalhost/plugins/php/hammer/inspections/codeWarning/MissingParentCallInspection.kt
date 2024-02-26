@@ -24,90 +24,89 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class MissingParentCallInspection : PhpInspection() {
-  @OptionTag
-  var checkOverrideAttribute = true
+    @OptionTag
+    var checkOverrideAttribute = true
 
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpMethod(method: Method) {
-      if (method.isAbstract) return
-      if ((method.containingClass ?: return).isTrait) return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpMethod(method: Method) {
+            if (method.isAbstract) return
+            if ((method.containingClass ?: return).isTrait) return
 
-      if (!checkOverrideAttribute && method.attributes.any { it.fqn == "\\Override" })
-        return
+            if (!checkOverrideAttribute && method.attributes.any { it.fqn == "\\Override" })
+                return
 
-      val baseClass = method.getMemberOverridden() ?: return
+            val baseClass = method.getMemberOverridden() ?: return
 
-      if (method.containingClass?.superClass?.findMethodByName(method.name) == null)
-        return
+            if (method.containingClass?.superClass?.findMethodByName(method.name) == null)
+                return
 
-      val baseMethod = baseClass.findMethodByName(method.name)
-      val baseMethodOriginal =
-        if (baseMethod is PhpTraitUseRuleImpl.NonAbsoluteTraitUseRuleRenameableFakePsiElement) baseMethod.original ?: return
-        else (baseMethod as? MethodImpl) ?: return
+            val baseMethod = baseClass.findMethodByName(method.name)
+            val baseMethodOriginal =
+                if (baseMethod is PhpTraitUseRuleImpl.NonAbsoluteTraitUseRuleRenameableFakePsiElement) baseMethod.original ?: return
+                else (baseMethod as? MethodImpl) ?: return
 
-      if (baseMethodOriginal.isAbstractMethod()) return
+            if (baseMethodOriginal.isAbstractMethod()) return
 
-      with((baseMethodOriginal.functionBody() ?: return).getSingleStatement()) {
-        if (this is PhpReturn || this is PhpThrowImpl)
-          return
-      }
-
-      if (baseMethodOriginal.scope.controlFlow.instructions.size == 2) return
-
-      val methodName = lazy { method.name.lowercase() }
-      val methodCall = method.scope.controlFlow.instructions.find {
-        it is PhpCallInstructionImpl &&
-          with(it.functionReference as? MethodReferenceImpl ?: return@find false) {
-            referenceType == PhpModifier.State.PARENT &&
-              (name ?: return@find false).lowercase() == methodName.value
-          }
-      }
-
-      if (methodCall != null) return
-
-      val baseMethodPointer = baseMethodOriginal.createSmartPointer()
-
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        method.nameIdentifier ?: return,
-        "missing parent::${method.name}() call",
-        QuickFixService.instance.simpleInline("Add call to parent::${method.name}()") {
-          with(method.functionBody()) {
-            val parentCall = FactoryService.createFunctionCall(
-              method.project,
-              "parent::${method.name}",
-              (baseMethodPointer.element ?: return@simpleInline).parameters.mapIndexed { parameterIndex, parameter ->
-                if (method.getParameter(parameterIndex) != null) {
-                  if (parameter.isVariadic) "...\$${parameter.name}"
-                  else "\$${parameter.name}"
-                }
-                else "null"
-              }
-            )
-
-            val parentCallElement = (this ?: return@with).firstPsiChild.insertBeforeElse(parentCall, lazy {
-              { replace(FactoryService.createFunctionBody(project, "${parentCall.text};")) }
-            })
-
-            if (parentCallElement !is GroupStatement) {
-              parentCallElement.insertAfter(FactoryService.createSemicolon(method.project))
+            with((baseMethodOriginal.functionBody() ?: return).getSingleStatement()) {
+                if (this is PhpReturn || this is PhpThrowImpl)
+                    return
             }
-          }
-        }
-      )
-    }
-  }
 
-  override fun getOptionsPane(): OptPane {
-    return OptPane.pane(
-      OptCheckbox(
-        "checkOverrideAttribute",
-        PlainMessage("Check even with the #[Override] attribute"),
-        emptyList(),
-        HtmlChunk.raw(
-          "When this option is enabled, the inspection will run even if the <code>#[Override]</code> attribute is applied to the method."
+            if (baseMethodOriginal.scope.controlFlow.instructions.size == 2) return
+
+            val methodName = lazy { method.name.lowercase() }
+            val methodCall = method.scope.controlFlow.instructions.find {
+                it is PhpCallInstructionImpl &&
+                        with(it.functionReference as? MethodReferenceImpl ?: return@find false) {
+                            referenceType == PhpModifier.State.PARENT &&
+                                    (name ?: return@find false).lowercase() == methodName.value
+                        }
+            }
+
+            if (methodCall != null) return
+
+            val baseMethodPointer = baseMethodOriginal.createSmartPointer()
+
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                method.nameIdentifier ?: return,
+                "missing parent::${method.name}() call",
+                QuickFixService.instance.simpleInline("Add call to parent::${method.name}()") {
+                    with(method.functionBody()) {
+                        val parentCall = FactoryService.createFunctionCall(
+                            method.project,
+                            "parent::${method.name}",
+                            (baseMethodPointer.element ?: return@simpleInline).parameters.mapIndexed { parameterIndex, parameter ->
+                                if (method.getParameter(parameterIndex) != null) {
+                                    if (parameter.isVariadic) "...\$${parameter.name}"
+                                    else "\$${parameter.name}"
+                                } else "null"
+                            }
+                        )
+
+                        val parentCallElement = (this ?: return@with).firstPsiChild.insertBeforeElse(parentCall, lazy {
+                            { replace(FactoryService.createFunctionBody(project, "${parentCall.text};")) }
+                        })
+
+                        if (parentCallElement !is GroupStatement) {
+                            parentCallElement.insertAfter(FactoryService.createSemicolon(method.project))
+                        }
+                    }
+                }
+            )
+        }
+    }
+
+    override fun getOptionsPane(): OptPane {
+        return OptPane.pane(
+            OptCheckbox(
+                "checkOverrideAttribute",
+                PlainMessage("Check even with the #[Override] attribute"),
+                emptyList(),
+                HtmlChunk.raw(
+                    "When this option is enabled, the inspection will run even if the <code>#[Override]</code> attribute is applied to the method."
+                )
+            )
         )
-      )
-    )
-  }
+    }
 }

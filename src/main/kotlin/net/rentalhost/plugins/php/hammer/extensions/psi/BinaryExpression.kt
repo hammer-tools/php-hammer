@@ -5,13 +5,13 @@ import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 
 fun BinaryExpression.isOperator(operator: IElementType): Boolean =
-  operationType == operator
+    operationType == operator
 
 fun BinaryExpression.isOperatorAnd(): Boolean =
-  isOperator(PhpTokenTypes.opAND)
+    isOperator(PhpTokenTypes.opAND)
 
 fun BinaryExpression.isOperatorEqual(): Boolean =
-  isOperator(PhpTokenTypes.opEQUAL)
+    isOperator(PhpTokenTypes.opEQUAL)
 
 fun BinaryExpression.isOperatorNotEqual(): Boolean =
-  isOperator(PhpTokenTypes.opNOT_EQUAL)
+    isOperator(PhpTokenTypes.opNOT_EQUAL)

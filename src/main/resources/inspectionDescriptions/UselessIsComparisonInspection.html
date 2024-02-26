@@ -1,14 +1,14 @@
 <html lang="en">
-  <body>
-    This inspection identifies simple cases where a type-checking is used unnecessarily.<br/><br/>
+<body>
+This inspection identifies simple cases where a type-checking is used unnecessarily.<br/><br/>
 
-    <strong>For example:</strong>
+<strong>For example:</strong>
 
-    <pre><code>$x = 123;
+<pre><code>$x = 123;
 
 if (is_int($x)) { ... }</code></pre>
 
-    In this case, it's easy to understand that <code>is_int()</code> will always be <code>true</code>
-    since we can easily see that <code>$x</code> is an integer.
-  </body>
+In this case, it's easy to understand that <code>is_int()</code> will always be <code>true</code>
+since we can easily see that <code>$x</code> is an integer.
+</body>
 </html>

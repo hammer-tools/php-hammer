@@ -9,10 +9,10 @@ import com.jetbrains.php.lang.psi.elements.PhpClassFieldsList
 import com.jetbrains.php.lang.psi.elements.impl.PhpPromotedFieldParameterImpl
 
 fun PhpClass.addField(parameter: PhpPromotedFieldParameterImpl, comment: PhpDocComment? = null): PsiElement =
-  PhpPsiElementFactory.createPhpPsiFromText(
-    project,
-    PhpClassFieldsList::class.java,
-    "class A{${parameter.text.substringBefore("=")};}"
-  ).apply {
-    PhpCodeEditUtil.insertClassMemberWithPhpDoc(this@addField, this, comment)
-  }
+    PhpPsiElementFactory.createPhpPsiFromText(
+        project,
+        PhpClassFieldsList::class.java,
+        "class A{${parameter.text.substringBefore("=")};}"
+    ).apply {
+        PhpCodeEditUtil.insertClassMemberWithPhpDoc(this@addField, this, comment)
+    }

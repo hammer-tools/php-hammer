@@ -16,43 +16,44 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class CompactArgumentInvalidInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpFunctionCall(element: FunctionReference) {
-      if (!element.isName("\\compact"))
-        return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpFunctionCall(element: FunctionReference) {
+            if (!element.isName("\\compact"))
+                return
 
-      for (parameter in element.parameters) {
-        val values = when (parameter) {
-          is StringLiteralExpression -> continue
-          is ArrayCreationExpressionImpl -> parameter.values().toList()
-          else -> listOf(parameter)
-        }
-
-        values
-          .filter { it !is StringLiteralExpression }
-          .forEach {
-            if (it is Variable) {
-              val variableTypes = it.getTypes()
-
-              if (variableTypes.size != 1 ||
-                variableTypes[0] == PhpType._STRING) {
-                return@forEach
-              }
-            }
-
-            val itPointer = it.createSmartPointer()
-
-            ProblemsHolderService.instance.registerProblem(
-              problemsHolder, it,
-              "invalid argument for compact() function",
-              QuickFixService.instance.simpleInline("Drop invalid term") {
-                with(itPointer.element ?: return@simpleInline) {
-                  ElementService.dropCompactArgument(this)
+            for (parameter in element.parameters) {
+                val values = when (parameter) {
+                    is StringLiteralExpression -> continue
+                    is ArrayCreationExpressionImpl -> parameter.values().toList()
+                    else -> listOf(parameter)
                 }
-              }
-            )
-          }
-      }
+
+                values
+                    .filter { it !is StringLiteralExpression }
+                    .forEach {
+                        if (it is Variable) {
+                            val variableTypes = it.getTypes()
+
+                            if (variableTypes.size != 1 ||
+                                variableTypes[0] == PhpType._STRING
+                            ) {
+                                return@forEach
+                            }
+                        }
+
+                        val itPointer = it.createSmartPointer()
+
+                        ProblemsHolderService.instance.registerProblem(
+                            problemsHolder, it,
+                            "invalid argument for compact() function",
+                            QuickFixService.instance.simpleInline("Drop invalid term") {
+                                with(itPointer.element ?: return@simpleInline) {
+                                    ElementService.dropCompactArgument(this)
+                                }
+                            }
+                        )
+                    }
+            }
+        }
     }
-  }
 }

@@ -17,61 +17,60 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import net.rentalhost.plugins.php.hammer.services.TypeService
 
 class ArrayPackableInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpArrayCreationExpression(element: ArrayCreationExpression) {
-      val elementChildren = element.unpackValues()
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpArrayCreationExpression(element: ArrayCreationExpression) {
+            val elementChildren = element.unpackValues()
 
-      if (elementChildren.isEmpty())
-        return
+            if (elementChildren.isEmpty())
+                return
 
-      var elementContainsIndex = false
+            var elementContainsIndex = false
 
-      for ((elementChildIndex, elementChild) in elementChildren.withIndex()) {
-        if (elementChild is ArrayHashElementImpl) {
-          elementContainsIndex = true
+            for ((elementChildIndex, elementChild) in elementChildren.withIndex()) {
+                if (elementChild is ArrayHashElementImpl) {
+                    elementContainsIndex = true
 
-          if ((elementChild.key ?: return).text != elementChildIndex.toString())
-            return
+                    if ((elementChild.key ?: return).text != elementChildIndex.toString())
+                        return
+                } else if (TypeService.isVariadic(elementChild)) {
+                    return
+                }
+            }
+
+            if (!elementContainsIndex)
+                return
+
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                element,
+                "packed array can be simplified",
+                DropArrayKeysQuickFix()
+            )
         }
-        else if (TypeService.isVariadic(elementChild)) {
-          return
-        }
-      }
-
-      if (!elementContainsIndex)
-        return
-
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        element,
-        "packed array can be simplified",
-        DropArrayKeysQuickFix()
-      )
-    }
-  }
-
-  class DropArrayKeysQuickFix : QuickFixService.SimpleQuickFix("Drop the array keys") {
-    private fun dropArrayKeys(project: Project, array: PsiElement) {
-      for (arrayElement in array.children) {
-        if (arrayElement is ArrayHashElementImpl) {
-          val arrayElementNew = FactoryService.createArrayValue(project, (arrayElement.value ?: return).text)
-
-          if (arrayElementNew != null) {
-            arrayElement.replace(arrayElementNew)
-          }
-        }
-        else if (TypeService.isVariadic(arrayElement, ArrayCreationExpressionImpl::class.java) &&
-          arrayElement is PhpPsiElementImpl<*>) {
-          dropArrayKeys(project, arrayElement.firstPsiChild ?: return)
-        }
-      }
     }
 
-    override fun applyFix(
-      project: Project,
-      descriptor: ProblemDescriptor
-    ) {
-      dropArrayKeys(project, descriptor.psiElement)
+    class DropArrayKeysQuickFix : QuickFixService.SimpleQuickFix("Drop the array keys") {
+        private fun dropArrayKeys(project: Project, array: PsiElement) {
+            for (arrayElement in array.children) {
+                if (arrayElement is ArrayHashElementImpl) {
+                    val arrayElementNew = FactoryService.createArrayValue(project, (arrayElement.value ?: return).text)
+
+                    if (arrayElementNew != null) {
+                        arrayElement.replace(arrayElementNew)
+                    }
+                } else if (TypeService.isVariadic(arrayElement, ArrayCreationExpressionImpl::class.java) &&
+                    arrayElement is PhpPsiElementImpl<*>
+                ) {
+                    dropArrayKeys(project, arrayElement.firstPsiChild ?: return)
+                }
+            }
+        }
+
+        override fun applyFix(
+            project: Project,
+            descriptor: ProblemDescriptor
+        ) {
+            dropArrayKeys(project, descriptor.psiElement)
+        }
     }
-  }
 }

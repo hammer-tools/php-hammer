@@ -1,18 +1,18 @@
 <html lang="en">
-  <body>
-    This inspection aims to avoid the use of the return-ternary construct, suggesting its replacement with an <code>if()</code> statement.
-    This makes reading and maintenance simpler.<br/><br/>
+<body>
+This inspection aims to avoid the use of the return-ternary construct, suggesting its replacement with an <code>if()</code> statement.
+This makes reading and maintenance simpler.<br/><br/>
 
-    <strong>Example:</strong>
+<strong>Example:</strong>
 
-    <pre><code>return expr() ? 123 : 456;</code></pre>
+<pre><code>return expr() ? 123 : 456;</code></pre>
 
-    <strong>Becomes:</strong>
+<strong>Becomes:</strong>
 
-    <pre><code>if (expr()) {
+<pre><code>if (expr()) {
     return 123;
 }
 
 return 456;</code></pre>
-  </body>
+</body>
 </html>

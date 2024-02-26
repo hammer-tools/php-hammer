@@ -16,51 +16,51 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import javax.swing.JComponent
 
 class TypeCastNormalizationInspection : PhpInspection() {
-  @OptionTag
-  var typeCastNormalizationFormat: OptionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT
+    @OptionTag
+    var typeCastNormalizationFormat: OptionTypeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT
 
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitElement(element: PsiElement) {
-      if (element !is LeafPsiElement)
-        return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitElement(element: PsiElement) {
+            if (element !is LeafPsiElement)
+                return
 
-      with(element.elementType) {
-        val castTo = when (this) {
-          PhpTokenTypes.opFLOAT_CAST -> "(float)"
-          PhpTokenTypes.opINTEGER_CAST -> if (typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(int)" else "(integer)"
-          PhpTokenTypes.opBOOLEAN_CAST -> if (typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(bool)" else "(boolean)"
-          else -> return
+            with(element.elementType) {
+                val castTo = when (this) {
+                    PhpTokenTypes.opFLOAT_CAST -> "(float)"
+                    PhpTokenTypes.opINTEGER_CAST -> if (typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(int)" else "(integer)"
+                    PhpTokenTypes.opBOOLEAN_CAST -> if (typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT) "(bool)" else "(boolean)"
+                    else -> return
+                }
+
+                if (element.text == castTo)
+                    return
+
+                ProblemsHolderService.instance.registerProblem(
+                    problemsHolder,
+                    element,
+                    "type cast must be written as $castTo",
+                    QuickFixService.instance.simpleReplace(
+                        "Replace with $castTo",
+                        FactoryService.createTypeCast(problemsHolder.project, castTo).createSmartPointer()
+                    )
+                )
+            }
         }
-
-        if (element.text == castTo)
-          return
-
-        ProblemsHolderService.instance.registerProblem(
-          problemsHolder,
-          element,
-          "type cast must be written as $castTo",
-          QuickFixService.instance.simpleReplace(
-            "Replace with $castTo",
-            FactoryService.createTypeCast(problemsHolder.project, castTo).createSmartPointer()
-          )
-        )
-      }
     }
-  }
 
-  override fun createOptionsPanel(): JComponent {
-    return OptionsPanelService.create { component: OptionsPanelService ->
-      component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
-        radioComponent.addOption(
-          "Prefer short format", typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT,
-          "Your casts will look like: <code>(int) \$example</code>"
-        ) { typeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT }
+    override fun createOptionsPanel(): JComponent {
+        return OptionsPanelService.create { component: OptionsPanelService ->
+            component.delegateRadioCreation { radioComponent: OptionsPanelService.RadioComponent ->
+                radioComponent.addOption(
+                    "Prefer short format", typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.SHORT,
+                    "Your casts will look like: <code>(int) \$example</code>"
+                ) { typeCastNormalizationFormat = OptionTypeCastNormalizationFormat.SHORT }
 
-        radioComponent.addOption(
-          "Prefer long format", typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.LONG,
-          "Your casts will look like: <code>(integer) \$example</code>"
-        ) { typeCastNormalizationFormat = OptionTypeCastNormalizationFormat.LONG }
-      }
+                radioComponent.addOption(
+                    "Prefer long format", typeCastNormalizationFormat === OptionTypeCastNormalizationFormat.LONG,
+                    "Your casts will look like: <code>(integer) \$example</code>"
+                ) { typeCastNormalizationFormat = OptionTypeCastNormalizationFormat.LONG }
+            }
+        }
     }
-  }
 }

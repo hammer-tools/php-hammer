@@ -1,11 +1,11 @@
 <html lang="en">
-  <body>
-    This inspection identifies calls to empty methods belonging to the parent class.<br/><br/>
+<body>
+This inspection identifies calls to empty methods belonging to the parent class.<br/><br/>
 
-    Empty methods are usually created to indicate that an implementation of the class determines that an abstract method
-    serves no purpose at that level and can be implemented at lower levels.<br/><br/>
+Empty methods are usually created to indicate that an implementation of the class determines that an abstract method
+serves no purpose at that level and can be implemented at lower levels.<br/><br/>
 
-    <pre><code>abstract class A {
+<pre><code>abstract class A {
     abstract function example();
 }
 
@@ -19,5 +19,5 @@ class C extends B {
         /* doSomething() */
     }
 }</code></pre>
-  </body>
+</body>
 </html>

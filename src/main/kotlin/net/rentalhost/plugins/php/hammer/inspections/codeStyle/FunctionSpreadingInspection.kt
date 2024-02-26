@@ -16,48 +16,47 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class FunctionSpreadingInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpFunctionCall(function: FunctionReference) {
-      if (!function.isName("\\array_merge") || function.parameters.size < 2) return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpFunctionCall(function: FunctionReference) {
+            if (!function.isName("\\array_merge") || function.parameters.size < 2) return
 
-      val isBefore810 = !LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP810)
+            val isBefore810 = !LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP810)
 
-      function.parameters.forEach {
-        if (it.isVariadicPreceded()) return
+            function.parameters.forEach {
+                if (it.isVariadicPreceded()) return
 
-        if (it is FunctionReferenceImpl) {
-          if (isBefore810) return
-          if (it.isGeneratorComplex()) return
+                if (it is FunctionReferenceImpl) {
+                    if (isBefore810) return
+                    if (it.isGeneratorComplex()) return
+                } else {
+                    val variableResolved =
+                        if (it is VariableImpl) (it.resolve() ?: return).parent.followContents()
+                        else it
+
+                    if (!variableResolved.isArrayCreation()) return
+                    if (isBefore810 && (variableResolved as ArrayCreationExpression).isHashed()) return
+                }
+            }
+
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                function,
+                "function ${function.name}() can be replaced with spread",
+                QuickFixService.instance.simpleReplace(
+                    "Replace with spread",
+                    PhpPsiElementFactory.createPhpPsiFromText(
+                        function.project, ArrayCreationExpression::class.java, "[${
+                            PhpPsiElementFactory.createPhpPsiFromText(
+                                function.project,
+                                ArrayCreationExpression::class.java,
+                                "[${function.parameters.joinToString(",") { e -> "...${e.text}" }}]"
+                            ).unpackValues().joinToString(",") { e -> e.text }
+                        }]"
+                    ).createSmartPointer()
+                )
+            )
         }
-        else {
-          val variableResolved =
-            if (it is VariableImpl) (it.resolve() ?: return).parent.followContents()
-            else it
-
-          if (!variableResolved.isArrayCreation()) return
-          if (isBefore810 && (variableResolved as ArrayCreationExpression).isHashed()) return
-        }
-      }
-
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        function,
-        "function ${function.name}() can be replaced with spread",
-        QuickFixService.instance.simpleReplace(
-          "Replace with spread",
-          PhpPsiElementFactory.createPhpPsiFromText(
-            function.project, ArrayCreationExpression::class.java, "[${
-              PhpPsiElementFactory.createPhpPsiFromText(
-                function.project,
-                ArrayCreationExpression::class.java,
-                "[${function.parameters.joinToString(",") { e -> "...${e.text}" }}]"
-              ).unpackValues().joinToString(",") { e -> e.text }
-            }]"
-          ).createSmartPointer()
-        )
-      )
     }
-  }
 
-  override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP740
+    override fun getMinimumSupportedLanguageLevel(): PhpLanguageLevel = PhpLanguageLevel.PHP740
 }

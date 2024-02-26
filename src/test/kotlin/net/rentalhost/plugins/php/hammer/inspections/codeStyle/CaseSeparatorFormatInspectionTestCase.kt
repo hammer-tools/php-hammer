@@ -4,17 +4,17 @@ import net.rentalhost.plugins.php.hammer.inspections.enums.OptionCaseSeparatorFo
 import net.rentalhost.plugins.php.hammer.services.TestCase
 
 class CaseSeparatorFormatInspectionTestCase : TestCase() {
-  fun testCaseSeparatorFormatColon(): Unit =
-    testInspection(
-      CaseSeparatorFormatInspection::class.java,
-      "caseSeparatorFormatColon",
-      { it.caseSeparatorFormat = OptionCaseSeparatorFormat.COLON }
-    )
+    fun testCaseSeparatorFormatColon(): Unit =
+        testInspection(
+            CaseSeparatorFormatInspection::class.java,
+            "caseSeparatorFormatColon",
+            { it.caseSeparatorFormat = OptionCaseSeparatorFormat.COLON }
+        )
 
-  fun testCaseSeparatorFormatSemicolon(): Unit =
-    testInspection(
-      CaseSeparatorFormatInspection::class.java,
-      "caseSeparatorFormatSemicolon",
-      { it.caseSeparatorFormat = OptionCaseSeparatorFormat.SEMICOLON }
-    )
+    fun testCaseSeparatorFormatSemicolon(): Unit =
+        testInspection(
+            CaseSeparatorFormatInspection::class.java,
+            "caseSeparatorFormatSemicolon",
+            { it.caseSeparatorFormat = OptionCaseSeparatorFormat.SEMICOLON }
+        )
 }

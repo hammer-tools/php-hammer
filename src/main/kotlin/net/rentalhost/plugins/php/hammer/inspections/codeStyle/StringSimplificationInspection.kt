@@ -15,35 +15,37 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class StringSimplificationInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpVariable(element: Variable) {
-      val parent = element.parent
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpVariable(element: Variable) {
+            val parent = element.parent
 
-      if (parent !is StringLiteralExpressionImpl ||
-        element.prevSibling !== parent.firstChild ||
-        element.nextSibling !== parent.lastChild)
-        return
+            if (parent !is StringLiteralExpressionImpl ||
+                element.prevSibling !== parent.firstChild ||
+                element.nextSibling !== parent.lastChild
+            )
+                return
 
-      val elementText = element.text
-      val elementTextCropped = elementText.substringAfter("{").substringBefore("}")
-      val elementTextNormalized =
-        if (elementText.startsWith("\${")) "\$$elementTextCropped"
-        else elementTextCropped
+            val elementText = element.text
+            val elementTextCropped = elementText.substringAfter("{").substringBefore("}")
+            val elementTextNormalized =
+                if (elementText.startsWith("\${")) "\$$elementTextCropped"
+                else elementTextCropped
 
-      val isArrayKey =
-        if (parent.parent is PhpPsiElement) PsiTreeUtil.skipWhitespacesAndCommentsForward(parent.parent).elementType == PhpTokenTypes.opHASH_ARRAY
-        else false
+            val isArrayKey =
+                if (parent.parent is PhpPsiElement) PsiTreeUtil.skipWhitespacesAndCommentsForward(parent.parent).elementType == PhpTokenTypes.opHASH_ARRAY
+                else false
 
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        parent,
-        "string can be simplified",
-        QuickFixService.instance.simpleReplace(
-          "Replace with type cast (string)",
-          if (isArrayKey) FactoryService.createExpression(problemsHolder.project, elementTextNormalized).createSmartPointer()
-          else FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementTextNormalized).createSmartPointer()
-        )
-      )
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                parent,
+                "string can be simplified",
+                QuickFixService.instance.simpleReplace(
+                    "Replace with type cast (string)",
+                    if (isArrayKey) FactoryService.createExpression(problemsHolder.project, elementTextNormalized).createSmartPointer()
+                    else FactoryService.createTypeCastExpression(problemsHolder.project, "string", elementTextNormalized)
+                        .createSmartPointer()
+                )
+            )
+        }
     }
-  }
 }

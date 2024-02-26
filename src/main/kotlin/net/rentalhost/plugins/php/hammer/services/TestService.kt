@@ -10,94 +10,98 @@ import java.io.File
 import java.util.function.Consumer
 
 abstract class TestCase : BasePlatformTestCase() {
-  @Throws(Exception::class)
-  override fun setUp() {
-    super.setUp()
+    @Throws(Exception::class)
+    override fun setUp() {
+        super.setUp()
 
-    myFixture.testDataPath = File("src/test/resources").absolutePath
-  }
-
-  protected fun <T : PhpInspection?> testInspection(
-    inspectionClass: Class<T>,
-    phpSourceName: String,
-    phpSourceSubName: List<String>,
-    inspectionSetup: Consumer<T>? = null,
-    phpLanguageLevel: PhpLanguageLevel? = null,
-    quickFixesEnabled: Boolean? = null
-  ): Unit = testInspection(inspectionClass, listOf(phpSourceName, *phpSourceSubName.toTypedArray()), inspectionSetup, phpLanguageLevel, quickFixesEnabled)
-
-  protected fun <T : PhpInspection?> testInspection(
-    inspectionClass: Class<T>,
-    phpSourceSubName: String?,
-    inspectionSetup: Consumer<T>? = null,
-    phpLanguageLevel: PhpLanguageLevel? = null
-  ): Unit = testInspection(inspectionClass, listOf(phpSourceSubName), inspectionSetup, phpLanguageLevel)
-
-  protected fun <T : PhpInspection?> testInspection(
-    inspectionClass: Class<T>,
-    phpSourceSubNames: List<String?>? = null,
-    inspectionSetup: Consumer<T>? = null,
-    phpLanguageLevel: PhpLanguageLevel? = null,
-    quickFixesEnabled: Boolean? = null
-  ) {
-    val phpSourceBase = inspectionClass.name.substringAfter(".hammer.").replace(".", "/")
-    val phpSourceSub = phpSourceSubNames?.first() ?: "default"
-
-    val phpInspection: T = try {
-      inspectionClass.getDeclaredConstructor().newInstance()
-    }
-    catch (e: Exception) {
-      throw e
+        myFixture.testDataPath = File("src/test/resources").absolutePath
     }
 
-    inspectionSetup?.accept(phpInspection)
+    protected fun <T : PhpInspection?> testInspection(
+        inspectionClass: Class<T>,
+        phpSourceName: String,
+        phpSourceSubName: List<String>,
+        inspectionSetup: Consumer<T>? = null,
+        phpLanguageLevel: PhpLanguageLevel? = null,
+        quickFixesEnabled: Boolean? = null
+    ): Unit = testInspection(
+        inspectionClass,
+        listOf(phpSourceName, *phpSourceSubName.toTypedArray()),
+        inspectionSetup,
+        phpLanguageLevel,
+        quickFixesEnabled
+    )
 
-    val phpLanguageLevelDeclared = phpLanguageLevel ?: PhpLanguageLevel.PHP830
+    protected fun <T : PhpInspection?> testInspection(
+        inspectionClass: Class<T>,
+        phpSourceSubName: String?,
+        inspectionSetup: Consumer<T>? = null,
+        phpLanguageLevel: PhpLanguageLevel? = null
+    ): Unit = testInspection(inspectionClass, listOf(phpSourceSubName), inspectionSetup, phpLanguageLevel)
 
-    PhpProjectConfigurationFacade.getInstance(project).languageLevel = phpLanguageLevelDeclared
+    protected fun <T : PhpInspection?> testInspection(
+        inspectionClass: Class<T>,
+        phpSourceSubNames: List<String?>? = null,
+        inspectionSetup: Consumer<T>? = null,
+        phpLanguageLevel: PhpLanguageLevel? = null,
+        quickFixesEnabled: Boolean? = null
+    ) {
+        val phpSourceBase = inspectionClass.name.substringAfter(".hammer.").replace(".", "/")
+        val phpSourceSub = phpSourceSubNames?.first() ?: "default"
 
-    myFixture.enableInspections(phpInspection)
+        val phpInspection: T = try {
+            inspectionClass.getDeclaredConstructor().newInstance()
+        } catch (e: Exception) {
+            throw e
+        }
 
-    if (phpSourceSubNames != null && phpSourceSubNames.size > 1) {
-      myFixture.configureByFiles(*phpSourceSubNames.drop(1).toTypedArray())
-    }
+        inspectionSetup?.accept(phpInspection)
 
-    myFixture.testHighlighting(true, false, true, "$phpSourceBase/$phpSourceSub.php")
+        val phpLanguageLevelDeclared = phpLanguageLevel ?: PhpLanguageLevel.PHP830
 
-    if (quickFixesEnabled != false) {
-      val phpLanguageLevelSuffix =
-        if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP830) ""
-        else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
+        PhpProjectConfigurationFacade.getInstance(project).languageLevel = phpLanguageLevelDeclared
 
-      val quickFixFile = "$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php"
+        myFixture.enableInspections(phpInspection)
 
-      if (File("src/test/resources/$quickFixFile").exists()) {
-        var inspectionQuickFixed = 0
+        if (phpSourceSubNames != null && phpSourceSubNames.size > 1) {
+            myFixture.configureByFiles(*phpSourceSubNames.drop(1).toTypedArray())
+        }
 
-        while (inspectionQuickFixed < 100) {
-          val inspectionQuickFixedBefore = inspectionQuickFixed
+        myFixture.testHighlighting(true, false, true, "$phpSourceBase/$phpSourceSub.php")
 
-          myFixture.getAllQuickFixes()
-            .filter { it !is EmptyIntentionAction }
-            .forEach(Consumer { fix: IntentionAction? ->
-              try {
-                myFixture.launchAction(fix ?: return@Consumer)
-                inspectionQuickFixed++
-              }
-              catch (error: AssertionError) {
-                if (error.message?.contains("hasn't executed") == false) {
-                  throw error
+        if (quickFixesEnabled != false) {
+            val phpLanguageLevelSuffix =
+                if (phpLanguageLevelDeclared == PhpLanguageLevel.PHP830) ""
+                else ".php${phpLanguageLevelDeclared.presentableName.replace(".", "")}0"
+
+            val quickFixFile = "$phpSourceBase/$phpSourceSub.fixed$phpLanguageLevelSuffix.php"
+
+            if (File("src/test/resources/$quickFixFile").exists()) {
+                var inspectionQuickFixed = 0
+
+                while (inspectionQuickFixed < 100) {
+                    val inspectionQuickFixedBefore = inspectionQuickFixed
+
+                    myFixture.getAllQuickFixes()
+                        .filter { it !is EmptyIntentionAction }
+                        .forEach(Consumer { fix: IntentionAction? ->
+                            try {
+                                myFixture.launchAction(fix ?: return@Consumer)
+                                inspectionQuickFixed++
+                            } catch (error: AssertionError) {
+                                if (error.message?.contains("hasn't executed") == false) {
+                                    throw error
+                                }
+                            }
+                        })
+
+                    if (inspectionQuickFixedBefore == inspectionQuickFixed) break
                 }
-              }
-            })
 
-          if (inspectionQuickFixedBefore == inspectionQuickFixed) break
+                if (inspectionQuickFixed > 0) {
+                    myFixture.checkResultByFile(quickFixFile)
+                }
+            }
         }
-
-        if (inspectionQuickFixed > 0) {
-          myFixture.checkResultByFile(quickFixFile)
-        }
-      }
     }
-  }
 }

@@ -12,125 +12,126 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
 fun PsiElement?.insertBeforeElse(addIt: PsiElement, orElse: Lazy<() -> PsiElement>): PsiElement =
-  this?.parent?.addBefore(addIt, this) ?: orElse.value.invoke()
+    this?.parent?.addBefore(addIt, this) ?: orElse.value.invoke()
 
 fun PsiElement.insertBefore(addIt: PsiElement): PsiElement =
-  this.parent.addBefore(addIt, this)
+    this.parent.addBefore(addIt, this)
 
 fun PsiElement.insertAfter(addIt: PsiElement): PsiElement =
-  this.parent.addAfter(addIt, this)
+    this.parent.addAfter(addIt, this)
 
 fun PsiElement.replaceWithGroupStatement(groupStatement: GroupStatement) {
-  val elementReplacement = replace(groupStatement)
+    val elementReplacement = replace(groupStatement)
 
-  elementReplacement.firstChild.delete()
-  elementReplacement.lastChild.delete()
+    elementReplacement.firstChild.delete()
+    elementReplacement.lastChild.delete()
 
-  val elementReplacementParent = elementReplacement.parent
+    val elementReplacementParent = elementReplacement.parent
 
-  if (elementReplacementParent is Statement) {
-    elementReplacementParent.rebuild()
-  }
+    if (elementReplacementParent is Statement) {
+        elementReplacementParent.rebuild()
+    }
 }
 
 fun PsiElement.swap(swapWith: PsiElement): Unit = with(copy()) {
-  this@swap.replace(swapWith)
-  swapWith.replace(this)
+    this@swap.replace(swapWith)
+    swapWith.replace(this)
 }
 
 fun PsiElement.isVariadicPreceded(): Boolean {
-  return (PsiTreeUtil.skipWhitespacesAndCommentsBackward(this) ?: return false)
-    .node.elementType == PhpTokenTypes.opVARIADIC
+    return (PsiTreeUtil.skipWhitespacesAndCommentsBackward(this) ?: return false)
+        .node.elementType == PhpTokenTypes.opVARIADIC
 }
 
 fun PsiElement.isStub(): Boolean =
-  containingFile.virtualFile.path.contains("/php.jar!/")
+    containingFile.virtualFile.path.contains("/php.jar!/")
 
 @OptIn(ExperimentalContracts::class)
 inline fun <reified T : PsiElement> PsiElement?.isExactly(): Boolean {
-  contract { returns(true) implies (this@isExactly is T) }
+    contract { returns(true) implies (this@isExactly is T) }
 
-  return this != null && this::class == T::class
+    return this != null && this::class == T::class
 }
 
 fun PsiElement.isStrictlyStatement(): Boolean =
-  isExactly<StatementImpl>()
+    isExactly<StatementImpl>()
 
 fun PsiElement.withOptionalNotOperator(): PsiElement {
-  val elementParent = this.parent as? UnaryExpression ?: return this
+    val elementParent = this.parent as? UnaryExpression ?: return this
 
-  return if (elementParent.operation.elementType === PhpTokenTypes.opNOT) parent
-  else this
+    return if (elementParent.operation.elementType === PhpTokenTypes.opNOT) parent
+    else this
 }
 
 fun PsiElement?.unparenthesize(): PsiElement? =
-  if (this is ParenthesizedExpression) this.argument.unparenthesize()
-  else this
+    if (this is ParenthesizedExpression) this.argument.unparenthesize()
+    else this
 
 fun PsiElement.parenthesize(): ParenthesizedExpression =
-  FactoryService.createParenthesizedExpression(this.project, this.unparenthesize()!!.text)
+    FactoryService.createParenthesizedExpression(this.project, this.unparenthesize()!!.text)
 
 fun PsiElement.unwrapStatement(): PsiElement {
-  return if (isExactly<StatementImpl>()) (this.firstPsiChild ?: return this).unwrapStatement()
-  else this
+    return if (isExactly<StatementImpl>()) (this.firstPsiChild ?: return this).unwrapStatement()
+    else this
 }
 
 fun PsiElement.followContents(): PsiElement = with(unparenthesize()) {
-  if (this is AssignmentExpression) return@with value.unparenthesize()
-  else this
+    if (this is AssignmentExpression) return@with value.unparenthesize()
+    else this
 } ?: this
 
 fun PsiElement.getCommaRange(): Pair<PsiElement, PsiElement> {
-  val leftComma = PsiTreeUtil.skipWhitespacesAndCommentsBackward(this)
+    val leftComma = PsiTreeUtil.skipWhitespacesAndCommentsBackward(this)
 
-  if (leftComma.elementType == PhpTokenTypes.opCOMMA)
-    return Pair(leftComma!!, this)
+    if (leftComma.elementType == PhpTokenTypes.opCOMMA)
+        return Pair(leftComma!!, this)
 
-  val rightComma = PsiTreeUtil.skipWhitespacesAndCommentsForward(this)
+    val rightComma = PsiTreeUtil.skipWhitespacesAndCommentsForward(this)
 
-  if (rightComma.elementType == PhpTokenTypes.opCOMMA)
-    return Pair(this, rightComma!!)
+    if (rightComma.elementType == PhpTokenTypes.opCOMMA)
+        return Pair(this, rightComma!!)
 
-  return Pair(this, this)
+    return Pair(this, this)
 }
 
 fun PsiElement.getNextTreePsiSibling(): PsiElement? {
-  var element: PsiElement? = this
+    var element: PsiElement? = this
 
-  while (element != null) {
-    with(PsiTreeUtil.skipWhitespacesAndCommentsForward(element)) {
-      if (this != null)
-        return this
+    while (element != null) {
+        with(PsiTreeUtil.skipWhitespacesAndCommentsForward(element)) {
+            if (this != null)
+                return this
+        }
+
+        element = element.parent
     }
 
-    element = element.parent
-  }
-
-  return null
+    return null
 }
 
 fun PsiElement?.isScalar(): Boolean {
-  if (this == null)
-    return false
+    if (this == null)
+        return false
 
-  if (this is ConstantReference ||
-    this is StringLiteralExpression ||
-    this is ArrayCreationExpression ||
-    this is ClassConstantReference ||
-    elementType == PhpElementTypes.NUMBER)
-    return true
-
-  if (this is UnaryExpression)
-    with(this.firstPsiChild ?: return false) {
-      if (elementType == PhpElementTypes.NUMBER)
+    if (this is ConstantReference ||
+        this is StringLiteralExpression ||
+        this is ArrayCreationExpression ||
+        this is ClassConstantReference ||
+        elementType == PhpElementTypes.NUMBER
+    )
         return true
-    }
 
-  return false
+    if (this is UnaryExpression)
+        with(this.firstPsiChild ?: return false) {
+            if (elementType == PhpElementTypes.NUMBER)
+                return true
+        }
+
+    return false
 }
 
 fun PsiElement?.isArrayCreation(): Boolean =
-  this is ArrayCreationExpression
+    this is ArrayCreationExpression
 
 fun Pair<PsiElement, PsiElement>.delete(): Unit =
-  first.parent.deleteChildRange(first, second)
+    first.parent.deleteChildRange(first, second)

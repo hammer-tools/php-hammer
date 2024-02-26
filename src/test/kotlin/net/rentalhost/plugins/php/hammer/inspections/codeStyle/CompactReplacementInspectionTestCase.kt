@@ -4,12 +4,12 @@ import net.rentalhost.plugins.php.hammer.inspections.enums.OptionCompactArgument
 import net.rentalhost.plugins.php.hammer.services.TestCase
 
 class CompactReplacementInspectionTestCase : TestCase() {
-  fun testAll(): Unit = testInspection(CompactReplacementInspection::class.java)
+    fun testAll(): Unit = testInspection(CompactReplacementInspection::class.java)
 
-  fun testCompactReplacementFormatNamed(): Unit =
-    testInspection(
-      CompactReplacementInspection::class.java,
-      "compactArgumentsFormatNamed",
-      { it.compactArgumentsFormat = OptionCompactArgumentsFormat.NAMED }
-    )
+    fun testCompactReplacementFormatNamed(): Unit =
+        testInspection(
+            CompactReplacementInspection::class.java,
+            "compactArgumentsFormatNamed",
+            { it.compactArgumentsFormat = OptionCompactArgumentsFormat.NAMED }
+        )
 }

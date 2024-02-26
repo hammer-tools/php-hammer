@@ -12,20 +12,20 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class StaticAnonymousFunctionCannotAccessThisInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpVariable(variable: Variable?) {
-      if (variable?.name?.lowercase() != "this") return
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpVariable(variable: Variable?) {
+            if (variable?.name?.lowercase() != "this") return
 
-      val functionScope = variable.parentOfTypes(Function::class) ?: return
+            val functionScope = variable.parentOfTypes(Function::class) ?: return
 
-      if (!functionScope.isAnonymous() || !functionScope.isStatic()) return
+            if (!functionScope.isAnonymous() || !functionScope.isStatic()) return
 
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        functionScope.firstChild,
-        "static anonymous functions cannot access \$this",
-        QuickFixService.instance.simpleDelete("Delete this \"static\" declaration")
-      )
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                functionScope.firstChild,
+                "static anonymous functions cannot access \$this",
+                QuickFixService.instance.simpleDelete("Delete this \"static\" declaration")
+            )
+        }
     }
-  }
 }

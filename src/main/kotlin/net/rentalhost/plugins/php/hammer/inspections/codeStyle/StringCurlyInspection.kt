@@ -11,23 +11,24 @@ import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class StringCurlyInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpVariable(element: Variable) {
-      val elementParent = element.parent
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpVariable(element: Variable) {
+            val elementParent = element.parent
 
-      if (elementParent !is StringLiteralExpression ||
-        element.text != "\$${element.name}")
-        return
+            if (elementParent !is StringLiteralExpression ||
+                element.text != "\$${element.name}"
+            )
+                return
 
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        element,
-        "variable must have curly braces",
-        QuickFixService.instance.simpleReplace(
-          "Wrap with curly braces",
-          FactoryService.createCurlyVariable(problemsHolder.project, element.name).createSmartPointer()
-        )
-      )
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                element,
+                "variable must have curly braces",
+                QuickFixService.instance.simpleReplace(
+                    "Wrap with curly braces",
+                    FactoryService.createCurlyVariable(problemsHolder.project, element.name).createSmartPointer()
+                )
+            )
+        }
     }
-  }
 }

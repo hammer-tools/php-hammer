@@ -10,110 +10,110 @@ import org.gradle.configurationcache.extensions.capitalized
 import java.io.File
 
 internal class GenerateChangelogTask : ProjectTools.ProjectTask() {
-  private val boxNames = listOf("important", "added", "changed", "fixed", "removed")
+    private val boxNames = listOf("important", "added", "changed", "fixed", "removed")
 
-  override fun apply(project: Project) {
-    project.task("generateChangelog") {
-      group = groupName
-      description = "Generate project changelog based on git commits."
+    override fun apply(project: Project) {
+        project.task("generateChangelog") {
+            group = groupName
+            description = "Generate project changelog based on git commits."
 
-      doLast { generateChangelog(project) }
-    }
-  }
-
-  private fun generateChangelog(project: Project) {
-    var changelogResult = "# Changelog\n\n" +
-      "All notable changes to this project will be documented in this file.\n\n" +
-      "The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),\n" +
-      "and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).\n\n"
-
-    val commits = GitService.getCommits(project.projectDir).toMutableList()
-
-    val extrasFile = File("${project.projectDir}/extras/changelog.extras")
-
-    if (extrasFile.exists()) {
-      commits.addAll(ChangelogService.getExtraCommits(FileService.read(extrasFile.path)))
+            doLast { generateChangelog(project) }
+        }
     }
 
-    val pluginName = ProjectTools.prop(project, "pluginName")
+    private fun generateChangelog(project: Project) {
+        var changelogResult = "# Changelog\n\n" +
+                "All notable changes to this project will be documented in this file.\n\n" +
+                "The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),\n" +
+                "and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).\n\n"
 
-    commits.sortByDescending { it.versionInt(project) }
+        val commits = GitService.getCommits(project.projectDir).toMutableList()
 
-    commits.groupBy { it.getTag(project) }.forEach { it ->
-      with(it.value) {
-        val commitBoxes = boxNames.associateWith { mutableListOf<GitCommit>() }
+        val extrasFile = File("${project.projectDir}/extras/changelog.extras")
 
-        val recentlyImplemented = mutableListOf<String>()
-        val recentlyRemoved = mutableListOf<String>()
-
-        reversed()
-          .filter { commitBoxes.containsKey(it.box) }
-          .filter { it.extraCommit || it.isInspectionRelated() }
-          .also { forEach { if (it.box == "removed") recentlyRemoved.add(it.classReference) } }
-          .forEach commitLoop@{
-            val commitBox = commitBoxes[it.box] ?: return@commitLoop
-
-            if (recentlyImplemented.contains(it.classReference) ||
-              recentlyRemoved.contains(it.classReference)) {
-              return@commitLoop
-            }
-            else if (it.isRecentlyImplemented()) {
-              recentlyImplemented.add(it.classReference)
-            }
-
-            commitBox.add(it)
-          }
-
-        if (commitBoxes.all { it.value.isEmpty() })
-          return@with
-
-        val urlReferences = mutableMapOf<String, String>()
-
-        if (it.key != "") {
-          urlReferences[it.key] = "https://github.com/hammer-tools/${pluginName}/releases/tag/${it.key}"
+        if (extrasFile.exists()) {
+            commits.addAll(ChangelogService.getExtraCommits(FileService.read(extrasFile.path)))
         }
 
-        with(first()) {
-          changelogResult += "## ${getTagDescription(project)}\n\n"
+        val pluginName = ProjectTools.prop(project, "pluginName")
 
-          with(getTag(project)) {
-            urlReferences[this] = "https://github.com/hammer-tools/${pluginName}/releases/tag/$this"
-          }
-        }
+        commits.sortByDescending { it.versionInt(project) }
 
-        for ((key, value) in commitBoxes) {
-          if (value.isEmpty())
-            continue
+        commits.groupBy { it.getTag(project) }.forEach { (commitKey, commitValue) ->
+            with(commitValue) {
+                val commitBoxes = boxNames.associateWith { mutableListOf<GitCommit>() }
 
-          changelogResult += "### ${key.capitalized()}\n\n"
+                val recentlyImplemented = mutableListOf<String>()
+                val recentlyRemoved = mutableListOf<String>()
 
-          value
-            .sortedBy { it.classReference }
-            .sortedByDescending { it.isRecentlyImplemented() }
-            .also { it ->
-              it.filter { it.classReference != "" }
-                .forEach {
-                  it.classReference.split(Regex(",\\s*")).forEach { classReference ->
-                    urlReferences[classReference] = GitCommit.getClassReferenceUrl(pluginName, classReference)
-                  }
+                reversed()
+                    .filter { commitBoxes.containsKey(it.box) }
+                    .filter { it.extraCommit || it.isInspectionRelated() }
+                    .also { forEach { if (it.box == "removed") recentlyRemoved.add(it.classReference) } }
+                    .forEach commitLoop@{
+                        val commitBox = commitBoxes[it.box] ?: return@commitLoop
+
+                        if (recentlyImplemented.contains(it.classReference) ||
+                            recentlyRemoved.contains(it.classReference)
+                        ) {
+                            return@commitLoop
+                        } else if (it.isRecentlyImplemented()) {
+                            recentlyImplemented.add(it.classReference)
+                        }
+
+                        commitBox.add(it)
+                    }
+
+                if (commitBoxes.all { it.value.isEmpty() })
+                    return@with
+
+                val urlReferences = mutableMapOf<String, String>()
+
+                if (commitKey != "") {
+                    urlReferences[commitKey] = "https://github.com/hammer-tools/${pluginName}/releases/tag/${commitKey}"
                 }
-            }
-            .sortedBy { it.classReference != "" }
-            .forEach { it ->
-              changelogResult += "- ${it.getMessagePrintable()}\n"
 
-              GitService.parseVersions(it.message).forEach {
-                urlReferences[it] = "https://github.com/hammer-tools/${pluginName}/releases/tag/$it"
-              }
-            }
+                with(first()) {
+                    changelogResult += "## ${getTagDescription(project)}\n\n"
 
-          changelogResult += "\n"
+                    with(getTag(project)) {
+                        urlReferences[this] = "https://github.com/hammer-tools/${pluginName}/releases/tag/$this"
+                    }
+                }
+
+                for ((key, value) in commitBoxes) {
+                    if (value.isEmpty())
+                        continue
+
+                    changelogResult += "### ${key.capitalized()}\n\n"
+
+                    value
+                        .sortedBy { it.classReference }
+                        .sortedByDescending { it.isRecentlyImplemented() }
+                        .also { it ->
+                            it.filter { it.classReference != "" }
+                                .forEach {
+                                    it.classReference.split(Regex(",\\s*")).forEach { classReference ->
+                                        urlReferences[classReference] = GitCommit.getClassReferenceUrl(pluginName, classReference)
+                                    }
+                                }
+                        }
+                        .sortedBy { it.classReference != "" }
+                        .forEach { it ->
+                            changelogResult += "- ${it.getMessagePrintable()}\n"
+
+                            GitService.parseVersions(it.message).forEach {
+                                urlReferences[it] = "https://github.com/hammer-tools/${pluginName}/releases/tag/$it"
+                            }
+                        }
+
+                    changelogResult += "\n"
+                }
+
+                urlReferences.forEach { (reference, url) -> changelogResult += "[$reference]: $url\n\n" }
+            }
         }
 
-        urlReferences.forEach { (reference, url) -> changelogResult += "[$reference]: $url\n\n" }
-      }
+        File("${project.projectDir}/CHANGELOG.md").writeText(changelogResult)
     }
-
-    File("${project.projectDir}/CHANGELOG.md").writeText(changelogResult)
-  }
 }

@@ -14,42 +14,42 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 import net.rentalhost.plugins.php.hammer.services.TypeService
 
 class StrictComparisonInspection : PhpInspection() {
-  override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
-    override fun visitPhpBinaryExpression(element: BinaryExpression) {
-      val isOperatorEqual = element.isOperatorEqual()
+    override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
+        override fun visitPhpBinaryExpression(element: BinaryExpression) {
+            val isOperatorEqual = element.isOperatorEqual()
 
-      if (!isOperatorEqual && !element.isOperatorNotEqual())
-        return
+            if (!isOperatorEqual && !element.isOperatorNotEqual())
+                return
 
-      val elementLeft = element.leftOperand.unparenthesize() ?: return
-      val elementRight = element.rightOperand.unparenthesize() ?: return
+            val elementLeft = element.leftOperand.unparenthesize() ?: return
+            val elementRight = element.rightOperand.unparenthesize() ?: return
 
-      val elementLeftType = TypeService.getType(elementLeft) ?: return
-      val elementRightType = TypeService.getType(elementRight) ?: return
+            val elementLeftType = TypeService.getType(elementLeft) ?: return
+            val elementRightType = TypeService.getType(elementRight) ?: return
 
-      if (elementLeftType != elementRightType)
-        return
+            if (elementLeftType != elementRightType)
+                return
 
-      if (elementLeftType.isAmbiguous || elementRightType.isAmbiguous)
-        return
+            if (elementLeftType.isAmbiguous || elementRightType.isAmbiguous)
+                return
 
-      if (elementLeftType.size() != 1 || elementRightType.size() != 1)
-        return
+            if (elementLeftType.size() != 1 || elementRightType.size() != 1)
+                return
 
-      val elementOperatorReplacement =
-        if (isOperatorEqual) FactoryService.createOperatorStrictEqual(problemsHolder.project)
-        else FactoryService.createOperatorStrictNotEqual(problemsHolder.project)
+            val elementOperatorReplacement =
+                if (isOperatorEqual) FactoryService.createOperatorStrictEqual(problemsHolder.project)
+                else FactoryService.createOperatorStrictNotEqual(problemsHolder.project)
 
-      ProblemsHolderService.instance.registerProblem(
-        problemsHolder,
-        element.operation!!,
-        "strict comparison can be used safely here",
-        QuickFixService.instance.simpleReplace(
-          "Replace with strict comparison",
-          element.operation!!.createSmartPointer(),
-          elementOperatorReplacement.createSmartPointer()
-        )
-      )
+            ProblemsHolderService.instance.registerProblem(
+                problemsHolder,
+                element.operation ?: return,
+                "strict comparison can be used safely here",
+                QuickFixService.instance.simpleReplace(
+                    "Replace with strict comparison",
+                    (element.operation ?: return).createSmartPointer(),
+                    elementOperatorReplacement.createSmartPointer()
+                )
+            )
+        }
     }
-  }
 }
