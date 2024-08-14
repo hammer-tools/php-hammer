@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import net.rentalhost.plugins.php.hammer.inspections.enums.OptionUnaryOperatorSideFormat
-import net.rentalhost.plugins.php.hammer.services.TestCase
+import net.rentalhost.plugins.php.hammer.TestCase
 
 class UnaryOperatorFormatInspectionTestCase : TestCase() {
     fun testUnaryOperatorSideLeft(): Unit = testInspection(

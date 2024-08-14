@@ -5,7 +5,7 @@ fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij.platform") version "2.0.0-rc2"
+    id("org.jetbrains.intellij.platform") version "2.0.1"
     id("org.jetbrains.kotlin.jvm") version "1.9.25"
 }
 
@@ -26,6 +26,7 @@ dependencies {
     }
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.opentest4j:opentest4j:1.3.0")
 }
 
 group = prop("pluginId")
@@ -45,7 +46,7 @@ apply {
 
 kotlin {
     jvmToolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -66,6 +67,10 @@ tasks {
         isScanForTestClasses = false
 
         include("**/*TestCase.class")
+
+        filter {
+            excludeTestsMatching("net.rentalhost.plugins.php.hammer.TestCase")
+        }
 
         systemProperty("idea.split.test.logs", "true")
     }
@@ -117,11 +122,11 @@ tasks {
 val compileKotlin: KotlinCompile by tasks
 
 compileKotlin.kotlinOptions {
-    jvmTarget = "17"
+    jvmTarget = "21"
 }
 
 val compileTestKotlin: KotlinCompile by tasks
 
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "17"
+    jvmTarget = "21"
 }
