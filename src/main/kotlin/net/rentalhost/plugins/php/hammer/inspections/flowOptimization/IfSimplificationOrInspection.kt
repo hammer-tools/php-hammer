@@ -2,7 +2,7 @@ package net.rentalhost.plugins.php.hammer.inspections.flowOptimization
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiWhiteSpace
-import com.intellij.refactoring.suggested.createSmartPointer
+import com.intellij.psi.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor

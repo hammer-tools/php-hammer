@@ -1,8 +1,8 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeError
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.createSmartPointer
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.refactoring.suggested.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.ArrayHashElement
 import com.jetbrains.php.lang.psi.elements.Function

@@ -5,8 +5,8 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.project.Project
 import com.intellij.psi.SmartPsiElementPointer
-import com.intellij.refactoring.suggested.createSmartPointer
-import com.intellij.refactoring.suggested.startOffset
+import com.intellij.psi.createSmartPointer
+import com.intellij.psi.util.startOffset
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.PhpUseList
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
