@@ -1,6 +1,6 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
-import net.rentalhost.plugins.php.hammer.services.TestCase
+import net.rentalhost.plugins.php.hammer.TestCase
 
 class ClassnameLiteralInspectionTestCase : TestCase() {
     fun testAll(): Unit = testInspection(

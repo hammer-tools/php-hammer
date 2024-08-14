@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
 import com.jetbrains.php.config.PhpLanguageLevel
-import net.rentalhost.plugins.php.hammer.services.TestCase
+import net.rentalhost.plugins.php.hammer.TestCase
 
 class ParameterDefaultsNullInspectionTestCase : TestCase() {
     fun testAllPhp530(): Unit = testInspection(ParameterDefaultsNullInspection::class.java, phpLanguageLevel = PhpLanguageLevel.PHP530)

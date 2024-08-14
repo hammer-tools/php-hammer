@@ -2,7 +2,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
-import com.intellij.refactoring.suggested.createSmartPointer
+import com.intellij.psi.createSmartPointer
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference

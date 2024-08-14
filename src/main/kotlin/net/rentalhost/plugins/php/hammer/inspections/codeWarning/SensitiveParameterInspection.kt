@@ -7,8 +7,8 @@ import com.intellij.codeInspection.options.OptPane
 import com.intellij.codeInspection.options.OptStringList
 import com.intellij.codeInspection.options.PlainMessage
 import com.intellij.openapi.util.text.HtmlChunk
+import com.intellij.psi.createSmartPointer
 import com.intellij.psi.util.findParentOfType
-import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.documentation.phpdoc.psi.PhpDocComment

@@ -16,3 +16,4 @@
 0.22.2;fixed;**Additional feature**: fix checkbox control to not be disabled, but unselected;
 0.24.0;removed;**Additional feature**: add missing semicolon on save PHP documents - didn't work as expected;
 0.30.0;added;**PhpStorm 2024.1** (EAP) is now supported and minimum supported version due to API changes;
+0.31.0;added;**PhpStorm 2024.2** (EAP) is now supported and minimum supported version due to API changes;

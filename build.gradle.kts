@@ -1,16 +1,32 @@
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.17.2"
-    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    id("org.jetbrains.intellij.platform") version "2.0.1"
+    id("org.jetbrains.kotlin.jvm") version "1.9.25"
 }
 
 dependencies {
-    implementation("io.sentry:sentry:7.4.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
+    implementation("io.sentry:sentry:7.12.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.25")
+
+    intellijPlatform {
+        phpstorm(prop("platformVersion"), false)
+
+        bundledPlugin("com.jetbrains.php")
+
+        pluginVerifier()
+        zipSigner()
+        instrumentationTools()
+
+        testFramework(TestFrameworkType.Platform)
+    }
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.opentest4j:opentest4j:1.3.0")
 }
 
 group = prop("pluginId")
@@ -18,23 +34,19 @@ version = prop("pluginVersion")
 
 repositories {
     mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 apply {
     plugin(net.rentalhost.plugins.gradle.ProjectTools::class)
 }
 
-intellij {
-    pluginName = prop("pluginName")
-    version = prop("platformVersion")
-    type = "PS"
-
-    plugins = listOf("com.jetbrains.php:${prop("platformPhpBuild")}")
-}
-
 kotlin {
     jvmToolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -55,6 +67,10 @@ tasks {
         isScanForTestClasses = false
 
         include("**/*TestCase.class")
+
+        filter {
+            excludeTestsMatching("net.rentalhost.plugins.php.hammer.TestCase")
+        }
 
         systemProperty("idea.split.test.logs", "true")
     }
@@ -106,11 +122,11 @@ tasks {
 val compileKotlin: KotlinCompile by tasks
 
 compileKotlin.kotlinOptions {
-    jvmTarget = "17"
+    jvmTarget = "21"
 }
 
 val compileTestKotlin: KotlinCompile by tasks
 
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "17"
+    jvmTarget = "21"
 }

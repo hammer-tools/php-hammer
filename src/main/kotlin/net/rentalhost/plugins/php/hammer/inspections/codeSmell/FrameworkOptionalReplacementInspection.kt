@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeSmell
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.refactoring.suggested.createSmartPointer
+import com.intellij.psi.createSmartPointer
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.inspections.PhpInspection

@@ -9,12 +9,8 @@ import com.intellij.codeInspection.options.OptPane
 import com.intellij.codeInspection.options.PlainMessage
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.HtmlChunk
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
-import com.intellij.psi.SmartPointerManager
-import com.intellij.psi.SmartPsiElementPointer
+import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.refactoring.suggested.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageFeature
 import com.jetbrains.php.lang.inspections.PhpInspection

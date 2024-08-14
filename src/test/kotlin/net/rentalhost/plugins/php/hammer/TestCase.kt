@@ -1,4 +1,4 @@
-package net.rentalhost.plugins.php.hammer.services
+package net.rentalhost.plugins.php.hammer
 
 import com.intellij.codeInsight.intention.EmptyIntentionAction
 import com.intellij.codeInsight.intention.IntentionAction
