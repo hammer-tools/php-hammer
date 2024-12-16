@@ -5,7 +5,7 @@
 
     <vendor email="david.rodrigues@rentalhost.net">Rentalhost</vendor>
 
-    <idea-version since-build="243" until-build="243.*" />
+    <idea-version since-build="243" />
 
     <description><![CDATA[
         <strong>PHP Hammer</strong> is a powerful plugin that enhances the PHP language in PhpStorm by adding <a

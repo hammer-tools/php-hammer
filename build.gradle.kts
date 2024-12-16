@@ -89,7 +89,6 @@ tasks {
         pluginId = prop("pluginId")
         version = prop("pluginVersion")
         sinceBuild = prop("pluginBuildSince")
-        untilBuild = prop("pluginBuildUntil")
     }
 
     setupDependencies {

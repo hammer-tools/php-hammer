@@ -5,7 +5,7 @@
 
     <vendor email="david.rodrigues@rentalhost.net">Rentalhost</vendor>
 
-    <idea-version since-build="$pluginBuildSince" until-build="$pluginBuildUntil" />
+    <idea-version since-build="$pluginBuildSince" />
 
     <description><![CDATA[
         $pluginDescription

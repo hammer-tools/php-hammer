@@ -8,7 +8,7 @@ import org.jsoup.parser.Parser
 import java.io.File
 
 internal class GeneratePluginXMLTask : ProjectTools.ProjectTask() {
-    private val copyProperties = listOf("pluginId", "pluginVersion", "pluginBuildSince", "pluginBuildUntil")
+    private val copyProperties = listOf("pluginId", "pluginVersion", "pluginBuildSince")
 
     override fun apply(project: Project) {
         project.task("generatePluginXML") {
