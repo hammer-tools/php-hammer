@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
-import net.rentalhost.plugins.php.hammer.inspections.enums.OptionComparisonScalarSide
 import net.rentalhost.plugins.php.hammer.TestCase
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionComparisonScalarSide
 
 class ComparisonScalarOrderInspectionTestCase : TestCase() {
     fun testComparisonScalarRight(): Unit = testInspection(

@@ -258,13 +258,13 @@ class ParameterDefaultsNullInspection : PhpInspection() {
 
             val variableAssignment = FactoryService.createAssignmentStatement(project, with(parameterAssignment) {
                 when {
-                    LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "\$$this ??= ${parameterDefaultValue.text};"
+                    LanguageService.hasFeature(project, PhpLanguageFeature.COALESCE_ASSIGN) -> "$$this ??= ${parameterDefaultValue.text};"
                     LanguageService.hasFeature(
                         project,
                         PhpLanguageFeature.COALESCE_OPERATOR
-                    ) -> "\$$this = \$$parameterName ?? ${parameterDefaultValue.text};"
+                    ) -> "$$this = $$parameterName ?? ${parameterDefaultValue.text};"
 
-                    else -> "\$$this = \$$parameterName === null ? ${parameterDefaultValue.text} : \$$parameterName;"
+                    else -> "$$this = $$parameterName === null ? ${parameterDefaultValue.text} : $$parameterName;"
                 }
             })
 

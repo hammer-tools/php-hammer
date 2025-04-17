@@ -28,7 +28,7 @@ class StringSimplificationInspection : PhpInspection() {
             val elementText = element.text
             val elementTextCropped = elementText.substringAfter("{").substringBefore("}")
             val elementTextNormalized =
-                if (elementText.startsWith("\${")) "\$$elementTextCropped"
+                if (elementText.startsWith("\${")) "$$elementTextCropped"
                 else elementTextCropped
 
             val isArrayKey =

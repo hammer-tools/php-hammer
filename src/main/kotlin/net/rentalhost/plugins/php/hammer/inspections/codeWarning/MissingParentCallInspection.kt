@@ -78,8 +78,8 @@ class MissingParentCallInspection : PhpInspection() {
                             "parent::${method.name}",
                             (baseMethodPointer.element ?: return@simpleInline).parameters.mapIndexed { parameterIndex, parameter ->
                                 if (method.getParameter(parameterIndex) != null) {
-                                    if (parameter.isVariadic) "...\$${parameter.name}"
-                                    else "\$${parameter.name}"
+                                    if (parameter.isVariadic) "...$${parameter.name}"
+                                    else "$${parameter.name}"
                                 } else "null"
                             }
                         )

@@ -160,7 +160,7 @@ object FactoryService {
         PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpression::class.java, "($castTypeFinal)($castTypeInitial)$value")
 
     fun createCurlyVariable(project: Project, variableName: String): PsiElement =
-        PhpPsiElementFactory.createPhpPsiFromText(project, Variable::class.java, "\"{\$$variableName}\";")
+        PhpPsiElementFactory.createPhpPsiFromText(project, Variable::class.java, "\"{$$variableName}\";")
 
     fun createUnaryRightOperation(project: Project, element: String, operator: String): UnaryExpressionImpl =
         PhpPsiElementFactory.createPhpPsiFromText(project, UnaryExpressionImpl::class.java, "$element$operator;")

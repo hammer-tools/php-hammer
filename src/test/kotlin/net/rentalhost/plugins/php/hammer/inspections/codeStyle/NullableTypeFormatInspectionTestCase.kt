@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
-import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullableTypeFormat
 import net.rentalhost.plugins.php.hammer.TestCase
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionNullableTypeFormat
 
 class NullableTypeFormatInspectionTestCase : TestCase() {
     fun testFormatLong(): Unit =

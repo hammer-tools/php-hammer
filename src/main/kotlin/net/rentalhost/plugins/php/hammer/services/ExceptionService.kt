@@ -1,6 +1,5 @@
 package net.rentalhost.plugins.php.hammer.services
 
-import com.intellij.diagnostic.IdeaReportingEvent
 import com.intellij.ide.plugins.IdeaPluginDescriptor
 import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter
@@ -29,14 +28,10 @@ class ExceptionService : ErrorReportSubmitter() {
         initializeSentry
 
         for (event in events) {
-            if (event !is IdeaReportingEvent) {
-                continue
-            }
-
             val message = Message()
-            message.message = event.getThrowableText().lines().firstOrNull() ?: event.getMessage()
+            message.message = event.throwableText.lines().firstOrNull() ?: event.message
 
-            val sentryEvent = SentryEvent(event.data.throwable)
+            val sentryEvent = SentryEvent(event.throwable)
             sentryEvent.message = message
             sentryEvent.level = SentryLevel.ERROR
 
@@ -60,7 +55,6 @@ class ExceptionService : ErrorReportSubmitter() {
         return true
     }
 
-    @Suppress("DialogTitleCapitalization")
     override fun getReportActionText(): String =
         "Report to ${ProjectService.instance.name} plugin"
 }

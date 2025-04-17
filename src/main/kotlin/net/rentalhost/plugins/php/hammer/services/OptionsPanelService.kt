@@ -12,7 +12,7 @@ class OptionsPanelService private constructor() {
 
         delegate.accept(radioComponent)
 
-        if (radioComponent.selectedOption == null && radioComponent.radioOptions.size >= 1) {
+        if (radioComponent.selectedOption == null && radioComponent.radioOptions.isNotEmpty()) {
             val firstWidget = radioComponent.radioOptions[0]
 
             firstWidget.radioButton.isSelected = true

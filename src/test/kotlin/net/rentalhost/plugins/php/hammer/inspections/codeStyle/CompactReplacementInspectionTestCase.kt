@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeStyle
 
-import net.rentalhost.plugins.php.hammer.inspections.enums.OptionCompactArgumentsFormat
 import net.rentalhost.plugins.php.hammer.TestCase
+import net.rentalhost.plugins.php.hammer.inspections.enums.OptionCompactArgumentsFormat
 
 class CompactReplacementInspectionTestCase : TestCase() {
     fun testAll(): Unit = testInspection(CompactReplacementInspection::class.java)

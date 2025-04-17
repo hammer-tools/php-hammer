@@ -22,7 +22,7 @@ fun ArrayCreationExpression.unpackValues(): MutableList<PsiElement> {
             val compactNames = ElementService.getCompactNames(arrayElement.firstPsiChild as PsiElement)
 
             if (compactNames != null) {
-                arrayElements.addAll(compactNames.map { FactoryService.createArrayKeyValue(arrayElement.project, "'$it'", "\$$it") })
+                arrayElements.addAll(compactNames.map { FactoryService.createArrayKeyValue(arrayElement.project, "'$it'", "$$it") })
 
                 continue
             }

@@ -16,7 +16,7 @@ class StringCurlyInspection : PhpInspection() {
             val elementParent = element.parent
 
             if (elementParent !is StringLiteralExpression ||
-                element.text != "\$${element.name}"
+                element.text != "$${element.name}"
             )
                 return
 

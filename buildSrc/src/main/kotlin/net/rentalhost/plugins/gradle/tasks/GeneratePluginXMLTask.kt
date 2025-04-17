@@ -31,7 +31,7 @@ internal class GeneratePluginXMLTask : ProjectTools.ProjectTask() {
         val pluginInspections = InspectionService.getInspection(project)
 
         for (copyProperty in copyProperties) {
-            pluginXMLContents = pluginXMLContents.replace("\$$copyProperty", ProjectTools.prop(project, copyProperty))
+            pluginXMLContents = pluginXMLContents.replace("$$copyProperty", ProjectTools.prop(project, copyProperty))
         }
 
         pluginXMLContents = pluginXMLContents.replace(

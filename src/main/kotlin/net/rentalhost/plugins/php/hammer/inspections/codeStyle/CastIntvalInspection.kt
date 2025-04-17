@@ -47,7 +47,7 @@ class CastIntvalInspection : PhpInspection() {
                 QuickFixService.instance.simpleReplace(
                     "Replace with null",
                     element.parent.createSmartPointer(),
-                    FactoryService.createAssignmentStatement(problemsHolder.project, "\$${castElement.name} = null;").createSmartPointer()
+                    FactoryService.createAssignmentStatement(problemsHolder.project, "$${castElement.name} = null;").createSmartPointer()
                 )
             )
         }
@@ -61,7 +61,7 @@ class CastIntvalInspection : PhpInspection() {
                 element.parent.createSmartPointer(),
                 FactoryService.createAssignmentStatement(
                     problemsHolder.project,
-                    "\$${castElement.name} = ($castTypeTo) \$${castElement.name};"
+                    "$${castElement.name} = ($castTypeTo) $${castElement.name};"
                 ).createSmartPointer()
             )
         )

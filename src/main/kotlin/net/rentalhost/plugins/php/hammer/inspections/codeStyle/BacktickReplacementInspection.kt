@@ -34,7 +34,7 @@ class BacktickReplacementInspection : PhpInspection() {
                     "Replace by shell_exec()",
                     FactoryService.createFunctionCall(
                         problemsHolder.project, "shell_exec",
-                        if (containsVariableOnly) listOf("\$${commandVariable.first().name}")
+                        if (containsVariableOnly) listOf("$${commandVariable.first().name}")
                         else listOf(StringService.addQuotes(commandContents, commandVariable.isNotEmpty(), false))
                     ).createSmartPointer()
                 )

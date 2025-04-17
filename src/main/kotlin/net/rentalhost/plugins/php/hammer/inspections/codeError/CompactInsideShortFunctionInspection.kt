@@ -41,7 +41,7 @@ class CompactInsideShortFunctionInspection : PhpInspection() {
                                 is StringLiteralExpressionImpl -> FactoryService.createArrayKeyValue(
                                     problemsHolder.project,
                                     eParameter.text,
-                                    "\$${eParameter.contents}"
+                                    "$${eParameter.contents}"
                                 )
 
                                 is VariableImpl -> FactoryService.createArrayKeyValue(

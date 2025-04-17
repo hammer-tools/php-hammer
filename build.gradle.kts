@@ -10,12 +10,10 @@ plugins {
     id("java")
     id("org.jetbrains.intellij.platform") version "2.5.0"
     id("org.jetbrains.kotlin.jvm") version "2.1.10"
+    id("io.sentry.jvm.gradle") version "5.3.0"
 }
 
 dependencies {
-    implementation("io.sentry:sentry:7.22.5")
-    //implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.25")
-
     intellijPlatform {
         phpstorm(prop("platformVersion"), false)
 
@@ -23,7 +21,6 @@ dependencies {
 
         pluginVerifier()
         zipSigner()
-        //instrumentationTools()
 
         testFramework(TestFrameworkType.Platform)
     }
@@ -74,10 +71,6 @@ tasks {
         systemProperty("idea.split.test.logs", "true")
     }
 
-    jar {
-        //dependsOn("compileTestKotlin")
-    }
-
     wrapper {
         gradleVersion = prop("gradleVersion")
     }
@@ -125,7 +118,6 @@ intellijPlatform {
     pluginVerification {
         ides {
             ide(IntelliJPlatformType.PhpStorm, "2025.1")
-            //local(file("C:\\Users\\Ronny\\AppData\\Local\\Programs\\PhpStorm"))
             recommended()
             select {
                 types = listOf(IntelliJPlatformType.PhpStorm)

@@ -2,6 +2,7 @@ package net.rentalhost.plugins.php.hammer
 
 import com.intellij.codeInsight.intention.EmptyIntentionAction
 import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.openapi.vfs.newvfs.impl.VfsRootAccess
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.config.PhpProjectConfigurationFacade
@@ -15,6 +16,8 @@ abstract class TestCase : BasePlatformTestCase() {
         super.setUp()
 
         myFixture.testDataPath = File("src/test/resources").absolutePath
+
+        VfsRootAccess.allowRootAccess(testRootDisposable, myFixture.testDataPath)
     }
 
     protected fun <T : PhpInspection?> testInspection(

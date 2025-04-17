@@ -30,8 +30,7 @@ fun ControlStatement.getNextSiblingConditional(): ControlStatement? {
 
         is ElseIf -> {
             with(this.getNextTreePsiSibling()) {
-                if (this is ControlStatement) this
-                else (this as? Else ?: return null).statement as? If ?: return null
+                this as? ControlStatement ?: ((this as? Else ?: return null).statement as? If ?: return null)
             }
         }
 

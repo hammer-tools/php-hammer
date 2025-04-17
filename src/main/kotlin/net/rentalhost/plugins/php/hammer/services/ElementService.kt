@@ -55,8 +55,7 @@ object ElementService {
 
         val range = when {
             arrayExpression != null -> with(it.parent) {
-                if (this.parent is ArrayHashElement) this.parent
-                else this
+                this.parent as? ArrayHashElement ?: this
             }
 
             else -> it

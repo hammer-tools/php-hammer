@@ -23,7 +23,7 @@ object NotificationService {
         if (actions != null) {
             for ((name, documentTitle, buttonTitle, url, callback) in actions) {
                 if (name != null) {
-                    finalContent = finalContent.replace("\$${name}", "<a href=\"${url}\">${documentTitle}</a>")
+                    finalContent = finalContent.replace("$${name}", "<a href=\"${url}\">${documentTitle}</a>")
                 }
 
                 if (buttonTitle != null) {

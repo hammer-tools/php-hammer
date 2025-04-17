@@ -32,7 +32,7 @@ class DollarSignOutsideCurlyBracesInspection : PhpInspection() {
                 element,
                 "using \${var} in strings is deprecated",
                 QuickFixService.instance.simpleReplace(
-                    "Replace with {\$$replaceWith}",
+                    "Replace with {$$replaceWith}",
                     FactoryService.createCurlyVariable(problemsHolder.project, replaceWith).createSmartPointer()
                 )
             )
