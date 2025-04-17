@@ -1,17 +1,20 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij.platform") version "2.0.1"
-    id("org.jetbrains.kotlin.jvm") version "1.9.25"
+    id("org.jetbrains.intellij.platform") version "2.5.0"
+    id("org.jetbrains.kotlin.jvm") version "2.1.10"
 }
 
 dependencies {
-    implementation("io.sentry:sentry:7.12.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.25")
+    implementation("io.sentry:sentry:7.22.5")
+    //implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.25")
 
     intellijPlatform {
         phpstorm(prop("platformVersion"), false)
@@ -20,7 +23,7 @@ dependencies {
 
         pluginVerifier()
         zipSigner()
-        instrumentationTools()
+        //instrumentationTools()
 
         testFramework(TestFrameworkType.Platform)
     }
@@ -57,10 +60,6 @@ tasks {
         dependsOn("generateDocumentation")
     }
 
-    buildSearchableOptions {
-        enabled = false
-    }
-
     test {
         delete(file("build/classes"))
 
@@ -76,7 +75,7 @@ tasks {
     }
 
     jar {
-        dependsOn("instrumentTestCode")
+        //dependsOn("compileTestKotlin")
     }
 
     wrapper {
@@ -118,14 +117,34 @@ tasks {
     }
 }
 
+intellijPlatform {
+    buildSearchableOptions = false
+    instrumentCode = true
+    projectName = project.name
+
+    pluginVerification {
+        ides {
+            ide(IntelliJPlatformType.PhpStorm, "2025.1")
+            //local(file("C:\\Users\\Ronny\\AppData\\Local\\Programs\\PhpStorm"))
+            recommended()
+            select {
+                types = listOf(IntelliJPlatformType.PhpStorm)
+                channels = listOf(ProductRelease.Channel.RELEASE)
+                sinceBuild = "251"
+                untilBuild = "251.*"
+            }
+        }
+    }
+}
+
 val compileKotlin: KotlinCompile by tasks
 
-compileKotlin.kotlinOptions {
-    jvmTarget = "21"
+compileKotlin.compilerOptions {
+    jvmTarget.set(JvmTarget.JVM_21)
 }
 
 val compileTestKotlin: KotlinCompile by tasks
 
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "21"
+compileTestKotlin.compilerOptions {
+    jvmTarget.set(JvmTarget.JVM_21)
 }
