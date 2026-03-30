@@ -6,7 +6,7 @@ import net.rentalhost.plugins.gradle.services.FileService
 import net.rentalhost.plugins.gradle.services.GitService
 import net.rentalhost.plugins.gradle.services.GitService.GitCommit
 import org.gradle.api.Project
-import org.gradle.configurationcache.extensions.capitalized
+import org.gradle.internal.extensions.stdlib.capitalized
 import java.io.File
 
 internal class GenerateChangelogTask : ProjectTools.ProjectTask() {

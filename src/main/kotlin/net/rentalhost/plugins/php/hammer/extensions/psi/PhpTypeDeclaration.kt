@@ -27,6 +27,9 @@ fun PhpTypeDeclaration.withNull(format: OptionNullableTypeFormat): PhpTypeDeclar
     if (format == OptionNullableTypeFormat.LONG)
         return FactoryService.createParameterType(project, "$text|null")
 
+    if (text.startsWith("?"))
+        return FactoryService.createParameterType(project, text)
+
     return FactoryService.createParameterType(project, "?$text")
 }
 

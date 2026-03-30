@@ -14,7 +14,7 @@ class ParameterImplicitlyNullableInspectionTestCase : TestCase() {
             { it.nullableTypeFormat = OptionNullableTypeFormat.SHORT }
         )
 
-    // It will force use short format automatically.
+    // It will force to use short format automatically.
     fun testFormatLongBefore800(): Unit =
         testInspection(
             ParameterImplicitlyNullableInspection::class.java,

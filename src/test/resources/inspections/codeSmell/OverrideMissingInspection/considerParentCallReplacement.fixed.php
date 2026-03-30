@@ -14,7 +14,8 @@ class Base {
 
 $dummy = new class extends Base {
     // Must fails: not contains parent call, so requires #[\Override] attribute.
-    #[\Override] function notParentCallReplacement() {
+    #[\Override]
+    function notParentCallReplacement() {
         doSomething();
         parent::parentCallReplacement(); // Another parent method, not itself.
 

@@ -9,7 +9,7 @@ import com.intellij.openapi.startup.ProjectActivity
 import java.time.ZonedDateTime
 
 class PluginUpdateService : ProjectActivity {
-    private val plugin: IdeaPluginDescriptor = PluginManagerCore.getPlugin(PluginId.findId(ProjectService.instance.id))!!
+    private val plugin: IdeaPluginDescriptor = PluginManagerCore.getPlugin(PluginId.getId(ProjectService.instance.id))!!
 
     private val tripleHome = NotificationService.NotificationItem("home", "project home", "home", ProjectService.instance.urls.homeUrl)
     private val tripleChangelog = NotificationService.NotificationItem("changelog", "changelog", ProjectService.instance.urls.changelogUrl)
@@ -45,11 +45,11 @@ class PluginUpdateService : ProjectActivity {
         "${ProjectService.instance.notificationGroup}.PLUGIN_RELATED",
         ResourceService.read("/plugin/news.html")
             .replace(
-                "\$beforeNote",
+                $$"$beforeNote",
                 if (versionBefore != null) ", replacing the previous installation (was $versionBefore)"
                 else ""
             )
-            .replace("\$pluginVersion", versionAfter),
+            .replace($$"$pluginVersion", versionAfter),
         listOf(tripleChangelog)
     )
 

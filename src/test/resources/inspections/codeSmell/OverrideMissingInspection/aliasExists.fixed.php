@@ -11,7 +11,8 @@ class Base {
 $dummy = new class extends Base {
     // Must fails: requires #[\Override] attribute.
     // Must not occur auto import, #[Override] is already imported.
-    #[Override] function requiresOverrideAttribute() {
+    #[Override]
+    function requiresOverrideAttribute() {
         doSomething();
     }
 };

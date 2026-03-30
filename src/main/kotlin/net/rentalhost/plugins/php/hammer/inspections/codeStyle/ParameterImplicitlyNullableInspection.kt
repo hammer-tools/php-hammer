@@ -4,8 +4,12 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageLevel
+import com.jetbrains.php.lang.PhpLangUtil
+import com.jetbrains.php.lang.documentation.phpdoc.parser.PhpDocElementTypes
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.Parameter
+import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.impl.ParameterImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpTypeDeclarationImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
@@ -19,6 +23,26 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
     @OptionTag
     var nullableTypeFormat: OptionNullableTypeFormat = OptionNullableTypeFormat.LONG
 
+    companion object {
+        private fun getDeclaredType(parameter: ParameterImpl): PhpType {
+            if (parameter.isDocMethodParameter) {
+                val type = PhpType()
+
+                for (parameterType in parameter.children) {
+                    if (PhpType.isArray(PhpLangUtil.toFQN(parameterType.text))) {
+                        type.add(PhpType.ARRAY)
+                    } else if (PhpPsiUtil.isOfType(parameterType, PhpDocElementTypes.phpDocMethodType)) {
+                        type.add(ParameterImpl.getTypeFromDeclaration(parameterType as PhpPsiElement))
+                    }
+                }
+
+                return type
+            }
+
+            return parameter.declaredType
+        }
+    }
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
         override fun visitPhpParameter(element: Parameter) {
             if (element !is ParameterImpl ||
@@ -26,7 +50,7 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
             )
                 return
 
-            val declaredType = element.declaredType
+            val declaredType = getDeclaredType(element)
 
             if (declaredType.isEmpty ||
                 declaredType.isNullable ||

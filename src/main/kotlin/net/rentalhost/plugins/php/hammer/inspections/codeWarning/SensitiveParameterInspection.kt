@@ -1,7 +1,7 @@
 package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 
-import ai.grazie.utils.capitalize
 import com.intellij.codeInspection.ProblemsHolder
+import net.rentalhost.plugins.php.hammer.extensions.kotlin.capitalize
 import com.intellij.codeInspection.options.OptCheckbox
 import com.intellij.codeInspection.options.OptPane
 import com.intellij.codeInspection.options.OptStringList

@@ -1,3 +1,5 @@
+@file:Suppress("MISSING_DEPENDENCY_SUPERCLASS_IN_TYPE_ARGUMENT")
+
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.models.ProductRelease
@@ -8,14 +10,14 @@ fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij.platform") version "2.5.0"
-    id("org.jetbrains.kotlin.jvm") version "2.1.10"
-    id("io.sentry.jvm.gradle") version "5.3.0"
+    id("org.jetbrains.intellij.platform") version "2.13.1"
+    id("org.jetbrains.kotlin.jvm") version "2.3.20"
+    id("io.sentry.jvm.gradle") version "6.3.0"
 }
 
 dependencies {
     intellijPlatform {
-        phpstorm(prop("platformVersion"), false)
+        phpstorm(prop("platformVersion"))
 
         bundledPlugin("com.jetbrains.php")
 
@@ -69,6 +71,7 @@ tasks {
         }
 
         systemProperty("idea.split.test.logs", "true")
+        systemProperty("idea.tests.overwrite.test.data", "true")
     }
 
     wrapper {
@@ -117,13 +120,13 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            ide(IntelliJPlatformType.PhpStorm, "2025.1")
+            create(IntelliJPlatformType.PhpStorm, prop("platformVersion"))
             recommended()
             select {
                 types = listOf(IntelliJPlatformType.PhpStorm)
                 channels = listOf(ProductRelease.Channel.RELEASE)
-                sinceBuild = "251"
-                untilBuild = "251.*"
+                sinceBuild = prop("pluginBuildSince")
+                untilBuild = "${prop("pluginBuildSince")}.*"
             }
         }
     }

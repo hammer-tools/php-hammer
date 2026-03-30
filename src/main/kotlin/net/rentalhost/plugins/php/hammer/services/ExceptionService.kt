@@ -5,7 +5,6 @@ import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent
 import com.intellij.openapi.diagnostic.SubmittedReportInfo
-import com.intellij.openapi.util.SystemInfo
 import com.intellij.util.Consumer
 import io.sentry.Sentry
 import io.sentry.SentryEvent
@@ -41,7 +40,6 @@ class ExceptionService : ErrorReportSubmitter() {
             }
 
             sentryEvent.setTag("IDE", ApplicationInfo.getInstance().build.asString())
-            sentryEvent.setTag("OS", SystemInfo.getOsNameAndVersion())
 
             if (additionalInfo != null) {
                 sentryEvent.setExtra("Additional info", additionalInfo)
