@@ -11,8 +11,6 @@ class ProjectService {
 
     val notificationGroup: String = "net.rentalhost.plugins.php.hammer.notifications"
 
-    val sentryDsn: String = "https://0046f19fa48247e198f0a5cb21afc0db@o55698.ingest.sentry.io/6612594"
-
     val urls: UrlService = object : UrlService() {
         override val homeUrl: String = "https://github.com/hammer-tools/php-hammer"
 

@@ -24,8 +24,6 @@
 
         <notificationGroup id="net.rentalhost.plugins.php.hammer.notifications.PLUGIN_RELATED" displayType="STICKY_BALLOON" />
 
-        <errorHandler implementation="net.rentalhost.plugins.php.hammer.services.ExceptionService" />
-
         <toolWindow id="PHP Hammer" icon="/META-INF/pluginIcon.png" anchor="right"
                     factoryClass="net.rentalhost.plugins.php.hammer.services.SidebarService" />
     </extensions>

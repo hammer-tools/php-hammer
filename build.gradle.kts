@@ -12,7 +12,6 @@ plugins {
     id("java")
     id("org.jetbrains.intellij.platform") version "2.13.1"
     id("org.jetbrains.kotlin.jvm") version "2.3.20"
-    id("io.sentry.jvm.gradle") version "6.3.0"
 }
 
 dependencies {
