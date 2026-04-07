@@ -5,13 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
-## [2026.1.0] - 2026-03-30
+## [2026.1.1] - 2026-04-07
 
-### Added
+### Fixed
 
-- **PhpStorm 2026.1** is now supported and minimum supported version due to API changes;
+- **[ParameterImplicitlyNullableInspection]**: handle nullable doc method parameters;
 
-[2026.1.0]: https://github.com/hammer-tools/php-hammer/releases/tag/2026.1.0
+[2026.1.1]: https://github.com/hammer-tools/php-hammer/releases/tag/2026.1.1
+
+[ParameterImplicitlyNullableInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-parameter-implicitly-nullable-inspection
 
 ## [0.33.0] - 2025-04-17
 

@@ -4,9 +4,10 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.createSmartPointer
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.config.PhpLanguageLevel
-import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.documentation.phpdoc.parser.PhpDocElementTypes
 import com.jetbrains.php.lang.inspections.PhpInspection
+import com.jetbrains.php.lang.lexer.PhpTokenTypes
+import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.Parameter
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
@@ -24,22 +25,22 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
     var nullableTypeFormat: OptionNullableTypeFormat = OptionNullableTypeFormat.LONG
 
     companion object {
-        private fun getDeclaredType(parameter: ParameterImpl): PhpType {
-            if (parameter.isDocMethodParameter) {
-                val type = PhpType()
+        private fun getDocMethodDeclaredType(parameter: ParameterImpl): PhpType {
+            val type = PhpType()
 
-                for (parameterType in parameter.children) {
-                    if (PhpType.isArray(PhpLangUtil.toFQN(parameterType.text))) {
-                        type.add(PhpType.ARRAY)
-                    } else if (PhpPsiUtil.isOfType(parameterType, PhpDocElementTypes.phpDocMethodType)) {
-                        type.add(ParameterImpl.getTypeFromDeclaration(parameterType as PhpPsiElement))
-                    }
+            for (parameterType in parameter.children) {
+                if (PhpType.isArray(PhpLangUtil.toFQN(parameterType.text))) {
+                    type.add(PhpType.ARRAY)
+                } else if (PhpPsiUtil.isOfType(parameterType, PhpDocElementTypes.phpDocMethodType)) {
+                    type.add(ParameterImpl.getTypeFromDeclaration(parameterType as PhpPsiElement))
                 }
-
-                return type
             }
 
-            return parameter.declaredType
+            if (parameter.node.getChildren(null).any { it.elementType == PhpTokenTypes.opQUEST }) {
+                type.add(PhpType.NULL)
+            }
+
+            return type
         }
     }
 
@@ -50,7 +51,9 @@ class ParameterImplicitlyNullableInspection : PhpInspection() {
             )
                 return
 
-            val declaredType = getDeclaredType(element)
+            val declaredType =
+                if (element.isDocMethodParameter) getDocMethodDeclaredType(element)
+                else element.declaredType
 
             if (declaredType.isEmpty ||
                 declaredType.isNullable ||
