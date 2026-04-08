@@ -1,3 +1,4 @@
 {
-  "types": ["Added", "Changed", "Fixed", "Removed"]
+  "types": ["Added", "Changed", "Fixed", "Removed"],
+  "template": "[%type] %scope: %summary;{\n\n%body.}{\n\nBREAKING CHANGE: %breakingChange.}"
 }
