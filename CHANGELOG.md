@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
+## [2026.1.2] - 2026-04-24
+
+### Added
+
+- **[NullableArgumentPassedInspection]**: detect nullable arguments passed to non-nullable parameters;
+
+[2026.1.2]: https://github.com/hammer-tools/php-hammer/releases/tag/2026.1.2
+
+[NullableArgumentPassedInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-nullable-argument-passed-inspection
+
 ## [2026.1.1] - 2026-04-07
 
 ### Fixed
