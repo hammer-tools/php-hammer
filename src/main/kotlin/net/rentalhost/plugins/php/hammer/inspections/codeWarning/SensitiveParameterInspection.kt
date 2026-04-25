@@ -27,7 +27,7 @@ import net.rentalhost.plugins.php.hammer.services.QuickFixService
 
 class SensitiveParameterInspection : PhpInspection() {
     @OptionTag
-    private val sensitiveWords = mutableListOf(
+    var sensitiveWords = mutableListOf(
         "access",
         "account",
         "address",

@@ -29,7 +29,7 @@ class DebugFunctionUsageInspection : PhpInspection() {
     private val nativeRegex = Regex("^\\\\debug_", RegexOption.IGNORE_CASE)
 
     @OptionTag
-    private val nativeFunctions = mutableListOf(
+    var nativeFunctions = mutableListOf(
         "\\var_dump",
         "\\var_export",
         "\\print_r",
