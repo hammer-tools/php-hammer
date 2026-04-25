@@ -3,6 +3,7 @@ package net.rentalhost.plugins.php.hammer.inspections.codeWarning
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.codeInspection.options.OptCheckbox
 import com.intellij.codeInspection.options.OptPane
+import com.intellij.codeInspection.options.OptStringList
 import com.intellij.codeInspection.options.PlainMessage
 import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.psi.SmartPointerManager
@@ -26,7 +27,9 @@ class DebugFunctionUsageInspection : PhpInspection() {
     private var frameworksEnabled = true
 
     private val nativeRegex = Regex("^\\\\debug_", RegexOption.IGNORE_CASE)
-    private val nativeFunctions = listOf(
+
+    @OptionTag
+    private val nativeFunctions = mutableListOf(
         "\\var_dump",
         "\\var_export",
         "\\print_r",
@@ -90,6 +93,15 @@ class DebugFunctionUsageInspection : PhpInspection() {
 
     override fun getOptionsPane(): OptPane {
         return OptPane.pane(
+            OptStringList(
+                "nativeFunctions",
+                PlainMessage("Native debug functions:"),
+                null,
+                HtmlChunk.raw(
+                    "Manage native PHP functions that should be flagged as debug usage. Each entry should be a fully-qualified function name (e.g., <code>\\var_dump</code>)."
+                )
+            ),
+
             OptCheckbox(
                 "xdebugEnabled",
                 PlainMessage("Include xdebug functions"),
