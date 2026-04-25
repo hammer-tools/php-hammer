@@ -67,7 +67,6 @@ class SensitiveParameterInspection : PhpInspection() {
         "phone",
         "pin",
         "private key",
-        "public key",
         "secret",
         "security",
         "session",
@@ -84,6 +83,15 @@ class SensitiveParameterInspection : PhpInspection() {
     var supportOlderVersions = false
 
     private val wordExpression = Regex("(\\p{Lu}\\p{Ll}+|\\p{Lu}+|\\p{Ll}+|\\p{L}+)")
+
+    private val scalarTypes = setOf(
+        PhpType._STRING,
+        PhpType._INT, PhpType._INTEGER,
+        PhpType._BOOL, PhpType._BOOLEAN,
+        PhpType._FLOAT, PhpType._DOUBLE,
+        PhpType._NULL,
+        PhpType._TRUE, PhpType._FALSE,
+    )
 
     private val ignorableTypes = listOf(
         PhpType._NULL,
@@ -137,15 +145,17 @@ class SensitiveParameterInspection : PhpInspection() {
                     return
             }
 
-            if (ignoreTypes) {
-                val parameterTypes = parameter.getTypes()
+            val parameterTypes = parameter.getTypes()
 
-                if (parameterTypes.isNotEmpty()) {
+            if (parameterTypes.isNotEmpty()) {
+                if (parameterTypes.any { it !in scalarTypes })
+                    return
+
+                if (ignoreTypes) {
                     val parameterTypesFiltered = parameterTypes.filterNot {
                         ignorableTypes.contains(it)
                     }
 
-                    // We should skip bool, int and float types.
                     if (parameterTypesFiltered.isEmpty())
                         return
                 }

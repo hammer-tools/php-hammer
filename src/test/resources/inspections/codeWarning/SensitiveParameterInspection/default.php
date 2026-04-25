@@ -40,6 +40,7 @@ function test(<warning descr="🔨 PHP Hammer: the sensitive word \"secret\" was
 $dummy = function (
     $notReport,
     $authenticated, // not "auth" or "authentication", specifically.
+    $myPublicKey, // "public key" was removed as public keys are shareable.
 ) {
 };
 
@@ -51,6 +52,15 @@ $dummy = function (
     float $hash,
           $lastCode,
           $firstCode = 0
+) {
+};
+
+// Skip all: non-scalar types (objects, arrays) as #[SensitiveParameter] only works with scalars.
+$dummy = function (
+    array  $secrets,
+    User   $password,
+    string|User $token,
+    DateTime $bearerToken,
 ) {
 };
 
