@@ -153,3 +153,31 @@ class MixinBase {
         return true;
     }
 }
+
+// Case: Nested traits (trait using another trait):
+
+trait NestedOuterTrait {
+    use NestedInnerTrait;
+}
+
+trait NestedInnerTrait {
+    // Must fail: overrides BaseNested::nestedValidOverride() via NestedOuterTrait -> NestedConcreteClass
+    function <weak_warning descr="🔨 PHP Hammer: this method performs an override; consider using the #[Override] attribute.">nestedValidOverride</weak_warning>() {
+        doSomething();
+    }
+
+    // Skip: does not override any method
+    function nestedInvalidMethod() {
+        doSomething();
+    }
+}
+
+class BaseNested {
+    function nestedValidOverride() {
+        doSomething();
+    }
+}
+
+class NestedConcreteClass extends BaseNested {
+    use NestedOuterTrait;
+}

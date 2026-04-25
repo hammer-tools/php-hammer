@@ -9,7 +9,6 @@ import com.intellij.psi.createSmartPointer
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.findParentOfType
 import com.intellij.util.xmlb.annotations.OptionTag
-import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.config.PhpLanguageLevel
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.Method
@@ -18,6 +17,7 @@ import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.addAttribute
 import net.rentalhost.plugins.php.hammer.extensions.psi.functionBody
 import net.rentalhost.plugins.php.hammer.extensions.psi.isOverridable
+import net.rentalhost.plugins.php.hammer.services.ClassService
 import net.rentalhost.plugins.php.hammer.services.LanguageService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
@@ -39,7 +39,7 @@ class OverrideMissingInspection : PhpInspection() {
 
             // If this method is from a trait, it checks the connections to it.
             if (supportTraits && method.containingClass?.isTrait == true) {
-                val traitUsages = PhpIndex.getInstance(method.project).getTraitUsages(method.containingClass)
+                val traitUsages = ClassService.resolveAllTraitUsages(method.containingClass ?: return)
 
                 if (traitUsages.isEmpty())
                     return
