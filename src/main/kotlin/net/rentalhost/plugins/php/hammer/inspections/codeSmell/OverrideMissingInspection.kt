@@ -37,6 +37,10 @@ class OverrideMissingInspection : PhpInspection() {
             if (!supportOlderVersions && !LanguageService.atLeast(problemsHolder.project, PhpLanguageLevel.PHP830))
                 return
 
+            // Constructors cannot be marked with #[Override] per PHP spec.
+            if (method.name == "__construct")
+                return
+
             // If this method is from a trait, it checks the connections to it.
             if (supportTraits && method.containingClass?.isTrait == true) {
                 val traitUsages = ClassService.resolveAllTraitUsages(method.containingClass ?: return)

@@ -260,3 +260,57 @@ class BaseNested {
 class NestedConcreteClass extends BaseNested {
     use NestedOuterTrait;
 }
+
+// Interface cases:
+
+interface FooInterface {
+    function bar(): void;
+
+    function barB(): void;
+}
+
+interface BarInterface {
+    function zoo(): void;
+}
+
+class BarClass implements FooInterface {
+    // Skip: #[Override] works on interface method implementations.
+    #[\Override]
+    function bar(): void {
+        doSomething();
+    }
+
+    // Must be an error: method is not in any interface or parent class.
+    <error descr="🔨 PHP Hammer: this method doesn't actually perform an override; remove this illegal #[Override] attribute.">#[\Override]</error>
+    function baz(): void {
+        doSomething();
+    }
+
+    // Skip: #[Override] works on interface method implementations.
+    #[\Override]
+    function barB(): void {
+        doSomething();
+    }
+}
+
+class DummyExtendsAndImplements extends Base implements FooInterface {
+    // Skip: the method matches both a parent class method and an interface method.
+    #[\Override]
+    function existsOnParentClass() {
+        doSomething();
+    }
+}
+
+abstract class DummyMultipleInterfaces implements FooInterface, BarInterface {
+    // Skip: #[Override] is valid because it implements FooInterface::bar().
+    #[\Override]
+    function bar() {
+        doSomething();
+    }
+
+    // Skip: #[Override] is valid because it implements BarInterface::zoo().
+    #[\Override]
+    function zoo() {
+        doSomething();
+    }
+}

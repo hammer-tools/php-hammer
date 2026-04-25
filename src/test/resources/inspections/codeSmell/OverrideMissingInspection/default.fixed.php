@@ -189,3 +189,37 @@ class BaseNested {
 class NestedConcreteClass extends BaseNested {
     use NestedOuterTrait;
 }
+
+// Constructor cases:
+
+class ConstructorBase {
+    function __construct() {
+        doSomething();
+    }
+
+    function normalMethod() {
+        doSomething();
+    }
+}
+
+class ConstructorChild extends ConstructorBase {
+    // Skip: constructors cannot use #[Override].
+    function __construct() {
+        doSomething();
+    }
+
+    // Must fails: normal method still requires #[Override].
+    #[\Override]
+    function normalMethod() {
+        doSomething();
+    }
+}
+
+class NoConstructorParent {
+}
+
+class ConstructorChildWithoutParent extends NoConstructorParent {
+    // Skip: constructor doesn't override anything.
+    function __construct() {
+    }
+}

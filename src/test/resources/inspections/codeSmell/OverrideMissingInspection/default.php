@@ -181,3 +181,36 @@ class BaseNested {
 class NestedConcreteClass extends BaseNested {
     use NestedOuterTrait;
 }
+
+// Constructor cases:
+
+class ConstructorBase {
+    function __construct() {
+        doSomething();
+    }
+
+    function normalMethod() {
+        doSomething();
+    }
+}
+
+class ConstructorChild extends ConstructorBase {
+    // Skip: constructors cannot use #[Override].
+    function __construct() {
+        doSomething();
+    }
+
+    // Must fails: normal method still requires #[Override].
+    function <weak_warning descr="🔨 PHP Hammer: this method performs an override; consider using the #[Override] attribute.">normalMethod</weak_warning>() {
+        doSomething();
+    }
+}
+
+class NoConstructorParent {
+}
+
+class ConstructorChildWithoutParent extends NoConstructorParent {
+    // Skip: constructor doesn't override anything.
+    function __construct() {
+    }
+}
