@@ -6,8 +6,10 @@ import com.intellij.codeInspection.options.OptPane
 import com.intellij.codeInspection.options.PlainMessage
 import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.psi.createSmartPointer
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.jetbrains.php.lang.PhpLangUtil
+import com.jetbrains.php.lang.documentation.phpdoc.psi.PhpDocComment
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.BinaryExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
@@ -31,6 +33,9 @@ class ClassnameLiteralInspection : PhpInspection() {
 
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
         override fun visitPhpStringLiteralExpression(string: StringLiteralExpression) {
+            if (PsiTreeUtil.getParentOfType(string, PhpDocComment::class.java) != null)
+                return
+
             if (!string.contents.contains("\\"))
                 return
 

@@ -19,4 +19,9 @@ class ClassnameLiteralInspectionTestCase : TestCase() {
         listOf("includeNonexistentClasses", "dummy/functions.php"),
         { it.includeNonexistentClasses = true }
     )
+
+    fun testDoctrineAnnotations(): Unit = testInspection(
+        ClassnameLiteralInspection::class.java,
+        listOf("doctrineAnnotations")
+    )
 }
