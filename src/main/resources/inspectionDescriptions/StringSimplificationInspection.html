@@ -1,5 +1,7 @@
 <html lang="en">
 <body>
-This inspection identifies strings that can be simplified by using a type cast <code>(string)</code>.
+This inspection identifies string values that can be simplified by replacing the variable with a direct <code>(string)</code> type cast, or by removing the string wrapper entirely when used as an array key.<br/><br/>
+
+<strong>Example:</strong> <code>"$var"</code> becomes <code>(string) $var</code>.
 </body>
 </html>

@@ -1,6 +1,7 @@
 <html lang="en">
 <body>
-This inspection checks for calls to the <code>number_format()</code> function using zero as the decimal argument.
-This means that the function used is unnecessary and can be replaced by type casting, resulting in a performance gain of 50%+.
+This inspection checks for calls to <code>number_format()</code> with zero decimals and an empty separator, which can be replaced by a simple type cast, resulting in a 50%+ performance gain.<br/><br/>
+
+<strong>Example:</strong> <code>number_format($x, 0, '.', '')</code> becomes <code>(string) $x</code>.
 </body>
 </html>

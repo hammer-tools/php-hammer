@@ -1,6 +1,17 @@
 <html lang="en">
 <body>
-This inspection identifies conditionals that can be safely removed
-since their <code>else</code> structure is identical to the main structure.
+This inspection identifies conditionals that can be safely removed since their <code>else</code> branch is identical to the main branch, making the conditional redundant.<br/><br/>
+
+<strong>Example:</strong>
+
+<pre><code>if (condition()) {
+    doSomething();
+} else {
+    doSomething(); // identical block
+}</code></pre>
+
+<strong>Becomes:</strong>
+
+<pre><code>doSomething();</code></pre>
 </body>
 </html>

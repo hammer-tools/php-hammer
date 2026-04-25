@@ -1,5 +1,7 @@
 <html lang="en">
 <body>
-This inspection suggests replacing <code>__toString()</code> with a simple type cast <code>(string)</code>.
+This inspection suggests replacing explicit calls to <code>__toString()</code> with a simple <code>(string)</code> type cast.<br/><br/>
+
+<strong>Example:</strong> <code>$obj->__toString()</code> becomes <code>(string) $obj</code>.
 </body>
 </html>

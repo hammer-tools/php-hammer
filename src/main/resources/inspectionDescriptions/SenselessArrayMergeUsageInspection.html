@@ -1,7 +1,7 @@
 <html lang="en">
 <body>
-This inspection checks for senseless usage of <code>array_merge()</code>.<br/><br/>
+This inspection checks for senseless usage of <code>array_merge()</code> and suggests simpler alternatives when the call is unnecessary.<br/><br/>
 
-In short, you should use <code>array_merge()</code> only when you have a set of arrays greater than one.
+<strong>Example:</strong> <code>array_merge()</code> becomes <code>[]</code>, and <code>array_merge($a)</code> becomes just <code>$a</code>.
 </body>
 </html>
