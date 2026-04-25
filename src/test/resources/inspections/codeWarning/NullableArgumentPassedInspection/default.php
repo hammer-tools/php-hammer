@@ -67,3 +67,30 @@ $dummy = new class
         echo $notNullable;
     }
 };
+
+// Must report: nullable method return value passed to non-nullable parameter
+$dummy = new class
+{
+    public function getNullable(): ?string
+    {
+        return null;
+    }
+
+    public function consume(): void
+    {
+        $another = function (string $param): void {};
+        $another(<warning descr="🔨 PHP Hammer: nullable value passed to non-nullable parameter $param.">$this->getNullable()</warning>);
+    }
+};
+
+// Must report: nullable field access passed to non-nullable parameter
+$dummy = new class
+{
+    public ?string $nullableField = null;
+
+    public function consume(): void
+    {
+        $another = function (string $param): void {};
+        $another(<warning descr="🔨 PHP Hammer: nullable value passed to non-nullable parameter $param.">$this->nullableField</warning>);
+    }
+};

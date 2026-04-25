@@ -5,15 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [**Keep a Changelog**](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [**Semantic Versioning**](https://semver.org/spec/v2.0.0.html).
 
-## [2026.1.2] - 2026-04-24
+## [2026.1.2] - 2026-04-25
 
 ### Added
 
 - **[NullableArgumentPassedInspection]**: detect nullable arguments passed to non-nullable parameters;
 
+### Changed
+
+- **[DebugFunctionUsageInspection]**: add configurable native debug functions;
+- **[SensitiveParameterInspection]**: make sensitive words configurable;
+
+### Fixed
+
+- **[ClassnameLiteralInspection]**: ignore classname literals inside phpdoc;
+- **[NativeMemberUsageInspection]**: avoid false positives for custom object types;
+- **[OverrideIllegalInspection]**: handle nested trait override resolution;
+- **[OverrideMissingInspection]**: handle nested trait override detection;
+- **[SensitiveParameterInspection]**: skip non-scalar parameters and public keys;
+
 [2026.1.2]: https://github.com/hammer-tools/php-hammer/releases/tag/2026.1.2
 
 [NullableArgumentPassedInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-nullable-argument-passed-inspection
+
+[DebugFunctionUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-debug-function-usage-inspection
+
+[SensitiveParameterInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-sensitive-parameter-inspection
+
+[ClassnameLiteralInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-classname-literal-inspection
+
+[NativeMemberUsageInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-native-member-usage-inspection
+
+[OverrideIllegalInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-illegal-inspection
+
+[OverrideMissingInspection]: https://github.com/hammer-tools/php-hammer/wiki/Inspections#user-content-override-missing-inspection
 
 ## [2026.1.1] - 2026-04-07
 

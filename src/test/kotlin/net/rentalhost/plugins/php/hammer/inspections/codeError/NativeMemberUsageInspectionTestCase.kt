@@ -12,4 +12,8 @@ class NativeMemberUsageInspectionTestCase : TestCase() {
     fun testIncludeStaticCallDisabled(): Unit = testInspection(NativeMemberUsageInspection::class.java, "includeStaticCall", {
         it.includeStaticCall = false
     })
+
+    fun testWithCustomClass(): Unit = testInspection(NativeMemberUsageInspection::class.java, "withCustomClass")
+
+    fun testLaravelFactory(): Unit = testInspection(NativeMemberUsageInspection::class.java, "laravelFactory")
 }

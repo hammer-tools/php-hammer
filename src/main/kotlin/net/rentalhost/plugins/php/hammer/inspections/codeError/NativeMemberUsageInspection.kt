@@ -10,7 +10,6 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import net.rentalhost.plugins.php.hammer.extensions.psi.getTypes
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.TypeService
 
@@ -28,7 +27,10 @@ class NativeMemberUsageInspection : PhpInspection() {
             if (elementBase !is Variable)
                 return
 
-            val elementTypes = elementBase.getTypes().filter { it != PhpType._NULL }
+            val elementTypes = elementBase.type
+                .typesWithParametrisedParts
+                .map { PhpType.removeParametrisedType(it.toString()) }
+                .filter { it != PhpType._NULL }
 
             if (elementTypes.contains("\\class-string"))
                 return

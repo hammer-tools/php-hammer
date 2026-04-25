@@ -45,7 +45,7 @@ class NullableArgumentPassedInspection : PhpInspection() {
             formalParam: Parameter
         ) {
             val argumentIsNullable = when (argument) {
-                is Variable -> {
+                is PhpTypedElement -> {
                     val types = argument.getTypes()
 
                     if (types.isEmpty()) return
