@@ -7,7 +7,6 @@ import com.intellij.codeInspection.options.PlainMessage
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.util.xmlb.annotations.OptionTag
-import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.inspections.attributes.PhpRemoveAttributeQuickFix
 import com.jetbrains.php.lang.psi.elements.Method
@@ -15,6 +14,7 @@ import com.jetbrains.php.lang.psi.elements.PhpAttribute
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import net.rentalhost.plugins.php.hammer.extensions.psi.getEntire
 import net.rentalhost.plugins.php.hammer.extensions.psi.isOverridable
+import net.rentalhost.plugins.php.hammer.services.ClassService
 import net.rentalhost.plugins.php.hammer.services.FindUsageService
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
@@ -36,7 +36,9 @@ class OverrideIllegalInspection : PhpInspection() {
             if (methodClass.isTrait) {
                 // Traits should be considered here as well.
                 // But to be considered an override, it needs to be an override for all methods that use the trait.
-                with(PhpIndex.getInstance(method.project).getTraitUsages(methodClass)) {
+                // Resolves all class usages transitively, skipping intermediate traits which have no
+                // superclass and would fail the isOverridable check.
+                with(ClassService.resolveAllTraitUsages(methodClass)) {
                     if (!considerUnusedTraits && isEmpty())
                         return
 

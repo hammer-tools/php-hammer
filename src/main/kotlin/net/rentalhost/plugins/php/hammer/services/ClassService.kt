@@ -16,6 +16,23 @@ object ClassService {
     fun findFQN(namespacedClassname: String, project: Project): PhpClass? =
         PhpIndex.getInstance(project).getClassesByFQN(namespacedClassname.lowercase()).firstOrNull()
 
+    fun resolveAllTraitUsages(trait: PhpClass, visited: MutableSet<PhpClass> = mutableSetOf()): Collection<PhpClass> {
+        if (!visited.add(trait))
+            return emptyList()
+
+        val directUsages = PhpIndex.getInstance(trait.project).getTraitUsages(trait)
+        val result = mutableListOf<PhpClass>()
+
+        for (usage in directUsages) {
+            if (usage.isTrait)
+                result.addAll(resolveAllTraitUsages(usage, visited))
+            else
+                result.add(usage)
+        }
+
+        return result
+    }
+
     fun import(classReference: ClassReference?, allowAliasing: Boolean = false) {
         val classReferenceFQN = PhpLangUtil.toFQN(classReference?.text ?: return)
 

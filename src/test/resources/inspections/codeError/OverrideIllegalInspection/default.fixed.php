@@ -221,3 +221,35 @@ trait Dummy1000D {
         doSomething();
     }
 }
+
+// Case 2000: Nested traits (trait using another trait):
+
+trait NestedOuterTrait {
+    use NestedInnerTrait;
+}
+
+trait NestedInnerTrait {
+    // Skip: this method correctly overrides BaseNested::validOverride() via NestedOuterTrait -> NestedConcreteClass
+    #[\Override]
+    function validOverride()
+    {
+        doSomething();
+    }
+
+    // Must be an error: does not override any method
+    function invalidOverride()
+    {
+        doSomething();
+    }
+}
+
+class BaseNested {
+    function validOverride()
+    {
+        doSomething();
+    }
+}
+
+class NestedConcreteClass extends BaseNested {
+    use NestedOuterTrait;
+}
