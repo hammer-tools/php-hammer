@@ -6,14 +6,13 @@ import net.rentalhost.plugins.gradle.services.FileService
 import net.rentalhost.plugins.gradle.services.GitService
 import net.rentalhost.plugins.gradle.services.GitService.GitCommit
 import org.gradle.api.Project
-import org.gradle.internal.extensions.stdlib.capitalized
 import java.io.File
 
 internal class GenerateChangelogTask : ProjectTools.ProjectTask() {
     private val boxNames = listOf("important", "added", "changed", "fixed", "removed")
 
     override fun apply(project: Project) {
-        project.task("generateChangelog") {
+        project.tasks.register("generateChangelog") {
             group = groupName
             description = "Generate project changelog based on git commits."
 
@@ -85,7 +84,7 @@ internal class GenerateChangelogTask : ProjectTools.ProjectTask() {
                     if (value.isEmpty())
                         continue
 
-                    changelogResult += "### ${key.capitalized()}\n\n"
+                    changelogResult += "### ${key.replaceFirstChar(Char::uppercaseChar)}\n\n"
 
                     value
                         .sortedBy { it.classReference }

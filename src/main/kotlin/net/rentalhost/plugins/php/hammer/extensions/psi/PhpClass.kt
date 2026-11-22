@@ -12,7 +12,7 @@ fun PhpClass.addField(parameter: PhpPromotedFieldParameterImpl, comment: PhpDocC
     PhpPsiElementFactory.createPhpPsiFromText(
         project,
         PhpClassFieldsList::class.java,
-        "class A{${parameter.text.substringBefore("=")};}"
+        "class A{${parameter.text.removePrefix(comment?.text.orEmpty()).trimStart().substringBefore("=")};}"
     ).apply {
         PhpCodeEditUtil.insertClassMemberWithPhpDoc(this@addField, this, comment)
     }

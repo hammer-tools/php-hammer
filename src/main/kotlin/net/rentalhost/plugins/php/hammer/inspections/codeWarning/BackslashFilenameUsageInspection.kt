@@ -13,7 +13,6 @@ import net.rentalhost.plugins.php.hammer.extensions.psi.followContents
 import net.rentalhost.plugins.php.hammer.extensions.psi.getConcatenatedElements
 import net.rentalhost.plugins.php.hammer.services.ProblemsHolderService
 import net.rentalhost.plugins.php.hammer.services.QuickFixService
-import net.rentalhost.plugins.php.hammer.services.StringService
 
 class BackslashFilenameUsageInspection : PhpInspection() {
     @Suppress("SpellCheckingInspection")
@@ -78,6 +77,30 @@ class BackslashFilenameUsageInspection : PhpInspection() {
         Pair("\\unlink", listOf(0)),
     )
 
+    private fun replaceBackslashes(literal: StringLiteralExpression): String? {
+        val valueRange = literal.valueRange
+        val escaper = literal.createLiteralTextEscaper()
+        val decoded = StringBuilder()
+        if (!escaper.decode(valueRange, decoded) || '\\' !in decoded)
+            return null
+
+        // Replace the source spans of the decoded separators, preserving quotes and other escapes.
+        val replacement = StringBuilder(literal.text)
+        for (index in decoded.indices.reversed()) {
+            if (decoded[index] != '\\')
+                continue
+
+            val start = escaper.getOffsetInHost(index, valueRange)
+            val end = escaper.getOffsetInHost(index + 1, valueRange)
+            if (start < 0 || end <= start)
+                return null
+
+            replacement.replace(start, end, "/")
+        }
+
+        return replacement.toString()
+    }
+
     override fun buildVisitor(problemsHolder: ProblemsHolder, isOnTheFly: Boolean): PhpElementVisitor = object : PhpElementVisitor() {
         private fun processParameter(parameter: PsiElement) {
             val parameterStrings = when (parameter) {
@@ -92,9 +115,7 @@ class BackslashFilenameUsageInspection : PhpInspection() {
             }
 
             for (parameterString in parameterStrings) {
-                val stringContents = StringService.unescapeString(parameterString)
-
-                if (!stringContents.contains("\\"))
+                if (replaceBackslashes(parameterString) == null)
                     continue
 
                 val parameterStringPointer = parameterString.createSmartPointer()
@@ -104,7 +125,7 @@ class BackslashFilenameUsageInspection : PhpInspection() {
                     "using backslash on filesystem-related name",
                     QuickFixService.instance.simpleInline("Replace backslash") {
                         with(parameterStringPointer.element ?: return@simpleInline) {
-                            updateText(stringContents.replace("\\", "/"))
+                            replaceBackslashes(this)?.let { updateText(it) }
                         }
                     }
                 )

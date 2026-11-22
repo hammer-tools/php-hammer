@@ -1,7 +1,6 @@
 package net.rentalhost.plugins.php.hammer.services
 
-import com.intellij.ide.plugins.IdeaPluginDescriptor
-import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.ide.plugins.PluginDetailsService
 import com.intellij.notification.Notification
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
@@ -9,8 +8,6 @@ import com.intellij.openapi.startup.ProjectActivity
 import java.time.ZonedDateTime
 
 class PluginUpdateService : ProjectActivity {
-    private val plugin: IdeaPluginDescriptor = PluginManagerCore.getPlugin(PluginId.getId(ProjectService.instance.id))!!
-
     private val tripleHome = NotificationService.NotificationItem("home", "project home", "home", ProjectService.instance.urls.homeUrl)
     private val tripleChangelog = NotificationService.NotificationItem("changelog", "changelog", ProjectService.instance.urls.changelogUrl)
     private val tripleInspections =
@@ -23,7 +20,6 @@ class PluginUpdateService : ProjectActivity {
     private val tripleReviewLater =
         NotificationService.NotificationItem("Remember later") { notification -> closeReview(notification, true) }
     private val tripleReviewNever = NotificationService.NotificationItem("Never ask again") { notification -> closeReview(notification) }
-    private val tripleReviewHome = tripleHome.withoutActionButton()
 
     private fun closeReview(notification: Notification, disableReview: Boolean = false) {
         notification.expire()
@@ -59,11 +55,13 @@ class PluginUpdateService : ProjectActivity {
         NotificationService.notify(
             "${ProjectService.instance.notificationGroup}.PLUGIN_RELATED",
             ResourceService.read("/plugin/review.html"),
-            listOf(tripleReviewNow, tripleReviewLater, tripleReviewNever, tripleReviewHome)
+            listOf(tripleReviewNow, tripleReviewLater, tripleReviewNever, tripleHome)
         )
     }
 
     override suspend fun execute(project: Project) {
+        val installedVersion = PluginDetailsService.getInstance().findDetails(PluginId.getId(ProjectService.instance.id))?.version ?: return
+
         with(ProjectService.instance.settings.getServiceInstance().state) {
             countProjects++
 
@@ -71,13 +69,13 @@ class PluginUpdateService : ProjectActivity {
                 pluginFreshInstalled = true
 
                 notifyInstall()
-            } else if (pluginVersion != plugin.version) {
-                notifyUpdate(pluginVersion, plugin.version)
+            } else if (pluginVersion != installedVersion) {
+                notifyUpdate(pluginVersion, installedVersion)
             } else if (ProjectService.instance.settings.isReviewTime()) {
                 notifyReview()
             }
 
-            pluginVersion = plugin.version
+            pluginVersion = installedVersion
 
             if (installedAt == null) {
                 val date = ZonedDateTime.now()

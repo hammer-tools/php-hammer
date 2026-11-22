@@ -1,17 +1,12 @@
-@file:Suppress("MISSING_DEPENDENCY_SUPERCLASS_IN_TYPE_ARGUMENT")
-
-import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import org.jetbrains.intellij.platform.gradle.models.ProductRelease
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 
 fun prop(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij.platform") version "2.13.1"
-    id("org.jetbrains.kotlin.jvm") version "2.3.20"
+    id("org.jetbrains.intellij.platform") version "2.20.1"
+    id("org.jetbrains.kotlin.jvm") version "2.4.21"
 }
 
 dependencies {
@@ -20,8 +15,8 @@ dependencies {
 
         bundledPlugin("com.jetbrains.php")
 
-        pluginVerifier()
-        zipSigner()
+        pluginVerifier("1.411")
+        zipSigner("0.1.45")
 
         testFramework(TestFrameworkType.Platform)
     }
@@ -46,9 +41,8 @@ apply {
 }
 
 kotlin {
-    jvmToolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+    jvmToolchain(25)
+    compilerOptions.jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
 }
 
 tasks {
@@ -59,8 +53,6 @@ tasks {
     }
 
     test {
-        delete(file("build/classes"))
-
         isScanForTestClasses = false
 
         include("**/*TestCase.class")
@@ -70,7 +62,6 @@ tasks {
         }
 
         systemProperty("idea.split.test.logs", "true")
-        systemProperty("idea.tests.overwrite.test.data", "true")
     }
 
     wrapper {
@@ -85,13 +76,6 @@ tasks {
         sinceBuild = prop("pluginBuildSince")
     }
 
-    setupDependencies {
-        doLast {
-            // Fixes IDEA-298989.
-            fileTree("build/instrumented/instrumentCode") { include("**/*Form.class") }.files.forEach { delete(it) }
-        }
-    }
-
     signPlugin {
         certificateChain = System.getenv("CERTIFICATE_CHAIN")
         privateKey = System.getenv("PRIVATE_KEY")
@@ -103,12 +87,10 @@ tasks {
     }
 
     prepareSandbox {
-        doLast {
-            copy {
-                from(file("sandbox/disabled_plugins.txt"))
-                into(file("build/idea-sandbox/config"))
-            }
-        }
+        disabledPlugins.addAll(
+            providers.fileContents(layout.projectDirectory.file("sandbox/disabled_plugins.txt"))
+                .asText.map { it.lineSequence().filter(String::isNotBlank).toList() }
+        )
     }
 }
 
@@ -119,26 +101,7 @@ intellijPlatform {
 
     pluginVerification {
         ides {
-            create(IntelliJPlatformType.PhpStorm, prop("platformVersion"))
-            recommended()
-            select {
-                types = listOf(IntelliJPlatformType.PhpStorm)
-                channels = listOf(ProductRelease.Channel.RELEASE)
-                sinceBuild = prop("pluginBuildSince")
-                untilBuild = "${prop("pluginBuildSince")}.*"
-            }
+            current()
         }
     }
-}
-
-val compileKotlin: KotlinCompile by tasks
-
-compileKotlin.compilerOptions {
-    jvmTarget.set(JvmTarget.JVM_21)
-}
-
-val compileTestKotlin: KotlinCompile by tasks
-
-compileTestKotlin.compilerOptions {
-    jvmTarget.set(JvmTarget.JVM_21)
 }

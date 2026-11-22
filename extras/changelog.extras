@@ -21,3 +21,9 @@
 0.33.0;added;**PhpStorm 2025.1** is now supported and minimum supported version due to API changes;
 2026.1.0;added;**PhpStorm 2026.1** is now supported and minimum supported version due to API changes;
 2026.1.0;removed;Sentry integration. Too noisy due to issues not directly related to the plugin;
+2026.3.0;important;**PhpStorm 2026.3** is now the minimum supported version (build 263);
+2026.3.0;changed;Use the IDE's native notification actions for plugin links;
+2026.3.0;changed;Update the build to Java 25, Gradle 9.9.2, Kotlin 2.4.21, and IntelliJ Platform Gradle Plugin 2.20.1;
+2026.3.0;fixed;Recognize actual interface overrides while excluding methods supplied only by traits or PHPDoc;
+2026.3.0;fixed;Preserve PHPDoc when moving a promoted readonly parameter to a separate property;
+2026.3.0;fixed;Preserve PHP string quoting and escapes when replacing backslashes in paths;

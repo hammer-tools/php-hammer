@@ -24,16 +24,13 @@ fun Method.isOverridable(classBase: PhpClass? = containingClass): Boolean {
     var foundOnInterface = false
 
     if (classBase != null) {
-        PhpClassHierarchyUtils.processSupers(classBase, false, true) { phpClass ->
-            with(phpClass.findMethodByName(name)) {
-                if (this is MethodImpl) {
-                    foundOnInterface = true
-
-                    return@processSupers false
-                }
+        PhpClassHierarchyUtils.processSuperWithoutMixins(classBase, false, true) { phpClass ->
+            if (phpClass.isInterface && phpClass.findOwnMethodByName(name) is MethodImpl) {
+                foundOnInterface = true
+                return@processSuperWithoutMixins false
             }
 
-            return@processSupers true
+            true
         }
     }
 

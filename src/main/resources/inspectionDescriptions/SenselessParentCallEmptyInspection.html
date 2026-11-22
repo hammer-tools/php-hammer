@@ -1,10 +1,12 @@
 <html lang="en">
-<body>
-This inspection identifies pointless calls to empty parent methods.<br/><br/>
+  <body>
+    This inspection identifies pointless calls to empty parent methods.<br /><br />
 
-Empty methods are usually created to indicate that an abstract method serves no purpose at a given inheritance level and will be implemented lower down — so calling them via <code>parent::method()</code> is unnecessary.<br/><br/>
+    Empty methods are usually created to indicate that an abstract method serves no purpose at a
+    given inheritance level and will be implemented lower down — so calling them via
+    <code>parent::method()</code> is unnecessary.<br /><br />
 
-<pre><code>abstract class A {
+    <pre><code>abstract class A {
     abstract function example();
 }
 
@@ -18,5 +20,5 @@ class C extends B {
         /* doSomething() */
     }
 }</code></pre>
-</body>
+  </body>
 </html>

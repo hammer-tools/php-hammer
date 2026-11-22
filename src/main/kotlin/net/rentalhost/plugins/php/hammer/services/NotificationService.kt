@@ -3,7 +3,6 @@ package net.rentalhost.plugins.php.hammer.services
 import com.intellij.ide.BrowserUtil
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationAction
-import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnActionEvent
 
@@ -15,15 +14,12 @@ object NotificationService {
     ) {
         val notification = Notification(groupId, "", NotificationType.INFORMATION)
 
-        @Suppress("DEPRECATION")
-        notification.setListener(NotificationListener.UrlOpeningListener(false))
-
         var finalContent = content
 
         if (actions != null) {
             for ((name, documentTitle, buttonTitle, url, callback) in actions) {
                 if (name != null) {
-                    finalContent = finalContent.replace("$${name}", "<a href=\"${url}\">${documentTitle}</a>")
+                    finalContent = finalContent.replace("$${name}", documentTitle.orEmpty())
                 }
 
                 if (buttonTitle != null) {
@@ -72,8 +68,5 @@ object NotificationService {
 
         constructor(name: String, documentTitle: String, url: String) : this(name, documentTitle, documentTitle, url, null)
         constructor(buttonTitle: String, callback: (Notification) -> Unit) : this(null, null, buttonTitle, null, callback)
-
-        fun withoutActionButton(): NotificationItem =
-            copy(buttonTitle = null)
     }
 }

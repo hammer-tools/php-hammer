@@ -11,7 +11,7 @@ internal class GeneratePluginXMLTask : ProjectTools.ProjectTask() {
     private val copyProperties = listOf("pluginId", "pluginVersion", "pluginBuildSince")
 
     override fun apply(project: Project) {
-        project.task("generatePluginXML") {
+        project.tasks.register("generatePluginXML") {
             group = groupName
             description = "Generate project plugin.xml meta file."
 

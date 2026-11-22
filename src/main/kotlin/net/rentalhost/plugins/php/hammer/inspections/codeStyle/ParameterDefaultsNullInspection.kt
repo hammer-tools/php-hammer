@@ -8,6 +8,7 @@ import com.intellij.codeInspection.options.OptCheckbox
 import com.intellij.codeInspection.options.OptPane
 import com.intellij.codeInspection.options.PlainMessage
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.text.HtmlChunk
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
@@ -105,9 +106,15 @@ class ParameterDefaultsNullInspection : PhpInspection() {
                                 continue
                         }
 
+                        val declarationRange = parameter.docComment
+                            ?.let { PsiTreeUtil.skipWhitespacesAndCommentsForward(it) }
+                            ?.takeIf { it.parent === parameter }
+                            ?.let { TextRange(it.textRange.startOffset - parameter.textRange.startOffset, parameter.textLength) }
+
                         ProblemsHolderService.instance.registerProblem(
                             problemsHolder,
                             parameter,
+                            declarationRange,
                             "default value of the parameter must be \"null\"",
                             run {
                                 if (isAbstractMethod ||

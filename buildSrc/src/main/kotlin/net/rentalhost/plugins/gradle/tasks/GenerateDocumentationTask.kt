@@ -8,7 +8,7 @@ import java.io.File
 
 internal class GenerateDocumentationTask : ProjectTools.ProjectTask() {
     override fun apply(project: Project) {
-        project.task("generateDocumentation") {
+        project.tasks.register("generateDocumentation") {
             group = groupName
             description = "Generate project documentation based on plugin.xml file."
 

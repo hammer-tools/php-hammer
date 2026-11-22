@@ -1,7 +1,9 @@
 <html lang="en">
-<body>
-This inspection checks for calls to <code>number_format()</code> with zero decimals and an empty separator, which can be replaced by a simple type cast, resulting in a 50%+ performance gain.<br/><br/>
+  <body>
+    This inspection checks for calls to <code>number_format()</code> with zero decimals and an empty
+    separator, which can be replaced by a simple type cast, resulting in a 50%+ performance gain.<br /><br />
 
-<strong>Example:</strong> <code>number_format($x, 0, '.', '')</code> becomes <code>(string) $x</code>.
-</body>
+    <strong>Example:</strong> <code>number_format($x, 0, '.', '')</code> becomes
+    <code>(string) $x</code>.
+  </body>
 </html>
